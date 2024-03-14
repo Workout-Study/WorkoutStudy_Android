@@ -4,15 +4,15 @@ plugins {
 }
 
 android {
-    namespace = "com.fitmate.fitmate"
-    compileSdk = 34
+    namespace = AppConfig.packageName
+    compileSdk = AppConfig.compileSDK
 
     defaultConfig {
-        applicationId = "com.fitmate.fitmate"
-        minSdk = 26
-        targetSdk = 34
-        versionCode = 1
-        versionName = "1.0"
+        applicationId = AppConfig.packageName
+        minSdk = AppConfig.minimumSDK
+        targetSdk = AppConfig.targetSDK
+        versionCode = AppConfig.versionCode
+        versionName = AppConfig.versionName
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -37,11 +37,14 @@ android {
 
 dependencies {
 
-    implementation("androidx.core:core-ktx:1.12.0")
-    implementation("androidx.appcompat:appcompat:1.6.1")
-    implementation("com.google.android.material:material:1.11.0")
-    implementation("androidx.constraintlayout:constraintlayout:2.1.4")
-    testImplementation("junit:junit:4.13.2")
-    androidTestImplementation("androidx.test.ext:junit:1.1.5")
-    androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
+    implementation(Libraries.AndroidX.CORE_KTX)
+    implementation(Libraries.AndroidX.APP_COMPAT)
+    implementation(Libraries.Material.MATERIAL)
+    implementation(Libraries.AndroidX.CONSTRAINT_LAYOUT)
+
+    testImplementation(Libraries.Test.JUNIT)
+
+    androidTestImplementation(Libraries.Test.EXT_JUNIT)
+    androidTestImplementation(Libraries.Test.ESPRESSO)
+
 }
