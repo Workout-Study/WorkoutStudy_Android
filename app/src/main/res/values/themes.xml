@@ -1,9 +1,12 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
-    <!-- Base application theme. -->
+
     <style name="Base.Theme.Fitmate" parent="Theme.Material3.DayNight.NoActionBar">
-        <!-- Customize your light theme here. -->
-        <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
+        <item name="colorPrimary">@color/violet</item>
+        <item name="colorSecondary">@color/stateBlue</item>
+        <item name="colorAccent">@color/turquoise</item>
+        <item name="backgroundColor">@color/zircon</item>
     </style>
 
     <style name="Theme.Fitmate" parent="Base.Theme.Fitmate" />
+
 </resources>
