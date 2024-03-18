@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="Font">
+        <item name="android:textAppearance">@font/pretendard_black</item>
+    </style>
+
+    <style name="Font.bold24">
+        <item name="android:textSize">@dimen/text_XL</item>
+        <item name="fontFamily">@font/pretendard_bold</item>
+    </style>
+
+    <style name="Font.bold20">
+        <item name="android:textSize">@dimen/text_L</item>
+        <item name="fontFamily">@font/pretendard_bold</item>
+    </style>
+
+    <style name="Font.bold16">
+        <item name="android:textSize">@dimen/text_M</item>
+        <item name="fontFamily">@font/pretendard_bold</item>
+    </style>
+
+    <style name="Font.bold12">
+        <item name="android:textSize">@dimen/text_S</item>
+        <item name="fontFamily">@font/pretendard_bold</item>
+    </style>
+
+    <style name="Font.bold10">
+        <item name="android:textSize">@dimen/text_XS</item>
+        <item name="fontFamily">@font/pretendard_bold</item>
+    </style>
+
+    <style name="Font.semibold24">
+        <item name="android:textSize">@dimen/text_XL</item>
+        <item name="fontFamily">@font/pretendard_semibold</item>
+    </style>
+
+    <style name="Font.semibold20">
+        <item name="android:textSize">@dimen/text_L</item>
+        <item name="fontFamily">@font/pretendard_semibold</item>
+    </style>
+
+    <style name="Font.semibold10">
+        <item name="android:textSize">@dimen/text_M</item>
+        <item name="fontFamily">@font/pretendard_medium</item>
+    </style>
+
+    <style name="Font.medium24">
+        <item name="android:textSize">@dimen/text_XL</item>
+        <item name="fontFamily">@font/pretendard_medium</item>
+    </style>
+
+    <style name="Font.medium20">
+        <item name="android:textSize">@dimen/text_L</item>
+        <item name="fontFamily">@font/pretendard_medium</item>
+    </style>
+
+    <style name="Font.medium16">
+        <item name="android:textSize">@dimen/text_M</item>
+        <item name="fontFamily">@font/pretendard_medium</item>
+    </style>
+
+    <style name="Font.medium12">
+        <item name="android:textSize">@dimen/text_S</item>
+        <item name="fontFamily">@font/pretendard_medium</item>
+    </style>
+
+    <style name="Font.regular24">
+        <item name="android:textSize">@dimen/text_XL</item>
+        <item name="fontFamily">@font/pretendard_regular</item>
+    </style>
+
+    <style name="Font.regular20">
+        <item name="android:textSize">@dimen/text_L</item>
+        <item name="fontFamily">@font/pretendard_regular</item>
+    </style>
+
+    <style name="Font.regular16">
+        <item name="android:textSize">@dimen/text_M</item>
+        <item name="fontFamily">@font/pretendard_regular</item>
+    </style>
+
+    <style name="Font.regular12">
+        <item name="android:textSize">@dimen/text_S</item>
+        <item name="fontFamily">@font/pretendard_regular</item>
+    </style>
+
+    <style name="Font.regular10">
+        <item name="android:textSize">@dimen/text_XS</item>
+        <item name="fontFamily">@font/pretendard_regular</item>
+    </style>
+
+</resources>
