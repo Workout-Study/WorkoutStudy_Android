@@ -1,3 +1,27 @@
 <resources>
+
     <string name="app_name">Fitmate</string>
+
+    <string name="license_scr_toolbar">FITMATE Open Source</string>
+    <string name="license_scr_title">OSS Notice | FITMATE for Android</string>
+    <string name="license_scr_openSourceScript">
+        This Application is Copyright @ 2024 FITMATE. All Rights Reserved\n\n
+
+        This Application use Open Source Software.\n
+        You can find the source code of these open source projects,\n\n
+
+        along with applicable license information, below.\n\n
+
+        We are deeply grateful to these developers for\n
+        their work and contributions\n\n
+
+        Any questions about our use of licensed work can be sent to\n
+        kimsunfang@gmail.com
+    </string>
+
+    <string name="license_scr_item_title">Open Source License Title in here</string>
+    <string name="license_scr_item_link">Platform link in here</string>
+    <string name="license_scr_item_copyright">License in here</string>
+    <string name="license_scr_item_license">License version in here</string>
+
 </resources>

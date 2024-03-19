@@ -9,4 +9,12 @@
 
     <style name="Theme.Fitmate" parent="Base.Theme.Fitmate" />
 
+    <style name="Theme.Fitmate.Toolbar">
+        <item name="background">@color/zircon</item>
+        <item name="titleTextColor">@color/violet</item>
+        <item name="titleTextAppearance">@style/Font.bold20</item>
+        <item name="navigationIcon">@drawable/ic_baseline_back_24</item>
+        <item name="navigationIconTint">@color/violet</item>
+    </style>
+
 </resources>
