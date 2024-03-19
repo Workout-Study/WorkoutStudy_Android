@@ -33,6 +33,9 @@ android {
     kotlinOptions {
         jvmTarget = "1.8"
     }
+    buildFeatures{
+        dataBinding = true
+    }
 }
 
 dependencies {
@@ -41,8 +44,11 @@ dependencies {
     implementation(Libraries.AndroidX.APP_COMPAT)
     implementation(Libraries.Material.MATERIAL)
     implementation(Libraries.AndroidX.CONSTRAINT_LAYOUT)
+    implementation(Libraries.Indicator.INDICATOR)
+    implementation(Libraries.Lottie.LOTTIE)
 
     testImplementation(Libraries.Test.JUNIT)
+
 
     androidTestImplementation(Libraries.Test.EXT_JUNIT)
     androidTestImplementation(Libraries.Test.ESPRESSO)

@@ -23,5 +23,13 @@
     <string name="license_scr_item_link">Platform link in here</string>
     <string name="license_scr_item_copyright">License in here</string>
     <string name="license_scr_item_license">License version in here</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="onboarding_first_scr_title">함께하는 힘, 변화를 부르다</string>
+    <string name="onboarding_second_scr_title">투표를 통한 상호증진</string>
+    <string name="onboarding_third_scr_title">근손실 vs 금전손실</string>
+    <string name="onboarding_first_scr_content">당신의 건강 여정을 위한\n동료를 만나보세요.\n\n여기서 운동은 단순한 선택이 \n우리 모두의 약속입니다.</string>
+    <string name="onboarding_second_scr_content">FITMATE 의 투표는\n더 큰 목표를 위한 약속입니다.\n\n벌금을 통한 패널티는 \n운동 성과 향상을 위한 감시의 끈입니다..</string>
+    <string name="onboarding_third_scr_content">운동을 하지 않으면,\n지갑이 가벼워집니다.\n\n선택은 당신의 몸무게가 아니라\n당신의 결정입니다! 준비되셨나요?</string>
 
 </resources>

@@ -16,4 +16,12 @@ object Libraries {
         const val MATERIAL = "com.google.android.material:material:1.11.0"
     }
 
+    object Indicator {
+        const val INDICATOR = "com.tbuonomo:dotsindicator:${Versions.INDICATOR}"
+    }
+
+    object Lottie {
+        const val LOTTIE = "com.airbnb.android:lottie:${Versions.LOTTIE}"
+    }
+
 }
