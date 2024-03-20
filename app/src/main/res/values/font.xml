@@ -6,17 +6,17 @@
     </style>
 
     <style name="Logo">
-        <item name="android:textAppearance">@font/giants_inline</item>
+        <item name="android:fontFamily">@font/giants_inline</item>
         <item name="android:textSize">@dimen/text_logo</item>
     </style>
 
     <style name="Title">
-        <item name="android:textAppearance">@font/giants_inline</item>
+        <item name="android:fontFamily">@font/giants_inline</item>
         <item name="android:textSize">@dimen/text_title</item>
     </style>
 
     <style name="OnboardTitle">
-        <item name="android:textAppearance">@font/giants_bold</item>
+        <item name="android:fontFamily">@font/giants_bold</item>
         <item name="android:textSize">@dimen/text_XXL</item>
     </style>
 
@@ -104,5 +104,6 @@
         <item name="android:textSize">@dimen/text_XS</item>
         <item name="fontFamily">@font/pretendard_regular</item>
     </style>
+
 
 </resources>
