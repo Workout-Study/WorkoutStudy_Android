@@ -8,7 +8,7 @@ object Libraries {
 
     object Test {
         const val JUNIT = "junit:junit:${Versions.JUNIT}"
-        const val EXT_JUNIT = "androidx.test.ext.junit:${Versions.EXT_JUNIT}"
+        const val EXT_JUNIT = "androidx.test.ext:junit:${Versions.EXT_JUNIT}"
         const val ESPRESSO = "androidx.test.espresso:espresso-core:${Versions.ESPRESSO}"
     }
 
