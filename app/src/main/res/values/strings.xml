@@ -56,5 +56,8 @@
     <string name="home_main_scr_title_2">나의 FITGROUP 소식</string>
     <string name="home_main_scr_mine">내 것만 보기</string>
 
+    <string name="login_scr_kakao">카카오로 시작하기</string>
+    <string name="login_scr_naver">네이버로 시작하기</string>
+
 
 </resources>
