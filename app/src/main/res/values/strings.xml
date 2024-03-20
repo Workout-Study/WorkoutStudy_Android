@@ -1,6 +1,6 @@
 <resources>
 
-    <string name="app_name">Fitmate</string>
+    <string name="app_name">FITMATE</string>
 
     <string name="license_scr_toolbar">FITMATE Open Source</string>
     <string name="license_scr_title">OSS Notice | FITMATE for Android</string>
@@ -31,5 +31,13 @@
     <string name="onboarding_first_scr_content">당신의 건강 여정을 위한\n동료를 만나보세요.\n\n여기서 운동은 단순한 선택이 \n우리 모두의 약속입니다.</string>
     <string name="onboarding_second_scr_content">FITMATE 의 투표는\n더 큰 목표를 위한 약속입니다.\n\n벌금을 통한 패널티는 \n운동 성과 향상을 위한 감시의 끈입니다..</string>
     <string name="onboarding_third_scr_content">운동을 하지 않으면,\n지갑이 가벼워집니다.\n\n선택은 당신의 몸무게가 아니라\n당신의 결정입니다! 준비되셨나요?</string>
-
+    <string name="onboarding_permission_scr_content">피트메이트를 100% 즐기기 위해서\n아래 권한들을 허용해주세요.</string>
+    <string name="onboarding_permission_scr_text1">필수적 접근 권한.</string>
+    <string name="onboarding_permission_scr_camera">카메라</string>
+    <string name="onboarding_permission_scr_camera_text">운동을 기록하기 위한 카메라에 접근하기 위해\n카메라 권한이 필요합니다.</string>
+    <string name="onboarding_permission_scr_memory">저장공간</string>
+    <string name="onboarding_permission_scr_memory_text">운동을 기록하기 위한 갤러리에 접근하기 위해\n저장공간 권한이 필요합니다.</string>
+    <string name="onboarding_permission_scr_notification">알림</string>
+    <string name="onboarding_permission_scr_notification_text">애플리케이션과 사용자의 커뮤니케이션을 위해\n알림 권한이 필요합니다..</string>
+    <string name="onboarding_permission_scr_button_text">FITMATE 시작하기</string>
 </resources>
