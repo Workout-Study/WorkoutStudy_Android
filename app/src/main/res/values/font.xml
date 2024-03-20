@@ -5,6 +5,21 @@
         <item name="android:textAppearance">@font/pretendard_black</item>
     </style>
 
+    <style name="Logo">
+        <item name="android:fontFamily">@font/giants_inline</item>
+        <item name="android:textSize">@dimen/text_logo</item>
+    </style>
+
+    <style name="Title">
+        <item name="android:fontFamily">@font/giants_inline</item>
+        <item name="android:textSize">@dimen/text_title</item>
+    </style>
+
+    <style name="OnboardTitle">
+        <item name="android:fontFamily">@font/giants_bold</item>
+        <item name="android:textSize">@dimen/text_XXL</item>
+    </style>
+
     <style name="Font.bold24">
         <item name="android:textSize">@dimen/text_XL</item>
         <item name="fontFamily">@font/pretendard_bold</item>
@@ -89,5 +104,6 @@
         <item name="android:textSize">@dimen/text_XS</item>
         <item name="fontFamily">@font/pretendard_regular</item>
     </style>
+
 
 </resources>
