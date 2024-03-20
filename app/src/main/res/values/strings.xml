@@ -59,6 +59,7 @@
 
     <string name="login_scr_kakao">카카오로 시작하기</string>
     <string name="login_scr_naver">네이버로 시작하기</string>
+    <string name="login_scr_button_tour">둘러보기 ></string>
 
     <string name="group_join_scr_group_name">[ FITGROUP NAME ]</string>
     <string name="group_join_scr_now_people">현재 [**]명</string>

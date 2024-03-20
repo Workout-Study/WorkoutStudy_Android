@@ -59,4 +59,16 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/buttonFragmentLoginKakao" />
 
+    <TextView
+        android:id="@+id/buttonFragmentLoginToTour"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="로그인 없이 둘러보기 >"
+        android:layout_margin="15dp"
+        app:layout_constraintTop_toBottomOf="@+id/buttonFragmentLoginNaver"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        android:textColor="@color/dark_gray"
+        android:textAppearance="@style/Font.bold16"/>
+
 </androidx.constraintlayout.widget.ConstraintLayout>
