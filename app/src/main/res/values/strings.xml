@@ -60,4 +60,13 @@
     <string name="login_scr_naver">네이버로 시작하기</string>
 
 
+    <string name="onboarding_permission_scr_content">피트메이트를 100% 즐기기 위해서\n아래 권한들을 허용해주세요.</string>
+    <string name="onboarding_permission_scr_text1">필수적 접근 권한.</string>
+    <string name="onboarding_permission_scr_camera">카메라</string>
+    <string name="onboarding_permission_scr_camera_text">운동을 기록하기 위한 카메라에 접근하기 위해\n카메라 권한이 필요합니다.</string>
+    <string name="onboarding_permission_scr_memory">저장공간</string>
+    <string name="onboarding_permission_scr_memory_text">운동을 기록하기 위한 갤러리에 접근하기 위해\n저장공간 권한이 필요합니다.</string>
+    <string name="onboarding_permission_scr_notification">알림</string>
+    <string name="onboarding_permission_scr_notification_text">애플리케이션과 사용자의 커뮤니케이션을 위해\n알림 권한이 필요합니다..</string>
+    <string name="onboarding_permission_scr_button_text">FITMATE 시작하기</string>
 </resources>
