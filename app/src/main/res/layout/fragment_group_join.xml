@@ -29,12 +29,12 @@
                 android:id="@+id/imageView"
                 android:layout_width="match_parent"
                 android:layout_height="300dp"
-                android:scaleType="fitXY"
-                android:src="@tools:sample/avatars"
+                android:contentDescription="@null"
+                android:scaleType="centerCrop"
+                android:src="@drawable/ic_launcher_logo"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                android:contentDescription="@null" />
+                app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
                 android:id="@+id/textView5"
@@ -74,8 +74,7 @@
                 android:layout_height="22dp"
                 android:layout_marginTop="10dp"
                 android:contentDescription="@null"
-                android:src="@tools:sample/avatars"
-                android:tint="@color/violet"
+                app:tint="@color/violet"
                 app:layout_constraintStart_toStartOf="@+id/textView5"
                 app:layout_constraintTop_toBottomOf="@+id/textView5"
                 app:srcCompat="@drawable/ic_baseline_people_24" />
@@ -97,8 +96,7 @@
                 android:layout_height="22dp"
                 android:layout_marginStart="20dp"
                 android:contentDescription="@null"
-                android:src="@tools:sample/avatars"
-                android:tint="@color/violet"
+                app:tint="@color/violet"
                 app:layout_constraintBottom_toBottomOf="@+id/textView10"
                 app:layout_constraintStart_toEndOf="@+id/textView10"
                 app:layout_constraintTop_toTopOf="@+id/textView10"
@@ -187,7 +185,6 @@
             android:layout_width="22dp"
             android:layout_height="22dp"
             android:layout_marginStart="20dp"
-            android:src="@tools:sample/avatars"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
@@ -211,7 +208,6 @@
             android:layout_width="22dp"
             android:layout_height="22dp"
             android:layout_marginStart="20dp"
-            android:src="@tools:sample/avatars"
             app:layout_constraintBottom_toBottomOf="@+id/textView"
             app:layout_constraintStart_toEndOf="@+id/textView"
             app:layout_constraintTop_toTopOf="@+id/textView"
