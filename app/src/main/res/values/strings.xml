@@ -79,4 +79,10 @@
     <string name="onboarding_permission_scr_notification">알림</string>
     <string name="onboarding_permission_scr_notification_text">애플리케이션과 사용자의 커뮤니케이션을 위해\n알림 권한이 필요합니다..</string>
     <string name="onboarding_permission_scr_button_text">FITMATE 시작하기</string>
+
+    <string name="my_group_scr_toolbar">My FitGroup</string>
+
+    <string name="item_my_group_name">[ FITGROUP NAME ]</string>
+    <string name="item_my_group_message">[ recent messages.. ]</string>
+    <string name="item_my_group_date">[ ** : ** ]</string>
 </resources>
