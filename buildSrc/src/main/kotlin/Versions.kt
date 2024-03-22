@@ -9,5 +9,6 @@ object Versions {
     const val ESPRESSO = "3.5.1"
     const val INDICATOR = "5.0"
     const val LOTTIE = "6.4.0"
+    const val NAVIGATION = "2.7.7"
 
 }
