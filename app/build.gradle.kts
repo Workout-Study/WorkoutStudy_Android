@@ -1,6 +1,7 @@
 plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
+    id("kotlin-kapt")
 }
 
 android {
@@ -47,7 +48,11 @@ dependencies {
     implementation(Libraries.Indicator.INDICATOR)
     implementation(Libraries.Lottie.LOTTIE)
 
+    implementation(Libraries.Navigation.NAVIGATION)
+    implementation(Libraries.Navigation.NAVIGATION_UI)
+
     testImplementation(Libraries.Test.JUNIT)
+
 
 
     androidTestImplementation(Libraries.Test.EXT_JUNIT)

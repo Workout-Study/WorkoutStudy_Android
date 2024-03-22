@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/nav_main_graph"
+    app:startDestination="@id/homeFragment">
+
+    <fragment
+        android:id="@+id/homeFragment"
+        android:name="com.fitmate.fitmate.ui.home.HomeFragment"
+        android:label="HomeFragment" />
+    <fragment
+        android:id="@+id/homeMainFragment"
+        android:name="com.fitmate.fitmate.ui.home.HomeMainFragment"
+        android:label="HomeMainFragment" />
+    <fragment
+        android:id="@+id/homeCategoryFragment"
+        android:name="com.fitmate.fitmate.ui.home.HomeCategoryFragment"
+        android:label="HomeCategoryFragment" />
+    <fragment
+        android:id="@+id/onboardingContainerFragment"
+        android:name="com.fitmate.fitmate.ui.onboarding.OnboardingContainerFragment"
+        android:label="OnboardingContainerFragment" />
+    <fragment
+        android:id="@+id/onBoardingFirstFragment"
+        android:name="com.fitmate.fitmate.ui.onboarding.OnBoardingFirstFragment"
+        android:label="OnBoardingFirstFragment" />
+    <fragment
+        android:id="@+id/onBoardingSecondFragment"
+        android:name="com.fitmate.fitmate.ui.onboarding.OnBoardingSecondFragment"
+        android:label="OnBoardingSecondFragment" />
+    <fragment
+        android:id="@+id/onBoardingThirdFragment"
+        android:name="com.fitmate.fitmate.ui.onboarding.OnBoardingThirdFragment"
+        android:label="OnBoardingThirdFragment" />
+    <fragment
+        android:id="@+id/onBoardingPermissionFragment"
+        android:name="com.fitmate.fitmate.ui.onboarding.OnBoardingPermissionFragment"
+        android:label="OnBoardingPermissionFragment" />
+    <fragment
+        android:id="@+id/loginFragment"
+        android:name="com.fitmate.fitmate.ui.login.LoginFragment"
+        android:label="LoginFragment" />
+    <fragment
+        android:id="@+id/myFitFragment"
+        android:name="com.fitmate.fitmate.ui.myfit.MyFitFragment"
+        android:label="MyFitFragment" />
+    <fragment
+        android:id="@+id/myGroupFragment"
+        android:name="com.fitmate.fitmate.ui.mygroup.MyGroupFragment"
+        android:label="MyGroupFragment" />
+    <fragment
+        android:id="@+id/makeGroupFragment"
+        android:name="com.fitmate.fitmate.ui.mygroup.MakeGroupFragment"
+        android:label="MakeGroupFragment" />
+</navigation>
