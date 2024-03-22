@@ -1,0 +1,310 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/zircon"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <com.google.android.material.appbar.MaterialToolbar
+            android:id="@+id/materialToolbar2"
+            style="@style/Theme.Fitmate.Toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:minHeight="?attr/actionBarSize"
+            android:theme="?attr/actionBarTheme"
+            app:title="@string/make_group_scr_toolbar" />
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="847dp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp">
+
+            <TextView
+                android:id="@+id/textViewMakeGroupName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/make_group_scr_group_name"
+                android:textAppearance="@style/Font.medium16"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <ImageView
+                android:id="@+id/imageViewMakeGroupName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:contentDescription="@null"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textViewMakeGroupName"
+                app:srcCompat="@drawable/bg_rounded_group_1" />
+
+            <EditText
+                android:id="@+id/editTextMakeGroupName"
+                android:layout_width="0dp"
+                android:layout_height="40dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:background="@null"
+                android:ems="10"
+                android:hint="@string/make_group_scr_group_name_insert"
+                android:inputType="text"
+                android:textAppearance="@style/Font.regular12"
+                app:layout_constraintBottom_toBottomOf="@+id/imageViewMakeGroupName"
+                app:layout_constraintEnd_toEndOf="@+id/imageViewMakeGroupName"
+                app:layout_constraintStart_toStartOf="@+id/imageViewMakeGroupName"
+                app:layout_constraintTop_toTopOf="@+id/imageViewMakeGroupName"
+                app:layout_constraintVertical_bias="0.0" />
+
+            <TextView
+                android:id="@+id/textViewMakeGroupAccount"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:text="@string/make_group_scr_account"
+                android:textAppearance="@style/Font.medium16"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/imageViewMakeGroupName" />
+
+            <ImageView
+                android:id="@+id/imageViewMakeGroupAccount"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:contentDescription="@null"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/buttonMakeGroupSelectBank"
+                app:srcCompat="@drawable/bg_rounded_group_2" />
+
+            <EditText
+                android:id="@+id/editTextMakeGroupAccount"
+                android:layout_width="0dp"
+                android:layout_height="40dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:background="@null"
+                android:ems="10"
+                android:hint="@string/make_group_scr_account_insert"
+                android:inputType="phone"
+                android:textAppearance="@style/Font.regular12"
+                app:layout_constraintBottom_toBottomOf="@+id/imageViewMakeGroupAccount"
+                app:layout_constraintEnd_toEndOf="@id/imageViewMakeGroupAccount"
+                app:layout_constraintStart_toStartOf="@+id/imageViewMakeGroupAccount"
+                app:layout_constraintTop_toTopOf="@+id/imageViewMakeGroupAccount"
+                app:layout_constraintVertical_bias="1.0" />
+
+            <Button
+                android:id="@+id/buttonMakeGroupSelectBank"
+                android:layout_width="wrap_content"
+                android:layout_height="40dp"
+                android:layout_marginTop="10dp"
+                android:backgroundTint="@color/stateBlue"
+                android:text="@string/make_group_scr_select_bank"
+                android:textAppearance="@style/Font.regular12"
+                app:layout_constraintEnd_toStartOf="@+id/imageViewMakeGroupAccount"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textViewMakeGroupAccount" />
+
+            <TextView
+                android:id="@+id/textViewMakeGroupCategory"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:text="@string/make_group_scr_category"
+                android:textAppearance="@style/Font.medium16"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/buttonMakeGroupSelectBank" />
+
+            <Spinner
+                android:id="@+id/spinnerMakeGroupCategory"
+                android:layout_width="120dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                app:layout_constraintEnd_toStartOf="@+id/seekBarMakeGroupFitNum"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textViewMakeGroupCategory" />
+
+            <TextView
+                android:id="@+id/textViewMakeGroupFitNum"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="100dp"
+
+                android:text="@string/make_group_scr_fit_num"
+                android:textAppearance="@style/Font.medium16"
+                app:layout_constraintBottom_toBottomOf="@+id/textViewMakeGroupCategory"
+                app:layout_constraintStart_toEndOf="@+id/textViewMakeGroupCategory"
+                app:layout_constraintTop_toTopOf="@+id/textViewMakeGroupCategory"
+                app:layout_constraintVertical_bias="0.5" />
+
+            <SeekBar
+                android:id="@+id/seekBarMakeGroupFitNum"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:max="7"
+                android:progressTint="@color/stateBlue"
+                android:thumbTint="@color/stateBlue"
+                app:layout_constraintBottom_toBottomOf="@+id/spinnerMakeGroupCategory"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="@+id/textViewMakeGroupFitNum"
+                app:layout_constraintTop_toTopOf="@+id/spinnerMakeGroupCategory" />
+
+            <TextView
+                android:id="@+id/textViewMakeGroupPeople"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:text="@string/make_group_scr_people"
+                android:textAppearance="@style/Font.medium16"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/spinnerMakeGroupCategory" />
+
+            <SeekBar
+                android:id="@+id/seekBarMakeGroupPeople"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textViewMakeGroupPeople" />
+
+            <TextView
+                android:id="@+id/textViewMakeGroupComment"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:text="@string/make_group_scr_comment"
+                android:textAppearance="@style/Font.medium16"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/seekBarMakeGroupPeople" />
+
+            <ImageView
+                android:id="@+id/imageViewMakeGroupComment"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:contentDescription="@null"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textViewMakeGroupComment"
+                app:srcCompat="@drawable/bg_rounded_group_3" />
+
+            <EditText
+                android:id="@+id/editTextMakeGroupComment"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_margin="10dp"
+                android:background="@null"
+                android:ems="10"
+                android:gravity="top"
+                android:hint="@string/make_group_scr_comment_insert"
+                android:inputType="text|textMultiLine"
+                android:textAppearance="@style/Font.regular12"
+                app:layout_constraintBottom_toBottomOf="@+id/imageViewMakeGroupComment"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="@+id/imageViewMakeGroupComment"
+                app:layout_constraintTop_toTopOf="@+id/imageViewMakeGroupComment" />
+
+            <TextView
+                android:id="@+id/textViewMakeGroupPhoto"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:text="@string/make_group_scr_background"
+                android:textAppearance="@style/Font.medium16"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/imageViewMakeGroupComment" />
+
+            <ImageView
+                android:id="@+id/imageViewMakeGroupPhotoBackground"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:contentDescription="@null"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textViewMakeGroupPhoto"
+                app:srcCompat="@drawable/bg_rounded_group_4" />
+
+            <ImageView
+                android:id="@+id/imageViewMakeGroupCamera"
+                android:layout_width="63dp"
+                android:layout_height="63dp"
+                android:layout_marginStart="23dp"
+                android:contentDescription="@null"
+                app:layout_constraintBottom_toBottomOf="@+id/imageViewMakeGroupPhotoBackground"
+                app:layout_constraintStart_toStartOf="@+id/imageViewMakeGroupPhotoBackground"
+                app:layout_constraintTop_toTopOf="@+id/imageViewMakeGroupPhotoBackground"
+                app:srcCompat="@drawable/bg_rounded_group_5" />
+
+            <ImageView
+                android:id="@+id/imageViewMakeGroupPhoto1"
+                android:layout_width="63dp"
+                android:layout_height="63dp"
+                android:layout_marginStart="25dp"
+                android:contentDescription="@null"
+                app:layout_constraintBottom_toBottomOf="@+id/imageViewMakeGroupPhotoBackground"
+                app:layout_constraintStart_toEndOf="@+id/imageViewMakeGroupCamera"
+                app:layout_constraintTop_toTopOf="@+id/imageViewMakeGroupPhotoBackground"
+                app:srcCompat="@drawable/bg_rounded_group_5" />
+
+            <ImageView
+                android:id="@+id/imageViewMakeGroupPhoto2"
+                android:layout_width="63dp"
+                android:layout_height="63dp"
+                android:layout_marginStart="25dp"
+                android:contentDescription="@null"
+                app:layout_constraintBottom_toBottomOf="@+id/imageViewMakeGroupPhotoBackground"
+                app:layout_constraintStart_toEndOf="@+id/imageViewMakeGroupPhoto1"
+                app:layout_constraintTop_toTopOf="@+id/imageViewMakeGroupPhotoBackground"
+                app:srcCompat="@drawable/bg_rounded_group_5" />
+
+            <ImageView
+                android:id="@+id/imageViewMakeGroupPhoto3"
+                android:layout_width="63dp"
+                android:layout_height="63dp"
+                android:layout_marginStart="25dp"
+                android:contentDescription="@null"
+                app:layout_constraintBottom_toBottomOf="@+id/imageViewMakeGroupPhotoBackground"
+                app:layout_constraintStart_toEndOf="@+id/imageViewMakeGroupPhoto2"
+                app:layout_constraintTop_toTopOf="@+id/imageViewMakeGroupPhotoBackground"
+                app:srcCompat="@drawable/bg_rounded_group_5" />
+
+            <ImageView
+                android:id="@+id/imageViewMakeGroupCameraIcon"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:contentDescription="@null"
+                app:layout_constraintBottom_toBottomOf="@+id/imageViewMakeGroupCamera"
+                app:layout_constraintEnd_toEndOf="@+id/imageViewMakeGroupCamera"
+                app:layout_constraintStart_toStartOf="@+id/imageViewMakeGroupCamera"
+                app:layout_constraintTop_toTopOf="@+id/imageViewMakeGroupCamera"
+                app:srcCompat="@drawable/ic_baseline_camera_24" />
+
+            <Button
+                android:id="@+id/buttonMakeGroupConfirm"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="40dp"
+                android:text="@string/make_group_scr_confirm"
+                android:textAppearance="@style/Font.bold20"
+                android:textColor="@color/turquoise"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/imageViewMakeGroupPhotoBackground" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </LinearLayout>
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>
