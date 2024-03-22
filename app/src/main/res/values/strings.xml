@@ -106,6 +106,16 @@
     <string name="make_group_scr_background">그룹 배경사진</string>
     <string name="make_group_scr_confirm">FITGROUP 만들기</string>
 
+
+    <string name="make_fit_off_scr_toolbar">피트오프 신청</string>
+    <string name="make_fit_off_scr_group_name">[ GROUP NAME ]</string>
+    <string name="make_fit_off_scr_reason">사유</string>
+    <string name="make_fit_off_scr_date">날짜</string>
+    <string name="make_fit_off_scr_select_date">날짜 선택하기</string>
+    <string name="make_fit_off_scr_duration">피트오프 기간</string>
+    <string name="make_fit_off_scr_submit">진단서 제출</string>
+    <string name="make_fit_off_scr_confirm">\t\t\t피트오프 신청\t\t\t</string>
+
     <string name="group_fit_off_scr_toolbar">FitGroup 피트오프 열람</string>
     <string name="item_fit_off_scr_name">[ Name ]</string>
     <string name="item_fit_off_scr_date">20**.**.** ~ 20**.**.**</string>
