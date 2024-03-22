@@ -95,4 +95,9 @@
     <string name="make_group_scr_comment_insert">그룹에 대한 상세설명을 입력해주세요.</string>
     <string name="make_group_scr_background">그룹 배경사진</string>
     <string name="make_group_scr_confirm">FITGROUP 만들기</string>
+
+    <string name="group_fit_off_scr_toolbar">FitGroup 피트오프 열람</string>
+    <string name="item_fit_off_scr_name">[ Name ]</string>
+    <string name="item_fit_off_scr_date">20**.**.** ~ 20**.**.**</string>
+    <string name="item_fit_off_scr_reason">사유 : [**사유**]</string>
 </resources>
