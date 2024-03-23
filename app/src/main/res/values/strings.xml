@@ -32,7 +32,7 @@
     <string name="item_vote_scr_context">[***]님이 운동 기록을 시작하였습니다.</string>
     <string name="item_vote_scr_per_comment">"찬성률 : "</string>
     <string name="item_vote_scr_per">[**]%</string>
-    <string name="item_vote_scr_time">인증 완료 3시간 전</string>
+    <string name="item_vote_scr_time">종료 3시간 전</string>
 
     <string name="item_category_scr_title">[ FITGROUP NAME ]</string>
     <string name="item_category_scr_comment">안녕하세요. 반갑습니다. 운동 같이 열심히 해보아요!\n안녕하세요. 반갑습니다. 운동 같이 열심히 해보아요!</string>
