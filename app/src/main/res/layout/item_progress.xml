@@ -10,15 +10,14 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
-        android:src="@tools:sample/avatars"
-        android:tint="@color/violet"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.5"
-        app:srcCompat="@drawable/bg_rounded_group_4" />
+        app:srcCompat="@drawable/bg_rounded_group_4"
+        app:tint="@color/violet" />
 
     <ImageView
         android:id="@+id/imageViewItemProgressThumbnail"
