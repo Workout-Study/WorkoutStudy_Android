@@ -112,7 +112,7 @@
                             android:minHeight="40dp"
                             android:nestedScrollingEnabled="false"
                             tools:itemCount="0"
-                            tools:listitem="@layout/item_myfit_progress" />
+                            tools:listitem="@layout/item_progress" />
 
                     </androidx.core.widget.NestedScrollView>
 
