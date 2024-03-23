@@ -131,4 +131,8 @@
     <string name="group_fine_scr_fine">[**,***]</string>
     <string name="group_fine_scr_account">[**] [***-******-***]</string>
 
+    <string name="certificate_scr_toolbar">운동 기록하기</string>
+    <string name="certificate_scr_timer">00 : 00 : 00</string>
+    <string name="certificate_scr_confirm">\t\t FIT 기록 시작하기 \t\t</string>
+
 </resources>

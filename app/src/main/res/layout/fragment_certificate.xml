@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/zircon"
+    android:orientation="vertical">
+
+    <com.google.android.material.appbar.MaterialToolbar
+        android:id="@+id/materialToolbarCertificate"
+        style="@style/Theme.Fitmate.Toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/zircon"
+        app:navigationIcon="@null"
+        app:title="@string/certificate_scr_toolbar" />
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_margin="10dp">
+
+        <TextView
+            android:id="@+id/textViewCertificateTimer"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/certificate_scr_timer"
+            android:textAppearance="@style/OnboardTitle"
+            android:textSize="48sp"
+            app:layout_constraintBottom_toTopOf="@+id/imageViewCertificateContainerStart"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageView
+            android:id="@+id/imageViewCertificateContainerStart"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
+            app:layout_constraintBottom_toTopOf="@+id/dividerCertificate"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.41"
+            app:layout_constraintStart_toStartOf="parent"
+            app:srcCompat="@drawable/bg_rounded_group_3"
+            app:tint="#D58888"
+            android:contentDescription="@null" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerCertificateStart"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:orientation="horizontal"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            app:layout_constraintBottom_toBottomOf="@+id/imageViewCertificateContainerStart"
+            app:layout_constraintEnd_toEndOf="@+id/imageViewCertificateContainerStart"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="@+id/imageViewCertificateContainerStart"
+            app:layout_constraintTop_toTopOf="@+id/imageViewCertificateContainerStart"
+            tools:itemCount="5"
+            tools:listitem="@layout/item_certificate" />
+
+        <View
+            android:id="@+id/dividerCertificate"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="?android:attr/listDivider"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:layout_editor_absoluteX="16dp" />
+
+        <ImageView
+            android:id="@+id/imageViewCertificateContainerEnd"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/dividerCertificate"
+            app:srcCompat="@drawable/bg_rounded_group_3"
+            app:tint="#64B5F6"
+            android:contentDescription="@null" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerCertificateEnd"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:orientation="horizontal"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            app:layout_constraintBottom_toBottomOf="@+id/imageViewCertificateContainerEnd"
+            app:layout_constraintEnd_toEndOf="@+id/imageViewCertificateContainerEnd"
+            app:layout_constraintStart_toStartOf="@+id/imageViewCertificateContainerEnd"
+            app:layout_constraintTop_toTopOf="@+id/imageViewCertificateContainerEnd"
+            tools:itemCount="5"
+            tools:listitem="@layout/item_certificate" />
+
+        <Button
+            android:id="@+id/buttonCertificateConfirm"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/certificate_scr_confirm"
+            android:textAppearance="@style/Font.bold20"
+            android:textColor="@color/turquoise"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/imageViewCertificateContainerEnd" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</LinearLayout>
