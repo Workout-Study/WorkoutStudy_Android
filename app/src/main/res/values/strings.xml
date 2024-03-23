@@ -111,29 +111,4 @@
     <string name="item_fit_off_scr_date">20**.**.** ~ 20**.**.**</string>
     <string name="item_fit_off_scr_reason">사유 : [**사유**]</string>
 
-    <string name="item_vote_scr_title">[ FITGROUP NAME ]</string>
-    <string name="item_vote_scr_context">[***]님이 운동 기록을 시작하였습니다.</string>
-    <string name="item_vote_scr_per_comment">"찬성률 : "</string>
-    <string name="item_vote_scr_per">[**]%</string>
-    <string name="item_vote_scr_time">인증 완료 3시간 전</string>
-
-    <string name="item_category_scr_title">[ FITGROUP NAME ]</string>
-    <string name="item_category_scr_comment">안녕하세요. 반갑습니다. 운동 같이 열심히 해보아요!\n안녕하세요. 반갑습니다. 운동 같이 열심히 해보아요!</string>
-    <string name="item_category_scr_fit">[**]회 / 1주</string>
-    <string name="item_category_scr_people">[**] / [**]명</string>
-
-    <string name="category_scr_1">등산</string>
-    <string name="category_scr_2">생활 체육</string>
-    <string name="category_scr_3">웨이트</string>
-    <string name="category_scr_4">수영</string>
-    <string name="category_scr_5">축구</string>
-    <string name="category_scr_6">농구</string>
-    <string name="category_scr_7">야구</string>
-    <string name="category_scr_8">바이킹</string>
-    <string name="category_scr_9">클라이밍</string>
-    <string name="home_main_scr_title_1">HOT FITGROUP</string>
-    <string name="home_main_scr_title_2">나의 FITGROUP 소식</string>
-    <string name="home_main_scr_mine">내 것만 보기</string>
-
-
 </resources>
