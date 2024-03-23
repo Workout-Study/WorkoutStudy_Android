@@ -135,4 +135,7 @@
     <string name="certificate_scr_timer">00 : 00 : 00</string>
     <string name="certificate_scr_confirm">\t\t FIT 기록 시작하기 \t\t</string>
 
+
+    <string name="my_fit_off_scr_toolbar">나의 피트오프 열람</string>
+
 </resources>
