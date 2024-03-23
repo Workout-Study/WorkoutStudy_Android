@@ -17,7 +17,8 @@
         <item name="navigationIconTint">@color/violet</item>
     </style>
 
-    <style name="Theme.Fitmate.Chip" parent="Widget.Material3.Chip.Assist">
+    <style name="Theme.Fitmate.Chip" parent="@style/Widget.Material3.Chip.Assist">
         <item name="android:textAppearance">@style/Font.regular12</item>
     </style>
+
 </resources>
