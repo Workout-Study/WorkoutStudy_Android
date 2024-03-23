@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="4"
+        android:background="@color/violet">
+
+        <ImageView
+            android:id="@+id/imageViewUserInfoIcon"
+            android:layout_width="96dp"
+            android:layout_height="96dp"
+            android:layout_marginStart="30dp"
+            android:src="@tools:sample/avatars"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/ic_baseline_account_24" />
+
+        <TextView
+            android:id="@+id/textViewUserInfoName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:text="[ User Name ]"
+            android:textAppearance="@style/Font.bold20"
+            android:textColor="@color/zircon"
+            app:layout_constraintBottom_toBottomOf="@+id/imageViewUserInfoIcon"
+            app:layout_constraintStart_toEndOf="@+id/imageViewUserInfoIcon"
+            app:layout_constraintTop_toTopOf="@+id/imageViewUserInfoIcon"
+            app:layout_constraintVertical_bias="0.3" />
+
+        <TextView
+            android:id="@+id/textViewUserInfoDate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:text="Since 2000.01.01"
+            android:textAppearance="@style/Font.regular16"
+            android:textColor="@color/zircon"
+            app:layout_constraintBottom_toBottomOf="@+id/imageViewUserInfoIcon"
+            app:layout_constraintStart_toStartOf="@+id/textViewUserInfoName"
+            app:layout_constraintTop_toTopOf="@+id/imageViewUserInfoIcon"
+            app:layout_constraintVertical_bias="0.662" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="2">
+
+        <TextView
+            android:id="@+id/textViewUserInfoTitle1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="30dp"
+            android:text="회원정보"
+            android:textAppearance="@style/Font.regular12"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/textViewUserInfoTitle2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="130dp"
+            android:text="고객센터"
+            android:textAppearance="@style/Font.regular12"
+            app:layout_constraintStart_toStartOf="@+id/textViewUserInfoTitle1"
+            app:layout_constraintTop_toBottomOf="@+id/textViewUserInfoTitle1" />
+
+        <TextView
+            android:id="@+id/textViewUserInfoContent1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="30dp"
+            android:layout_marginTop="20dp"
+            android:text="프로필 사진 변경"
+            android:textAppearance="@style/Font.medium16"
+            android:textColor="@color/violet"
+            app:layout_constraintStart_toStartOf="@+id/textViewUserInfoTitle1"
+            app:layout_constraintTop_toBottomOf="@+id/textViewUserInfoTitle1" />
+
+        <TextView
+            android:id="@+id/textViewUserInfoContent2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:text="나의 피트오프 열람"
+            android:textAppearance="@style/Font.medium16"
+            android:textColor="@color/violet"
+            app:layout_constraintStart_toStartOf="@+id/textViewUserInfoContent1"
+            app:layout_constraintTop_toBottomOf="@+id/textViewUserInfoContent1" />
+
+        <TextView
+            android:id="@+id/textViewUserInfoContent3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:text="공지사항"
+            android:textAppearance="@style/Font.medium16"
+            android:textColor="@color/violet"
+            app:layout_constraintStart_toStartOf="@+id/textViewUserInfoContent1"
+            app:layout_constraintTop_toBottomOf="@+id/textViewUserInfoTitle2" />
+
+        <TextView
+            android:id="@+id/textViewUserInfoContent4"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:text="FAQ"
+            android:textAppearance="@style/Font.medium16"
+            android:textColor="@color/violet"
+            app:layout_constraintStart_toStartOf="@+id/textViewUserInfoContent1"
+            app:layout_constraintTop_toBottomOf="@+id/textViewUserInfoContent3" />
+
+        <TextView
+            android:id="@+id/textViewUserInfoContent5"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:text="로그아웃"
+            android:textAppearance="@style/Font.medium16"
+            android:textColor="@color/violet"
+            app:layout_constraintStart_toStartOf="@+id/textViewUserInfoContent1"
+            app:layout_constraintTop_toBottomOf="@+id/textViewUserInfoContent4" />
+
+        <TextView
+            android:id="@+id/textView11"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:text="회원 탈퇴"
+            android:textAppearance="@style/Font.medium16"
+            android:textColor="@color/violet"
+            app:layout_constraintStart_toStartOf="@+id/textViewUserInfoContent1"
+            app:layout_constraintTop_toBottomOf="@+id/textViewUserInfoContent5" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</LinearLayout>
