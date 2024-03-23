@@ -127,4 +127,8 @@
 
     <string name="progress_scr_toolbar">Fitmate 운동 현황</string>
 
+    <string name="group_fine_scr_toolbar">FitGroup 벌금 내역 일람</string>
+    <string name="group_fine_scr_fine">[**,***]</string>
+    <string name="group_fine_scr_account">[**] [***-******-***]</string>
+
 </resources>
