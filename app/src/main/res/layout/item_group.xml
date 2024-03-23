@@ -1,13 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="100dp"
     android:background="@color/zircon">
 
     <ImageView
-        android:id="@+id/imageView6"
+        android:id="@+id/imageViewItemGroupThumbnail"
         android:layout_width="60dp"
         android:layout_height="60dp"
         android:layout_marginStart="20dp"
@@ -17,28 +16,28 @@
         app:srcCompat="@drawable/ic_circle" />
 
     <TextView
-        android:id="@+id/textView3"
+        android:id="@+id/textViewItemGroupTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="10dp"
         android:layout_marginTop="5dp"
         android:text="@string/item_my_group_name"
         android:textAppearance="@style/Font.medium16"
-        app:layout_constraintStart_toEndOf="@+id/imageView6"
-        app:layout_constraintTop_toTopOf="@+id/imageView6" />
+        app:layout_constraintStart_toEndOf="@+id/imageViewItemGroupThumbnail"
+        app:layout_constraintTop_toTopOf="@+id/imageViewItemGroupThumbnail" />
 
     <TextView
-        android:id="@+id/textView4"
+        android:id="@+id/textViewItemGroupContext"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="5dp"
         android:text="@string/item_my_group_message"
         android:textColor="@color/dark_gray"
-        app:layout_constraintBottom_toBottomOf="@+id/imageView6"
-        app:layout_constraintStart_toStartOf="@+id/textView3" />
+        app:layout_constraintBottom_toBottomOf="@+id/imageViewItemGroupThumbnail"
+        app:layout_constraintStart_toStartOf="@+id/textViewItemGroupTitle" />
 
     <TextView
-        android:id="@+id/textView12"
+        android:id="@+id/textViewItemGroupDate"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="20dp"
@@ -46,5 +45,5 @@
         android:textAppearance="@style/Font.regular12"
         android:textColor="@color/dark_gray"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/textView3" />
+        app:layout_constraintTop_toTopOf="@+id/textViewItemGroupTitle" />
 </androidx.constraintlayout.widget.ConstraintLayout>
