@@ -32,7 +32,7 @@
     <string name="item_vote_scr_context">[***]님이 운동 기록을 시작하였습니다.</string>
     <string name="item_vote_scr_per_comment">"찬성률 : "</string>
     <string name="item_vote_scr_per">[**]%</string>
-    <string name="item_vote_scr_time">인증 완료 3시간 전</string>
+    <string name="item_vote_scr_time">종료 3시간 전</string>
 
     <string name="item_category_scr_title">[ FITGROUP NAME ]</string>
     <string name="item_category_scr_comment">안녕하세요. 반갑습니다. 운동 같이 열심히 해보아요!\n안녕하세요. 반갑습니다. 운동 같이 열심히 해보아요!</string>
@@ -137,5 +137,18 @@
     <string name="item_chatting_scr_export">추방하기</string>
 
 
+
+    <string name="progress_scr_toolbar">Fitmate 운동 현황</string>
+
+    <string name="group_fine_scr_toolbar">FitGroup 벌금 내역 일람</string>
+    <string name="group_fine_scr_fine">[**,***]</string>
+    <string name="group_fine_scr_account">[**] [***-******-***]</string>
+
+    <string name="certificate_scr_toolbar">운동 기록하기</string>
+    <string name="certificate_scr_timer">00 : 00 : 00</string>
+    <string name="certificate_scr_confirm">\t\t FIT 기록 시작하기 \t\t</string>
+
+
+    <string name="my_fit_off_scr_toolbar">나의 피트오프 열람</string>
 
 </resources>
