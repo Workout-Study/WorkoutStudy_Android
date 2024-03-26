@@ -5,6 +5,7 @@ import android.view.View
 import androidx.fragment.app.Fragment
 import com.fitmate.fitmate.R
 import com.fitmate.fitmate.databinding.FragmentMyGroupBinding
+import com.fitmate.fitmate.util.ControlActivityInterface
 
 class MyGroupFragment: Fragment(R.layout.fragment_my_group) {
 
