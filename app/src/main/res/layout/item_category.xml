@@ -1,101 +1,110 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="130dp"
-    android:orientation="vertical">
+    xmlns:tools="http://schemas.android.com/tools">
 
-    <ImageView
-        android:id="@+id/imageViewItemCategoryFitgroupBackground"
+    <data>
+        <variable
+            name="categoryItem"
+            type="com.fitmate.fitmate.domain.model.CategoryItem" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="120dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/bg_rounded_rectangle"
-        tools:layout_editor_absoluteX="0dp"
-        android:contentDescription="@null"/>
+        android:layout_height="130dp"
+        android:orientation="vertical">
 
-    <ImageView
-        android:id="@+id/imageViewItemCategoryFitgroupThumbnail"
-        android:layout_width="80dp"
-        android:layout_height="80dp"
-        android:layout_marginTop="20dp"
-        android:layout_marginEnd="35dp"
-        android:layout_marginBottom="20dp"
-        app:layout_constraintBottom_toBottomOf="@+id/imageViewItemCategoryFitgroupBackground"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/imageViewItemCategoryFitgroupBackground"
-        app:layout_constraintVertical_bias="1.0"
-        app:srcCompat="@mipmap/ic_launcher_logo"
-        android:contentDescription="@null"/>
+        <ImageView
+            android:id="@+id/imageViewItemCategoryFitgroupBackground"
+            android:layout_width="match_parent"
+            android:layout_height="120dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/bg_rounded_rectangle"
+            tools:layout_editor_absoluteX="0dp"
+            android:contentDescription="@null" />
 
-    <TextView
-        android:id="@+id/textViewItemCategoryFitgroupTitle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="35dp"
-        android:text="@string/item_category_scr_title"
-        android:textAppearance="@style/Font.bold16"
-        android:textColor="@color/turquoise"
-        app:layout_constraintStart_toStartOf="@+id/imageViewItemCategoryFitgroupBackground"
-        app:layout_constraintTop_toTopOf="@+id/imageViewItemCategoryFitgroupThumbnail"
-        android:contentDescription="@null"/>
+        <ImageView
+            android:id="@+id/imageViewItemCategoryFitgroupThumbnail"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginEnd="35dp"
+            android:layout_marginBottom="20dp"
+            app:layout_constraintBottom_toBottomOf="@+id/imageViewItemCategoryFitgroupBackground"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/imageViewItemCategoryFitgroupBackground"
+            app:layout_constraintVertical_bias="1.0"
+            app:srcCompat="@mipmap/ic_launcher_logo"
+            android:contentDescription="@null" />
 
-    <ImageView
-        android:id="@+id/imageViewItemCategoryIconCalendar"
-        android:layout_width="17dp"
-        android:layout_height="17dp"
-        app:tint="@color/zircon"
-        app:layout_constraintBottom_toBottomOf="@+id/imageViewItemCategoryFitgroupThumbnail"
-        app:layout_constraintStart_toStartOf="@+id/textViewItemCategoryFitgroupTitle"
-        app:srcCompat="@drawable/ic_baseline_calendar_24"
-        android:contentDescription="@null"/>
+        <TextView
+            android:id="@+id/textViewItemCategoryFitgroupTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="35dp"
+            android:text="@{categoryItem.title}"
+            android:textAppearance="@style/Font.bold16"
+            android:textColor="@color/turquoise"
+            app:layout_constraintStart_toStartOf="@+id/imageViewItemCategoryFitgroupBackground"
+            app:layout_constraintTop_toTopOf="@+id/imageViewItemCategoryFitgroupThumbnail"
+            android:contentDescription="@null" />
 
-    <TextView
-        android:id="@+id/textViewItemCategoryCountFit"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/item_category_scr_fit"
-        android:textAppearance="@style/Font.bold12"
-        android:textColor="@color/zircon"
-        app:layout_constraintBottom_toBottomOf="@+id/imageViewItemCategoryIconCalendar"
-        app:layout_constraintStart_toEndOf="@+id/imageViewItemCategoryIconCalendar"
-        app:layout_constraintTop_toTopOf="@+id/imageViewItemCategoryIconCalendar"
-        android:contentDescription="@null"/>
+        <ImageView
+            android:id="@+id/imageViewItemCategoryIconCalendar"
+            android:layout_width="17dp"
+            android:layout_height="17dp"
+            app:tint="@color/zircon"
+            app:layout_constraintBottom_toBottomOf="@+id/imageViewItemCategoryFitgroupThumbnail"
+            app:layout_constraintStart_toStartOf="@+id/textViewItemCategoryFitgroupTitle"
+            app:srcCompat="@drawable/ic_baseline_calendar_24"
+            android:contentDescription="@null" />
 
-    <ImageView
-        android:id="@+id/imageViewItemCategoryIconPeople"
-        android:layout_width="17dp"
-        android:layout_height="17dp"
-        android:layout_marginStart="12dp"
-        android:contentDescription="@null"
-        app:tint="@color/zircon"
-        app:layout_constraintBottom_toBottomOf="@+id/textViewItemCategoryCountFit"
-        app:layout_constraintStart_toEndOf="@+id/textViewItemCategoryCountFit"
-        app:layout_constraintTop_toTopOf="@+id/textViewItemCategoryCountFit"
-        app:srcCompat="@drawable/ic_baseline_people_24" />
+        <TextView
+            android:id="@+id/textViewItemCategoryCountFit"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@{categoryItem.fitCount + `회 / 1주`}"
+            android:textAppearance="@style/Font.bold12"
+            android:textColor="@color/zircon"
+            app:layout_constraintBottom_toBottomOf="@+id/imageViewItemCategoryIconCalendar"
+            app:layout_constraintStart_toEndOf="@+id/imageViewItemCategoryIconCalendar"
+            app:layout_constraintTop_toTopOf="@+id/imageViewItemCategoryIconCalendar"
+            android:contentDescription="@null" />
 
-    <TextView
-        android:id="@+id/textViewItemCategoryCountPeople"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/item_category_scr_people"
-        android:textAppearance="@style/Font.bold12"
-        android:textColor="@color/zircon"
-        app:layout_constraintBottom_toBottomOf="@+id/imageViewItemCategoryIconPeople"
-        app:layout_constraintStart_toEndOf="@+id/imageViewItemCategoryIconPeople"
-        app:layout_constraintTop_toTopOf="@+id/imageViewItemCategoryIconPeople" />
+        <ImageView
+            android:id="@+id/imageViewItemCategoryIconPeople"
+            android:layout_width="17dp"
+            android:layout_height="17dp"
+            android:layout_marginStart="12dp"
+            android:contentDescription="@null"
+            app:tint="@color/zircon"
+            app:layout_constraintBottom_toBottomOf="@+id/textViewItemCategoryCountFit"
+            app:layout_constraintStart_toEndOf="@+id/textViewItemCategoryCountFit"
+            app:layout_constraintTop_toTopOf="@+id/textViewItemCategoryCountFit"
+            app:srcCompat="@drawable/ic_baseline_people_24" />
 
-    <TextView
-        android:id="@+id/textViewItemCategoryComment"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="5dp"
-        android:text="@string/item_category_scr_comment"
-        android:textAppearance="@style/Font.regular10"
-        android:textColor="@color/zircon"
-        app:layout_constraintStart_toStartOf="@+id/textViewItemCategoryFitgroupTitle"
-        app:layout_constraintTop_toBottomOf="@+id/textViewItemCategoryFitgroupTitle" />
+        <TextView
+            android:id="@+id/textViewItemCategoryCountPeople"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@{categoryItem.peopleCount + ` / 20`}"
+            android:textAppearance="@style/Font.bold12"
+            android:textColor="@color/zircon"
+            app:layout_constraintBottom_toBottomOf="@+id/imageViewItemCategoryIconPeople"
+            app:layout_constraintStart_toEndOf="@+id/imageViewItemCategoryIconPeople"
+            app:layout_constraintTop_toTopOf="@+id/imageViewItemCategoryIconPeople" />
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+        <TextView
+            android:id="@+id/textViewItemCategoryComment"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:text="@{categoryItem.comment}"
+            android:textAppearance="@style/Font.regular10"
+            android:textColor="@color/zircon"
+            app:layout_constraintStart_toStartOf="@+id/textViewItemCategoryFitgroupTitle"
+            app:layout_constraintTop_toBottomOf="@+id/textViewItemCategoryFitgroupTitle" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

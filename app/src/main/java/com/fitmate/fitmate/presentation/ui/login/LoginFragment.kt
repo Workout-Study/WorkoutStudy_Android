@@ -1,4 +1,4 @@
-package com.fitmate.fitmate.ui.login
+package com.fitmate.fitmate.presentation.ui.login
 
 import androidx.fragment.app.Fragment
 import com.fitmate.fitmate.R

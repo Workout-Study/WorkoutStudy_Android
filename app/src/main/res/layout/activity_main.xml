@@ -29,6 +29,7 @@
             android:id="@+id/bottomNavigationViewMainActivity"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:background="@color/zircon"
             app:itemTextAppearanceActive="@style/Font.regular12"
             app:layout_constraintBottom_toBottomOf="parent"
             app:menu="@menu/menu_main_bottom_navigation" />
