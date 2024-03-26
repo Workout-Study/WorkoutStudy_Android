@@ -109,7 +109,7 @@
                     app:srcCompat="@drawable/ic_baseline_calendar_24" />
 
                 <TextView
-                    android:id="@+id/textView11"
+                    android:id="@+id/textViewUserInfoContent6"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/group_join_scr_now_people_term"

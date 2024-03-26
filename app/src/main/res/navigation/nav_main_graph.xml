@@ -79,4 +79,28 @@
         android:id="@+id/certificateFragment"
         android:name="com.fitmate.fitmate.ui.myfit.CertificateFragment"
         android:label="@string/certificate_scr_toolbar" />
+    <fragment
+        android:id="@+id/userInfoFragment"
+        android:name="com.fitmate.fitmate.presentation.ui.userinfo.UserInfoFragment"
+        android:label="UserInfoFragment" >
+        <action
+            android:id="@+id/action_userInfoFragment_to_licenseFragment"
+            app:destination="@id/licenseFragment" />
+        <action
+            android:id="@+id/action_userInfoFragment_to_loginFragment"
+            app:destination="@id/loginFragment"
+            app:popUpTo="@id/homeFragment"
+            app:popUpToInclusive="true"/>
+        <action
+            android:id="@+id/action_userInfoFragment_to_myFitOffFragment"
+            app:destination="@id/myFitOffFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/licenseFragment"
+        android:name="com.fitmate.fitmate.presentation.ui.userinfo.LicenseFragment"
+        android:label="LicenseFragment" >
+        <action
+            android:id="@+id/action_licenseFragment_to_userInfoFragment"
+            app:destination="@id/userInfoFragment" />
+    </fragment>
 </navigation>
