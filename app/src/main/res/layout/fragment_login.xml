@@ -1,74 +1,81 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@color/violet">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <TextView
-        android:id="@+id/textViewFragmentLoginLogo"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/app_name"
-        android:textAppearance="@style/Logo"
-        android:textColor="@color/turquoise"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.3" />
+    <data>
 
-    <Button
-        android:id="@+id/buttonFragmentLoginKakao"
-        style="@style/Widget.Material3.Button.IconButton"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="35dp"
-        android:layout_marginEnd="35dp"
-        android:backgroundTint="@color/yellow"
-        android:paddingStart="35dp"
-        android:text="@string/login_scr_kakao"
-        android:textAppearance="@style/Font.bold20"
-        android:textColor="@color/black"
-        app:icon="@drawable/ic_kakao_talk_icon"
-        app:iconPadding="-20dp"
-        app:iconSize="30dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textViewFragmentLoginLogo" />
+    </data>
 
-    <Button
-        android:id="@+id/buttonFragmentLoginNaver"
-        style="@style/Widget.Material3.Button.IconButton"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="35dp"
-        android:layout_marginTop="20dp"
-        android:layout_marginEnd="35dp"
-        android:backgroundTint="@color/green"
-        android:paddingStart="35dp"
-        android:text="@string/login_scr_naver"
-        android:textAppearance="@style/Font.bold20"
-        android:textColor="@color/black"
-        app:icon="@drawable/ic_naver_icon"
-        app:iconPadding="-20dp"
-        app:iconSize="25dp"
-        app:iconTint="@color/white"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/buttonFragmentLoginKakao" />
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/violet">
 
-    <TextView
-        android:id="@+id/buttonFragmentLoginToTour"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="로그인 없이 둘러보기 >"
-        android:layout_margin="15dp"
-        app:layout_constraintTop_toBottomOf="@+id/buttonFragmentLoginNaver"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        android:textColor="@color/dark_gray"
-        android:textAppearance="@style/Font.bold16"/>
+        <TextView
+            android:id="@+id/textViewFragmentLoginLogo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/app_name"
+            android:textAppearance="@style/Logo"
+            android:textColor="@color/turquoise"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.3" />
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+        <Button
+            android:id="@+id/buttonFragmentLoginKakao"
+            style="@style/Widget.Material3.Button.IconButton"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="35dp"
+            android:layout_marginEnd="35dp"
+            android:backgroundTint="@color/yellow"
+            android:paddingStart="35dp"
+            android:text="@string/login_scr_kakao"
+            android:textAppearance="@style/Font.bold20"
+            android:textColor="@color/black"
+            app:icon="@drawable/ic_kakao_talk_icon"
+            app:iconPadding="-20dp"
+            app:iconSize="30dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textViewFragmentLoginLogo" />
+
+        <Button
+            android:id="@+id/buttonFragmentLoginNaver"
+            style="@style/Widget.Material3.Button.IconButton"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="35dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginEnd="35dp"
+            android:backgroundTint="@color/green"
+            android:paddingStart="35dp"
+            android:text="@string/login_scr_naver"
+            android:textAppearance="@style/Font.bold20"
+            android:textColor="@color/black"
+            app:icon="@drawable/ic_naver_icon"
+            app:iconPadding="-20dp"
+            app:iconSize="25dp"
+            app:iconTint="@color/white"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/buttonFragmentLoginKakao" />
+
+        <TextView
+            android:id="@+id/buttonFragmentLoginToTour"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="로그인 없이 둘러보기 >"
+            android:layout_margin="15dp"
+            app:layout_constraintTop_toBottomOf="@+id/buttonFragmentLoginNaver"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            android:textColor="@color/dark_gray"
+            android:textAppearance="@style/Font.bold16" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>
