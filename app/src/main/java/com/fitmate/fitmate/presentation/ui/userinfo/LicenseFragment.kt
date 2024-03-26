@@ -9,7 +9,7 @@ import com.fitmate.fitmate.R
 import com.fitmate.fitmate.databinding.FragmentLicenseBinding
 import com.fitmate.fitmate.util.ControlActivityInterface
 
-class LicenseFragment: Fragment() {
+class LicenseFragment: Fragment(R.layout.fragment_license) {
 
     private lateinit var binding: FragmentLicenseBinding
 
