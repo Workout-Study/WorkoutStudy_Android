@@ -1,39 +1,53 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:background="@color/zircon"
-    android:orientation="vertical">
+    xmlns:tools="http://schemas.android.com/tools">
 
-    <com.google.android.material.appbar.MaterialToolbar
-        android:id="@+id/materialToolbar_MyFitOff"
-        style="@style/Theme.Fitmate.Toolbar"
+    <data>
+
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:background="@color/zircon"
-        android:minHeight="?attr/actionBarSize"
-        app:title="@string/my_fit_off_scr_toolbar" />
+        android:orientation="vertical">
 
-    <ScrollView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent" >
-
-        <LinearLayout
+        <com.google.android.material.appbar.MaterialToolbar
+            android:id="@+id/materialToolbar_MyFitOff"
+            style="@style/Theme.Fitmate.Toolbar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="10dp"
-            android:orientation="vertical">
+            android:background="@color/zircon"
+            android:minHeight="?attr/actionBarSize"
+            app:layout_constraintTop_toTopOf="parent"
+            app:title="@string/my_fit_off_scr_toolbar" />
 
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/recyclerMyFitOff"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                tools:itemCount="3"
-                tools:listitem="@layout/item_fit_off" />
+        <TextView
+            android:id="@+id/textViewFitOffDataEmpty"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="@string/my_fit_off_scr_empty_text"
+            android:textAppearance="@style/Font.bold20"
+            android:textColor="@color/violet"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
-        </LinearLayout>
-    </ScrollView>
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerMyFitOff"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:orientation="vertical"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/materialToolbar_MyFitOff"
+            tools:itemCount="0"
+            tools:listitem="@layout/item_fit_off" />
 
-</LinearLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>
