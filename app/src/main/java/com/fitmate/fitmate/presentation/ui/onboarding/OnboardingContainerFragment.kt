@@ -1,65 +1,23 @@
 package com.fitmate.fitmate.presentation.ui.onboarding
 
 
-import android.content.Context
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.navigation.fragment.findNavController
-import com.fitmate.fitmate.MainActivity
 import com.fitmate.fitmate.R
 import com.fitmate.fitmate.databinding.FragmentOnboardingContainerBinding
-import com.fitmate.fitmate.presentation.ui.onboarding.adapter.ViewPagerAdapter
-import com.fitmate.fitmate.util.ControlActivityInterface
 
-class OnboardingContainerFragment : Fragment() {
+class OnboardingContainerFragment : Fragment(R.layout.fragment_onboarding_container) {
     private lateinit var binding: FragmentOnboardingContainerBinding
-    private lateinit var controlActivityInterface: ControlActivityInterface
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        binding = FragmentOnboardingContainerBinding.inflate(layoutInflater)
-        controlActivityInterface = activity as MainActivity
-
-        //바텀 네비게이션 gone
-        controlActivityInterface.goneNavigationBar()
-        return binding.root
-    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        binding = FragmentOnboardingContainerBinding.inflate(layoutInflater)
 
-        //뷰페이저 설정
-        initViews()
+        //TODO ViewPager2 어댑터 생성
+        //TODO ViewPager2 설정
+        //TODO 온보딩 화면 프래그먼트 클래스 생성후 연결
+        //TODO 온보딩 화면 프래그먼트 클래스 생성후 연결
+        //TODO 온보딩 화면 설정
     }
-
-    private fun initViews() {
-        val fragmentList = arrayListOf(
-            OnBoardingFirstFragment(),
-            OnBoardingSecondFragment(),
-            OnBoardingThirdFragment()
-        )
-
-        //뷰패이저 어댑터 설정
-        val adapter = ViewPagerAdapter(
-            fragmentList,
-            requireActivity().supportFragmentManager,
-            lifecycle
-        )
-
-        //뷰페이저 어댑터 및 인디케이터 연결
-        binding.viewPagerOnboardingContainer.adapter = adapter
-        binding.dotsIndicator.attachTo(binding.viewPagerOnboardingContainer)
-    }
-
-    //온보딩 화면 본적이 있는지 여부 조회
-    private fun onBoardingFinished(): Boolean {
-        val sharedPref = activity?.getSharedPreferences("onBoarding", Context.MODE_PRIVATE)
-        return sharedPref?.getBoolean("Finished", false) ?: false
-    }
-
 }

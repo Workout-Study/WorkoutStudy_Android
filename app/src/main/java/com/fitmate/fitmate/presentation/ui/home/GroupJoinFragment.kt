@@ -18,7 +18,7 @@ class GroupJoinFragment: Fragment(R.layout.fragment_group_join) {
 
         (activity as ControlActivityInterface).goneNavigationBar()
 
-        binding.toolbarGroupJoin.setNavigationOnClickListener { findNavController().popBackStack() }
+        binding.toolbarGroupJoin.setNavigationOnClickListener { findNavController().navigate(R.id.action_groupJoinFragment_to_homeFragment) }
         binding.buttonJoinGroupConfirm.setOnClickListener { findNavController().navigate(R.id.action_groupJoinFragment_to_homeFragment) }
     }
 }

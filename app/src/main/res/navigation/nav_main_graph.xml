@@ -6,43 +6,47 @@
 
     <fragment
         android:id="@+id/homeFragment"
-        android:name="com.fitmate.fitmate.ui.home.HomeFragment"
-        android:label="HomeFragment" />
+        android:name="com.fitmate.fitmate.presentation.ui.home.HomeFragment"
+        android:label="HomeFragment" >
+        <action
+            android:id="@+id/action_homeFragment_to_groupJoinFragment"
+            app:destination="@id/groupJoinFragment" />
+    </fragment>
     <fragment
         android:id="@+id/homeMainFragment"
-        android:name="com.fitmate.fitmate.ui.home.HomeMainFragment"
+        android:name="com.fitmate.fitmate.presentation.ui.home.HomeMainFragment"
         android:label="HomeMainFragment" />
     <fragment
         android:id="@+id/homeCategoryFragment"
-        android:name="com.fitmate.fitmate.ui.home.HomeCategoryFragment"
+        android:name="com.fitmate.fitmate.presentation.ui.home.HomeCategoryFragment"
         android:label="HomeCategoryFragment" />
     <fragment
         android:id="@+id/onboardingContainerFragment"
-        android:name="com.fitmate.fitmate.ui.onboarding.OnboardingContainerFragment"
+        android:name="com.fitmate.fitmate.presentation.ui.onboarding.OnboardingContainerFragment"
         android:label="OnboardingContainerFragment" />
     <fragment
         android:id="@+id/onBoardingFirstFragment"
-        android:name="com.fitmate.fitmate.ui.onboarding.OnBoardingFirstFragment"
+        android:name="com.fitmate.fitmate.presentation.ui.onboarding.OnBoardingFirstFragment"
         android:label="OnBoardingFirstFragment" />
     <fragment
         android:id="@+id/onBoardingSecondFragment"
-        android:name="com.fitmate.fitmate.ui.onboarding.OnBoardingSecondFragment"
+        android:name="com.fitmate.fitmate.presentation.ui.onboarding.OnBoardingSecondFragment"
         android:label="OnBoardingSecondFragment" />
     <fragment
         android:id="@+id/onBoardingThirdFragment"
-        android:name="com.fitmate.fitmate.ui.onboarding.OnBoardingThirdFragment"
+        android:name="com.fitmate.fitmate.presentation.ui.onboarding.OnBoardingThirdFragment"
         android:label="OnBoardingThirdFragment" />
     <fragment
         android:id="@+id/onBoardingPermissionFragment"
-        android:name="com.fitmate.fitmate.ui.onboarding.OnBoardingPermissionFragment"
+        android:name="com.fitmate.fitmate.presentation.ui.onboarding.OnBoardingPermissionFragment"
         android:label="OnBoardingPermissionFragment" />
     <fragment
         android:id="@+id/loginFragment"
-        android:name="com.fitmate.fitmate.ui.login.LoginFragment"
+        android:name="com.fitmate.fitmate.presentation.ui.login.LoginFragment"
         android:label="LoginFragment" />
     <fragment
         android:id="@+id/myFitFragment"
-        android:name="com.fitmate.fitmate.ui.myfit.MyFitFragment"
+        android:name="com.fitmate.fitmate.presentation.ui.myfit.MyFitFragment"
         android:label="MyFitFragment" >
         <action
             android:id="@+id/action_myFitFragment_to_myFitOffFragment"
@@ -53,12 +57,20 @@
     </fragment>
     <fragment
         android:id="@+id/myGroupFragment"
-        android:name="com.fitmate.fitmate.ui.mygroup.MyGroupFragment"
+        android:name="com.fitmate.fitmate.presentation.ui.mygroup.MyGroupFragment"
         android:label="MyGroupFragment" />
     <fragment
         android:id="@+id/makeGroupFragment"
-        android:name="com.fitmate.fitmate.ui.mygroup.MakeGroupFragment"
+        android:name="com.fitmate.fitmate.presentation.ui.mygroup.MakeGroupFragment"
         android:label="MakeGroupFragment" />
+    <fragment
+        android:id="@+id/groupJoinFragment"
+        android:name="com.fitmate.fitmate.presentation.ui.home.GroupJoinFragment"
+        android:label="GroupJoinFragment" >
+        <action
+            android:id="@+id/action_groupJoinFragment_to_homeFragment"
+            app:destination="@id/homeFragment" />
+    </fragment>
     <fragment
         android:id="@+id/myFitOffFragment"
         android:name="com.fitmate.fitmate.ui.myfit.MyFitOffFragment"

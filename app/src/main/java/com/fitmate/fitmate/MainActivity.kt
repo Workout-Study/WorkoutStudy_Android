@@ -3,7 +3,6 @@ package com.fitmate.fitmate
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
-import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
 import com.fitmate.fitmate.databinding.ActivityMainBinding
@@ -11,36 +10,27 @@ import com.fitmate.fitmate.util.ControlActivityInterface
 
 class MainActivity : AppCompatActivity(), ControlActivityInterface {
     private lateinit var binding: ActivityMainBinding
-    private lateinit var navController: NavController
-
-    //온보딩으로 가기위한 임시 데이터
-    companion object {
-        var isStarted = false
-    }
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        //바인딩 및 네비게이션 컨트롤러 초기화 작업
-        initSetting()
-        setContentView(binding.root)
+        binding = ActivityMainBinding.inflate(layoutInflater)
 
-        //온보딩으로 이동.
-        if (isStarted) {
-            navController.navigate(R.id.action_homeFragment_to_onboardingContainerFragment)
-        }
+        //(온보딩 최초켰을 때 보여주기만 하면 되고 로그인은 토큰 )
+        //앱을 킨적이 있는지 없는지 확인하는 작업
+        //만약 없다면...->바텀 네비게이션 Gone, onBoarding화면 띄우기
+        //권한 물어보는 화면
+        //로그인 화면
+        //로그인 완료시 백스택 전부 제거 후 바텀 네비게이션 Visible, Home화면 띄우기
+
+        setContentView(binding.root)
 
         //바텀 navigation 설정
         setNavigation()
     }
 
-    private fun initSetting() {
-        binding = ActivityMainBinding.inflate(layoutInflater)
-        val navHostFragment =
-            supportFragmentManager.findFragmentById(R.id.fragmentContainerViewMain) as NavHostFragment
-        navController = navHostFragment.navController
-    }
-
     private fun setNavigation() {
+        val navHostFragment = supportFragmentManager.findFragmentById(R.id.fragmentContainerViewMain) as NavHostFragment
+        val navController = navHostFragment.navController
+
         binding.bottomNavigationViewMainActivity.setupWithNavController(navController)
     }
 

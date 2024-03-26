@@ -1,4 +1,4 @@
-package com.fitmate.fitmate.presentation.ui.myfit
+package com.fitmate.fitmate.ui.myfit
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -23,6 +23,7 @@ class CertificateFragment: Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding.materialToolbarCertificate.setupWithNavController(findNavController())
+
 
     }
 }
