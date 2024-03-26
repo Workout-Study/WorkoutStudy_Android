@@ -98,7 +98,7 @@
     <fragment
         android:id="@+id/licenseFragment"
         android:name="com.fitmate.fitmate.presentation.ui.userinfo.LicenseFragment"
-        android:label="FITMATE Open Source" >
+        android:label="LicenseFragment" >
         <action
             android:id="@+id/action_licenseFragment_to_userInfoFragment"
             app:destination="@id/userInfoFragment" />

@@ -10,9 +10,9 @@ import androidx.navigation.fragment.findNavController
 import com.fitmate.fitmate.MainActivity
 import com.fitmate.fitmate.R
 import com.fitmate.fitmate.databinding.FragmentMyGroupBinding
+import com.fitmate.fitmate.util.ControlActivityInterface
 import com.fitmate.fitmate.domain.model.FitGroup
 import com.fitmate.fitmate.ui.myfit.list.adapter.MyFitGroupAdapter
-import com.fitmate.fitmate.util.ControlActivityInterface
 
 class MyGroupFragment: Fragment(R.layout.fragment_my_group) {
 
