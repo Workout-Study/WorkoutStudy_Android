@@ -2,11 +2,13 @@ package com.fitmate.fitmate
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.View
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
 import com.fitmate.fitmate.databinding.ActivityMainBinding
+import com.fitmate.fitmate.util.ControlActivityInterface
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity(), ControlActivityInterface {
     private lateinit var binding: ActivityMainBinding
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -30,5 +32,13 @@ class MainActivity : AppCompatActivity() {
         val navController = navHostFragment.navController
 
         binding.bottomNavigationViewMainActivity.setupWithNavController(navController)
+    }
+
+    override fun goneNavigationBar() {
+        binding.bottomNavigationViewMainActivity.visibility = View.GONE
+    }
+
+    override fun viewNavigationBar() {
+        binding.bottomNavigationViewMainActivity.visibility = View.VISIBLE
     }
 }

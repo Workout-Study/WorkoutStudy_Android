@@ -1,4 +1,4 @@
-package com.fitmate.fitmate.ui.onboarding
+package com.fitmate.fitmate.presentation.ui.onboarding
 
 
 import android.os.Bundle

@@ -1,4 +1,4 @@
-package com.fitmate.fitmate.ui.myfit
+package com.fitmate.fitmate.presentation.ui.myfit
 
 import android.content.Context
 import android.os.Bundle
