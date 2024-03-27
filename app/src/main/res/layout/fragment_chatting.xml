@@ -79,7 +79,7 @@
                     app:tint="@color/white" />
 
                 <EditText
-                    android:id="@+id/EditTextChattingMySpeech"
+                    android:id="@+id/editTextChattingMySpeech"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
@@ -108,6 +108,8 @@
                 android:id="@+id/containerExtraFunction"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
+                android:animateLayoutChanges="false"
+                android:animationCache="false"
                 android:background="@color/violet"
                 android:visibility="gone"
                 app:layout_constraintBottom_toBottomOf="parent"
@@ -256,6 +258,7 @@
 
 
         <com.google.android.material.navigation.NavigationView
+            android:id="@+id/navigationViewChatting"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_gravity="right"
@@ -290,7 +293,7 @@
                     android:layout_weight="1" />
 
                 <Button
-                    android:id="@+id/buttonFragmentMyFitFitOff"
+                    android:id="@+id/buttonFragmentChattingExit"
                     style="?attr/materialIconButtonFilledStyle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
