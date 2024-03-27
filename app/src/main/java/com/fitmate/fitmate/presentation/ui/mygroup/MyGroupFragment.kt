@@ -20,7 +20,7 @@ class MyGroupFragment: Fragment(R.layout.fragment_my_group) {
 
     private lateinit var adapter: MyFitGroupAdapter
 
-    private lateinit var  controlActivityInterface: ControlActivityInterface
+    private lateinit var controlActivityInterface: ControlActivityInterface
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -32,8 +32,7 @@ class MyGroupFragment: Fragment(R.layout.fragment_my_group) {
         controlActivityInterface.viewNavigationBar()
 
         adapter = MyFitGroupAdapter { data->
-            //Todo Mock data 전달 받고 화면 이동
-            controlActivityInterface.goneNavigationBar()
+            //Todo Mock data 전달 받고 액티비티 화면 이동
             Toast.makeText(context,"화면 이동",Toast.LENGTH_SHORT).show()
 
         }
@@ -43,7 +42,6 @@ class MyGroupFragment: Fragment(R.layout.fragment_my_group) {
         super.onViewCreated(view, savedInstanceState)
 
         binding.floatingButtonMakeFitGroup.setOnClickListener {
-            controlActivityInterface.goneNavigationBar()
             findNavController().navigate(R.id.makeGroupFragment)
         }
         //채팅방 어뎁터 초기화 및 목데이터 연결작업
