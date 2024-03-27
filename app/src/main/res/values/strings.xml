@@ -151,4 +151,6 @@
     <string name="my_fit_off_scr_toolbar">나의 피트오프 열람</string>
     <string name="my_fit_off_scr_empty_text">피트 오프 데이터가 존재하지 않습니다</string>
 
+    <string name="group_vote_scr_toolbar">그룹 투표 현황</string>.
+
 </resources>
