@@ -1,103 +1,110 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@color/zircon"
-    android:orientation="vertical">
+    xmlns:tools="http://schemas.android.com/tools">
 
-    <com.google.android.material.appbar.MaterialToolbar
-        android:id="@+id/materialToolbarGroupFine"
-        style="@style/Theme.Fitmate.Toolbar"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/zircon"
-        android:minHeight="?attr/actionBarSize"
-        app:title="@string/group_fine_scr_toolbar" />
+    <data>
+
+    </data>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:background="@color/zircon"
         android:orientation="vertical">
 
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:layout_width="match_parent"
-            android:layout_height="250dp">
-
-            <TextView
-                android:id="@+id/textViewGroupFineFine"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/group_fine_scr_fine"
-                android:textAppearance="@style/Font.semibold24"
-                android:textColor="@color/violet"
-                android:textSize="48sp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <TextView
-                android:id="@+id/textViewGroupFineAccount"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:text="@string/group_fine_scr_account"
-                android:textAppearance="@style/Font.regular12"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textViewGroupFineFine" />
-        </androidx.constraintlayout.widget.ConstraintLayout>
-
-        <androidx.constraintlayout.widget.ConstraintLayout
+        <com.google.android.material.appbar.MaterialToolbar
+            android:id="@+id/materialToolbarGroupFine"
+            style="@style/Theme.Fitmate.Toolbar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="10dp"
-            android:layout_marginRight="10dp">
+            android:background="@color/zircon"
+            android:minHeight="?attr/actionBarSize"
+            app:title="@string/group_fine_scr_toolbar" />
 
-            <Spinner
-                android:id="@+id/spinnerGroupFineDate"
-                android:layout_width="100dp"
-                android:layout_height="wrap_content"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toStartOf="@+id/spinnerGroupFinePerson"
-                app:layout_constraintHorizontal_bias="1.0"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                tools:ignore="TouchTargetSizeCheck" />
-
-            <Spinner
-                android:id="@+id/spinnerGroupFinePerson"
-                android:layout_width="100dp"
-                android:layout_height="wrap_content"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                tools:ignore="TouchTargetSizeCheck" />
-        </androidx.constraintlayout.widget.ConstraintLayout>
-
-        <ScrollView
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent" >
+            android:layout_height="match_parent"
+            android:orientation="vertical">
 
-            <LinearLayout
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="250dp">
+
+                <TextView
+                    android:id="@+id/textViewGroupFineFine"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/group_fine_scr_fine"
+                    android:textAppearance="@style/Font.semibold24"
+                    android:textColor="@color/violet"
+                    android:textSize="48sp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/textViewGroupFineAccount"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:text="@string/group_fine_scr_account"
+                    android:textAppearance="@style/Font.regular12"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/textViewGroupFineFine" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="10dp"
-                android:orientation="vertical">
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp">
 
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/recyclerFine"
+                <Spinner
+                    android:id="@+id/spinnerGroupFineDate"
+                    android:layout_width="100dp"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toStartOf="@+id/spinnerGroupFinePerson"
+                    app:layout_constraintHorizontal_bias="1.0"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    tools:ignore="TouchTargetSizeCheck" />
+
+                <Spinner
+                    android:id="@+id/spinnerGroupFinePerson"
+                    android:layout_width="100dp"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    tools:ignore="TouchTargetSizeCheck" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <ScrollView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:background="@color/zircon"
-                    tools:itemCount="3"
-                    tools:listitem="@layout/item_group" />
+                    android:layout_height="wrap_content"
+                    android:layout_margin="10dp"
+                    android:orientation="vertical">
 
-            </LinearLayout>
-        </ScrollView>
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/recyclerFine"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:background="@color/zircon"
+                        tools:itemCount="3"
+                        tools:listitem="@layout/item_group" />
+
+                </LinearLayout>
+            </ScrollView>
+
+        </LinearLayout>
 
     </LinearLayout>
-
-</LinearLayout>
+</layout>
