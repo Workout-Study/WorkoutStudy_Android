@@ -47,7 +47,7 @@ class HomeMainFragment : Fragment() {
 
     private fun setVote() {
         val recyclerView: RecyclerView = binding.recyclerViewHomeMain
-        val voteAdapter = VoteAdapter { _ -> findNavController().navigate(R.id.action_homeFragment_to_groupJoinFragment) }
+        val voteAdapter = VoteAdapter { _ -> findNavController().navigate(R.id.groupVoteFragment2) }
         val testItems = listOf(VoteItem(title = "Test FitGroup", fitmate = "김성호", percent = 3, time = 5))
 
         recyclerView.layoutManager = LinearLayoutManager(context)
