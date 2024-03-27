@@ -50,6 +50,9 @@ dependencies {
 
     implementation(Libraries.Navigation.NAVIGATION)
     implementation(Libraries.Navigation.NAVIGATION_UI)
+    implementation("androidx.appcompat:appcompat:1.6.1")
+    implementation("com.google.android.material:material:1.11.0")
+    implementation("androidx.constraintlayout:constraintlayout:2.1.4")
 
     testImplementation(Libraries.Test.JUNIT)
 

@@ -1,5 +1,6 @@
 package com.fitmate.fitmate.presentation.ui.mygroup
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -7,6 +8,7 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
+import com.fitmate.fitmate.ChatActivity
 import com.fitmate.fitmate.MainActivity
 import com.fitmate.fitmate.R
 import com.fitmate.fitmate.databinding.FragmentMyGroupBinding
@@ -32,8 +34,7 @@ class MyGroupFragment: Fragment(R.layout.fragment_my_group) {
         controlActivityInterface.viewNavigationBar()
 
         adapter = MyFitGroupAdapter { data->
-            //Todo Mock data 전달 받고 액티비티 화면 이동
-            Toast.makeText(context,"화면 이동",Toast.LENGTH_SHORT).show()
+            startActivity(Intent(requireContext(),ChatActivity::class.java))
 
         }
         return binding.root
