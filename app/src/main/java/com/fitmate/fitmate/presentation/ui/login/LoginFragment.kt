@@ -7,7 +7,7 @@ import com.fitmate.fitmate.R
 import com.fitmate.fitmate.databinding.FragmentLoginBinding
 import com.fitmate.fitmate.util.ControlActivityInterface
 
-class LoginFragment: Fragment() {
+class LoginFragment: Fragment(R.layout.fragment_login) {
 
     private lateinit var binding: FragmentLoginBinding
 
@@ -17,4 +17,5 @@ class LoginFragment: Fragment() {
 
         (activity as ControlActivityInterface).goneNavigationBar()
     }
+
 }
