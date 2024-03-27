@@ -38,12 +38,25 @@
             android:gravity="center"
             android:text="@string/onboarding_first_scr_content"
             android:textAlignment="center"
+            android:layout_marginBottom="150dp"
             android:textAppearance="@style/Font.semibold20"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="@+id/textViewFragmentOnboardingFirstTitle"
             app:layout_constraintVertical_bias="0.8" />
+
+        <TextView
+            android:id="@+id/buttonNextFragment"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:layout_marginEnd="50dp"
+            android:textSize="24sp"
+            android:textAppearance="@style/Font.bold20"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginBottom="95dp"
+            android:text="Next"/>
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>
