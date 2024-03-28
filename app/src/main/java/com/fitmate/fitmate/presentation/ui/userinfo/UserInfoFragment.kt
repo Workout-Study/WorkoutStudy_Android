@@ -25,26 +25,38 @@ class UserInfoFragment: Fragment(R.layout.fragment_user_info) {
     private lateinit var binding: FragmentUserInfoBinding
     private lateinit var uri: Uri
 
+    private val registerForActivityResult = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+        when (result.resultCode) {
+            AppCompatActivity.RESULT_OK -> {
+                uri = result.data?.data!!
+                showImagePreview()
+            }
+        }
+    }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding = FragmentUserInfoBinding.bind(view)
 
         (activity as ControlActivityInterface).viewNavigationBar()
         setClickListener()
-
+        loadProfileImage()
     }
 
-    private fun setClickListener() { listOf(
-        binding.textViewUserInfoContent1, binding.textViewUserInfoContent2,
-        binding.textViewUserInfoContent3, binding.textViewUserInfoContent4,
-        binding.textViewUserInfoContent5, binding.textViewUserInfoContent6
-    ).forEach { textView -> textView.setOnClickListener { handleOnClick(textView.id) } }
+    private fun setClickListener() {
+        listOf(
+            binding.textViewUserInfoContent1, binding.textViewUserInfoContent2,
+            binding.textViewUserInfoContent3, binding.textViewUserInfoContent4,
+            binding.textViewUserInfoContent5, binding.textViewUserInfoContent6
+        ).forEach { textView ->
+            textView.setOnClickListener { handleOnClick(textView.id) }
+        }
     }
 
     private fun handleOnClick(viewId: Int) {
         when (viewId) {
             R.id.textViewUserInfoContent1 -> {
-                var intent = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.INTERNAL_CONTENT_URI)
+                val intent = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.INTERNAL_CONTENT_URI)
                 registerForActivityResult.launch(intent)
             }
             R.id.textViewUserInfoContent2 -> navigateTo(R.id.action_userInfoFragment_to_myFitOffFragment)
@@ -59,57 +71,54 @@ class UserInfoFragment: Fragment(R.layout.fragment_user_info) {
         findNavController().navigate(actionId)
     }
 
-    private val registerForActivityResult =
-        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
-            when (result.resultCode) {
-                AppCompatActivity.RESULT_OK -> {
-                    uri = result.data?.data!!
+    private fun showImagePreview() {
+        val imagePreviewView = layoutInflater.inflate(R.layout.dialog_user_thumbnail, null)
+        val preview = imagePreviewView.findViewById<ImageView>(R.id.imageViewPreview)
 
-                    val imagePreviewView = layoutInflater.inflate(R.layout.dialog_user_thumbnail, null)
-                    val preview = imagePreviewView.findViewById<ImageView>(R.id.imageViewPreview)
-
-                    Glide.with(this).load(uri).into(preview)
-                    AlertDialog.Builder(requireContext())
-                        .setView(imagePreviewView)
-                        .setPositiveButton(android.R.string.ok) { dialog, _ ->
-                            dialog.dismiss()
-                            Glide.with(this)
-                                .load(uri)
-                                .apply(RequestOptions()
-                                    .circleCrop())
-                                .into(binding.imageViewUserInfoIcon)
-                            binding.imageViewUserInfoIcon.setImageURI(uri)
-                            imageUpload("test_user_id")
-                        }
-                        .setNegativeButton(android.R.string.cancel) { dialog, _ ->
-                            dialog.dismiss()
-                        }
-                        .show()
-
-
-                }
+        Glide.with(this).load(uri).into(preview)
+        AlertDialog.Builder(requireContext())
+            .setView(imagePreviewView)
+            .setPositiveButton(android.R.string.ok) { dialog, _ ->
+                dialog.dismiss()
+                Glide.with(this)
+                    .load(uri)
+                    .apply(RequestOptions().circleCrop())
+                    .into(binding.imageViewUserInfoIcon)
+                imageUpload("test_user_id")
             }
-        }
+            .setNegativeButton(android.R.string.cancel) { dialog, _ ->
+                dialog.dismiss()
+            }
+            .show()
+    }
 
     private fun imageUpload(userId: String) {
+        val activity = activity ?: return
         val storage = Firebase.storage
         val storageRef = storage.getReference("user_profile")
 
-        storageRef.listAll().addOnSuccessListener { listResult ->
-            val userFiles = listResult.items.filter { it.name.startsWith(userId) }
-            for (file in userFiles) {
-                file.delete().addOnSuccessListener{}.addOnFailureListener {}
-            }
+        val fileName = "${userId}_profile.png"
+        val userRef = storageRef.child(fileName)
 
-            val fileName = "${"test_user_id"}_profile"
-            val mountainsRef = storageRef.child("${fileName}.png")
-
-            val uploadTask = mountainsRef.putFile(uri)
-            uploadTask.addOnSuccessListener {
-                Toast.makeText(activity, "성공적으로 프로필 사진을 변경하였습니다.", Toast.LENGTH_SHORT).show()
-            }.addOnFailureListener {
-                Toast.makeText(activity, "사진을 업로드하는데 실패하였습니다.", Toast.LENGTH_SHORT).show()
+        userRef.putFile(uri).addOnSuccessListener {
+            activity.getSharedPreferences("UserInfo", AppCompatActivity.MODE_PRIVATE).edit().apply {
+                putString("profileImageUri", uri.toString())
+                apply()
             }
+            Toast.makeText(activity, "성공적으로 프로필 사진을 변경하였습니다.", Toast.LENGTH_SHORT).show()
+        }.addOnFailureListener {
+            Toast.makeText(activity, "사진을 업로드하는데 실패하였습니다.", Toast.LENGTH_SHORT).show()
+        }
+    }
+
+    private fun loadProfileImage() {
+        val sharedPreferences = requireActivity().getSharedPreferences("UserInfo", AppCompatActivity.MODE_PRIVATE)
+        val profileImageUri = sharedPreferences.getString("profileImageUri", null)
+        profileImageUri?.let {
+            Glide.with(this)
+                .load(Uri.parse(it))
+                .apply(RequestOptions().circleCrop())
+                .into(binding.imageViewUserInfoIcon)
         }
     }
 }
