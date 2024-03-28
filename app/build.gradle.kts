@@ -2,6 +2,7 @@ plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
     id("kotlin-kapt")
+    id("com.google.gms.google-services")
 }
 
 android {
@@ -47,18 +48,19 @@ dependencies {
     implementation(Libraries.AndroidX.CONSTRAINT_LAYOUT)
     implementation(Libraries.Indicator.INDICATOR)
     implementation(Libraries.Lottie.LOTTIE)
+    implementation(platform(Libraries.Firebase.FIREBASE))
+    implementation(Libraries.Firebase.ANALYTICS)
+    implementation(Libraries.Firebase.STORAGE)
 
     implementation(Libraries.Navigation.NAVIGATION)
     implementation(Libraries.Navigation.NAVIGATION_UI)
-    implementation("androidx.appcompat:appcompat:1.6.1")
-    implementation("com.google.android.material:material:1.11.0")
-    implementation("androidx.constraintlayout:constraintlayout:2.1.4")
 
     testImplementation(Libraries.Test.JUNIT)
 
-
-
     androidTestImplementation(Libraries.Test.EXT_JUNIT)
     androidTestImplementation(Libraries.Test.ESPRESSO)
+
+    implementation ("com.github.bumptech.glide:glide:4.12.0")
+    annotationProcessor ("com.github.bumptech.glide:compiler:4.12.0")
 
 }

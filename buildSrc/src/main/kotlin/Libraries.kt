@@ -30,4 +30,10 @@ object Libraries {
         const val NAVIGATION_UI = "androidx.navigation:navigation-ui-ktx:${Versions.NAVIGATION}"
     }
 
+    object Firebase {
+        const val FIREBASE = "com.google.firebase:firebase-bom:${Versions.FIREBASE}"
+        const val ANALYTICS = "com.google.firebase:firebase-analytics"
+        const val STORAGE = "com.google.firebase:firebase-storage"
+    }
+
 }
