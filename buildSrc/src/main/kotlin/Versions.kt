@@ -10,5 +10,5 @@ object Versions {
     const val INDICATOR = "5.0"
     const val LOTTIE = "6.4.0"
     const val NAVIGATION = "2.7.7"
-
+    const val FIREBASE = "32.8.0"
 }
