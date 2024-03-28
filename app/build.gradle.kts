@@ -3,6 +3,7 @@ plugins {
     id("org.jetbrains.kotlin.android")
     id("kotlin-kapt")
     id("com.google.gms.google-services")
+    id("dagger.hilt.android.plugin")
 }
 
 android {
@@ -53,6 +54,15 @@ dependencies {
     implementation(Libraries.Firebase.STORAGE)
     implementation(Libraries.Glide.GLIDE)
     implementation(Libraries.Glide.BUMPTECH)
+    implementation(Libraries.RETROFIT.RETROFIT_CONVERTER_GSON)
+
+    implementation(Libraries.Hilt.HILT)
+    kapt(Libraries.Hilt.HILT_COMPILER)
+
+    implementation(Libraries.Room.ROOM)
+    implementation(Libraries.Room.ROOM_RUNTIME)
+    annotationProcessor(Libraries.Room.ROOM_COMPILER)
+    kapt(Libraries.Room.ROOM_COMPILER)
 
     implementation(Libraries.Navigation.NAVIGATION)
     implementation(Libraries.Navigation.NAVIGATION_UI)

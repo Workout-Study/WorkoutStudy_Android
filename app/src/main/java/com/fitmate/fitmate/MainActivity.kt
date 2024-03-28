@@ -8,7 +8,9 @@ import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
 import com.fitmate.fitmate.databinding.ActivityMainBinding
 import com.fitmate.fitmate.util.ControlActivityInterface
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class MainActivity : AppCompatActivity(), ControlActivityInterface {
     private lateinit var binding: ActivityMainBinding
     private lateinit var navController: NavController
