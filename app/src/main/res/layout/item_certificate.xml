@@ -1,19 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/imageViewItemCertificate"
-    app:cardCornerRadius="10dp"
-    android:layout_margin="5dp"
-    android:src="@color/violet"
-    android:layout_width="90dp"
-    android:layout_height="150dp"
-    >
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content">
 
-    <ImageView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:src="@color/dark_gray"
-        android:scaleType="centerCrop"/>
+    <androidx.cardview.widget.CardView
+        android:id="@+id/imageViewItemCertificate"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:cardCornerRadius="10dp"
+        android:layout_margin="5dp"
+        android:src="@color/violet"
+        android:layout_width="108dp"
+        android:layout_height="180dp">
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:src="@color/dark_gray"
+            android:scaleType="centerCrop"/>
+
+    </androidx.cardview.widget.CardView>
 
 
-</androidx.cardview.widget.CardView>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

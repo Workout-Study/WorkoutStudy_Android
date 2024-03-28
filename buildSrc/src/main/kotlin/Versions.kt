@@ -12,4 +12,7 @@ object Versions {
     const val NAVIGATION = "2.7.7"
     const val FIREBASE = "32.8.0"
     const val GLIDE = "4.12.0"
+    const val HILT = "2.51"
+    const val ROOM = "2.6.1"
+    const val RETROFIT = "2.10.0"
 }
