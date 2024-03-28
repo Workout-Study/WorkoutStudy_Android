@@ -41,4 +41,19 @@ object Libraries {
         const val BUMPTECH = "com.github.bumptech.glide:compiler:${Versions.GLIDE}"
     }
 
+    object Hilt {
+        const val HILT = "com.google.dagger:hilt-android:${Versions.HILT}"
+        const val HILT_COMPILER = "com.google.dagger:hilt-compiler:${Versions.HILT}"
+    }
+
+    object Room {
+        const val ROOM = "androidx.room:room-ktx:${Versions.ROOM}"
+        const val ROOM_RUNTIME = "androidx.room:room-runtime:${Versions.ROOM}"
+        const val ROOM_COMPILER = "androidx.room:room-compiler:${Versions.ROOM}"
+    }
+
+    object RETROFIT {
+        const val RETROFIT_CONVERTER_GSON = "com.squareup.retrofit2:converter-gson:${Versions.RETROFIT}"
+    }
+
 }
