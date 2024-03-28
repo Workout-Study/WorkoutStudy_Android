@@ -36,4 +36,9 @@ object Libraries {
         const val STORAGE = "com.google.firebase:firebase-storage"
     }
 
+    object Glide {
+        const val GLIDE = "com.github.bumptech.glide:glide:${Versions.GLIDE}"
+        const val BUMPTECH = "com.github.bumptech.glide:compiler:${Versions.GLIDE}"
+    }
+
 }
