@@ -51,6 +51,8 @@ dependencies {
     implementation(platform(Libraries.Firebase.FIREBASE))
     implementation(Libraries.Firebase.ANALYTICS)
     implementation(Libraries.Firebase.STORAGE)
+    implementation(Libraries.Glide.GLIDE)
+    implementation(Libraries.Glide.BUMPTECH)
 
     implementation(Libraries.Navigation.NAVIGATION)
     implementation(Libraries.Navigation.NAVIGATION_UI)
@@ -59,8 +61,5 @@ dependencies {
 
     androidTestImplementation(Libraries.Test.EXT_JUNIT)
     androidTestImplementation(Libraries.Test.ESPRESSO)
-
-    implementation ("com.github.bumptech.glide:glide:4.12.0")
-    annotationProcessor ("com.github.bumptech.glide:compiler:4.12.0")
 
 }
