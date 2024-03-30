@@ -7,15 +7,12 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.core.view.isVisible
-import androidx.databinding.BindingAdapter
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.ui.setupWithNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.fitmate.fitmate.MainActivity
-import com.fitmate.fitmate.R
 import com.fitmate.fitmate.databinding.FragmentCertificateBinding
 import com.fitmate.fitmate.domain.model.CertificationImage
 import com.fitmate.fitmate.presentation.ui.certificate.list.adapter.CertificationImageAdapter
@@ -42,7 +39,7 @@ class CertificateFragment : Fragment() {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?,
-    ): View? {
+    ): View {
         //초기 설정
         binding = FragmentCertificateBinding.inflate(layoutInflater)
         binding.lifecycleOwner = viewLifecycleOwner
@@ -99,6 +96,7 @@ class CertificateFragment : Fragment() {
                 CertificateState.NON_PROCEEDING->{
 
                 }
+                else->{}
             }
         }
     }
@@ -149,7 +147,7 @@ class CertificateFragment : Fragment() {
         }
 
     //시작 사진 첨부 수정 불가능하도록 설정하는 메서드
-    fun setRecyclerViewState() {
+    private fun setRecyclerViewState() {
         certificationImageAdapter.changeVisible()
         binding.cardViewItemCertificateStart.visibility = View.GONE
     }
