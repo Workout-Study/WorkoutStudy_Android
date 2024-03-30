@@ -4,7 +4,9 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
-
+        <variable
+            name="viewModel"
+            type="com.fitmate.fitmate.presentation.viewmodel.CertificationViewModel" />
     </data>
 
     <LinearLayout
@@ -38,121 +40,155 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
-            <androidx.core.widget.NestedScrollView
+
+            <LinearLayout
                 android:id="@+id/imageViewCertificateContainerStart"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:fillViewport="true"
+                android:background="@drawable/bg_rounded_rectangle"
+                android:backgroundTint="#DC9094"
+                android:orientation="horizontal"
+                android:padding="10dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/textViewCertificateTimer"
                 app:layout_constraintVertical_bias="0.1">
 
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:gravity="start"
-                    android:background="@drawable/bg_rounded_rectangle"
-                    android:backgroundTint="#DC9094"
-                    android:orientation="horizontal"
-                    android:padding="10dp">
-
-                    <androidx.recyclerview.widget.RecyclerView
-                        android:id="@+id/recyclerCertificateStartImage"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="start"
-                        android:nestedScrollingEnabled="false"
-                        android:orientation="horizontal"
-                        android:overScrollMode="never"
-                        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                        tools:itemCount="1"
-                        tools:listitem="@layout/item_certificate" />
 
 
-                    <androidx.cardview.widget.CardView
-                        android:id="@+id/cardViewItemCertificate2"
-                        android:layout_width="108dp"
-                        android:layout_height="180dp"
-                        android:layout_margin="5dp"
-                        android:src="@color/violet"
-                        app:cardCornerRadius="10dp">
+                <com.tans.horizontalnestedscrollview.HorizontalNestedScrollView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:fillViewport="true"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/textViewCertificateTimer"
+                    app:layout_constraintVertical_bias="0.1">
 
-                        <ImageView
-                            android:id="@+id/imageViewFitStartSelectImage"
-                            android:layout_width="match_parent"
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:orientation="horizontal">
+
+                        <androidx.recyclerview.widget.RecyclerView
+                            android:id="@+id/recyclerCertificateStartImage"
+                            android:layout_width="wrap_content"
                             android:layout_height="match_parent"
-                            android:background="@color/dark_gray"
-                            android:scaleType="centerInside"
-                            android:src="@drawable/add_picture" />
+                            android:clickable="false"
+                            android:nestedScrollingEnabled="true"
+                            android:orientation="horizontal"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
 
-                    </androidx.cardview.widget.CardView>
+                        <androidx.cardview.widget.CardView
+                            android:id="@+id/cardViewItemCertificateStart"
+                            android:layout_width="108dp"
+                            android:layout_height="180dp"
+                            android:layout_margin="5dp"
+                            android:src="@color/violet"
+                            app:cardCornerRadius="10dp"
+                            app:layout_constraintTop_toTopOf="parent"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintStart_toEndOf="@+id/recyclerCertificateStartImage">
 
-                </LinearLayout>
-            </androidx.core.widget.NestedScrollView>
+                            <ImageView
+                                android:id="@+id/imageViewFitStartSelectImage"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:background="@color/dark_gray"
+                                android:scaleType="centerInside"
+                                android:src="@drawable/add_picture" />
+
+                        </androidx.cardview.widget.CardView>
 
 
-            <androidx.core.widget.NestedScrollView
+                    </LinearLayout>
+
+
+                </com.tans.horizontalnestedscrollview.HorizontalNestedScrollView>
+
+            </LinearLayout>
+
+            <LinearLayout
+                app:certificate_end_image_container_state="@{viewModel.state}"
                 android:id="@+id/imageViewCertificateContainerEnd"
-                android:visibility="gone"
-                android:layout_width="wrap_content"
-                android:fillViewport="true"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:background="@drawable/bg_rounded_rectangle"
+                android:backgroundTint="#8FA5E2"
+                android:orientation="horizontal"
+                android:padding="10dp"
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/imageViewCertificateContainerStart">
-
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
-                    android:gravity="start"
-                    android:background="@drawable/bg_rounded_rectangle"
-                    android:backgroundTint="#8FA5E2"
-                    android:orientation="horizontal"
-                    android:padding="10dp">
+                app:layout_constraintTop_toBottomOf="@+id/imageViewCertificateContainerStart"
+                app:layout_constraintVertical_bias="0.1">
 
 
-                    <androidx.recyclerview.widget.RecyclerView
-                        android:id="@+id/recyclerCertificateEnd"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:nestedScrollingEnabled="false"
-                        android:orientation="horizontal"
-                        android:overScrollMode="never"
-                        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                        tools:itemCount="1"
-                        tools:listitem="@layout/item_certificate" />
 
+                <com.tans.horizontalnestedscrollview.HorizontalNestedScrollView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:fillViewport="true"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/textViewCertificateTimer"
+                    app:layout_constraintVertical_bias="0.1">
 
-                    <androidx.cardview.widget.CardView
-                        android:id="@+id/cardViewItemCertificate"
-                        android:layout_width="108dp"
-                        android:layout_height="180dp"
-                        android:layout_margin="5dp"
-                        android:src="@color/violet"
-                        app:cardCornerRadius="10dp">
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:orientation="horizontal">
 
-                        <ImageView
-                            android:id="@+id/imageViewFitEndSelectImage"
-                            android:layout_width="match_parent"
+                        <androidx.recyclerview.widget.RecyclerView
+                            android:id="@+id/recyclerCertificateEndImage"
+                            android:layout_width="wrap_content"
                             android:layout_height="match_parent"
-                            android:background="@color/dark_gray"
-                            android:scaleType="centerInside"
-                            android:src="@drawable/add_picture" />
+                            android:clickable="false"
+                            android:nestedScrollingEnabled="true"
+                            android:orientation="horizontal"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
 
-                    </androidx.cardview.widget.CardView>
+                        <androidx.cardview.widget.CardView
+                            android:id="@+id/cardViewItemCertificateEnd"
+                            android:layout_width="108dp"
+                            android:layout_height="180dp"
+                            android:layout_margin="5dp"
+                            android:src="@color/violet"
+                            app:cardCornerRadius="10dp"
+                            app:layout_constraintTop_toTopOf="parent"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintStart_toEndOf="@+id/recyclerCertificateStartImage">
+
+                            <ImageView
+                                android:id="@+id/imageViewFitEndSelectImage"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:background="@color/dark_gray"
+                                android:scaleType="centerInside"
+                                android:src="@drawable/add_picture" />
+
+                        </androidx.cardview.widget.CardView>
 
 
-                </LinearLayout>
-            </androidx.core.widget.NestedScrollView>
+                    </LinearLayout>
+
+
+                </com.tans.horizontalnestedscrollview.HorizontalNestedScrollView>
+
+            </LinearLayout>
+
 
             <Button
                 android:id="@+id/buttonCertificateConfirm"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/certificate_scr_confirm"
+                app:certificate_button_state="@{viewModel.state}"
                 android:textAppearance="@style/Font.bold20"
                 android:textColor="@color/turquoise"
                 app:layout_constraintBottom_toBottomOf="parent"

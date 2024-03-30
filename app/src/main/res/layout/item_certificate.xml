@@ -1,27 +1,46 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <androidx.cardview.widget.CardView
-        android:id="@+id/imageViewItemCertificate"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:cardCornerRadius="10dp"
-        android:layout_margin="5dp"
-        android:src="@color/violet"
-        android:layout_width="108dp"
-        android:layout_height="180dp">
+    <data>
+        <variable
+            name="data"
+            type="com.fitmate.fitmate.domain.model.CertificationImage" />
+    </data>
 
-        <ImageView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:src="@color/dark_gray"
-            android:scaleType="centerCrop"/>
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
 
-    </androidx.cardview.widget.CardView>
+        <androidx.cardview.widget.CardView
+            android:id="@+id/imageViewItemCertificate"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:cardCornerRadius="10dp"
+            android:layout_margin="5dp"
+            android:layout_width="108dp"
+            android:layout_height="180dp">
 
+            <ImageView
+                android:id="@+id/imageViewItemCertification"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:src="@color/dark_gray"
+                app:uri="@{data.imagesUri.toString()}"
+                android:scaleType="centerCrop" />
 
+            <ImageView
+                android:id="@+id/imageViewRemoveItemCertificationImage"
+                android:layout_gravity="end"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:src="@drawable/baseline_remove_24"
+                app:layout_constraintTop_toTopOf="@+id/imageViewItemCertificate"
+                app:layout_constraintEnd_toEndOf="@+id/imageViewItemCertificate"
+                android:background="@drawable/ic_circle"
+                app:tint="@color/red" />
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+        </androidx.cardview.widget.CardView>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>
