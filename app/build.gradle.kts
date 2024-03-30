@@ -47,6 +47,8 @@ dependencies {
     implementation(Libraries.AndroidX.APP_COMPAT)
     implementation(Libraries.Material.MATERIAL)
     implementation(Libraries.AndroidX.CONSTRAINT_LAYOUT)
+    implementation(Libraries.AndroidX.ACTIVITY)
+
     implementation(Libraries.Indicator.INDICATOR)
     implementation(Libraries.Lottie.LOTTIE)
     implementation(platform(Libraries.Firebase.FIREBASE))
@@ -66,6 +68,8 @@ dependencies {
 
     implementation(Libraries.Navigation.NAVIGATION)
     implementation(Libraries.Navigation.NAVIGATION_UI)
+
+    implementation("com.github.Tans5:horizontalnestedscrollview:0.1.0")
 
     testImplementation(Libraries.Test.JUNIT)
 

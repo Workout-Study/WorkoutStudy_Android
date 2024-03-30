@@ -146,7 +146,8 @@
     <string name="certificate_scr_toolbar">운동 기록하기</string>
     <string name="certificate_scr_timer">00 : 00 : 00</string>
     <string name="certificate_scr_confirm">\t\t FIT 기록 시작하기 \t\t</string>
-
+    <string name="certificate_scr_confirm_unactive">인증을 시작하려면 사진을 첨부해주세요!</string>
+    <string name="certificate_scr_confirm_finish">인증 완료하기</string>
 
     <string name="my_fit_off_scr_toolbar">나의 피트오프 열람</string>
     <string name="my_fit_off_scr_empty_text">피트 오프 데이터가 존재하지 않습니다</string>

@@ -3,8 +3,8 @@ object Libraries {
     object AndroidX {
         const val CORE_KTX = "androidx.core:core-ktx:${Versions.CORE_KTX}"
         const val APP_COMPAT = "androidx.appcompat:appcompat:${Versions.APP_COMPAT}"
-        const val CONSTRAINT_LAYOUT =
-            "androidx.constraintlayout:constraintlayout:${Versions.CONSTRAINT_LAYOUT}"
+        const val CONSTRAINT_LAYOUT = "androidx.constraintlayout:constraintlayout:${Versions.CONSTRAINT_LAYOUT}"
+        const val ACTIVITY = "androidx.activity:activity-ktx:${Versions.ACTIVITY}"
     }
 
     object Test {
