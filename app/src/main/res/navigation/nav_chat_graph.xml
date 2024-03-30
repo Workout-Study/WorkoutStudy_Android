@@ -46,7 +46,7 @@
         android:label="@string/group_vote_scr_toolbar" />
     <fragment
         android:id="@+id/certificateFragment2"
-        android:name="com.fitmate.fitmate.presentation.ui.myfit.CertificateFragment"
+        android:name="com.fitmate.fitmate.presentation.ui.certificate.CertificateFragment"
         android:label="@string/certificate_scr_toolbar" />
     <fragment
         android:id="@+id/myGroupFragment2"
