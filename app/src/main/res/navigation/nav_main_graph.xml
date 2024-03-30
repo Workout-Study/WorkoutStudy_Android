@@ -93,7 +93,7 @@
         android:label="@string/my_fit_off_scr_toolbar" />
     <fragment
         android:id="@+id/certificateFragment"
-        android:name="com.fitmate.fitmate.presentation.ui.myfit.CertificateFragment"
+        android:name="com.fitmate.fitmate.presentation.ui.certificate.CertificateFragment"
         android:label="@string/certificate_scr_toolbar" />
     <fragment
         android:id="@+id/userInfoFragment"

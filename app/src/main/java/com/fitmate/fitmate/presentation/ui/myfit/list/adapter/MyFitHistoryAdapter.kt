@@ -24,7 +24,6 @@ class MyFitHistoryAdapter(private val context:Context): ListAdapter<FitHistory, 
     }
 
     override fun onBindViewHolder(holder: MyFitHistoryViewHolder, position: Int) {
-        Log.d("testt","리사이클러뷰 생성")
         holder.binding(currentList[position])
     }
 
