@@ -3,7 +3,9 @@ package com.fitmate.fitmate
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import com.fitmate.fitmate.databinding.ActivityChatBinding
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class ChatActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityChatBinding
