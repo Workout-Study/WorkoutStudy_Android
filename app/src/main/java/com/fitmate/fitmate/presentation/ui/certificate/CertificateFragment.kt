@@ -1,5 +1,9 @@
 package com.fitmate.fitmate.presentation.ui.certificate
 
+import android.content.BroadcastReceiver
+import android.content.Context
+import android.content.Intent
+import android.content.IntentFilter
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -9,6 +13,7 @@ import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.ui.setupWithNavController
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -32,6 +37,7 @@ class CertificateFragment : Fragment() {
     private lateinit var binding: FragmentCertificateBinding
     private lateinit var controlActivityInterface: ControlActivityInterface
     private lateinit var certificationImageAdapter: CertificationImageAdapter
+    private lateinit var broadcastReceiver: BroadcastReceiver
     private val viewModel: CertificationViewModel by viewModels()
     private var pickMultipleMedia = activityResultLauncher()
 
@@ -80,27 +86,46 @@ class CertificateFragment : Fragment() {
             }
         }
 
-        //화면 상태 설정을 위한 state 감시
+        //화면 상태에 따른 설정을 위한 state 감시
         viewModel.state.observe(viewLifecycleOwner) { state ->
             when (state) {
+                //인증 진행중인 상태
                 CertificateState.PROCEEDING -> {
                     setRecyclerViewState()
                 }
-
+                //사진 첨부가 되었고 인증 진행이 가능한 상태
                 CertificateState.ADDED_START_IMAGE -> {
                     binding.buttonCertificateConfirm.setOnClickListener {
                         //TODO 여기서 인증 시작 로직(서비스, Room에 데이터 저장)이 이루어저야함
+                        val intent = Intent(this@CertificateFragment.context, StopWatchService::class.java)
+                        requireContext().startService(intent)
                         viewModel.setStateCertificateProceed()
                     }
                 }
+                //최초 상태(아무것도 안한 상태)
                 CertificateState.NON_PROCEEDING->{
 
                 }
                 else->{}
             }
         }
-    }
 
+        broadcastReceiver = object : BroadcastReceiver() {
+            override fun onReceive(context: Context?, intent: Intent?) {
+                val elapsedTime = intent?.getLongExtra("elapsedTime", 0) ?: 0
+                binding.textViewCertificateTimer.text = formatTime(elapsedTime)
+            }
+        }
+        val filter = IntentFilter("timer-update")
+        LocalBroadcastManager.getInstance(requireContext()).registerReceiver(broadcastReceiver, filter)
+
+    }
+    private fun formatTime(seconds: Long): String {
+        val hours = seconds / 3600
+        val minutes = (seconds % 3600) / 60
+        val remainingSeconds = seconds % 60
+        return String.format("%02d : %02d : %02d", hours, minutes, remainingSeconds)
+    }
 
     //바텀 네비 삭제 메서드
     private fun removeBottomNavi() {
