@@ -1,17 +1,17 @@
 package com.fitmate.fitmate.data.model.entity
 
+import android.net.Uri
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import java.io.Serializable
 import java.net.URI
 import java.time.Instant
-import java.util.Date
 
 @Entity("Certification")
 data class CertificationEntity(
-    @PrimaryKey(false)
-    var id: Int,
+    @PrimaryKey(true)
+    var id: Int ?= null,
     @ColumnInfo
     val userId: String,
     @ColumnInfo
@@ -19,7 +19,9 @@ data class CertificationEntity(
     @ColumnInfo
     var recordEndDate: Instant,
     @ColumnInfo
-    val startImages:MutableList<URI>,
+    val startImages:MutableList<Uri>,
     @ColumnInfo
-    var endImages:MutableList<URI>
+    var endImages:MutableList<Uri>,
+    @ColumnInfo
+    var certificateTime: Long
 ): Serializable
