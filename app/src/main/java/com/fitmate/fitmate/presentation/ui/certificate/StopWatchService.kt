@@ -140,10 +140,10 @@ class StopWatchService : Service() {
                 elapsedTimeSeconds++
                 updateNotification()
                 updateFragment(elapsedTimeSeconds)
-                if (elapsedTimeSeconds == 12L) {
+                if (elapsedTimeSeconds == 6 * 60 * 60L) {
                     showWarningNotification()
                 }
-                if (elapsedTimeSeconds == 20L) {
+                if (elapsedTimeSeconds == 12 * 60 * 60L) {
                     stopSelf()
                     showResetNotification()
                     resetData()
