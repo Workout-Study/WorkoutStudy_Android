@@ -5,6 +5,7 @@ import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -13,6 +14,9 @@ import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.flowWithLifecycle
+import androidx.lifecycle.lifecycleScope
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.ui.setupWithNavController
@@ -25,6 +29,8 @@ import com.fitmate.fitmate.presentation.viewmodel.CertificateState
 import com.fitmate.fitmate.presentation.viewmodel.CertificationViewModel
 import com.fitmate.fitmate.util.ControlActivityInterface
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
 
 
 @AndroidEntryPoint
@@ -33,14 +39,19 @@ class CertificateFragment : Fragment() {
         //사진 최대 선택 가능 갯수
         const val IMAGE_PICK_MAX = 5
     }
-    
+
     private lateinit var binding: FragmentCertificateBinding
     private lateinit var controlActivityInterface: ControlActivityInterface
     private lateinit var certificationImageAdapter: CertificationImageAdapter
-    private lateinit var broadcastReceiver: BroadcastReceiver
     private val viewModel: CertificationViewModel by viewModels()
     private var pickMultipleMedia = activityResultLauncher()
 
+    private var broadcastReceiver = object : BroadcastReceiver() {
+        override fun onReceive(context: Context?, intent: Intent?) {
+            val elapsedTime = intent?.getLongExtra("elapsedTime", 0) ?: 0
+            binding.textViewCertificateTimer.text = formatTime(elapsedTime)
+        }
+    }
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -58,7 +69,9 @@ class CertificateFragment : Fragment() {
         //리사이클러뷰 어뎁터 초기화
         initRecyclerviewAdapter()
 
-        //TODO 초기에 room의 데이터에 따라서 상태를 설정한다
+  /*      viewModel.deleteCertificationInfo()*/
+        /*observeViewModel()*/
+        //TODO 초기에 room의 데이터에 따라서 상태를 설정해야한다.
         viewModel.setStateCertificateNonProceeding()
         return binding.root
     }
@@ -66,15 +79,23 @@ class CertificateFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        //스타트 사진 이미지 첨부 버튼(ImageView) 설정
-        setStartImageAddButtonClick()
-
-        //제출버튼 클릭 리스너
-        binding.buttonCertificateConfirm.setOnClickListener {
-
+        //room과의 통신 결과를 구독
+        viewModel.doneEvent.observe(viewLifecycleOwner) {
+            when(it.second){
+                "저장 완료" -> {
+                    Log.d("testt",it.second)
+                    //TODO 여기서 인증 시작 로직(서비스, Room에 데이터 저장)이 이루어저야함
+                    val intent = Intent(this@CertificateFragment.context, StopWatchService::class.java)
+                    requireContext().startService(intent)
+                    viewModel.setStateCertificateProceed()
+                }
+                "삭제 완료" -> {
+                    Log.d("testt",it.second)
+                }
+            }
         }
 
-        //기록 시작 이미지 첨부 감시
+        //기록 시작 이미지 첨부 여부를 구독
         viewModel.startImageList.observe(viewLifecycleOwner) {
             //TODO 상태 설정도 동시에 해줘야함.
             certificationImageAdapter.submitList(it)
@@ -86,39 +107,46 @@ class CertificateFragment : Fragment() {
             }
         }
 
-        //화면 상태에 따른 설정을 위한 state 감시
+        //TODO 기록 종료 이미지 첨부 여부를 구독해야한다.
+
+
+        //화면 상태에 따른 설정을 위한 state 구독
         viewModel.state.observe(viewLifecycleOwner) { state ->
             when (state) {
                 //인증 진행중인 상태
                 CertificateState.PROCEEDING -> {
                     setRecyclerViewState()
+                    binding.buttonCertificateConfirm.setOnClickListener {
+                        //마지막 사진 list.size가 0보다 크지않다면
+                        return@setOnClickListener
+                    }
                 }
                 //사진 첨부가 되었고 인증 진행이 가능한 상태
                 CertificateState.ADDED_START_IMAGE -> {
                     binding.buttonCertificateConfirm.setOnClickListener {
-                        //TODO 여기서 인증 시작 로직(서비스, Room에 데이터 저장)이 이루어저야함
-                        val intent = Intent(this@CertificateFragment.context, StopWatchService::class.java)
-                        requireContext().startService(intent)
-                        viewModel.setStateCertificateProceed()
+                        viewModel.insertCertificateInitInfo()
                     }
                 }
                 //최초 상태(아무것도 안한 상태)
                 CertificateState.NON_PROCEEDING->{
-
+                    //스타트 사진 이미지 첨부 버튼(ImageView) 설정
+                    setStartImageAddButtonClick()
                 }
                 else->{}
             }
         }
+    }
 
-        broadcastReceiver = object : BroadcastReceiver() {
-            override fun onReceive(context: Context?, intent: Intent?) {
-                val elapsedTime = intent?.getLongExtra("elapsedTime", 0) ?: 0
-                binding.textViewCertificateTimer.text = formatTime(elapsedTime)
-            }
-        }
+    override fun onResume() {
+        super.onResume()
         val filter = IntentFilter("timer-update")
+        // 브로드 캐스트 구독
         LocalBroadcastManager.getInstance(requireContext()).registerReceiver(broadcastReceiver, filter)
+    }
 
+    override fun onPause() {
+        super.onPause()
+        LocalBroadcastManager.getInstance(requireContext()).unregisterReceiver(broadcastReceiver)
     }
     private fun formatTime(seconds: Long): String {
         val hours = seconds / 3600
@@ -159,7 +187,12 @@ class CertificateFragment : Fragment() {
     private fun activityResultLauncher() =
         registerForActivityResult(ActivityResultContracts.PickMultipleVisualMedia()) { uris ->
             if (uris.isNotEmpty()) {
-                if (uris.size > IMAGE_PICK_MAX - (viewModel.startImageList.value?.size ?: 0)) {
+                if (uris.size > IMAGE_PICK_MAX - (viewModel.startImageList.value?.size ?: 0) && viewModel.state.value != CertificateState.PROCEEDING) {
+                    Toast.makeText(requireContext(), "사진은 최대 5장까지 첨부할 수 있습니다!", Toast.LENGTH_SHORT)
+                        .show()
+                    return@registerForActivityResult
+                }
+                if (uris.size > IMAGE_PICK_MAX - (viewModel.endImageList.value?.size ?: 0) && viewModel.state.value == CertificateState.PROCEEDING) {
                     Toast.makeText(requireContext(), "사진은 최대 5장까지 첨부할 수 있습니다!", Toast.LENGTH_SHORT)
                         .show()
                     return@registerForActivityResult
@@ -175,5 +208,17 @@ class CertificateFragment : Fragment() {
     private fun setRecyclerViewState() {
         certificationImageAdapter.changeVisible()
         binding.cardViewItemCertificateStart.visibility = View.GONE
+    }
+
+    private fun observeViewModel() {
+        lifecycleScope.launch {
+            viewModel.contentList
+                .flowWithLifecycle(lifecycle, Lifecycle.State.RESUMED)
+                .collectLatest {
+                    it.forEach {data->
+                        Log.d("testt",data.userId)
+                    }
+                }
+        }
     }
 }
