@@ -5,7 +5,7 @@ import androidx.room.RoomDatabase
 import com.fitmate.fitmate.data.model.entity.ChatEntity
 import com.fitmate.fitmate.data.source.dao.ChatDao
 
-@Database(entities = [ChatEntity::class], version = 1)
+@Database(entities = [ChatEntity::class], version = 2)
 abstract class ChatDatabase: RoomDatabase() {
     abstract fun contentDao(): ChatDao
 }
