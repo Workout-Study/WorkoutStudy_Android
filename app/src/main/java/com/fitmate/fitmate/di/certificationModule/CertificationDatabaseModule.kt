@@ -17,7 +17,7 @@ object CertificationDatabaseModule {
     @Singleton
     @Provides
     fun providesDatabase(@ApplicationContext context: Context): CertificationDatabase {
-        return Room.databaseBuilder(context, CertificationDatabase::class.java, "blindappproject.db")
+        return Room.databaseBuilder(context, CertificationDatabase::class.java, "certification.db")
             .fallbackToDestructiveMigration()
             .build()
     }

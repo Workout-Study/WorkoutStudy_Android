@@ -1,18 +1,27 @@
 package com.fitmate.fitmate.presentation.viewmodel
 
+import android.net.Uri
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.fitmate.fitmate.domain.model.CertificationImage
+import com.fitmate.fitmate.domain.model.DbCertification
 import com.fitmate.fitmate.domain.usecase.DbCertificationUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.launch
+import java.time.Instant
 import javax.inject.Inject
 
-enum class CertificateState{NON_PROCEEDING, ADDED_START_IMAGE, PROCEEDING}
+enum class CertificateState { NON_PROCEEDING, ADDED_START_IMAGE, PROCEEDING }
+
 @HiltViewModel
 class CertificationViewModel @Inject constructor(
     private val dbCertificationUseCase: DbCertificationUseCase,
-): ViewModel() {
+) : ViewModel() {
     //인증 진행 상태
     private val _state = MutableLiveData<CertificateState>()
     val state: LiveData<CertificateState>
@@ -24,20 +33,31 @@ class CertificationViewModel @Inject constructor(
     val startImageList: LiveData<MutableList<CertificationImage>>
         get() = _startImageList
 
+    //종료 사진 데이터
+    private val endImageList2 = mutableListOf<CertificationImage>()
+    private val _endImageList = MutableLiveData<MutableList<CertificationImage>>()
+    val endImageList: LiveData<MutableList<CertificationImage>>
+        get() = _endImageList
+
+    //db통신 처리 결과
+    private val _doneEvent = MutableLiveData<Pair<Boolean, String>>()
+    val doneEvent: LiveData<Pair<Boolean, String>>
+        get() = _doneEvent
+
     //인증 화면을 진행중이던 상태로 설정하는 메서드
-    fun setStateCertificateProceed(){
+    fun setStateCertificateProceed() {
         _state.value = CertificateState.PROCEEDING
         //TODO room의 데이터를 가져와서 사진 데이터를 업데이트하는 적업 수행.
     }
 
     //인증 화면을 초기 상태로 설정하는 메서드
-    fun setStateCertificateNonProceeding(){
+    fun setStateCertificateNonProceeding() {
         _state.value = CertificateState.NON_PROCEEDING
 
     }
 
     //초기 인증 화면에서 사진을 첨부했을 상태로 설정하는 메서드
-    fun setStateCertificateAddedStartImage(){
+    fun setStateCertificateAddedStartImage() {
         _state.value = CertificateState.ADDED_START_IMAGE
     }
 
@@ -49,9 +69,63 @@ class CertificationViewModel @Inject constructor(
     }
 
     //시작 이미지 삭제 메서드
-    fun removeStartImage(index:Int){
+    fun removeStartImage(index: Int) {
         startImageList2.removeAt(index)
         _startImageList.value = startImageList2
     }
+
+
+    //시작 이미지 첨부 메서드
+    fun addEndImage(imageObject: CertificationImage) {
+        endImageList2.add(imageObject)
+        _endImageList.value = endImageList2
+    }
+
+    //종료 이미지 삭제 메서드
+    fun removeEmdImage(index: Int) {
+        endImageList2.removeAt(index)
+        _endImageList.value = endImageList2
+    }
+
+    //데이터 베이스에서 데이터 조회
+    val contentList = dbCertificationUseCase.loadList()
+        .stateIn(
+            initialValue = emptyList(),
+            started = SharingStarted.WhileSubscribed(5000),
+            scope = viewModelScope
+        ).map {list ->
+            list.filter {item ->
+                item.id == 1
+            }
+        }
+
+
+    //Room에 시작 데이터 삽입(인증 시작을 눌렀을 경우)
+    fun insertCertificateInitInfo() {
+        val obj = DbCertification(
+            id = 1,
+            userId = "hyungoo",
+            recordStartDate = Instant.now(),
+            startImages = mutableListOf<Uri>().apply {
+                startImageList.value?.forEach { data ->
+                    add(data.imagesUri)
+                }
+            }
+        )
+        viewModelScope.launch {
+            dbCertificationUseCase.save(obj).also {
+                _doneEvent.value = Pair(true, if (it) "저장 완료" else "저장 실패")
+            }
+        }
+    }
+
+    fun deleteCertificationInfo() {
+        viewModelScope.launch {
+            dbCertificationUseCase.delete().also {
+                _doneEvent.value = Pair(true, if (it) "삭제 완료" else "삭제 실패")
+            }
+        }
+    }
+
 
 }

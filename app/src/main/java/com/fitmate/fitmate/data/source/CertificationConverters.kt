@@ -1,20 +1,31 @@
 package com.fitmate.fitmate.data.source
 
+import android.net.Uri
 import androidx.room.TypeConverter
 import com.google.gson.Gson
+import com.google.gson.GsonBuilder
 import java.net.URI
 import java.time.Instant
 
 class CertificationConverters {
 
     @TypeConverter
-    fun listToJson(value: MutableList<URI>): String{
-        return Gson().toJson(value)
+    fun listToJson(list: MutableList<Uri>): String {
+        val value = StringBuilder()
+        for (uri in list) {
+            value.append(uri.toString())
+            value.append(",")
+        }
+        return value.toString()
     }
-
     @TypeConverter
-    fun jsonToList(value: String): MutableList<URI>{
-        return Gson().fromJson(value, Array<URI>::class.java).toMutableList()
+    fun jsonToList(value: String): MutableList<Uri> {
+        val listType = mutableListOf<Uri>()
+        val array = value.split(",").toTypedArray()
+        for (item in array) {
+            listType.add(Uri.parse(item))
+        }
+        return listType
     }
 
     @TypeConverter
