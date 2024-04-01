@@ -1,6 +1,7 @@
 package com.fitmate.fitmate.presentation.ui.chatting
 
 import android.content.Context
+import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.view.View
@@ -14,7 +15,6 @@ import androidx.navigation.ui.setupWithNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.fitmate.fitmate.R
-import com.fitmate.fitmate.data.source.ChatDatabase
 import com.fitmate.fitmate.databinding.FragmentChattingBinding
 import com.fitmate.fitmate.domain.model.ChatItem
 import com.fitmate.fitmate.domain.usecase.DBChatUseCase
@@ -34,34 +34,19 @@ import javax.inject.Inject
 @AndroidEntryPoint
 class ChattingFragment : Fragment(R.layout.fragment_chatting) {
 
-    @Inject lateinit var chatDatabase: ChatDatabase
     private lateinit var binding: FragmentChattingBinding
     private lateinit var heightProvider: HeightProvider
     private var webSocket: WebSocket? = null
     @Inject lateinit var dbChatUseCase: DBChatUseCase
-    val fitGroupId = 1
+    private val fitGroupId = 1
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        binding = FragmentChattingBinding.bind(view)
-        binding.containerExtraFunction.layoutTransition = null
-        binding.toolbarFragmentChatting.setupWithNavController(findNavController())
-
+        initFragment(view)
         setupClickListeners()
         initHeightProvider()
-        setupWebSocketConnection(fitGroupId.toString())
-        val recyclerView: RecyclerView = binding.recyclerViewFragmentChatting
-        val adapter = ChatAdapter()
-
-        val testItems = mutableListOf<ChatItem>()
-        testItems.add(ChatItem(0, "그룹", "경원", "안녕"))
-        testItems.add(ChatItem(1, "그룹", "현구", "응 그래"))
-        adapter.submitList(testItems.toList())
-
-        recyclerView.layoutManager = LinearLayoutManager(context)
-        recyclerView.adapter = adapter
-        recyclerView.itemAnimator = null
-        adapter.submitList(testItems)
+        setUpRecyclerView()
+        setupWebSocketConnection("$fitGroupId")
 
         binding.ImageViewChattingSendMySpeech.setOnClickListener {
             val message = binding.editTextChattingMySpeech.text.toString()
@@ -69,15 +54,29 @@ class ChattingFragment : Fragment(R.layout.fragment_chatting) {
                     sendChatMessage(message)
             }
         }
+    }
 
+    private fun initFragment(view: View) {
+        binding = FragmentChattingBinding.bind(view)
+        binding.containerExtraFunction.layoutTransition = null
+        binding.toolbarFragmentChatting.setupWithNavController(findNavController())
+    }
 
-
+    private fun setUpRecyclerView() {
+        val recyclerView: RecyclerView = binding.recyclerViewFragmentChatting
+        val adapter = ChatAdapter()
+        val testItems = mutableListOf<ChatItem>()
+        testItems.add(ChatItem(0, "$fitGroupId", "경원", "안녕"))
+        testItems.add(ChatItem(1, "$fitGroupId", "현구", "응 그래"))
+        recyclerView.layoutManager = LinearLayoutManager(context)
+        recyclerView.adapter = adapter
+        recyclerView.itemAnimator = null
+        adapter.submitList(testItems.toList())
+        adapter.submitList(testItems)
     }
 
     private fun setupClickListeners() {
-        binding.imageViewChattingToolbarForDrawerLayout.setOnClickListener {
-            toggleDrawer()
-        }
+        binding.imageViewChattingToolbarForDrawerLayout.setOnClickListener { toggleDrawer() }
 
         listOf(
             binding.buttonFragmentChattingFitMateProgress to R.id.action_chattingFragment_to_groupProgressFragment,
@@ -137,16 +136,20 @@ class ChattingFragment : Fragment(R.layout.fragment_chatting) {
 
     private fun setupWebSocketConnection(fitGroupId: String) {
         val client = OkHttpClient()
-        val request = Request.Builder().url("ws://chatting-server:8080/ws/:${fitGroupId}").build() // URL 수정
+        val request = if(isEmulator()) {
+            Request.Builder().url("ws://10.0.0.2:8080/ws/:${fitGroupId}").build()
+        } else {
+            Request.Builder().url("ws://localhost:8080/ws/:${fitGroupId}").build()
+        }
+
         webSocket = client.newWebSocket(request, object : WebSocketListener() {
             override fun onOpen(webSocket: WebSocket, response: Response) {
-                Log.d("woojugoing", "WebSocket 연결 성공")
+                Log.d("woojugoing_websocket", "WebSocket 연결 성공, ${request.url()}")
             }
 
             override fun onFailure(webSocket: WebSocket, t: Throwable, response: Response?) {
-                Log.d("woojugoing", "실패, ${t.message}")
+                Log.d("woojugoing_websocket", "실패, ${t.message}, ${request.url()}, ${Emulator()}")
             }
-
         })
     }
 
@@ -156,12 +159,12 @@ class ChattingFragment : Fragment(R.layout.fragment_chatting) {
             put("message", message)
         }
         val boolean = webSocket?.send(jsonObject.toString())
-        Log.d("woojugoing", jsonObject.toString())
-        Log.d("woojugoing", boolean.toString())
+        Log.d("woojugoing_send_json", jsonObject.toString())
+        Log.d("woojugoing_send_?", boolean.toString())
     }
 
     private fun sendChatMessage(message: String) {
-        val newChatItem = ChatItem(null, "sdf", "경원", message)
+        val newChatItem = ChatItem(null, "testGroupId", "경원", message)
         sendMessage(message)
         lifecycleScope.launch { dbChatUseCase.insert(newChatItem) }
         binding.editTextChattingMySpeech.setText("")
@@ -173,8 +176,19 @@ class ChattingFragment : Fragment(R.layout.fragment_chatting) {
         }
     }
 
-
     private fun generateMessageId(): String {
         return "${Instant.now()}${"fitGroupId"}${"fitMateId"}"
+    }
+
+    fun isEmulator(): Boolean {
+        return (Build.FINGERPRINT.startsWith("Android/sdk_gphone_")
+                || Build.MODEL.contains("Emulator")
+                || Build.MODEL.contains("Android SDK built for arm64")
+                || (Build.BRAND.startsWith("generic") && Build.DEVICE.startsWith("generic"))
+                || "google_sdk" == Build.PRODUCT)
+    }
+
+    fun Emulator(): String {
+        return Build.MODEL
     }
 }
