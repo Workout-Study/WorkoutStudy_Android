@@ -11,10 +11,15 @@ class CertificationConverters {
 
     @TypeConverter
     fun listToJson(list: MutableList<Uri>): String {
+        if (list.isEmpty()) {
+            return ""
+        }
         val value = StringBuilder()
-        for (uri in list) {
+        for ((index, uri) in list.withIndex()) {
             value.append(uri.toString())
-            value.append(",")
+            if (index < list.size - 1) {
+                value.append(",")
+            }
         }
         return value.toString()
     }

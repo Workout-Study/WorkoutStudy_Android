@@ -5,9 +5,11 @@ import com.fitmate.fitmate.domain.repository.CertificationRepository
 import javax.inject.Inject
 
 class DbCertificationUseCase @Inject constructor(
-    private val certificationRepository: CertificationRepository
-){
+    private val certificationRepository: CertificationRepository,
+) {
     fun loadList() = certificationRepository.loadCertification()
+
+    suspend fun getItemById(id: Int) = certificationRepository.selectOneById(id)
 
     suspend fun save(item: DbCertification) = certificationRepository.save(item)
 

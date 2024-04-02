@@ -6,6 +6,7 @@ import android.view.View
 import android.widget.Button
 import android.widget.ImageView
 import android.widget.LinearLayout
+import androidx.cardview.widget.CardView
 import androidx.core.net.toUri
 import androidx.databinding.BindingAdapter
 import com.bumptech.glide.Glide
@@ -28,6 +29,18 @@ fun LinearLayout.setContainerVisible(state:CertificateState){
         }
         CertificateState.PROCEEDING ->{
             this.visibility = View.VISIBLE
+        }
+    }
+}
+
+@BindingAdapter("certificate_end_image_add_state")
+fun CardView.setContainerVisible(state:CertificateState){
+    when(state){
+        CertificateState.NON_PROCEEDING,CertificateState.ADDED_START_IMAGE ->{
+            this.visibility = View.VISIBLE
+        }
+        CertificateState.PROCEEDING ->{
+            this.visibility = View.GONE
         }
     }
 }
