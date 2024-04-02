@@ -18,10 +18,14 @@ import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationCompat.VISIBILITY_PUBLIC
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import com.fitmate.fitmate.R
+import com.fitmate.fitmate.domain.usecase.DbCertificationUseCase
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.withContext
 import java.util.Timer
 import java.util.TimerTask
+import javax.inject.Inject
 
+@AndroidEntryPoint
 class StopWatchService : Service() {
     companion object {
         const val NOTIFICATION_ID = 1
@@ -33,6 +37,8 @@ class StopWatchService : Service() {
         const val WARNING_CHANNEL_NAME = "인증 경고 알림"
     }
 
+    @Inject
+    lateinit var dbCertificationUseCase: DbCertificationUseCase
     private lateinit var timer: Timer
     private var elapsedTimeSeconds: Long = 0
     private lateinit var notificationManager: NotificationManager
@@ -96,7 +102,6 @@ class StopWatchService : Service() {
 
     //6시간 경과 Notification 호출 메서드
     private fun showWarningNotification() {
-
         notificationWarningBuilder = NotificationCompat.Builder(baseContext, WARNING_CHANNEL_ID)
             .setSmallIcon(R.drawable.baseline_warning_24)
             .setContentTitle("아직도 운동중이신가요?")
@@ -140,10 +145,10 @@ class StopWatchService : Service() {
                 elapsedTimeSeconds++
                 updateNotification()
                 updateFragment(elapsedTimeSeconds)
-                if (elapsedTimeSeconds == 6 * 60 * 60L) {
+                if (elapsedTimeSeconds == 10L) {
                     showWarningNotification()
                 }
-                if (elapsedTimeSeconds == 12 * 60 * 60L) {
+                if (elapsedTimeSeconds == 20L) {
                     stopSelf()
                     showResetNotification()
                     resetData()
@@ -158,7 +163,6 @@ class StopWatchService : Service() {
         intent.putExtra("elapsedTime", elapsedTimeSeconds)
         LocalBroadcastManager.getInstance(this).sendBroadcast(intent)
     }
-
 
     private fun resetData() {
         // 데이터 초기화 로직

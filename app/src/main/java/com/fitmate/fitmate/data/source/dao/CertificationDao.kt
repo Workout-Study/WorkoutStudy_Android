@@ -14,6 +14,10 @@ interface CertificationDao {
     @Query("SELECT * FROM Certification")
     fun selectAll(): Flow<List<CertificationEntity>>
 
+    //아이디가 1인 데이터만 뽑는 쿼리문
+    @Query("SELECT * FROM Certification WHERE id = :id")
+    fun selectOne(id:Int): CertificationEntity?
+
     //인증 데이터 삭제
     @Query("DELETE FROM Certification")
     suspend fun delete()
