@@ -7,6 +7,8 @@ interface CertificationRepository {
 
     fun loadCertification(): Flow<List<DbCertification>>
 
+    suspend fun selectOneById(id: Int): DbCertification?
+
     suspend fun save(item: DbCertification): Boolean
 
     suspend fun update(item: DbCertification): Boolean

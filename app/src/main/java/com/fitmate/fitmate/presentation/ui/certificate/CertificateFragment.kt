@@ -52,6 +52,7 @@ class CertificateFragment : Fragment() {
             binding.textViewCertificateTimer.text = formatTime(elapsedTime)
         }
     }
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -69,35 +70,40 @@ class CertificateFragment : Fragment() {
         //리사이클러뷰 어뎁터 초기화
         initRecyclerviewAdapter()
 
-  /*      viewModel.deleteCertificationInfo()*/
-        /*observeViewModel()*/
-        //TODO 초기에 room의 데이터에 따라서 상태를 설정해야한다.
         viewModel.setStateCertificateNonProceeding()
+        viewModel.getCertificationDataDb(1)
+        //TODO 초기에 room의 데이터에 따라서 상태를 설정해야한다.
+
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        viewModel.certificationData.observe(viewLifecycleOwner) {
+            if (it != null) {
+                Log.d("testt", "db에 저장된 사진 갯수:${it.startImages.size}")
+                viewModel.setStateCertificateProceed()
+            } else {
+                viewModel.setStateCertificateNonProceeding()
+            }
+        }
+
         //room과의 통신 결과를 구독
         viewModel.doneEvent.observe(viewLifecycleOwner) {
-            when(it.second){
+            when (it.second) {
                 "저장 완료" -> {
-                    Log.d("testt",it.second)
                     //TODO 여기서 인증 시작 로직(서비스, Room에 데이터 저장)이 이루어저야함
-                    val intent = Intent(this@CertificateFragment.context, StopWatchService::class.java)
+                    val intent =
+                        Intent(this@CertificateFragment.context, StopWatchService::class.java)
                     requireContext().startService(intent)
-                    viewModel.setStateCertificateProceed()
-                }
-                "삭제 완료" -> {
-                    Log.d("testt",it.second)
+                    viewModel.getCertificationDataDb(1)
                 }
             }
         }
 
         //기록 시작 이미지 첨부 여부를 구독
-        viewModel.startImageList.observe(viewLifecycleOwner) {
-            //TODO 상태 설정도 동시에 해줘야함.
+       viewModel.startImageList.observe(viewLifecycleOwner) {
             certificationImageAdapter.submitList(it)
             certificationImageAdapter.notifyDataSetChanged()
             if (it.isEmpty()) {
@@ -116,6 +122,11 @@ class CertificateFragment : Fragment() {
                 //인증 진행중인 상태
                 CertificateState.PROCEEDING -> {
                     setRecyclerViewState()
+                    certificationImageAdapter.submitList(viewModel.certificationData.value!!.startImages.map {
+                        CertificationImage(
+                            it
+                        )
+                    })
                     binding.buttonCertificateConfirm.setOnClickListener {
                         //마지막 사진 list.size가 0보다 크지않다면
                         return@setOnClickListener
@@ -128,11 +139,12 @@ class CertificateFragment : Fragment() {
                     }
                 }
                 //최초 상태(아무것도 안한 상태)
-                CertificateState.NON_PROCEEDING->{
+                CertificateState.NON_PROCEEDING -> {
                     //스타트 사진 이미지 첨부 버튼(ImageView) 설정
                     setStartImageAddButtonClick()
                 }
-                else->{}
+
+                else -> {}
             }
         }
     }
@@ -141,13 +153,15 @@ class CertificateFragment : Fragment() {
         super.onResume()
         val filter = IntentFilter("timer-update")
         // 브로드 캐스트 구독
-        LocalBroadcastManager.getInstance(requireContext()).registerReceiver(broadcastReceiver, filter)
+        LocalBroadcastManager.getInstance(requireContext())
+            .registerReceiver(broadcastReceiver, filter)
     }
 
     override fun onPause() {
         super.onPause()
         LocalBroadcastManager.getInstance(requireContext()).unregisterReceiver(broadcastReceiver)
     }
+
     private fun formatTime(seconds: Long): String {
         val hours = seconds / 3600
         val minutes = (seconds % 3600) / 60
@@ -165,7 +179,6 @@ class CertificateFragment : Fragment() {
     private fun initRecyclerviewAdapter() {
         certificationImageAdapter = CertificationImageAdapter { itemPosition ->
             viewModel.removeStartImage(itemPosition)
-            certificationImageAdapter.notifyItemRemoved(itemPosition)
         }
 
         binding.recyclerCertificateStartImage.apply {
@@ -187,12 +200,16 @@ class CertificateFragment : Fragment() {
     private fun activityResultLauncher() =
         registerForActivityResult(ActivityResultContracts.PickMultipleVisualMedia()) { uris ->
             if (uris.isNotEmpty()) {
-                if (uris.size > IMAGE_PICK_MAX - (viewModel.startImageList.value?.size ?: 0) && viewModel.state.value != CertificateState.PROCEEDING) {
+                if (uris.size > IMAGE_PICK_MAX - (viewModel.startImageList.value?.size
+                        ?: 0) && viewModel.state.value != CertificateState.PROCEEDING
+                ) {
                     Toast.makeText(requireContext(), "사진은 최대 5장까지 첨부할 수 있습니다!", Toast.LENGTH_SHORT)
                         .show()
                     return@registerForActivityResult
                 }
-                if (uris.size > IMAGE_PICK_MAX - (viewModel.endImageList.value?.size ?: 0) && viewModel.state.value == CertificateState.PROCEEDING) {
+                if (uris.size > IMAGE_PICK_MAX - (viewModel.endImageList.value?.size
+                        ?: 0) && viewModel.state.value == CertificateState.PROCEEDING
+                ) {
                     Toast.makeText(requireContext(), "사진은 최대 5장까지 첨부할 수 있습니다!", Toast.LENGTH_SHORT)
                         .show()
                     return@registerForActivityResult
@@ -207,18 +224,6 @@ class CertificateFragment : Fragment() {
     //시작 사진 첨부 수정 불가능하도록 설정하는 메서드
     private fun setRecyclerViewState() {
         certificationImageAdapter.changeVisible()
-        binding.cardViewItemCertificateStart.visibility = View.GONE
     }
 
-    private fun observeViewModel() {
-        lifecycleScope.launch {
-            viewModel.contentList
-                .flowWithLifecycle(lifecycle, Lifecycle.State.RESUMED)
-                .collectLatest {
-                    it.forEach {data->
-                        Log.d("testt",data.userId)
-                    }
-                }
-        }
-    }
 }

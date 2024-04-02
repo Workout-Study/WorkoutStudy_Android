@@ -21,6 +21,16 @@ class CertificationRepositoryImpl @Inject constructor(
         }
     }
 
+    override suspend fun selectOneById(id: Int): DbCertification? {
+        return try {
+            certificationDao.selectOne(id)?.toDbCertification()
+        }catch (e: Exception) {
+            Log.d("room",e.message.toString())
+            null
+        }
+    }
+
+
     override suspend fun save(item: DbCertification): Boolean {
         return try {
             certificationDao.insert(item.toEntity())
