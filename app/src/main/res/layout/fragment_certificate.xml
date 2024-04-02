@@ -87,6 +87,7 @@
                             android:id="@+id/cardViewItemCertificateStart"
                             android:layout_width="108dp"
                             android:layout_height="180dp"
+                            app:certificate_end_image_add_state="@{viewModel.state}"
                             android:layout_margin="5dp"
                             android:src="@color/violet"
                             app:cardCornerRadius="10dp"
