@@ -1,9 +1,12 @@
 package com.fitmate.fitmate.presentation.ui.certificate
 
+import android.Manifest
 import android.content.BroadcastReceiver
 import android.content.Context
+import android.content.DialogInterface
 import android.content.Intent
 import android.content.IntentFilter
+import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -12,44 +15,76 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.annotation.RequiresApi
+import androidx.core.app.ActivityCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.flowWithLifecycle
-import androidx.lifecycle.lifecycleScope
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.ui.setupWithNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.bumptech.glide.Glide
 import com.fitmate.fitmate.MainActivity
+import com.fitmate.fitmate.R
 import com.fitmate.fitmate.databinding.FragmentCertificateBinding
 import com.fitmate.fitmate.domain.model.CertificationImage
 import com.fitmate.fitmate.presentation.ui.certificate.list.adapter.CertificationImageAdapter
 import com.fitmate.fitmate.presentation.viewmodel.CertificateState
 import com.fitmate.fitmate.presentation.viewmodel.CertificationViewModel
 import com.fitmate.fitmate.util.ControlActivityInterface
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.launch
-
+import java.time.Instant
 
 @AndroidEntryPoint
 class CertificateFragment : Fragment() {
     companion object {
         //사진 최대 선택 가능 갯수
-        const val IMAGE_PICK_MAX = 5
+        private const val IMAGE_PICK_MAX = 5
     }
 
     private lateinit var binding: FragmentCertificateBinding
     private lateinit var controlActivityInterface: ControlActivityInterface
-    private lateinit var certificationImageAdapter: CertificationImageAdapter
+    private lateinit var certificationStartImageAdapter: CertificationImageAdapter
+    private lateinit var certificationEndImageAdapter: CertificationImageAdapter
     private val viewModel: CertificationViewModel by viewModels()
     private var pickMultipleMedia = activityResultLauncher()
+    private var totaleLapsedTime: Long = 0L
 
+    //서비스의 스톱워치 시간대를 가져오는 브로드캐스트 리시버
     private var broadcastReceiver = object : BroadcastReceiver() {
         override fun onReceive(context: Context?, intent: Intent?) {
             val elapsedTime = intent?.getLongExtra("elapsedTime", 0) ?: 0
+            totaleLapsedTime = elapsedTime
             binding.textViewCertificateTimer.text = formatTime(elapsedTime)
+        }
+    }
+
+    //서비스의 스톱워치 종료 여부를 가져오는 브로드캐스트 리시버(진행중인 상태에서만 구독함.)
+    private var broadcastReceiver2 = object : BroadcastReceiver() {
+        override fun onReceive(context: Context?, intent: Intent?) {
+            val endToken = intent?.getBooleanExtra("bye", false) ?: false
+            closeFragment(endToken)
+        }
+    }
+
+    //알림 권한
+    @RequiresApi(Build.VERSION_CODES.TIRAMISU)
+    private val permissionResult = registerForActivityResult(
+        ActivityResultContracts.RequestPermission()
+    ) { isGranted: Boolean ->
+        if (isGranted) {
+            viewModel.insertCertificateInitInfo()
+        } else {
+            if (ActivityCompat.shouldShowRequestPermissionRationale(
+                    requireActivity(),
+                    Manifest.permission.POST_NOTIFICATIONS
+                )
+            ) {
+                showPermissionDialog()
+            } else {
+                viewModel.insertCertificateInitInfo()
+            }
         }
     }
 
@@ -63,49 +98,69 @@ class CertificateFragment : Fragment() {
         binding.lifecycleOwner = viewLifecycleOwner
         binding.viewModel = viewModel
         binding.materialToolbarCertificate.setupWithNavController(findNavController())
-
         //바텀 네비 삭제.
         removeBottomNavi()
 
         //리사이클러뷰 어뎁터 초기화
         initRecyclerviewAdapter()
 
-        viewModel.setStateCertificateNonProceeding()
-        viewModel.getCertificationDataDb(1)
-        //TODO 초기에 room의 데이터에 따라서 상태를 설정해야한다.
-
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
+        viewModel.setStateCertificateNonProceeding()
+        viewModel.getCertificationDataDb(1)
         viewModel.certificationData.observe(viewLifecycleOwner) {
             if (it != null) {
-                Log.d("testt", "db에 저장된 사진 갯수:${it.startImages.size}")
                 viewModel.setStateCertificateProceed()
             } else {
                 viewModel.setStateCertificateNonProceeding()
             }
         }
-
         //room과의 통신 결과를 구독
         viewModel.doneEvent.observe(viewLifecycleOwner) {
             when (it.second) {
                 "저장 완료" -> {
-                    //TODO 여기서 인증 시작 로직(서비스, Room에 데이터 저장)이 이루어저야함
-                    val intent =
-                        Intent(this@CertificateFragment.context, StopWatchService::class.java)
+                    //room에 저장이 되었을 때 타이머 실행(포그라운드 서비스)
+                    val intent = Intent(
+                        this@CertificateFragment.context,
+                        StopWatchService::class.java
+                    ).apply {
+                        action = STOP_WATCH_START
+                    }
                     requireContext().startService(intent)
+                    //room에 초기 데이터 저장
                     viewModel.getCertificationDataDb(1)
+                }
+
+                "업데이트 완료" -> {
+                    Log.d("room", "업데이트 완료됨")
+                    viewModel.getCertificationDataDb(1)
+
+                    viewModel.certificationData.observe(viewLifecycleOwner) { item ->
+                        item?.let {
+                            viewModel.imageUpload(item)
+                        }
+                    }
                 }
             }
         }
 
-        //기록 시작 이미지 첨부 여부를 구독
-       viewModel.startImageList.observe(viewLifecycleOwner) {
-            certificationImageAdapter.submitList(it)
-            certificationImageAdapter.notifyDataSetChanged()
+        viewModel.completeUpload.observe(viewLifecycleOwner) {
+            if (it){
+                loadingTaskSettingEnd()
+                certificationReset()
+                viewModel.changeCheckUploadComplete()
+            }else{
+
+            }
+        }
+
+        //기록 시작 이미지 첨부 및 삭제 여부를 구독
+        viewModel.startImageList.observe(viewLifecycleOwner) {
+            certificationStartImageAdapter.submitList(it)
+            certificationStartImageAdapter.notifyDataSetChanged()
             if (it.isEmpty()) {
                 viewModel.setStateCertificateNonProceeding()
             } else {
@@ -113,7 +168,11 @@ class CertificateFragment : Fragment() {
             }
         }
 
-        //TODO 기록 종료 이미지 첨부 여부를 구독해야한다.
+        // 기록 종료 이미지 첨부 및 삭제 여부 구독
+        viewModel.endImageList.observe(viewLifecycleOwner) {
+            certificationEndImageAdapter.submitList(it)
+            certificationEndImageAdapter.notifyDataSetChanged()
+        }
 
 
         //화면 상태에 따른 설정을 위한 state 구독
@@ -121,21 +180,67 @@ class CertificateFragment : Fragment() {
             when (state) {
                 //인증 진행중인 상태
                 CertificateState.PROCEEDING -> {
+
+                    //사진 추가 클릭 리스너 정의 및 설정
+                    setEndImageAddButtonClick()
+                    //리셋버튼 정의 및 설정
+                    binding.buttonCertificateReset.setOnClickListener {
+                        certificationReset()
+                    }
+                    //시작 사진 리사이클러뷰 삭제 막기
                     setRecyclerViewState()
-                    certificationImageAdapter.submitList(viewModel.certificationData.value!!.startImages.map {
+
+                    //리사이클러뷰 업데이트
+                    certificationStartImageAdapter.submitList(viewModel.certificationData.value!!.startImages.map {
                         CertificationImage(
                             it
                         )
                     })
+
+                    //인증 종료 버튼 정의 및 설정
                     binding.buttonCertificateConfirm.setOnClickListener {
                         //마지막 사진 list.size가 0보다 크지않다면
-                        return@setOnClickListener
+                        if ((viewModel.endImageList.value?.size ?: 0) <= 0) {
+                            Toast.makeText(
+                                requireContext(),
+                                getString(R.string.certificate_scr_end_image_check_warning),
+                                Toast.LENGTH_SHORT
+                            ).show()
+                            return@setOnClickListener
+                        } else {
+                            //TODO 데이터를 포장해서 서버에 전송
+                            loadingTaskSettingStart()
+                            viewModel.certificationData.removeObservers(viewLifecycleOwner)
+                            viewModel.updateCertificationInfo(
+                                viewModel.certificationData.value!!.copy(
+                                    recordEndDate = Instant.now(),
+                                    endImages = viewModel.endImageList.value?.map { it.imagesUri }
+                                        ?.toMutableList(),
+                                    certificateTime = totaleLapsedTime
+                                )
+                            )
+
+                        }
+
                     }
+
+                    // 서비스 종료에 관련된 브로드 캐스트 구독
+                    val filter = IntentFilter("end_service")
+                    LocalBroadcastManager.getInstance(requireContext())
+                        .registerReceiver(broadcastReceiver2, filter)
                 }
+
                 //사진 첨부가 되었고 인증 진행이 가능한 상태
                 CertificateState.ADDED_START_IMAGE -> {
                     binding.buttonCertificateConfirm.setOnClickListener {
-                        viewModel.insertCertificateInitInfo()
+                        //33버전 이상일 때 권한 요청
+                        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.TIRAMISU) {
+                            permissionResult.launch(
+                                Manifest.permission.POST_NOTIFICATIONS
+                            )
+                        } else {
+                            viewModel.insertCertificateInitInfo()
+                        }
                     }
                 }
                 //최초 상태(아무것도 안한 상태)
@@ -152,16 +257,19 @@ class CertificateFragment : Fragment() {
     override fun onResume() {
         super.onResume()
         val filter = IntentFilter("timer-update")
-        // 브로드 캐스트 구독
+        //타이머 브로드 캐스트 구독
         LocalBroadcastManager.getInstance(requireContext())
             .registerReceiver(broadcastReceiver, filter)
     }
 
     override fun onPause() {
         super.onPause()
+        //브로드 캐스트 리시버 구독 해제
         LocalBroadcastManager.getInstance(requireContext()).unregisterReceiver(broadcastReceiver)
+        LocalBroadcastManager.getInstance(requireContext()).unregisterReceiver(broadcastReceiver2)
     }
 
+    //브로드 캐스트 리시버로 받은 초를 시/분/초로 변환
     private fun formatTime(seconds: Long): String {
         val hours = seconds / 3600
         val minutes = (seconds % 3600) / 60
@@ -177,17 +285,28 @@ class CertificateFragment : Fragment() {
 
     //시작, 끝 사진 첨부 리사이클러뷰 어댑터 초기화 및 연결 메서드
     private fun initRecyclerviewAdapter() {
-        certificationImageAdapter = CertificationImageAdapter { itemPosition ->
+        certificationStartImageAdapter = CertificationImageAdapter { itemPosition ->
             viewModel.removeStartImage(itemPosition)
         }
 
         binding.recyclerCertificateStartImage.apply {
-            adapter = certificationImageAdapter
+            adapter = certificationStartImageAdapter
+            layoutManager =
+                LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
+        }
+
+        certificationEndImageAdapter = CertificationImageAdapter { itemPosition ->
+            viewModel.removeEndImage(itemPosition)
+        }
+
+        binding.recyclerCertificateEndImage.apply {
+            adapter = certificationEndImageAdapter
             layoutManager =
                 LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
         }
     }
 
+    //인증 시작 사진 첨부 클릭 리스너
     private fun setStartImageAddButtonClick() {
         binding.imageViewFitStartSelectImage.setOnClickListener {
             if ((viewModel.startImageList.value?.size ?: 0) >= IMAGE_PICK_MAX) {
@@ -197,33 +316,114 @@ class CertificateFragment : Fragment() {
         }
     }
 
+    //인증 종료 사진 첨부 클릭 리스너
+    private fun setEndImageAddButtonClick() {
+        binding.imageViewFitEndSelectImage.setOnClickListener {
+            if ((viewModel.endImageList.value?.size ?: 0) >= IMAGE_PICK_MAX) {
+                return@setOnClickListener
+            }
+            pickMultipleMedia.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageAndVideo))
+        }
+    }
+
+    //사진 첨부 런처
     private fun activityResultLauncher() =
         registerForActivityResult(ActivityResultContracts.PickMultipleVisualMedia()) { uris ->
             if (uris.isNotEmpty()) {
                 if (uris.size > IMAGE_PICK_MAX - (viewModel.startImageList.value?.size
                         ?: 0) && viewModel.state.value != CertificateState.PROCEEDING
                 ) {
-                    Toast.makeText(requireContext(), "사진은 최대 5장까지 첨부할 수 있습니다!", Toast.LENGTH_SHORT)
+                    Toast.makeText(
+                        requireContext(),
+                        getString(R.string.certificate_scr_image_add_warning),
+                        Toast.LENGTH_SHORT
+                    )
                         .show()
                     return@registerForActivityResult
                 }
                 if (uris.size > IMAGE_PICK_MAX - (viewModel.endImageList.value?.size
                         ?: 0) && viewModel.state.value == CertificateState.PROCEEDING
                 ) {
-                    Toast.makeText(requireContext(), "사진은 최대 5장까지 첨부할 수 있습니다!", Toast.LENGTH_SHORT)
+                    Toast.makeText(
+                        requireContext(),
+                        getString(R.string.certificate_scr_image_add_warning),
+                        Toast.LENGTH_SHORT
+                    )
                         .show()
                     return@registerForActivityResult
                 }
                 uris.forEach {
-                    val image = CertificationImage(it)
-                    viewModel.addStartImage(image)
+                    if (viewModel.state.value != CertificateState.PROCEEDING) {
+                        val image = CertificationImage(it)
+                        viewModel.addStartImage(image)
+                    } else {
+                        val image = CertificationImage(it)
+                        viewModel.addEndImage(image)
+                    }
+
                 }
             }
         }
 
+
     //시작 사진 첨부 수정 불가능하도록 설정하는 메서드
     private fun setRecyclerViewState() {
-        certificationImageAdapter.changeVisible()
+        certificationStartImageAdapter.changeVisible()
     }
 
+    private fun certificationReset() {
+        viewModel.deleteCertificationInfo()
+        val intent = Intent(this@CertificateFragment.context, StopWatchService::class.java).apply {
+            action = STOP_WATCH_RESET
+        }
+        requireContext().startService(intent)
+        LocalBroadcastManager.getInstance(requireContext()).unregisterReceiver(broadcastReceiver2)
+        setRecyclerViewState()
+        viewModel.resetStartImage()
+        viewModel.resetEndImage()
+        binding.textViewCertificateTimer.text = getString(R.string.certificate_scr_timer)
+        viewModel.setStateCertificateNonProceeding()
+    }
+
+    //12시간 초과시 프래그먼트 닫기
+    fun closeFragment(state: Boolean) {
+        if (state) {
+            findNavController().popBackStack()
+        }
+    }
+
+
+    //알림 권한 교육용 팝업
+    @RequiresApi(Build.VERSION_CODES.TIRAMISU)
+    fun showPermissionDialog() {
+        MaterialAlertDialogBuilder(requireContext())
+            .setTitle(getString(R.string.certificate_scr_dialog_title))
+            .setMessage(getString(R.string.certificate_scr_dialog_message))
+            .setPositiveButton(getString(R.string.certificate_scr_dialog_positive_button)) { dialogInterface: DialogInterface, i: Int ->
+                permissionResult.launch(
+                    Manifest.permission.POST_NOTIFICATIONS
+                )
+            }
+            .setNegativeButton(getString(R.string.certificate_scr_dialog_negative_button)) { dialogInterface: DialogInterface, i: Int ->
+                viewModel.insertCertificateInitInfo()
+            }.show()
+    }
+
+    fun loadingTaskSettingStart() {
+        binding.run {
+            constraintLayoutRootContent.alpha = 0.5f
+            buttonCertificateConfirm.isClickable = false
+            buttonCertificateReset.isClickable = false
+            progressBarSubmitLoading.visibility = View.VISIBLE
+        }
+    }
+
+    fun loadingTaskSettingEnd() {
+        binding.run {
+            constraintLayoutRootContent.alpha = 1f
+            buttonCertificateConfirm.isClickable = true
+            buttonCertificateReset.isClickable = true
+            progressBarSubmitLoading.visibility = View.GONE
+        }
+    }
 }

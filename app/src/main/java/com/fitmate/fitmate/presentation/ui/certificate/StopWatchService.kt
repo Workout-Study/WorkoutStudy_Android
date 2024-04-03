@@ -1,26 +1,23 @@
 package com.fitmate.fitmate.presentation.ui.certificate
 
-import android.app.Notification
 import android.app.NotificationChannel
 import android.app.NotificationManager
+import android.app.PendingIntent
 import android.app.Service
 import android.content.Intent
-import android.opengl.Visibility
-import android.os.Binder
-import android.os.Build
 import android.os.IBinder
-import android.util.Log
 import android.widget.RemoteViews
-import android.widget.Toast
-import androidx.annotation.ContentView
-import androidx.annotation.RequiresApi
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationCompat.VISIBILITY_PUBLIC
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
+import androidx.navigation.NavDeepLinkBuilder
+import com.fitmate.fitmate.MainActivity
 import com.fitmate.fitmate.R
 import com.fitmate.fitmate.domain.usecase.DbCertificationUseCase
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.withContext
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import java.util.Timer
 import java.util.TimerTask
 import javax.inject.Inject
@@ -45,6 +42,7 @@ class StopWatchService : Service() {
     private lateinit var notificationBuilder: NotificationCompat.Builder
     private lateinit var notificationWarningBuilder: NotificationCompat.Builder
     private lateinit var contentView: RemoteViews
+    private lateinit var pendingIntent: PendingIntent
 
 
     override fun onBind(p0: Intent?): IBinder? {
@@ -62,10 +60,17 @@ class StopWatchService : Service() {
     override fun onCreate() {
         super.onCreate()
         createNotificationChannel()
+
+        pendingIntent = NavDeepLinkBuilder(baseContext)
+            .setComponentName(MainActivity::class.java)
+            .setGraph(R.navigation.nav_main_graph)
+            .setDestination(R.id.certificateFragment)
+            .createPendingIntent()
+
         contentView = RemoteViews(packageName, R.layout.certificatiion_custom_notification)
         contentView.setTextViewText(R.id.textViewNotificationTitle, "피트메이트 인증 진행중")
         contentView.setTextViewText(R.id.textViewStopWatch, formatTime())
-        notificationBuilder = notificationBuilder(contentView)
+        notificationBuilder = notificationBuilder(contentView).setContentIntent(pendingIntent)
 
         startForeground(NOTIFICATION_ID, notificationBuilder.build())
     }
@@ -109,6 +114,7 @@ class StopWatchService : Service() {
             .setStyle(NotificationCompat.BigTextStyle().bigText("인증이 12시간을 초과하면 해당 인증과 관련된 데이터가 초기화됩니다. 어서 인증을 완료해주세요!"))
             .setVisibility(VISIBILITY_PUBLIC)
             .setOngoing(true)
+            .setContentIntent(pendingIntent)
         notificationManager.notify(WARNING_NOTIFICATION_ID,notificationWarningBuilder.build())
     }
 
@@ -120,19 +126,31 @@ class StopWatchService : Service() {
             .setStyle(NotificationCompat.BigTextStyle().bigText("인증 수행 시간이 12시간을 초과하여 진행중이던 인증 데이터가 삭제되었습니다..."))
             .setVisibility(VISIBILITY_PUBLIC)
             .setOngoing(true)
+            .setContentIntent(pendingIntent)
         notificationManager.notify(RESET_NOTIFICATION_ID,notificationWarningBuilder.build())
     }
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
-        startStopWatch()
+        when(intent?.action){
+            STOP_WATCH_START-> {
+                startStopWatch()
+            }
+
+            STOP_WATCH_RESET-> {
+                resetData()
+                stopTimer()
+                stopSelf()
+            }
+
+            STOP_WATCH_COMPLETE-> {
+                stopTimer()
+               /* stopSelf()*/
+            }
+
+            else -> {startStopWatch()}
+        }
         return START_REDELIVER_INTENT
     }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        stopTimer()
-    }
-
 
     private fun stopTimer() {
         timer.cancel()
@@ -145,26 +163,44 @@ class StopWatchService : Service() {
                 elapsedTimeSeconds++
                 updateNotification()
                 updateFragment(elapsedTimeSeconds)
-                if (elapsedTimeSeconds == 10L) {
+                if (elapsedTimeSeconds == 6 * 60 * 60L) {
                     showWarningNotification()
                 }
-                if (elapsedTimeSeconds == 20L) {
-                    stopSelf()
+                if (elapsedTimeSeconds == 12 * 60 * 60L) {
                     showResetNotification()
                     resetData()
+                    stopTimer()
+                    endServiceInfoToFragment()
+                    stopSelf()
                 }
             }
         }, 1000, 1000)
 
     }
 
+    //프래그먼트 스톱워치 업데이트 브로드 캐스트 리시버 전송
     private fun updateFragment(elapsedTimeSeconds: Long) {
         val intent = Intent("timer-update")
         intent.putExtra("elapsedTime", elapsedTimeSeconds)
         LocalBroadcastManager.getInstance(this).sendBroadcast(intent)
     }
 
+    //room데이터 삭제
     private fun resetData() {
-        // 데이터 초기화 로직
+        CoroutineScope(Dispatchers.IO).launch {
+            dbCertificationUseCase.delete()
+        }
+    }
+
+    //서비스가 시간초과로 끝났을 때 프래그먼트 종료 브로드캐스트 리시버 전송
+    fun endServiceInfoToFragment() {
+        val intent = Intent("end_service")
+        intent.putExtra("bye", true)
+        LocalBroadcastManager.getInstance(this).sendBroadcast(intent)
+    }
+
+    //강제로 종료되었을 때
+    override fun onTaskRemoved(rootIntent: Intent?) {
+        super.onTaskRemoved(rootIntent)
     }
 }
