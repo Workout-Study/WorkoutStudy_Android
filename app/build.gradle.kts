@@ -1,3 +1,5 @@
+import com.android.build.gradle.internal.cxx.configure.gradleLocalProperties
+
 plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
@@ -16,8 +18,21 @@ android {
         targetSdk = AppConfig.targetSDK
         versionCode = AppConfig.versionCode
         versionName = AppConfig.versionName
-
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+
+        val apiKeys = listOf("NAVER_CLIENT", "NAVER_SECRET", "KAKAO_NATIVE_APP_KEY", "KAKAO_REST_API_KEY", "KAKAO_ADMIN_KEY", "CHAT_SERVER_ADDRESS")
+
+        apiKeys.forEach { key ->
+            val value = getApiKey(key)
+            buildConfigField("String", key, value)
+        }
+
+//        buildConfigField("String", "NAVER_CLIENT", getApiKey("NAVER_CLIENT"))
+//        buildConfigField("String", "NAVER_SECRET", getApiKey("NAVER_SECRET"))
+//        buildConfigField("String", "KAKAO_NATIVE_APP_KEY", getApiKey("KAKAO_NATIVE_APP_KEY"))
+//        buildConfigField("String", "KAKAO_REST_API_KEY", getApiKey("KAKAO_REST_API_KEY"))
+//        buildConfigField("String", "KAKAO_ADMIN_KEY", getApiKey("KAKAO_ADMIN_KEY"))
+//        buildConfigField("String", "CHAT_SERVER_ADDRESS", getApiKey("CHAT_SERVER_ADDRESS"))
     }
 
     buildTypes {
@@ -38,7 +53,12 @@ android {
     }
     buildFeatures{
         dataBinding = true
+        buildConfig = true
     }
+}
+
+fun getApiKey(propertyKey: String): String {
+    return gradleLocalProperties(rootDir).getProperty(propertyKey)
 }
 
 dependencies {

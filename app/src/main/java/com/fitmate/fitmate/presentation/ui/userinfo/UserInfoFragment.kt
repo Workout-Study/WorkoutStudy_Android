@@ -55,15 +55,12 @@ class UserInfoFragment: Fragment(R.layout.fragment_user_info) {
 
     private fun handleOnClick(viewId: Int) {
         when (viewId) {
-            R.id.textViewUserInfoContent1 -> {
-                val intent = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.INTERNAL_CONTENT_URI)
-                registerForActivityResult.launch(intent)
-            }
-            R.id.textViewUserInfoContent2 -> navigateTo(R.id.action_userInfoFragment_to_myFitOffFragment)
-            R.id.textViewUserInfoContent3 -> Toast.makeText(context, "지정된 공지사항이 없습니다.", Toast.LENGTH_SHORT).show()
-            R.id.textViewUserInfoContent4 -> navigateTo(R.id.action_userInfoFragment_to_licenseFragment)
-            R.id.textViewUserInfoContent5 -> navigateTo(R.id.action_userInfoFragment_to_loginFragment)
-            R.id.textViewUserInfoContent6 -> navigateTo(R.id.action_userInfoFragment_to_loginFragment)
+            R.id.textViewUserInfoContent1 -> accessGallery()
+            R.id.textViewUserInfoContent2 -> navigateFitOff()
+            R.id.textViewUserInfoContent3 -> announcement()
+            R.id.textViewUserInfoContent4 -> navigateLicense()
+            R.id.textViewUserInfoContent5 -> logout()
+            R.id.textViewUserInfoContent6 -> withdraw()
         }
     }
 
@@ -101,11 +98,15 @@ class UserInfoFragment: Fragment(R.layout.fragment_user_info) {
         val userRef = storageRef.child(fileName)
 
         userRef.putFile(uri).addOnSuccessListener {
-            activity.getSharedPreferences("UserInfo", AppCompatActivity.MODE_PRIVATE).edit().apply {
-                putString("profileImageUri", uri.toString())
-                apply()
+            userRef.downloadUrl.addOnSuccessListener { downloadUri ->
+                val downloadURL = downloadUri.toString()
+                activity.getSharedPreferences("UserInfo", AppCompatActivity.MODE_PRIVATE).edit().apply {
+                    putString("profileImageUri", uri.toString())
+                    apply()
+                }
+
+                Toast.makeText(activity, "성공적으로 프로필 사진을 변경하였습니다.", Toast.LENGTH_SHORT).show()
             }
-            Toast.makeText(activity, "성공적으로 프로필 사진을 변경하였습니다.", Toast.LENGTH_SHORT).show()
         }.addOnFailureListener {
             Toast.makeText(activity, "사진을 업로드하는데 실패하였습니다.", Toast.LENGTH_SHORT).show()
         }
@@ -120,5 +121,29 @@ class UserInfoFragment: Fragment(R.layout.fragment_user_info) {
                 .apply(RequestOptions().circleCrop())
                 .into(binding.imageViewUserInfoIcon)
         }
+    }
+
+    private fun accessGallery() {
+        registerForActivityResult.launch(Intent(Intent.ACTION_PICK, MediaStore.Images.Media.INTERNAL_CONTENT_URI))
+    }
+
+    private fun announcement() {
+        Toast.makeText(context, "지정된 공지사항이 없습니다.", Toast.LENGTH_SHORT).show()
+    }
+
+    private fun logout() {
+        navigateTo(R.id.action_userInfoFragment_to_loginFragment)
+    }
+
+    private fun withdraw() {
+        navigateTo(R.id.action_userInfoFragment_to_loginFragment)
+    }
+
+    private fun navigateLicense() {
+        navigateTo(R.id.action_userInfoFragment_to_licenseFragment)
+    }
+
+    private fun navigateFitOff() {
+        navigateTo(R.id.action_userInfoFragment_to_myFitOffFragment)
     }
 }
