@@ -5,7 +5,9 @@ import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
+import androidx.room.Update
 import com.fitmate.fitmate.data.model.entity.CertificationEntity
+import com.fitmate.fitmate.domain.model.DbCertification
 import kotlinx.coroutines.flow.Flow
 
 @Dao
@@ -25,4 +27,5 @@ interface CertificationDao {
     //인증 데이터 삽입(혹시 몰라서 REPLACE 작업)
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insert(item: CertificationEntity)
+
 }

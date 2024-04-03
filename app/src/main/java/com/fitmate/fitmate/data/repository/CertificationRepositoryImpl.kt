@@ -8,6 +8,7 @@ import com.fitmate.fitmate.domain.model.DbCertification
 import com.fitmate.fitmate.domain.repository.CertificationRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
+import java.io.IOException
 import javax.inject.Inject
 
 class CertificationRepositoryImpl @Inject constructor(
@@ -30,7 +31,6 @@ class CertificationRepositoryImpl @Inject constructor(
         }
     }
 
-
     override suspend fun save(item: DbCertification): Boolean {
         return try {
             certificationDao.insert(item.toEntity())
@@ -42,7 +42,13 @@ class CertificationRepositoryImpl @Inject constructor(
     }
 
     override suspend fun update(item: DbCertification): Boolean {
-        TODO("Not yet implemented")
+        return try{
+            certificationDao.insert(item.toEntity())
+            true
+        }catch (e:IOException){
+            Log.d("room","${e.message}")
+            false
+        }
     }
 
     override suspend fun delete(): Boolean {

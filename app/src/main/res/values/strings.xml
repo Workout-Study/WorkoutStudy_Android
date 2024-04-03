@@ -148,7 +148,13 @@
     <string name="certificate_scr_timer">00 : 00 : 00</string>
     <string name="certificate_scr_confirm">\t\t FIT 기록 시작하기 \t\t</string>
     <string name="certificate_scr_confirm_unactive">인증을 시작하려면 사진을 첨부해주세요!</string>
+    <string name="certificate_scr_image_add_warning">사진은 최대 5장까지 첨부할 수 있습니다!</string>
+    <string name="certificate_scr_end_image_check_warning">종료 사진을 하나 이상 첨부해주세요!</string>
     <string name="certificate_scr_confirm_finish">인증 완료하기</string>
+    <string name="certificate_scr_dialog_title">정말 거부하시겠습니까?</string>
+    <string name="certificate_scr_dialog_message">알림 권한을 허용하지 않으면 인증 과정에서 운동 시간과 알림을 확인할 수 없습니다!</string>
+    <string name="certificate_scr_dialog_positive_button">권한 허용하러가기</string>
+    <string name="certificate_scr_dialog_negative_button">알림 없이 진행하기</string>
 
     <string name="my_fit_off_scr_toolbar">나의 피트오프 열람</string>
     <string name="my_fit_off_scr_empty_text">피트 오프 데이터가 존재하지 않습니다</string>
