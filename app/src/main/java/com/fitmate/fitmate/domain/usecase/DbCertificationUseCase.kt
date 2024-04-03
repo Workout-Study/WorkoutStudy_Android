@@ -13,5 +13,7 @@ class DbCertificationUseCase @Inject constructor(
 
     suspend fun save(item: DbCertification) = certificationRepository.save(item)
 
+    suspend fun update(item: DbCertification) = certificationRepository.update(item)
+
     suspend fun delete() = certificationRepository.delete()
 }
