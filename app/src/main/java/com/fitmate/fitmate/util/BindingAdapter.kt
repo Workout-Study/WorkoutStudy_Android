@@ -22,43 +22,64 @@ fun ImageView.setImage(image: String) {
 }
 
 @BindingAdapter("certificate_end_image_container_state")
-fun LinearLayout.setContainerVisible(state:CertificateState){
-    when(state){
-        CertificateState.NON_PROCEEDING,CertificateState.ADDED_START_IMAGE ->{
+fun LinearLayout.setContainerVisible(state: CertificateState) {
+    when (state) {
+        CertificateState.NON_PROCEEDING, CertificateState.ADDED_START_IMAGE -> {
             this.visibility = View.GONE
         }
-        CertificateState.PROCEEDING ->{
+
+        CertificateState.PROCEEDING -> {
             this.visibility = View.VISIBLE
         }
     }
 }
 
 @BindingAdapter("certificate_end_image_add_state")
-fun CardView.setContainerVisible(state:CertificateState){
-    when(state){
-        CertificateState.NON_PROCEEDING,CertificateState.ADDED_START_IMAGE ->{
+fun CardView.setContainerVisible(state: CertificateState) {
+    when (state) {
+        CertificateState.NON_PROCEEDING, CertificateState.ADDED_START_IMAGE -> {
             this.visibility = View.VISIBLE
         }
-        CertificateState.PROCEEDING ->{
+
+        CertificateState.PROCEEDING -> {
             this.visibility = View.GONE
         }
     }
 }
 
 @BindingAdapter("certificate_button_state")
-fun Button.buttonSetState(state:CertificateState){
-    when(state){
-        CertificateState.NON_PROCEEDING ->{
+fun Button.buttonSetState(state: CertificateState) {
+    when (state) {
+        CertificateState.NON_PROCEEDING -> {
             this.isEnabled = false
             this.text = this.context.getString(R.string.certificate_scr_confirm_unactive)
         }
-        CertificateState.ADDED_START_IMAGE ->{
+
+        CertificateState.ADDED_START_IMAGE -> {
             this.isEnabled = true
             this.text = this.context.getString(R.string.certificate_scr_confirm)
         }
-        CertificateState.PROCEEDING ->{
+
+        CertificateState.PROCEEDING -> {
             this.isEnabled = true
             this.text = this.context.getString(R.string.certificate_scr_confirm_finish)
+        }
+    }
+}
+
+@BindingAdapter("certificate_reset_button_state")
+fun Button.resetButtonSetState(state: CertificateState) {
+    when (state) {
+        CertificateState.NON_PROCEEDING -> {
+            this.visibility = View.GONE
+        }
+
+        CertificateState.ADDED_START_IMAGE -> {
+            this.visibility = View.GONE
+        }
+
+        CertificateState.PROCEEDING -> {
+            this.visibility = View.VISIBLE
         }
     }
 }

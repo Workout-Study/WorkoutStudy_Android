@@ -3,9 +3,7 @@ package com.fitmate.fitmate.presentation.ui.certificate.list
 import android.view.View
 import androidx.recyclerview.widget.RecyclerView
 import com.fitmate.fitmate.databinding.ItemCertificateBinding
-import com.fitmate.fitmate.databinding.ItemProgressBinding
 import com.fitmate.fitmate.domain.model.CertificationImage
-import com.fitmate.fitmate.domain.model.MyFitGroupProgress
 
 class CertificationImageViewHolder(private val binding:ItemCertificateBinding, private val clickRemove:(index:Int)->Unit): RecyclerView.ViewHolder(binding.root) {
 
