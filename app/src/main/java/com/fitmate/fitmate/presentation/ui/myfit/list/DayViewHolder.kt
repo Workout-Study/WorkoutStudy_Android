@@ -47,7 +47,7 @@ class DayViewHolder(
         binding.itemDayText.alpha = if (tempMonth != date.monthValue) 0.0f else 1.0f
 
         binding.root.setOnClickListener {
-            onItemClick(adapterPosition)
+            onItemClick(date.dayOfMonth)
         }
     }
 }
