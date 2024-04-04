@@ -56,10 +56,4 @@ class OnboardingContainerFragment : Fragment() {
         binding.dotsIndicator.attachTo(binding.viewPagerOnboardingContainer)
     }
 
-    //온보딩 화면 본적이 있는지 여부 조회
-    private fun onBoardingFinished(): Boolean {
-        val sharedPref = activity?.getSharedPreferences("onBoarding", Context.MODE_PRIVATE)
-        return sharedPref?.getBoolean("Finished", false) ?: false
-    }
-
 }

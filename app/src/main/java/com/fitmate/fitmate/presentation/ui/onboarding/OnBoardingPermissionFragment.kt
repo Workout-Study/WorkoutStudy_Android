@@ -28,7 +28,7 @@ class OnBoardingPermissionFragment: Fragment() {
             //권한 물어보고 로그인 화면으로 이동
             //TODO 권한 리스트들 물어보기
             //TODO 온보딩 완료 값 로컬에 저장
-            findNavController().navigate(R.id.action_onBoardingPermissionFragment_to_loginFragment)
+            /*findNavController().navigate(R.id.action_onBoardingPermissionFragment_to_loginFragment)*/
         }
     }
 
