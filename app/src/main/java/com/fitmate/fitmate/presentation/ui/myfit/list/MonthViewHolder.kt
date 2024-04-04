@@ -11,12 +11,15 @@ import java.time.ZoneId
 import java.util.Calendar
 import java.util.Date
 
-abstract class MonthViewHolder(view: View) : RecyclerView.ViewHolder(view) {
+abstract class MonthViewHolder(
+    view: View,
+) : RecyclerView.ViewHolder(view) {
     abstract fun bind(month: Int, position: Int)
 }
 
 class MonthView(
-    private val binding: ItemListMonthBinding
+    private val binding: ItemListMonthBinding,
+    private val onclick:(monthPosition:Int ,dayPosition: Int) -> Unit
 ) : MonthViewHolder(binding.root) {
     private val calendar: Calendar = Calendar.getInstance()
 
@@ -40,7 +43,9 @@ class MonthView(
             calendar.add(Calendar.WEEK_OF_MONTH, 1)
         }
         val dayListManager = GridLayoutManager(binding.root.context, 7)
-        val dayListAdapter = DayListAdapter(tempMonth, dayList) { position -> }
+        val dayListAdapter = DayListAdapter(tempMonth, dayList) { position ->
+            onclick(tempMonth,position)
+        }
         binding.itemMonthDayList.apply {
             layoutManager = dayListManager
             adapter = dayListAdapter
