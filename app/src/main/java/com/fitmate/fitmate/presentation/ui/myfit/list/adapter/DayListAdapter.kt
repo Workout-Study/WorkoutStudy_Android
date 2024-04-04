@@ -11,7 +11,9 @@ import com.fitmate.fitmate.presentation.ui.myfit.list.DayViewHolder
 import java.time.LocalDate
 
 class DayListAdapter(
+    //해당 월
     private val tempMonth: Int,
+    //해당 월의 리스트
     private val dayList: MutableList<LocalDate>,
     private val onItemClick: (position: Int) -> Unit
 ) : ListAdapter<LocalDate, DayViewHolder>(
@@ -38,9 +40,6 @@ class DayListAdapter(
     override fun onBindViewHolder(holder: DayViewHolder, position: Int) {
         val date = dayList[position]
         holder.bind(date, position, position == selectedPosition)
-        holder.itemView.setOnClickListener {
-            Toast.makeText(holder.itemView.context, "$date", Toast.LENGTH_SHORT).show()
-        }
     }
 
     override fun getItemCount(): Int = dayList.size
