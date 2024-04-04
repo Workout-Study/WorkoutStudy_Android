@@ -8,7 +8,9 @@ import com.fitmate.fitmate.databinding.ItemListMonthBinding
 import com.fitmate.fitmate.presentation.ui.myfit.list.MonthView
 import com.fitmate.fitmate.presentation.ui.myfit.list.MonthViewHolder
 
-class MonthListAdapter : ListAdapter<Int, MonthViewHolder>(
+class MonthListAdapter(
+    private val onclick: (monthPosition:Int ,dayPosition:Int)->Unit
+) : ListAdapter<Int, MonthViewHolder>(
     object : DiffUtil.ItemCallback<Int>() {
         override fun areItemsTheSame(oldItem: Int, newItem: Int): Boolean =
             oldItem == newItem
@@ -27,7 +29,7 @@ class MonthListAdapter : ListAdapter<Int, MonthViewHolder>(
             parent,
             false
         )
-        return MonthView(binding)
+        return MonthView(binding,onclick)
     }
 
     override fun onBindViewHolder(holder: MonthViewHolder, position: Int) {
