@@ -85,6 +85,7 @@
     <string name="my_fit_scr_fit_off_spacebar">\t피트오프</string>
     <string name="my_fit_scr_fit_record_spacebar">\t기록하기</string>
     <string name="my_fit_scr_fit_timer_text">[00:00:00]</string>
+    <string name="my_fit_scr_group_progress_text">%d / %d</string>
 
     <string name="my_group_scr_toolbar">My FitGroup</string>
 
@@ -159,5 +160,6 @@
     <string name="my_fit_off_scr_empty_text">피트 오프 데이터가 존재하지 않습니다</string>
 
     <string name="group_vote_scr_toolbar">그룹 투표 현황</string>
+
 
 </resources>
