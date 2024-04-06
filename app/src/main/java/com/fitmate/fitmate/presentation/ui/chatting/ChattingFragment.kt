@@ -14,6 +14,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.navigation.ui.setupWithNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.fitmate.fitmate.BuildConfig
 import com.fitmate.fitmate.R
 import com.fitmate.fitmate.databinding.FragmentChattingBinding
 import com.fitmate.fitmate.domain.model.ChatItem
@@ -29,16 +30,24 @@ import okhttp3.WebSocket
 import okhttp3.WebSocketListener
 import org.json.JSONObject
 import java.time.Instant
+import java.time.LocalDateTime
+import java.time.ZoneId
+import java.util.UUID
 import javax.inject.Inject
 
 @AndroidEntryPoint
 class ChattingFragment : Fragment(R.layout.fragment_chatting) {
+
+    companion object {
+        const val chatServerAddress = BuildConfig.CHAT_SERVER_ADDRESS
+    }
 
     private lateinit var binding: FragmentChattingBinding
     private lateinit var heightProvider: HeightProvider
     private var webSocket: WebSocket? = null
     @Inject lateinit var dbChatUseCase: DBChatUseCase
     private val fitGroupId = 1
+    private val fitMateId = 1
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -65,14 +74,14 @@ class ChattingFragment : Fragment(R.layout.fragment_chatting) {
     private fun setUpRecyclerView() {
         val recyclerView: RecyclerView = binding.recyclerViewFragmentChatting
         val adapter = ChatAdapter()
-        val testItems = mutableListOf<ChatItem>()
-        testItems.add(ChatItem(0, "$fitGroupId", "경원", "안녕"))
-        testItems.add(ChatItem(1, "$fitGroupId", "현구", "응 그래"))
+        //val testItems = mutableListOf<ChatItem>()
+        //testItems.add(ChatItem("0", "$fitGroupId", "경원", "안녕", ))
+        //testItems.add(ChatItem("1", "$fitGroupId", "현구", "응 그래"))
         recyclerView.layoutManager = LinearLayoutManager(context)
         recyclerView.adapter = adapter
         recyclerView.itemAnimator = null
-        adapter.submitList(testItems.toList())
-        adapter.submitList(testItems)
+        //adapter.submitList(testItems.toList())
+        //adapter.submitList(testItems)
     }
 
     private fun setupClickListeners() {
@@ -136,11 +145,7 @@ class ChattingFragment : Fragment(R.layout.fragment_chatting) {
 
     private fun setupWebSocketConnection(fitGroupId: String) {
         val client = OkHttpClient()
-        val request = if(isEmulator()) {
-            Request.Builder().url("ws://10.0.0.2:8080/ws/:${fitGroupId}").build()
-        } else {
-            Request.Builder().url("ws://localhost:8080/ws/:${fitGroupId}").build()
-        }
+        val request = Request.Builder().url("ws://3.38.227.26:8080/ws/${fitGroupId}").build()
 
         webSocket = client.newWebSocket(request, object : WebSocketListener() {
             override fun onOpen(webSocket: WebSocket, response: Response) {
@@ -148,24 +153,49 @@ class ChattingFragment : Fragment(R.layout.fragment_chatting) {
             }
 
             override fun onFailure(webSocket: WebSocket, t: Throwable, response: Response?) {
-                Log.d("woojugoing_websocket", "실패, ${t.message}, ${request.url()}, ${Emulator()}")
+                Log.e("WebSocket Failure", "Connection failed: ${t.message}")
+
+                // 실패 응답이 있을 경우, 상태 코드와 응답 본문 로깅
+                response?.let {
+                    Log.e("WebSocket Failure", "Response Code: ${it.code()}, Response Body: ${it.body()?.string()}")
+                } ?: Log.e("WebSocket Failure", "No response received.")
+
+                // 예외 스택 트레이스 로깅
+                Log.e("WebSocket Failure", "Exception details:", t)
+
+                // 추가적으로, 에뮬레이터에서 실행되고 있는지 확인
+                if (isEmulator()) {
+                    Log.e("WebSocket Failure", "Running on emulator. Model: ${Build.MODEL}")
+                } else {
+                    Log.e("WebSocket Failure", "Running on real device. Model: ${Build.MODEL}")
+                }
             }
         })
     }
 
-    private fun sendMessage(message: String) {
+    private fun sendMessage(messageId: String, message: String, timeNow: LocalDateTime) {
         val jsonObject = JSONObject().apply {
-            put("id", generateMessageId())
+            put("messageId", messageId)
+            put("fitGroupId", fitGroupId)
+            put("fitMateId", fitMateId)
             put("message", message)
+            put("messageTime", timeNow)
+            put("messageType", "CHATTING")
         }
-        val boolean = webSocket?.send(jsonObject.toString())
-        Log.d("woojugoing_send_json", jsonObject.toString())
-        Log.d("woojugoing_send_?", boolean.toString())
+        val success = webSocket?.send(jsonObject.toString())
+        if (success == true) {
+            Log.d("woojugoing_send_json", jsonObject.toString())
+            Log.d("woojugoing_send_success", "Message sent successfully")
+        } else {
+            Log.e("woojugoing_send_error", "Failed to send message")
+        }
     }
 
     private fun sendChatMessage(message: String) {
-        val newChatItem = ChatItem(null, "testGroupId", "경원", message)
-        sendMessage(message)
+        val messageId = UUID.randomUUID().toString()
+        val timeNow = Instant.now().atZone(ZoneId.systemDefault()).toLocalDateTime()
+        val newChatItem = ChatItem(messageId, "1", "경원", message, timeNow, "CHATTING")
+        sendMessage(messageId, message, timeNow)
         lifecycleScope.launch { dbChatUseCase.insert(newChatItem) }
         binding.editTextChattingMySpeech.setText("")
         val testItems = (binding.recyclerViewFragmentChatting.adapter as? ChatAdapter)?.currentList?.toMutableList()
@@ -174,10 +204,6 @@ class ChattingFragment : Fragment(R.layout.fragment_chatting) {
         binding.recyclerViewFragmentChatting.post {
             binding.recyclerViewFragmentChatting.smoothScrollToPosition(testItems?.size ?: (0 - 1))
         }
-    }
-
-    private fun generateMessageId(): String {
-        return "${Instant.now()}${"fitGroupId"}${"fitMateId"}"
     }
 
     fun isEmulator(): Boolean {

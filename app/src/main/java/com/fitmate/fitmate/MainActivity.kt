@@ -10,6 +10,7 @@ import androidx.navigation.ui.setupWithNavController
 import com.fitmate.fitmate.databinding.ActivityMainBinding
 import com.fitmate.fitmate.presentation.viewmodel.MainActivityViewModel
 import com.fitmate.fitmate.util.ControlActivityInterface
+import com.google.android.material.bottomnavigation.BottomNavigationView
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -38,7 +39,6 @@ class MainActivity : AppCompatActivity(), ControlActivityInterface {
 
         //온보딩 조회 여부 확인
         viewModel.loadOnBoardingStateInPref()
-
     }
 
     private fun observeOnboardingState() {
