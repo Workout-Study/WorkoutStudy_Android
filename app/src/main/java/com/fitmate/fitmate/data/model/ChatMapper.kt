@@ -6,17 +6,22 @@ import com.fitmate.fitmate.domain.model.ChatItem
 object ChatMapper {
 
     fun ChatItem.toEntity() = ChatEntity(
-        id = id,
+        messageId = messageId,
         fitGroupId = fitGroupId,
         fitmateId = fitmateId,
-        message = message
+        message = message,
+        messageTime = messageTime,
+        messageType = messageType
+
     )
 
     fun ChatEntity.toDBChat() = ChatItem(
-        id = id,
+        messageId = messageId,
         fitGroupId = fitGroupId,
         fitmateId = fitmateId,
-        message = message
+        message = message,
+        messageTime = messageTime,
+        messageType = messageType
     )
 
 }
