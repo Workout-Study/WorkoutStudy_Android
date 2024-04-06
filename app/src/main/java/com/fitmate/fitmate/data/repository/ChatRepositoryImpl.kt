@@ -28,7 +28,7 @@ class ChatRepositoryImpl @Inject constructor(
             performCheckpoint()
             true
         } catch (e: Exception) {
-            Log.d("woojugoing", "Insert Problem : ${e.message}")
+            Log.d("woojugoing_impl_insert", "Insert Problem : ${e.message}")
             false
         }
     }
@@ -39,7 +39,7 @@ class ChatRepositoryImpl @Inject constructor(
             val db = chatDatabase.openHelper.writableDatabase
             db.execSQL("PRAGMA wal_checkpoint(FULL)")
         } catch (e: Exception) {
-            Log.d("woojugoing", "Checkpoint failed: ${e.message}")
+            Log.d("woojugoing_impl_check", "Checkpoint failed: ${e.message}")
         }
     }
 

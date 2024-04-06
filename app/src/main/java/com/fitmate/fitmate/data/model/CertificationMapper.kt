@@ -2,6 +2,8 @@ package com.fitmate.fitmate.data.model
 
 import android.net.Uri
 import com.fitmate.fitmate.data.model.entity.CertificationEntity
+import com.fitmate.fitmate.data.model.entity.ChatEntity
+import com.fitmate.fitmate.domain.model.ChatItem
 import com.fitmate.fitmate.domain.model.DbCertification
 
 object CertificationMapper {

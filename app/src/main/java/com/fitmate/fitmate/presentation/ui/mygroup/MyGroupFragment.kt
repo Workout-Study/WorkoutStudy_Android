@@ -5,7 +5,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.fitmate.fitmate.ChatActivity
@@ -14,7 +13,7 @@ import com.fitmate.fitmate.R
 import com.fitmate.fitmate.databinding.FragmentMyGroupBinding
 import com.fitmate.fitmate.util.ControlActivityInterface
 import com.fitmate.fitmate.domain.model.FitGroup
-import com.fitmate.fitmate.ui.myfit.list.adapter.MyFitGroupAdapter
+import com.fitmate.fitmate.presentation.ui.mygroup.list.adapter.MyFitGroupAdapter
 
 class MyGroupFragment: Fragment(R.layout.fragment_my_group) {
 
