@@ -6,7 +6,7 @@ import androidx.room.TypeConverters
 import com.fitmate.fitmate.data.model.entity.ChatEntity
 import com.fitmate.fitmate.data.source.dao.ChatDao
 
-@Database(entities = [ChatEntity::class], version = 2)
+@Database(entities = [ChatEntity::class], version = 1)
 @TypeConverters(ChatTimeConverter::class)
 abstract class ChatDatabase: RoomDatabase() {
     abstract fun contentDao(): ChatDao
