@@ -11,11 +11,15 @@ import com.fitmate.fitmate.domain.model.ChatItem
 
 class ChatAdapter: ListAdapter<ChatItem, ChatAdapter.ViewHolder>(ChatDiffCallback) {
 
-    var otherUser: ChatItem? = null //TODO 임시. 이거 유저 테이블 들어오면 그 테이블로 바뀔듯
+    private var currentUserFitMateId: Int? = null
+
+    fun setCurrentUserFitMateId(fitMateId: Int) {
+        currentUserFitMateId = fitMateId
+    }
 
     inner class ViewHolder(private val binding: ItemChattingChatBinding): RecyclerView.ViewHolder(binding.root) {
         fun bind(item: ChatItem) {
-            val isCurrentUser = item.fitmateId == "경원"
+            val isCurrentUser = item.fitMateId == currentUserFitMateId
             binding.apply {
                 containerItemChattingChatLeft.visibility = if (isCurrentUser) View.GONE else View.VISIBLE
                 containerItemChattingChatRight.visibility = if (isCurrentUser) View.VISIBLE else View.GONE
@@ -24,7 +28,7 @@ class ChatAdapter: ListAdapter<ChatItem, ChatAdapter.ViewHolder>(ChatDiffCallbac
                 textViewToUse.text = item.message
 
                 if (!isCurrentUser) {
-                    textViewItemChattingFitMateNameLeft.text = item.fitmateId
+                    textViewItemChattingFitMateNameLeft.text = item.fitMateId.toString()
                 }
             }
         }
@@ -42,7 +46,7 @@ class ChatAdapter: ListAdapter<ChatItem, ChatAdapter.ViewHolder>(ChatDiffCallbac
     companion object {
         val ChatDiffCallback = object: DiffUtil.ItemCallback<ChatItem>() {
             override fun areItemsTheSame(oldItem: ChatItem, newItem: ChatItem): Boolean {
-                return oldItem.fitmateId == newItem.fitmateId
+                return oldItem.fitMateId == newItem.fitMateId
             }
 
             override fun areContentsTheSame(oldItem: ChatItem, newItem: ChatItem): Boolean {

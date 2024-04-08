@@ -46,8 +46,16 @@ class ChattingFragment : Fragment(R.layout.fragment_chatting) {
     private lateinit var heightProvider: HeightProvider
     private var webSocket: WebSocket? = null
     @Inject lateinit var dbChatUseCase: DBChatUseCase
-    private val fitGroupId = 1
-    private val fitMateId = 1
+    private var fitGroupId: Int = -1
+    private var fitMateId: Int = -1
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        arguments?.let {
+            fitGroupId = it.getInt("fitGroupId", -1)
+            fitMateId = it.getInt("fitMateId", -1)
+        }
+    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -60,9 +68,14 @@ class ChattingFragment : Fragment(R.layout.fragment_chatting) {
         binding.ImageViewChattingSendMySpeech.setOnClickListener {
             val message = binding.editTextChattingMySpeech.text.toString()
             if (message.isNotEmpty()) {
-                    sendChatMessage(message)
+                sendChatMessage(message)
             }
         }
+    }
+
+    override fun onPause() {
+        super.onPause()
+        webSocket?.close(1000, "Fragment Paused")
     }
 
     private fun initFragment(view: View) {
@@ -74,14 +87,10 @@ class ChattingFragment : Fragment(R.layout.fragment_chatting) {
     private fun setUpRecyclerView() {
         val recyclerView: RecyclerView = binding.recyclerViewFragmentChatting
         val adapter = ChatAdapter()
-        //val testItems = mutableListOf<ChatItem>()
-        //testItems.add(ChatItem("0", "$fitGroupId", "경원", "안녕", ))
-        //testItems.add(ChatItem("1", "$fitGroupId", "현구", "응 그래"))
+        adapter.setCurrentUserFitMateId(fitMateId)
         recyclerView.layoutManager = LinearLayoutManager(context)
         recyclerView.adapter = adapter
         recyclerView.itemAnimator = null
-        //adapter.submitList(testItems.toList())
-        //adapter.submitList(testItems)
     }
 
     private fun setupClickListeners() {
@@ -149,7 +158,7 @@ class ChattingFragment : Fragment(R.layout.fragment_chatting) {
 
         webSocket = client.newWebSocket(request, object : WebSocketListener() {
             override fun onOpen(webSocket: WebSocket, response: Response) {
-                Log.d("woojugoing_websocket", "WebSocket 연결 성공, ${request.url()}")
+                Log.d("woojugoing_websocket", "WebSocket 연결 성공, ${request.url}")
             }
 
             override fun onFailure(webSocket: WebSocket, t: Throwable, response: Response?) {
@@ -157,7 +166,7 @@ class ChattingFragment : Fragment(R.layout.fragment_chatting) {
 
                 // 실패 응답이 있을 경우, 상태 코드와 응답 본문 로깅
                 response?.let {
-                    Log.e("WebSocket Failure", "Response Code: ${it.code()}, Response Body: ${it.body()?.string()}")
+                    Log.e("WebSocket Failure", "Response Code: ${it.code}, Response Body: ${it.body?.string()}")
                 } ?: Log.e("WebSocket Failure", "No response received.")
 
                 // 예외 스택 트레이스 로깅
@@ -169,6 +178,11 @@ class ChattingFragment : Fragment(R.layout.fragment_chatting) {
                 } else {
                     Log.e("WebSocket Failure", "Running on real device. Model: ${Build.MODEL}")
                 }
+            }
+
+            override fun onMessage(webSocket: WebSocket, text: String) {
+                super.onMessage(webSocket, text)
+                Log.d("WebSocket", "Receiving : $text")
             }
         })
     }
@@ -194,7 +208,7 @@ class ChattingFragment : Fragment(R.layout.fragment_chatting) {
     private fun sendChatMessage(message: String) {
         val messageId = UUID.randomUUID().toString()
         val timeNow = Instant.now().atZone(ZoneId.systemDefault()).toLocalDateTime()
-        val newChatItem = ChatItem(messageId, "1", "경원", message, timeNow, "CHATTING")
+        val newChatItem = ChatItem(messageId, fitGroupId, fitMateId, message, timeNow, "CHATTING")
         sendMessage(messageId, message, timeNow)
         lifecycleScope.launch { dbChatUseCase.insert(newChatItem) }
         binding.editTextChattingMySpeech.setText("")

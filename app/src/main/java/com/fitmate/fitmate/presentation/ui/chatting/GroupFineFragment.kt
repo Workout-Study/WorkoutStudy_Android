@@ -24,7 +24,7 @@ class GroupFineFragment: Fragment(R.layout.fragment_group_fine) {
 
         val recyclerView: RecyclerView = binding.recyclerFine
         val adapter = GroupFineAdapter {}
-        val testItems = listOf(FitGroup("김성호", "03/13", "5,000"))
+        val testItems = listOf(FitGroup("김성호", "03/13", "5,000", 1, 1))
 
         recyclerView.layoutManager = LinearLayoutManager(context)
         recyclerView.adapter = adapter
