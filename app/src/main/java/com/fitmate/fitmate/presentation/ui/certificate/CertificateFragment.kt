@@ -8,7 +8,6 @@ import android.content.Intent
 import android.content.IntentFilter
 import android.os.Build
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -23,7 +22,6 @@ import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.ui.setupWithNavController
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.bumptech.glide.Glide
 import com.fitmate.fitmate.MainActivity
 import com.fitmate.fitmate.R
 import com.fitmate.fitmate.databinding.FragmentCertificateBinding
@@ -113,7 +111,12 @@ class CertificateFragment : Fragment() {
         viewModel.getCertificationDataDb(1)
         viewModel.certificationData.observe(viewLifecycleOwner) {
             if (it != null) {
-                viewModel.setStateCertificateProceed()
+                if (it.recordEndDate == null){
+                    viewModel.setStateCertificateProceed()
+                }
+                else {
+                    viewModel.uploadImageAndGetUrl(it)
+                }
             } else {
                 viewModel.setStateCertificateNonProceeding()
             }
@@ -135,26 +138,15 @@ class CertificateFragment : Fragment() {
                 }
 
                 "업데이트 완료" -> {
-                    Log.d("room", "업데이트 완료됨")
                     viewModel.getCertificationDataDb(1)
-
-                    viewModel.certificationData.observe(viewLifecycleOwner) { item ->
-                        item?.let {
-                            viewModel.imageUpload(item)
-                        }
-                    }
                 }
             }
         }
 
-        viewModel.completeUpload.observe(viewLifecycleOwner) {
-            if (it){
-                loadingTaskSettingEnd()
-                certificationReset()
-                viewModel.changeCheckUploadComplete()
-            }else{
-
-            }
+        viewModel.urlMap.observe(viewLifecycleOwner) {
+            loadingTaskSettingEnd()
+            certificationReset()
+            viewModel.changeCheckUploadComplete()
         }
 
         //기록 시작 이미지 첨부 및 삭제 여부를 구독
@@ -210,7 +202,7 @@ class CertificateFragment : Fragment() {
                         } else {
                             //TODO 데이터를 포장해서 서버에 전송
                             loadingTaskSettingStart()
-                            viewModel.certificationData.removeObservers(viewLifecycleOwner)
+                            viewModel.certificationData.removeObservers(this)
                             viewModel.updateCertificationInfo(
                                 viewModel.certificationData.value!!.copy(
                                     recordEndDate = Instant.now(),
@@ -312,7 +304,7 @@ class CertificateFragment : Fragment() {
             if ((viewModel.startImageList.value?.size ?: 0) >= IMAGE_PICK_MAX) {
                 return@setOnClickListener
             }
-            pickMultipleMedia.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageAndVideo))
+            pickMultipleMedia.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))
         }
     }
 
@@ -322,7 +314,7 @@ class CertificateFragment : Fragment() {
             if ((viewModel.endImageList.value?.size ?: 0) >= IMAGE_PICK_MAX) {
                 return@setOnClickListener
             }
-            pickMultipleMedia.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageAndVideo))
+            pickMultipleMedia.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))
         }
     }
 
