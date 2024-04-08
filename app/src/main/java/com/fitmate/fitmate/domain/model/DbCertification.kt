@@ -2,7 +2,6 @@ package com.fitmate.fitmate.domain.model
 
 import android.net.Uri
 import java.io.Serializable
-import java.net.URI
 import java.time.Instant
 
 data class DbCertification(

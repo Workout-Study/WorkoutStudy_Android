@@ -5,7 +5,6 @@ import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import java.io.Serializable
-import java.net.URI
 import java.time.Instant
 
 @Entity("Certification")
@@ -17,11 +16,11 @@ data class CertificationEntity(
     @ColumnInfo
     val recordStartDate: Instant,
     @ColumnInfo
-    var recordEndDate: Instant,
+    var recordEndDate: Instant? = null,
     @ColumnInfo
     val startImages:MutableList<Uri>,
     @ColumnInfo
     var endImages:MutableList<Uri>,
     @ColumnInfo
-    var certificateTime: Long
+    var certificateTime: Long? = null
 ): Serializable
