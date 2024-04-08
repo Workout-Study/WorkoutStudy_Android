@@ -12,10 +12,9 @@ import com.fitmate.fitmate.databinding.FragmentOnboardingThirdBinding
 import com.fitmate.fitmate.presentation.viewmodel.OnBoardingViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
-@AndroidEntryPoint
-class OnBoardingThirdFragment: Fragment(R.layout.fragment_onboarding_third) {
+
+class OnBoardingThirdFragment: Fragment() {
     private lateinit var binding: FragmentOnboardingThirdBinding
-    private val viewModel: OnBoardingViewModel by viewModels()
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -27,22 +26,9 @@ class OnBoardingThirdFragment: Fragment(R.layout.fragment_onboarding_third) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        observeSavePref()
-        initViews()
-    }
-
-    private fun observeSavePref() {
-        viewModel.onboardingInquiryStatus.observe(viewLifecycleOwner) {
-            if (it) {
-                findNavController().navigate(R.id.action_onboardingContainerFragment_to_homeFragment)
-            }
-        }
-    }
-
-    private fun initViews() {
         binding.buttonFinishFragment.setOnClickListener {
-            viewModel.saveOnBoardingStateInPref()
+            findNavController().navigate(R.id.action_onboardingContainerFragment_to_onBoardingPermissionFragment)
         }
     }
+
 }

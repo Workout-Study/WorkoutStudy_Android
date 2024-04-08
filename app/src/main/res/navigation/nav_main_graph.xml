@@ -31,10 +31,8 @@
         android:name="com.fitmate.fitmate.presentation.ui.onboarding.OnboardingContainerFragment"
         android:label="OnboardingContainerFragment" >
         <action
-            android:id="@+id/action_onboardingContainerFragment_to_homeFragment"
-            app:destination="@id/homeFragment"
-            app:popUpTo="@id/onboardingContainerFragment"
-            app:popUpToInclusive="true"/>
+            android:id="@+id/action_onboardingContainerFragment_to_onBoardingPermissionFragment"
+            app:destination="@id/onBoardingPermissionFragment" />
     </fragment>
     <fragment
         android:id="@+id/onBoardingFirstFragment"
@@ -51,7 +49,13 @@
     <fragment
         android:id="@+id/onBoardingPermissionFragment"
         android:name="com.fitmate.fitmate.presentation.ui.onboarding.OnBoardingPermissionFragment"
-        android:label="OnBoardingPermissionFragment" />
+        android:label="OnBoardingPermissionFragment" >
+        <action
+            android:id="@+id/action_onBoardingPermissionFragment_to_homeFragment"
+            app:destination="@id/homeFragment"
+            app:popUpTo="@id/onboardingContainerFragment"
+            app:popUpToInclusive="true"/>
+    </fragment>
     <fragment
         android:id="@+id/loginFragment"
         android:name="com.fitmate.fitmate.presentation.ui.login.LoginFragment"
