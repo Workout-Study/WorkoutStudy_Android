@@ -90,6 +90,7 @@ dependencies {
     implementation(Libraries.Navigation.NAVIGATION_UI)
 
     implementation("com.github.Tans5:horizontalnestedscrollview:0.1.0")
+    implementation("id.zelory:compressor:3.0.1")
 
     testImplementation(Libraries.Test.JUNIT)
 
