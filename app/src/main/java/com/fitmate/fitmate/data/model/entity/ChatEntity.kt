@@ -12,9 +12,9 @@ data class ChatEntity (
     @PrimaryKey(autoGenerate = false)
     var messageId: String,
     @ColumnInfo
-    var fitGroupId: String,
+    var fitGroupId: Int,
     @ColumnInfo
-    var fitmateId: String,
+    var fitmateId: Int,
     @ColumnInfo
     var message: String,
     @ColumnInfo
