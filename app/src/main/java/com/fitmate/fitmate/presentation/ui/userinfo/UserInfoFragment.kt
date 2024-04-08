@@ -5,6 +5,7 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
+import android.util.Log
 import android.view.View
 import android.widget.ImageView
 import android.widget.Toast
@@ -29,6 +30,7 @@ class UserInfoFragment: Fragment(R.layout.fragment_user_info) {
         when (result.resultCode) {
             AppCompatActivity.RESULT_OK -> {
                 uri = result.data?.data!!
+                Log.d("testt",uri.toString())
                 showImagePreview()
             }
         }

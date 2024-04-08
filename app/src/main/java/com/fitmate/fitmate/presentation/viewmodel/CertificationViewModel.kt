@@ -1,7 +1,6 @@
 package com.fitmate.fitmate.presentation.viewmodel
 
 import android.net.Uri
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -9,8 +8,6 @@ import androidx.lifecycle.viewModelScope
 import com.fitmate.fitmate.domain.model.CertificationImage
 import com.fitmate.fitmate.domain.model.DbCertification
 import com.fitmate.fitmate.domain.usecase.DbCertificationUseCase
-import com.google.firebase.Firebase
-import com.google.firebase.storage.storage
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -65,10 +62,14 @@ class CertificationViewModel @Inject constructor(
     val completeUpload: LiveData<Boolean>
         get() = _completeUpload
 
+
+    private val _urlMap = MutableLiveData<Map<String, MutableList<String>>>()
+    val urlMap: LiveData<Map<String, MutableList<String>>>
+        get() = _urlMap
+
     //인증 화면을 진행중이던 상태로 설정하는 메서드
     fun setStateCertificateProceed() {
         _state.value = CertificateState.PROCEEDING
-        //TODO room의 데이터를 가져와서 사진 데이터를 업데이트하는 적업 수행.
     }
 
     //인증 화면을 초기 상태로 설정하는 메서드
@@ -168,74 +169,13 @@ class CertificationViewModel @Inject constructor(
         }
     }
 
-
-    fun imageUpload(item: DbCertification) {
-        val storage = Firebase.storage
-        val storageRef = storage.getReference("user_certificate")
-        var startfileName: String = ""
-        var endfileName: String = ""
-
-        // 이미지 업로드 완료 카운트
-        var startImageUploadCount = 0
-        var endImageUploadCount = 0
-
-        // 시작 이미지 업로드
-        repeat(item.startImages.size) { index ->
-            startfileName = "${item.userId}_certificate_${item.recordStartDate}_start_${index}"
-            val userRef = storageRef.child(startfileName)
-
-            userRef.putFile(item.startImages[index]).addOnSuccessListener { taskSnapshot ->
-                userRef.downloadUrl.addOnSuccessListener { downloadUri ->
-                    startImages.add(downloadUri.toString())
-                    _startImageUrl.value = startImages
-
-                    // 시작 이미지 업로드 완료 카운트 증가
-                    startImageUploadCount++
-
-                    // 모든 이미지 업로드 완료 여부 확인
-                    checkUploadComplete(startImageUploadCount, item.startImages.size, endImageUploadCount, item.endImages?.size ?: 0)
-                }.addOnFailureListener {
-                    // 실패 처리
-                }
-            }.addOnFailureListener {
-                Log.d("log_storage", "Upload Failure")
-            }
-        }
-
-        // 끝 이미지 업로드
-        repeat(item.endImages?.size ?: 0) { index ->
-            endfileName = "${item.userId}_certificate_${item.recordEndDate}_end_${index}"
-            val userRef = storageRef.child(endfileName)
-
-            userRef.putFile(item.endImages!![index]).addOnSuccessListener { taskSnapshot ->
-                userRef.downloadUrl.addOnSuccessListener { downloadUri ->
-                    endImages.add(downloadUri.toString())
-                    _endImageUrl.value = endImages
-                    Log.d("rkdgusrn","끝 사진 저장중")
-
-                    // 끝 이미지 업로드 완료 카운트 증가
-                    endImageUploadCount++
-
-                    // 모든 이미지 업로드 완료 여부 확인
-                    checkUploadComplete(startImageUploadCount, item.startImages.size, endImageUploadCount, item.endImages.size ?: 0)
-                }.addOnFailureListener {
-                    // 실패 처리
-                }
-            }.addOnFailureListener {
-                Log.d("log_storage", "Upload Failure")
-            }
+    fun uploadImageAndGetUrl(item: DbCertification) {
+        viewModelScope.launch {
+            _urlMap.value =  dbCertificationUseCase.uploadAndGetImageUrl(item)
         }
     }
 
-    // 모든 이미지 업로드 완료 여부 확인
-    fun checkUploadComplete(startCount: Int, totalStartCount: Int, endCount: Int, totalEndCount: Int) {
-        if (startCount == totalStartCount && endCount == totalEndCount) {
-            // 모든 이미지 업로드 완료
-            _completeUpload.value = true
-        }
-    }
     fun changeCheckUploadComplete() {
         _completeUpload.value = false
     }
-
 }

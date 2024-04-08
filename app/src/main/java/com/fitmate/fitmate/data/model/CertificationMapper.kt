@@ -3,8 +3,6 @@ package com.fitmate.fitmate.data.model
 import android.net.Uri
 import com.fitmate.fitmate.data.model.entity.CertificationEntity
 import com.fitmate.fitmate.domain.model.DbCertification
-import java.net.URI
-import java.time.Instant
 
 object CertificationMapper {
 
@@ -12,10 +10,10 @@ object CertificationMapper {
         id = id,
         userId = userId,
         recordStartDate = recordStartDate,
-        recordEndDate = recordEndDate ?: Instant.now(),
+        recordEndDate = recordEndDate,
         startImages = startImages,
         endImages = endImages ?: emptyList<Uri>().toMutableList(),
-        certificateTime = certificateTime ?: 0L
+        certificateTime = certificateTime
     )
 
     fun CertificationEntity.toDbCertification() = DbCertification(
