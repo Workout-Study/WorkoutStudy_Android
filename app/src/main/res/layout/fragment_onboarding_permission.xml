@@ -3,7 +3,9 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
-
+        <variable
+            name="view"
+            type="com.fitmate.fitmate.presentation.ui.onboarding.OnBoardingPermissionFragment" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -76,6 +78,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_margin="80dp"
+            android:onClick="@{() -> view.setButtonClick()}"
             android:textAppearance="@style/Font.bold16"
             android:textColor="@color/turquoise"
             android:text="@string/onboarding_permission_scr_button_text" />
