@@ -11,3 +11,16 @@ data class FitGroup(
     @SerializedName("UpdatedAt") val updatedAt: String,
     @SerializedName("UpdatedBy") val updatedBy: String
 )
+
+data class ChatResponse (
+    val messages: List<Message>
+)
+
+data class Message (
+    val messageId: String,
+    val fitGroupId: Int,
+    val fitMateId: Int,
+    val message: String,
+    val messageTime: String,
+    val messageType: String
+)

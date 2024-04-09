@@ -3,6 +3,7 @@ package com.fitmate.fitmate.data.repository
 import android.util.Log
 import com.fitmate.fitmate.data.model.ChatMapper.toDBChat
 import com.fitmate.fitmate.data.model.ChatMapper.toEntity
+import com.fitmate.fitmate.data.model.entity.ChatEntity
 import com.fitmate.fitmate.data.source.ChatDatabase
 import com.fitmate.fitmate.data.source.dao.ChatDao
 import com.fitmate.fitmate.domain.model.ChatItem
@@ -35,7 +36,6 @@ class ChatRepositoryImpl @Inject constructor(
 
     private fun performCheckpoint() {
         try {
-            // RoomDatabase의 직접적인 SQL 실행을 위한 접근
             val db = chatDatabase.openHelper.writableDatabase
             db.execSQL("PRAGMA wal_checkpoint(FULL)")
         } catch (e: Exception) {
@@ -52,5 +52,7 @@ class ChatRepositoryImpl @Inject constructor(
             false
         }
     }
+
+    override suspend fun getLastChatItem(): ChatEntity = chatDao.getLastChatItem()
 
 }

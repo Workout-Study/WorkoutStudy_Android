@@ -11,7 +11,7 @@ import com.fitmate.fitmate.domain.model.ChatItem
 
 class ChatAdapter: ListAdapter<ChatItem, ChatAdapter.ViewHolder>(ChatDiffCallback) {
 
-    private var currentUserFitMateId: Int? = null
+    var currentUserFitMateId: Int? = null
 
     fun setCurrentUserFitMateId(fitMateId: Int) {
         currentUserFitMateId = fitMateId
@@ -46,7 +46,7 @@ class ChatAdapter: ListAdapter<ChatItem, ChatAdapter.ViewHolder>(ChatDiffCallbac
     companion object {
         val ChatDiffCallback = object: DiffUtil.ItemCallback<ChatItem>() {
             override fun areItemsTheSame(oldItem: ChatItem, newItem: ChatItem): Boolean {
-                return oldItem.fitMateId == newItem.fitMateId
+                return oldItem.messageId == newItem.messageId
             }
 
             override fun areContentsTheSame(oldItem: ChatItem, newItem: ChatItem): Boolean {

@@ -1,5 +1,6 @@
 package com.fitmate.fitmate.data.repository
 
+import com.fitmate.fitmate.data.model.dto.ChatResponse
 import com.fitmate.fitmate.data.model.dto.FitGroup
 import com.fitmate.fitmate.data.source.dao.NetworkDao
 import com.fitmate.fitmate.domain.repository.NetworkRepository
@@ -13,9 +14,9 @@ class NetworkRepositoryImpl @Inject constructor(
 
     override suspend fun retrieveMessage(
         messageId: String,
-        fitGroupId: String,
-        fitMateId: String,
+        fitGroupId: Int,
+        fitMateId: Int,
         messageTime: String,
         messageType: String
-    ): List<String> = networkDao.retrieveMessage(messageId, fitGroupId, fitMateId, messageTime, messageType)
+    ): Response<ChatResponse> = networkDao.retrieveMessage(messageId, fitGroupId, fitMateId, messageTime, messageType)
 }

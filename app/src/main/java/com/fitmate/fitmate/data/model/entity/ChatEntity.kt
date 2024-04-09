@@ -4,7 +4,6 @@ import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import java.io.Serializable
-import java.time.Instant
 import java.time.LocalDateTime
 
 @Entity("Chat")
