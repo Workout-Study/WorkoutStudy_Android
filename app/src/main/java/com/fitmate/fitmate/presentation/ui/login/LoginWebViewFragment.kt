@@ -38,13 +38,11 @@ class LoginWebViewFragment : Fragment(R.layout.fragment_login_webview) {
         binding.webView.webViewClient = object : WebViewClient() {
             override fun shouldOverrideUrlLoading(view: WebView, request: WebResourceRequest): Boolean {
                 val url = request.url.toString()
-                Log.d("auth_login_url", "Navigating to: $url")
                 val uri = Uri.parse(url)
                 if (uri.getQueryParameter("code") != null) {
                     val code = uri.getQueryParameter("code") ?: ""
                     val returnedState = uri.getQueryParameter("state") ?: ""
                     Log.d("auth_code", "Authorization Code: $code")
-                    Log.d("state", "State: $returnedState")
                     // activity?.supportFragmentManager?.popBackStack()
                     return when(code.length) {
                         86 -> {

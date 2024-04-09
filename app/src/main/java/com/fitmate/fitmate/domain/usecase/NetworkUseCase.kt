@@ -1,7 +1,6 @@
 package com.fitmate.fitmate.domain.usecase
 
 import com.fitmate.fitmate.data.model.dto.FitGroup
-import com.fitmate.fitmate.data.model.dto.FitGroupResponse
 import com.fitmate.fitmate.domain.repository.NetworkRepository
 import retrofit2.Response
 import javax.inject.Inject

@@ -8,7 +8,7 @@ object ChatMapper {
     fun ChatItem.toEntity() = ChatEntity(
         messageId = messageId,
         fitGroupId = fitGroupId,
-        fitmateId = fitMateId,
+        fitMateId = fitMateId,
         message = message,
         messageTime = messageTime,
         messageType = messageType
@@ -18,7 +18,7 @@ object ChatMapper {
     fun ChatEntity.toDBChat() = ChatItem(
         messageId = messageId,
         fitGroupId = fitGroupId,
-        fitMateId = fitmateId,
+        fitMateId = fitMateId,
         message = message,
         messageTime = messageTime,
         messageType = messageType
