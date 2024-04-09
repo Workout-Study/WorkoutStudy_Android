@@ -1,7 +1,6 @@
 package com.fitmate.fitmate.domain.repository
 
 import com.fitmate.fitmate.data.model.dto.FitGroup
-import com.fitmate.fitmate.data.model.dto.FitGroupResponse
 import retrofit2.Call
 import retrofit2.Response
 
