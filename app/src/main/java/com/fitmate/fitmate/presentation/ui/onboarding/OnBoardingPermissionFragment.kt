@@ -22,12 +22,12 @@ class OnBoardingPermissionFragment: Fragment() {
     val permissions =
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q){
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU){
-                arrayOf(Manifest.permission.POST_NOTIFICATIONS,Manifest.permission.READ_EXTERNAL_STORAGE)
+                arrayOf(Manifest.permission.POST_NOTIFICATIONS,Manifest.permission.READ_MEDIA_IMAGES)
             }else{
                 arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE)
             }
         }else{
-            arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE,Manifest.permission.WRITE_EXTERNAL_STORAGE)
+            arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE)
         }
 
     private lateinit var binding: FragmentOnboardingPermissionBinding
