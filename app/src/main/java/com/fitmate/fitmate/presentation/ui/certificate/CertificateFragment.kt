@@ -19,6 +19,8 @@ import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.RequiresApi
 import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
+import androidx.core.content.PermissionChecker
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
@@ -77,12 +79,8 @@ class CertificateFragment : Fragment() {
         if (isGranted) {
             viewModel.insertCertificateInitInfo()
         } else {
-            if (ActivityCompat.shouldShowRequestPermissionRationale(
-                    requireActivity(),
-                    Manifest.permission.POST_NOTIFICATIONS
-                )
-            ) {
-                showPermissionDialog()
+            if (!shouldShowRequestPermissionRationale(Manifest.permission.POST_NOTIFICATIONS)) {
+                showNotificationPermissionDialog()
             } else {
                 viewModel.insertCertificateInitInfo()
             }
@@ -390,26 +388,22 @@ class CertificateFragment : Fragment() {
 
     //알림 권한 교육용 팝업
     @RequiresApi(Build.VERSION_CODES.TIRAMISU)
-    fun showPermissionDialog() {
+    fun showNotificationPermissionDialog() {
         MaterialAlertDialogBuilder(requireContext())
             .setTitle(getString(R.string.certificate_scr_dialog_title))
             .setMessage(getString(R.string.certificate_scr_dialog_message))
             .setPositiveButton(getString(R.string.certificate_scr_dialog_positive_button)) { dialogInterface: DialogInterface, i: Int ->
-                permissionResult.launch(
-                    Manifest.permission.POST_NOTIFICATIONS
-                )
+                navigateToAppSetting()
             }
             .setNegativeButton(getString(R.string.certificate_scr_dialog_negative_button)) { dialogInterface: DialogInterface, i: Int ->
                 viewModel.insertCertificateInitInfo()
             }.show()
     }
-
     private val multiplePermissionsLauncher = registerForActivityResult(
         ActivityResultContracts.RequestMultiplePermissions()) { permissions ->
         permissions.entries.forEach { (permission, isGranted) ->
             when(permission){
                 Manifest.permission.READ_EXTERNAL_STORAGE ->{
-                    Log.d("myPermission","READ_EXTERNAL_STORAGE")
                     if (isGranted){
                         pickMultipleMedia.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))
                     }else{
@@ -420,27 +414,14 @@ class CertificateFragment : Fragment() {
                         }
                     }
                 }
-                Manifest.permission.WRITE_EXTERNAL_STORAGE ->{
-                    Log.d("myPermission","WRITE_EXTERNAL_STORAGE")
-                    if (isGranted){
-                        pickMultipleMedia.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))
-                    }else{
-                        if (!shouldShowRequestPermissionRationale(Manifest.permission.WRITE_EXTERNAL_STORAGE)){
-                            showPermissionSettiongDialog()
-                        }else{
-                            showStoragePermissionDialog()
-                        }
-                    }
-                }
                 Manifest.permission.READ_MEDIA_IMAGES -> {
-                    Log.d("myPermission","READ_MEDIA_IMAGES")
                     if (isGranted){
                         pickMultipleMedia.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))
                     }else{
                         if (!shouldShowRequestPermissionRationale(Manifest.permission.READ_MEDIA_IMAGES)){
                             showPermissionSettiongDialog()
                         }else{
-                            showStoragePermissionDialog()
+                            showPermissionSettiongDialog()
                         }
                     }
                 }
@@ -460,6 +441,7 @@ class CertificateFragment : Fragment() {
                 dialogInterface.cancel()
             }.show()
     }
+
 
     //권한 설정 화면을 위한 다이얼로그 띄우는 메서드
     fun showPermissionSettiongDialog() {
@@ -482,16 +464,34 @@ class CertificateFragment : Fragment() {
     }
     //권한 확인 및 요청 메서드
     fun requestPermission(){
-        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU){
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.UPSIDE_DOWN_CAKE){
-                multiplePermissionsLauncher.launch(arrayOf(Manifest.permission.READ_MEDIA_IMAGES,Manifest.permission.READ_MEDIA_VISUAL_USER_SELECTED))
+        if (
+            Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU &&
+            (ContextCompat.checkSelfPermission(requireContext(),
+                Manifest.permission.READ_MEDIA_IMAGES
+            ) == PermissionChecker.PERMISSION_GRANTED)
+        ) {
+            pickMultipleMedia.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))
+        } else if (
+            Build.VERSION.SDK_INT >= Build.VERSION_CODES.UPSIDE_DOWN_CAKE
+            &&  ContextCompat.checkSelfPermission(requireContext(),
+                Manifest.permission.READ_MEDIA_IMAGES
+            ) == PermissionChecker.PERMISSION_DENIED
+        ) {
+            // 34이상이고 READ_MEDIA_VISUAL_USER_SELECTED만 허용되어있다면 권한 물어보는 다이얼로그를 띄워야함.
+            /*showPermissionDialog()*/
+            multiplePermissionsLauncher.launch(arrayOf(Manifest.permission.READ_MEDIA_IMAGES))
+        }  else if (ContextCompat.checkSelfPermission(requireContext(),
+                Manifest.permission.READ_EXTERNAL_STORAGE
+            ) == PermissionChecker.PERMISSION_GRANTED
+        ) {
+            pickMultipleMedia.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))
+        } else {
+            if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.S_V2){
+                //READ_EXTERNAL_STORAGE 권한 요청
+                multiplePermissionsLauncher.launch(arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE))
             }else{
                 multiplePermissionsLauncher.launch(arrayOf(Manifest.permission.READ_MEDIA_IMAGES))
             }
-        }else if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q && Build.VERSION.SDK_INT <= Build.VERSION_CODES.S_V2){
-            multiplePermissionsLauncher.launch(arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE))
-        }else if(Build.VERSION.SDK_INT < Build.VERSION_CODES.Q){
-            multiplePermissionsLauncher.launch(arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE))
         }
     }
 
