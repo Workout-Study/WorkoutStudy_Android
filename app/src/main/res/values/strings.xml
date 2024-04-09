@@ -161,5 +161,14 @@
 
     <string name="group_vote_scr_toolbar">그룹 투표 현황</string>
 
+    <string name="permission_dialog_scr_guide_setting">권한을 허용해야만 갤러리에 접근할 수 있습니다!</string>
+    <string name="permission_dialog_scr_guide_setting_select">권한 설정하러 가기</string>
+    <string name="permission_dialog_scr_guide_setting_cancel">취소</string>
+
+    <string name="permission_dialog_scr_guide">정말 거부하시겠습니까?</string>
+    <string name="permission_dialog_scr_guide_message">저장소 권한을 허용하지 않으면 사진 첨부를 할 수 없습니다!</string>
+    <string name="permission_dialog_scr_guide_select">권한 허용하러가기</string>
+    <string name="permission_dialog_scr_guide_cancel">취소</string>
+
 
 </resources>
