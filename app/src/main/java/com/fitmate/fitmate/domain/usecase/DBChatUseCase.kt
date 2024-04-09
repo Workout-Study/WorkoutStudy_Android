@@ -14,4 +14,6 @@ class DBChatUseCase @Inject constructor(
 
     suspend fun update(item: ChatItem) = chatRepository.update(item)
 
+    suspend fun getLastChatItem() = chatRepository.getLastChatItem()
+
 }

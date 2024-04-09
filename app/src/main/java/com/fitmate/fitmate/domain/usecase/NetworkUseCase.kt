@@ -1,5 +1,6 @@
 package com.fitmate.fitmate.domain.usecase
 
+import com.fitmate.fitmate.data.model.dto.ChatResponse
 import com.fitmate.fitmate.data.model.dto.FitGroup
 import com.fitmate.fitmate.domain.repository.NetworkRepository
 import retrofit2.Response
@@ -12,9 +13,9 @@ class NetworkUseCase @Inject constructor(
 
     suspend fun retrieveMessage(
         messageId: String,
-        fitGroupId: String,
-        fitMateId: String,
+        fitGroupId: Int,
+        fitMateId: Int,
         messageTime: String,
         messageType: String
-    ): List<String> = networkRepository.retrieveMessage(messageId, fitGroupId, fitMateId, messageTime, messageType)
+    ): Response<ChatResponse> = networkRepository.retrieveMessage(messageId, fitGroupId, fitMateId, messageTime, messageType)
 }

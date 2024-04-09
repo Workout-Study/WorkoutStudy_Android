@@ -1,7 +1,6 @@
 package com.fitmate.fitmate.presentation.ui.chatting
 
 import android.content.Context
-import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.view.View
@@ -9,6 +8,7 @@ import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
 import androidx.core.view.GravityCompat
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.ui.setupWithNavController
@@ -20,6 +20,7 @@ import com.fitmate.fitmate.databinding.FragmentChattingBinding
 import com.fitmate.fitmate.domain.model.ChatItem
 import com.fitmate.fitmate.domain.usecase.DBChatUseCase
 import com.fitmate.fitmate.presentation.ui.chatting.list.adapter.ChatAdapter
+import com.fitmate.fitmate.presentation.viewmodel.ChattingViewModel
 import com.fitmate.fitmate.util.HeightProvider
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
@@ -32,6 +33,7 @@ import org.json.JSONObject
 import java.time.Instant
 import java.time.LocalDateTime
 import java.time.ZoneId
+import java.time.format.DateTimeFormatterBuilder
 import java.util.UUID
 import javax.inject.Inject
 
@@ -44,10 +46,11 @@ class ChattingFragment : Fragment(R.layout.fragment_chatting) {
 
     private lateinit var binding: FragmentChattingBinding
     private lateinit var heightProvider: HeightProvider
-    private var webSocket: WebSocket? = null
     @Inject lateinit var dbChatUseCase: DBChatUseCase
+    private var webSocket: WebSocket? = null
     private var fitGroupId: Int = -1
     private var fitMateId: Int = -1
+    private val viewModel: ChattingViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -64,11 +67,44 @@ class ChattingFragment : Fragment(R.layout.fragment_chatting) {
         initHeightProvider()
         setUpRecyclerView()
         setupWebSocketConnection("$fitGroupId")
+        observeChatResponse()
 
         binding.ImageViewChattingSendMySpeech.setOnClickListener {
             val message = binding.editTextChattingMySpeech.text.toString()
             if (message.isNotEmpty()) {
                 sendChatMessage(message)
+            }
+        }
+    }
+
+    private fun observeChatResponse() {
+        viewModel.retrieveMessage("67d39a6f-238f-4d84-a710-e712889299f0", 1, 1, "2024-04-09 14:07:39.019121", "CHATTING")
+        lifecycleScope.launch {
+            viewModel.chatResponse.collect { chatResponse ->
+                chatResponse?.let { response ->
+                    Log.d("woojugoing_chat_log", response.messages.toString())
+                    val chatItems = response.messages.map { message ->
+                        ChatItem(
+                            messageId = message.messageId,
+                            fitGroupId = message.fitGroupId,
+                            fitMateId = message.fitMateId,
+                            message = message.message,
+                            messageTime = LocalDateTime.parse(message.messageTime, DateTimeFormatterBuilder()
+                                .appendPattern("yyyy-MM-dd'T'HH:mm:ss")
+                                .appendPattern("[.SSSSSS][.SSSSS]") // 밀리초 부분을 선택적으로 파싱
+                                .appendPattern("'Z'")
+                                .toFormatter()),
+                            messageType = message.messageType
+                        )
+                    }.reversed()
+                    chatItems.forEach { chatItem ->
+                        dbChatUseCase.insert(chatItem)
+                    }
+                    val adapter = ChatAdapter()
+                    adapter.setCurrentUserFitMateId(fitMateId)
+                    adapter.submitList(chatItems)
+                    binding.recyclerViewFragmentChatting.adapter = adapter
+                }
             }
         }
     }
@@ -87,6 +123,7 @@ class ChattingFragment : Fragment(R.layout.fragment_chatting) {
     private fun setUpRecyclerView() {
         val recyclerView: RecyclerView = binding.recyclerViewFragmentChatting
         val adapter = ChatAdapter()
+        binding.recyclerViewFragmentChatting.adapter = adapter
         adapter.setCurrentUserFitMateId(fitMateId)
         recyclerView.layoutManager = LinearLayoutManager(context)
         recyclerView.adapter = adapter
@@ -163,25 +200,9 @@ class ChattingFragment : Fragment(R.layout.fragment_chatting) {
 
             override fun onFailure(webSocket: WebSocket, t: Throwable, response: Response?) {
                 Log.e("WebSocket Failure", "Connection failed: ${t.message}")
-
-                // 실패 응답이 있을 경우, 상태 코드와 응답 본문 로깅
-                response?.let {
-                    Log.e("WebSocket Failure", "Response Code: ${it.code}, Response Body: ${it.body?.string()}")
-                } ?: Log.e("WebSocket Failure", "No response received.")
-
-                // 예외 스택 트레이스 로깅
-                Log.e("WebSocket Failure", "Exception details:", t)
-
-                // 추가적으로, 에뮬레이터에서 실행되고 있는지 확인
-                if (isEmulator()) {
-                    Log.e("WebSocket Failure", "Running on emulator. Model: ${Build.MODEL}")
-                } else {
-                    Log.e("WebSocket Failure", "Running on real device. Model: ${Build.MODEL}")
-                }
             }
 
             override fun onMessage(webSocket: WebSocket, text: String) {
-                super.onMessage(webSocket, text)
                 Log.d("WebSocket", "Receiving : $text")
             }
         })
@@ -220,15 +241,4 @@ class ChattingFragment : Fragment(R.layout.fragment_chatting) {
         }
     }
 
-    fun isEmulator(): Boolean {
-        return (Build.FINGERPRINT.startsWith("Android/sdk_gphone_")
-                || Build.MODEL.contains("Emulator")
-                || Build.MODEL.contains("Android SDK built for arm64")
-                || (Build.BRAND.startsWith("generic") && Build.DEVICE.startsWith("generic"))
-                || "google_sdk" == Build.PRODUCT)
-    }
-
-    fun Emulator(): String {
-        return Build.MODEL
-    }
 }
