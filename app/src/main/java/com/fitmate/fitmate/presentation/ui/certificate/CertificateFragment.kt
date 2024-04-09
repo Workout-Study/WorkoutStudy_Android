@@ -6,8 +6,11 @@ import android.content.Context
 import android.content.DialogInterface
 import android.content.Intent
 import android.content.IntentFilter
+import android.net.Uri
 import android.os.Build
 import android.os.Bundle
+import android.provider.Settings
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -304,7 +307,7 @@ class CertificateFragment : Fragment() {
             if ((viewModel.startImageList.value?.size ?: 0) >= IMAGE_PICK_MAX) {
                 return@setOnClickListener
             }
-            pickMultipleMedia.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))
+            requestPermission()
         }
     }
 
@@ -399,6 +402,97 @@ class CertificateFragment : Fragment() {
             .setNegativeButton(getString(R.string.certificate_scr_dialog_negative_button)) { dialogInterface: DialogInterface, i: Int ->
                 viewModel.insertCertificateInitInfo()
             }.show()
+    }
+
+    private val multiplePermissionsLauncher = registerForActivityResult(
+        ActivityResultContracts.RequestMultiplePermissions()) { permissions ->
+        permissions.entries.forEach { (permission, isGranted) ->
+            when(permission){
+                Manifest.permission.READ_EXTERNAL_STORAGE ->{
+                    Log.d("myPermission","READ_EXTERNAL_STORAGE")
+                    if (isGranted){
+                        pickMultipleMedia.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))
+                    }else{
+                        if (!shouldShowRequestPermissionRationale(Manifest.permission.READ_EXTERNAL_STORAGE)){
+                            showPermissionSettiongDialog()
+                        }else{
+                            showStoragePermissionDialog()
+                        }
+                    }
+                }
+                Manifest.permission.WRITE_EXTERNAL_STORAGE ->{
+                    Log.d("myPermission","WRITE_EXTERNAL_STORAGE")
+                    if (isGranted){
+                        pickMultipleMedia.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))
+                    }else{
+                        if (!shouldShowRequestPermissionRationale(Manifest.permission.WRITE_EXTERNAL_STORAGE)){
+                            showPermissionSettiongDialog()
+                        }else{
+                            showStoragePermissionDialog()
+                        }
+                    }
+                }
+                Manifest.permission.READ_MEDIA_IMAGES -> {
+                    Log.d("myPermission","READ_MEDIA_IMAGES")
+                    if (isGranted){
+                        pickMultipleMedia.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))
+                    }else{
+                        if (!shouldShowRequestPermissionRationale(Manifest.permission.READ_MEDIA_IMAGES)){
+                            showPermissionSettiongDialog()
+                        }else{
+                            showStoragePermissionDialog()
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    fun showStoragePermissionDialog() {
+        MaterialAlertDialogBuilder(requireContext())
+            .setTitle(getString(R.string.permission_dialog_scr_guide))
+            .setMessage(getString(R.string.permission_dialog_scr_guide_message))
+            .setPositiveButton(getString(R.string.permission_dialog_scr_guide_select)) { dialogInterface: DialogInterface, i: Int ->
+                //권한 물어보기
+                requestPermission()
+            }
+            .setNegativeButton(getString(R.string.permission_dialog_scr_guide_cancel)) { dialogInterface: DialogInterface, i: Int ->
+                dialogInterface.cancel()
+            }.show()
+    }
+
+    //권한 설정 화면을 위한 다이얼로그 띄우는 메서드
+    fun showPermissionSettiongDialog() {
+        MaterialAlertDialogBuilder(requireContext())
+            .setMessage(getString(R.string.permission_dialog_scr_guide_setting))
+            .setPositiveButton(getString(R.string.permission_dialog_scr_guide_setting_select)) { dialogInterface: DialogInterface, i: Int ->
+                navigateToAppSetting()
+            }
+            .setNegativeButton(getString(R.string.permission_dialog_scr_guide_setting_cancel)) { dialogInterface: DialogInterface, i: Int ->
+                dialogInterface.cancel()
+            }.show()
+    }
+
+    //앱 권한 세팅 화면으로 이동키시는 메서드
+    fun navigateToAppSetting() {
+        val intent = Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS).apply {
+            data = Uri.fromParts("package", requireContext().packageName, null)
+        }
+        startActivity(intent)
+    }
+    //권한 확인 및 요청 메서드
+    fun requestPermission(){
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU){
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.UPSIDE_DOWN_CAKE){
+                multiplePermissionsLauncher.launch(arrayOf(Manifest.permission.READ_MEDIA_IMAGES,Manifest.permission.READ_MEDIA_VISUAL_USER_SELECTED))
+            }else{
+                multiplePermissionsLauncher.launch(arrayOf(Manifest.permission.READ_MEDIA_IMAGES))
+            }
+        }else if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q && Build.VERSION.SDK_INT <= Build.VERSION_CODES.S_V2){
+            multiplePermissionsLauncher.launch(arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE))
+        }else if(Build.VERSION.SDK_INT < Build.VERSION_CODES.Q){
+            multiplePermissionsLauncher.launch(arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE))
+        }
     }
 
     fun loadingTaskSettingStart() {
