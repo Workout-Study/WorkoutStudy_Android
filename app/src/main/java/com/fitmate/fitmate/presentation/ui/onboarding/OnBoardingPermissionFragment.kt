@@ -20,12 +20,10 @@ import dagger.hilt.android.AndroidEntryPoint
 @AndroidEntryPoint
 class OnBoardingPermissionFragment: Fragment() {
     val permissions =
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q){
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU){
-                arrayOf(Manifest.permission.POST_NOTIFICATIONS,Manifest.permission.READ_MEDIA_IMAGES)
-            }else{
-                arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE)
-            }
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.UPSIDE_DOWN_CAKE){
+                arrayOf(Manifest.permission.POST_NOTIFICATIONS,Manifest.permission.READ_MEDIA_VISUAL_USER_SELECTED)
+        }else if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU){
+            arrayOf(Manifest.permission.POST_NOTIFICATIONS,Manifest.permission.READ_EXTERNAL_STORAGE)
         }else{
             arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE)
         }

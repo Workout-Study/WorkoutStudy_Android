@@ -69,6 +69,17 @@ class UserInfoFragment : Fragment(R.layout.fragment_user_info) {
                         }
                     }
                 }
+                Manifest.permission.READ_MEDIA_VISUAL_USER_SELECTED -> {
+                    if (isGranted){
+                        accessGallery()
+                    }else{
+                        if (!shouldShowRequestPermissionRationale(Manifest.permission.READ_MEDIA_IMAGES)){
+                            showPermissionSettiongDialog()
+                        }else{
+                            showPermissionDialog()
+                        }
+                    }
+                }
             }
         }
     }
@@ -234,12 +245,15 @@ class UserInfoFragment : Fragment(R.layout.fragment_user_info) {
     }
     //권한 확인 및 요청 메서드
     fun requestPermission(){
-            if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU){
-                multiplePermissionsLauncher.launch(arrayOf(Manifest.permission.READ_MEDIA_IMAGES))
-            }else if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q && Build.VERSION.SDK_INT <= Build.VERSION_CODES.S_V2){
-                multiplePermissionsLauncher.launch(arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE))
-            }else if(Build.VERSION.SDK_INT < Build.VERSION_CODES.Q){
-                multiplePermissionsLauncher.launch(arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE))
-            }
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.UPSIDE_DOWN_CAKE){
+            Log.d("myPermission","UPSIDE_DOWN_CAKE")
+            multiplePermissionsLauncher.launch(arrayOf(Manifest.permission.READ_MEDIA_IMAGES,Manifest.permission.READ_MEDIA_VISUAL_USER_SELECTED))
+        }else if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU){
+            Log.d("myPermission","TIRAMISU")
+            multiplePermissionsLauncher.launch(arrayOf(Manifest.permission.READ_MEDIA_IMAGES))
+        }else{
+            Log.d("myPermission","그외")
+            multiplePermissionsLauncher.launch(arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE))
+        }
     }
 }
