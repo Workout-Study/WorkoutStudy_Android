@@ -1,6 +1,7 @@
 package com.fitmate.fitmate.presentation.ui.userinfo
 
-import android.Manifest
+import android.Manifest.permission.READ_EXTERNAL_STORAGE
+import android.Manifest.permission.READ_MEDIA_IMAGES
 import android.app.AlertDialog
 import android.content.DialogInterface
 import android.content.Intent
@@ -8,13 +9,16 @@ import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.provider.MediaStore
+import android.provider.Settings
 import android.util.Log
 import android.view.View
 import android.widget.ImageView
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
+import androidx.core.content.PermissionChecker.PERMISSION_DENIED
+import androidx.core.content.PermissionChecker.PERMISSION_GRANTED
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
@@ -25,7 +29,6 @@ import com.fitmate.fitmate.util.ControlActivityInterface
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.ktx.storage
-import android.provider.Settings
 
 class UserInfoFragment : Fragment(R.layout.fragment_user_info) {
 
@@ -36,47 +39,25 @@ class UserInfoFragment : Fragment(R.layout.fragment_user_info) {
         ActivityResultContracts.RequestMultiplePermissions()) { permissions ->
         permissions.entries.forEach { (permission, isGranted) ->
             when(permission){
-                Manifest.permission.READ_EXTERNAL_STORAGE ->{
+                READ_EXTERNAL_STORAGE ->{
                     if (isGranted){
                         accessGallery()
                     }else{
-                        if (!shouldShowRequestPermissionRationale(Manifest.permission.READ_EXTERNAL_STORAGE)){
+                        if (!shouldShowRequestPermissionRationale(READ_EXTERNAL_STORAGE)){
                             showPermissionSettiongDialog()
                         }else{
                             showPermissionDialog()
                         }
                     }
                 }
-                Manifest.permission.WRITE_EXTERNAL_STORAGE ->{
+                READ_MEDIA_IMAGES -> {
                     if (isGranted){
                         accessGallery()
                     }else{
-                        if (!shouldShowRequestPermissionRationale(Manifest.permission.WRITE_EXTERNAL_STORAGE)){
+                        if (!shouldShowRequestPermissionRationale(READ_MEDIA_IMAGES)){
                             showPermissionSettiongDialog()
                         }else{
-                            showPermissionDialog()
-                        }
-                    }
-                }
-                Manifest.permission.READ_MEDIA_IMAGES -> {
-                    if (isGranted){
-                        accessGallery()
-                    }else{
-                        if (!shouldShowRequestPermissionRationale(Manifest.permission.READ_MEDIA_IMAGES)){
                             showPermissionSettiongDialog()
-                        }else{
-                            showPermissionDialog()
-                        }
-                    }
-                }
-                Manifest.permission.READ_MEDIA_VISUAL_USER_SELECTED -> {
-                    if (isGranted){
-                        accessGallery()
-                    }else{
-                        if (!shouldShowRequestPermissionRationale(Manifest.permission.READ_MEDIA_IMAGES)){
-                            showPermissionSettiongDialog()
-                        }else{
-                            showPermissionDialog()
                         }
                     }
                 }
@@ -245,15 +226,27 @@ class UserInfoFragment : Fragment(R.layout.fragment_user_info) {
     }
     //권한 확인 및 요청 메서드
     fun requestPermission(){
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.UPSIDE_DOWN_CAKE){
-            Log.d("myPermission","UPSIDE_DOWN_CAKE")
-            multiplePermissionsLauncher.launch(arrayOf(Manifest.permission.READ_MEDIA_IMAGES,Manifest.permission.READ_MEDIA_VISUAL_USER_SELECTED))
-        }else if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU){
-            Log.d("myPermission","TIRAMISU")
-            multiplePermissionsLauncher.launch(arrayOf(Manifest.permission.READ_MEDIA_IMAGES))
-        }else{
-            Log.d("myPermission","그외")
-            multiplePermissionsLauncher.launch(arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE))
+        if (
+            Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU &&
+            (ContextCompat.checkSelfPermission(requireContext(), READ_MEDIA_IMAGES) == PERMISSION_GRANTED)
+        ) {
+            accessGallery()
+        } else if (
+            Build.VERSION.SDK_INT >= Build.VERSION_CODES.UPSIDE_DOWN_CAKE
+            &&  ContextCompat.checkSelfPermission(requireContext(), READ_MEDIA_IMAGES) == PERMISSION_DENIED
+        ) {
+            // 34이상이고 READ_MEDIA_VISUAL_USER_SELECTED만 허용되어있다면 권한 물어보는 다이얼로그를 띄워야함.
+            /*showPermissionDialog()*/
+            multiplePermissionsLauncher.launch(arrayOf(READ_MEDIA_IMAGES))
+        }  else if (ContextCompat.checkSelfPermission(requireContext(), READ_EXTERNAL_STORAGE) == PERMISSION_GRANTED) {
+            accessGallery()
+        } else {
+            if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.S_V2){
+                //READ_EXTERNAL_STORAGE 권한 요청
+                multiplePermissionsLauncher.launch(arrayOf(READ_EXTERNAL_STORAGE))
+            }else{
+                multiplePermissionsLauncher.launch(arrayOf(READ_MEDIA_IMAGES))
+            }
         }
     }
 }
