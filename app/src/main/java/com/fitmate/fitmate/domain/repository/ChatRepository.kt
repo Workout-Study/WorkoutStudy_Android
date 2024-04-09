@@ -1,5 +1,6 @@
 package com.fitmate.fitmate.domain.repository
 
+import com.fitmate.fitmate.data.model.entity.ChatEntity
 import com.fitmate.fitmate.data.source.ChatDatabase
 import com.fitmate.fitmate.domain.model.ChatItem
 import kotlinx.coroutines.flow.Flow
@@ -14,4 +15,5 @@ interface ChatRepository {
 
     suspend fun update(item: ChatItem): Boolean
 
+    suspend fun getLastChatItem(): ChatEntity
 }

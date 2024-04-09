@@ -2,7 +2,6 @@ package com.fitmate.fitmate.data.source.dao
 
 import androidx.room.Dao
 import androidx.room.Insert
-import androidx.room.OnConflictStrategy
 import kotlinx.coroutines.flow.Flow
 import androidx.room.Query
 import androidx.room.Update
@@ -19,4 +18,7 @@ interface ChatDao {
 
     @Update
     suspend fun update(item: ChatEntity)
+
+    @Query("SELECT * FROM Chat ORDER BY messageTime DESC LIMIT 1")
+    suspend fun getLastChatItem(): ChatEntity
 }
