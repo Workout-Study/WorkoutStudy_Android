@@ -28,7 +28,7 @@ import javax.inject.Inject
 class CertificationRepositoryImpl @Inject constructor(
     private val certificationDao: CertificationDao,
     private val storageRef: StorageReference,
-    private val  context: Context
+    private val context: Context
 ) : CertificationRepository {
     override fun loadCertification(): Flow<List<DbCertification>> {
         return flow {

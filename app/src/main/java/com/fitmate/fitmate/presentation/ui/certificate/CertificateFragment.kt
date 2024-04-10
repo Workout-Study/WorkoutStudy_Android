@@ -115,6 +115,9 @@ class CertificateFragment : Fragment() {
                 if (it.recordEndDate == null){
                     viewModel.setStateCertificateProceed()
                 }
+                else if (!it.endImagesUrl.isNullOrEmpty()){
+                    viewModel.postCertificationRecord(it)
+                }
                 else {
                     viewModel.uploadImageAndGetUrl(it)
                 }
@@ -144,10 +147,31 @@ class CertificateFragment : Fragment() {
             }
         }
 
-        viewModel.urlMap.observe(viewLifecycleOwner) {
-            loadingTaskSettingEnd()
-            certificationReset()
-            viewModel.changeCheckUploadComplete()
+        viewModel.urlMap.observe(viewLifecycleOwner) {urlMap ->
+            //TODO 해당 Url을 room에 저장하고 가져와서 백엔드에 전달한다.
+            val startUrl = urlMap["startUrls"]
+            val endUrl = urlMap["endUrls"]
+            val obj = viewModel.certificationData.value?.copy(
+                startImagesUrl = startUrl,
+                endImagesUrl =  endUrl
+            )
+            obj?.let {
+                viewModel.updateCertificationInfo(it)
+            }
+
+        }
+
+        viewModel.networkPostState.observe(viewLifecycleOwner) {
+            when (it.second){
+                "업로드 성공" -> {
+                    loadingTaskSettingEnd()
+                    certificationReset()
+                    viewModel.changeCheckUploadComplete()
+                }
+                "업로드 실패" -> {
+
+                }
+            }
         }
 
         //기록 시작 이미지 첨부 및 삭제 여부를 구독
@@ -194,11 +218,8 @@ class CertificateFragment : Fragment() {
                     binding.buttonCertificateConfirm.setOnClickListener {
                         //마지막 사진 list.size가 0보다 크지않다면
                         if ((viewModel.endImageList.value?.size ?: 0) <= 0) {
-                            Toast.makeText(
-                                requireContext(),
-                                getString(R.string.certificate_scr_end_image_check_warning),
-                                Toast.LENGTH_SHORT
-                            ).show()
+                            Toast.makeText(requireContext(),
+                                getString(R.string.certificate_scr_end_image_check_warning), Toast.LENGTH_SHORT).show()
                             return@setOnClickListener
                         } else {
                             //TODO 데이터를 포장해서 서버에 전송
