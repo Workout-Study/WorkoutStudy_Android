@@ -37,7 +37,7 @@
             app:layout_constraintBottom_toBottomOf="@+id/imageViewItemCategoryFitgroupBackground"
             app:layout_constraintStart_toStartOf="@+id/imageViewItemCategoryFitgroupBackground"
             app:layout_constraintTop_toTopOf="@+id/imageViewItemCategoryFitgroupBackground"
-            app:srcCompat="@mipmap/ic_launcher_logo" />
+            app:srcCompat="@drawable/add_picture" />
 
         <TextView
             android:id="@+id/textViewItemVoteFitgroupTitle"
@@ -75,7 +75,7 @@
             android:id="@+id/textViewItemVoteFitgroupPercent"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@{voteItem.percent + `%`}"
+            android:text="@{@string/item_vote_scr_per_comment(voteItem.percent)}"
             android:textAppearance="@style/Font.bold12"
             android:textColor="#F4511E"
             app:layout_constraintBottom_toBottomOf="@+id/textViewItemVoteFitgroupPerComment"
@@ -87,7 +87,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="10dp"
-            android:text="@{`종료 ` + voteItem.time + `시간 전`}"
+            android:text="@{@string/item_vote_scr_time(voteItem.time)}"
             android:textAppearance="@style/Font.bold12"
             android:textColor="@color/zircon"
             app:layout_constraintBottom_toBottomOf="@+id/textViewItemVoteFitgroupPercent"
