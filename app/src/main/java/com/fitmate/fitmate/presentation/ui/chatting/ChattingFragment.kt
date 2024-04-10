@@ -67,7 +67,9 @@ class ChattingFragment : Fragment(R.layout.fragment_chatting) {
         initHeightProvider()
         setUpRecyclerView()
         setupWebSocketConnection("$fitGroupId")
+        loadChatMessage()
         observeChatResponse()
+        scrollBottom()
 
         binding.ImageViewChattingSendMySpeech.setOnClickListener {
             val message = binding.editTextChattingMySpeech.text.toString()
@@ -77,37 +79,76 @@ class ChattingFragment : Fragment(R.layout.fragment_chatting) {
         }
     }
 
-    private fun observeChatResponse() {
-        viewModel.retrieveMessage("67d39a6f-238f-4d84-a710-e712889299f0", 1, 1, "2024-04-09 14:07:39.019121", "CHATTING")
+    private fun loadChatMessage() {
         lifecycleScope.launch {
-            viewModel.chatResponse.collect { chatResponse ->
-                chatResponse?.let { response ->
-                    Log.d("woojugoing_chat_log", response.messages.toString())
-                    val chatItems = response.messages.map { message ->
-                        ChatItem(
-                            messageId = message.messageId,
-                            fitGroupId = message.fitGroupId,
-                            fitMateId = message.fitMateId,
-                            message = message.message,
-                            messageTime = LocalDateTime.parse(message.messageTime, DateTimeFormatterBuilder()
-                                .appendPattern("yyyy-MM-dd'T'HH:mm:ss")
-                                .appendPattern("[.SSSSSS][.SSSSS]") // 밀리초 부분을 선택적으로 파싱
-                                .appendPattern("'Z'")
-                                .toFormatter()),
-                            messageType = message.messageType
-                        )
-                    }.reversed()
-                    chatItems.forEach { chatItem ->
-                        dbChatUseCase.insert(chatItem)
-                    }
-                    val adapter = ChatAdapter()
-                    adapter.setCurrentUserFitMateId(fitMateId)
-                    adapter.submitList(chatItems)
-                    binding.recyclerViewFragmentChatting.adapter = adapter
+            val chatItems = dbChatUseCase.getChatItemsByFitGroupId(fitGroupId).map { chatEntity ->
+                ChatItem(
+                    messageId = chatEntity.messageId,
+                    fitGroupId = chatEntity.fitGroupId,
+                    fitMateId = chatEntity.fitMateId,
+                    message = chatEntity.message,
+                    messageTime = chatEntity.messageTime,
+                    messageType = chatEntity.messageType
+                )
+            }
+
+            val adapter = binding.recyclerViewFragmentChatting.adapter as? ChatAdapter ?: ChatAdapter().also { binding.recyclerViewFragmentChatting.adapter = it }
+            adapter.setCurrentUserFitMateId(fitMateId)
+            adapter?.submitList(chatItems) {
+                binding.recyclerViewFragmentChatting.post {
+                    binding.recyclerViewFragmentChatting.scrollToPosition(adapter.itemCount - 1)
                 }
             }
         }
     }
+
+    private fun observeChatResponse() {
+        viewModel.retrieveMessage()
+        //viewModel.retrieveMessage("369ec144-ea1b-4c38-b46e-09d46510f3d1", 1, 1, "2024-04-10 05:25:05.689639", "CHATTING")
+        lifecycleScope.launch {
+            viewModel.chatResponse.collect { chatResponse ->
+                // chatResponse와 chatResponse.messages 모두 null이 아닌지 확인합니다.
+                if (chatResponse != null && chatResponse.messages != null && chatResponse.messages.isNotEmpty()) {
+                    val newItems = chatResponse.messages.filter { it.fitGroupId == fitGroupId }
+                        .mapNotNull { message ->
+                            message.messageTime?.let { time ->
+                                ChatItem(
+                                    messageId = message.messageId,
+                                    fitGroupId = message.fitGroupId,
+                                    fitMateId = message.fitMateId,
+                                    message = message.message,
+                                    messageTime = LocalDateTime.parse(time, DateTimeFormatterBuilder()
+                                        .appendPattern("yyyy-MM-dd'T'HH:mm:ss")
+                                        .appendPattern("[.SSSSSS][.SSSSS][.SSSS][.SSS][.SS][.S]") // 밀리초 부분을 선택적으로 파싱
+                                        .appendPattern("'Z'")
+                                        .toFormatter()),
+                                    messageType = message.messageType
+                                )
+                            }
+                        }.reversed()
+
+                    newItems.forEach { newItem ->
+                        dbChatUseCase.insert(newItem)
+                    }
+
+                    loadChatMessage()
+
+                } else {
+                    Log.d("ChatFragment", "No messages to load or messages are null")
+                }
+            }
+        }
+    }
+
+    private fun scrollBottom() {
+        binding.recyclerViewFragmentChatting.post {
+            val itemCount = binding.recyclerViewFragmentChatting.adapter?.itemCount ?: 0
+            if (itemCount > 0) {
+                binding.recyclerViewFragmentChatting.scrollToPosition(itemCount - 1)
+            }
+        }
+    }
+
 
     override fun onPause() {
         super.onPause()
@@ -184,6 +225,18 @@ class ChattingFragment : Fragment(R.layout.fragment_chatting) {
                 if (height > 0) {
                     binding.containerExtraFunction.visibility = View.GONE
                     binding.containerExtraFunction.layoutParams.height = height
+
+                    scrollToBottom()
+                }
+            }
+        }
+    }
+
+    private fun scrollToBottom() {
+        binding.recyclerViewFragmentChatting.apply {
+            post {
+                if (adapter?.itemCount ?: 0 > 0) {
+                    smoothScrollToPosition(adapter!!.itemCount - 1)
                 }
             }
         }
@@ -191,7 +244,7 @@ class ChattingFragment : Fragment(R.layout.fragment_chatting) {
 
     private fun setupWebSocketConnection(fitGroupId: String) {
         val client = OkHttpClient()
-        val request = Request.Builder().url("ws://3.38.227.26:8080/ws/${fitGroupId}").build()
+        val request = Request.Builder().url("ws://3.38.227.26:8080/chat?fitGroupId=${fitGroupId}&fitMateId=${fitMateId}").build()
 
         webSocket = client.newWebSocket(request, object : WebSocketListener() {
             override fun onOpen(webSocket: WebSocket, response: Response) {
@@ -204,11 +257,48 @@ class ChattingFragment : Fragment(R.layout.fragment_chatting) {
 
             override fun onMessage(webSocket: WebSocket, text: String) {
                 Log.d("WebSocket", "Receiving : $text")
+                val messageObject = JSONObject(text)
+                val receivedFitGroupId = messageObject.getInt("fitGroupId")
+
+                // 현재 채팅방의 groupId와 받은 메시지의 groupId가 일치하는지 확인
+                if (receivedFitGroupId == this@ChattingFragment.fitGroupId) {
+                    val messageId = messageObject.getString("messageId")
+                    val fitMateId = messageObject.getInt("fitMateId")
+                    val message = messageObject.getString("message")
+                    val messageTime = messageObject.getString("messageTime")
+                    val messageType = messageObject.getString("messageType")
+
+                    val parsedMessageTime = LocalDateTime.parse(messageTime, DateTimeFormatterBuilder()
+                        .appendPattern("yyyy-MM-dd'T'HH:mm:ss")
+                        .appendPattern("[.SSSSSS][.SSSSS]") // 밀리초 부분을 선택적으로 파싱
+                        .appendPattern("'Z'")
+                        .toFormatter()
+                        .withZone(ZoneId.systemDefault()))
+
+                    val chatItem = ChatItem(messageId, receivedFitGroupId, fitMateId, message, parsedMessageTime, messageType)
+
+                    // 메인 스레드에서 UI 작업 실행
+                    activity?.runOnUiThread {
+                        lifecycleScope.launch {
+                            // DB에 메시지 추가
+                            dbChatUseCase.insert(chatItem)
+
+                            // 어댑터에 아이템 추가
+                            val adapter = binding.recyclerViewFragmentChatting.adapter as? ChatAdapter
+                            val currentList = adapter?.currentList?.toMutableList() ?: mutableListOf()
+                            currentList.add(chatItem)
+                            adapter?.submitList(currentList)
+
+                            // 목록의 마지막으로 스크롤
+                            binding.recyclerViewFragmentChatting.smoothScrollToPosition(adapter?.itemCount ?: 0 - 1)
+                        }
+                    }
+                }
             }
         })
     }
 
-    private fun sendMessage(messageId: String, message: String, timeNow: LocalDateTime) {
+    private fun sendMessage(messageId: String, message: String, timeNow: LocalDateTime): Boolean {
         val jsonObject = JSONObject().apply {
             put("messageId", messageId)
             put("fitGroupId", fitGroupId)
@@ -217,28 +307,35 @@ class ChattingFragment : Fragment(R.layout.fragment_chatting) {
             put("messageTime", timeNow)
             put("messageType", "CHATTING")
         }
-        val success = webSocket?.send(jsonObject.toString())
-        if (success == true) {
+        val success = webSocket?.send(jsonObject.toString()) ?: false
+        if (success) {
             Log.d("woojugoing_send_json", jsonObject.toString())
             Log.d("woojugoing_send_success", "Message sent successfully")
         } else {
             Log.e("woojugoing_send_error", "Failed to send message")
         }
+        return success
     }
+
 
     private fun sendChatMessage(message: String) {
         val messageId = UUID.randomUUID().toString()
         val timeNow = Instant.now().atZone(ZoneId.systemDefault()).toLocalDateTime()
-        val newChatItem = ChatItem(messageId, fitGroupId, fitMateId, message, timeNow, "CHATTING")
-        sendMessage(messageId, message, timeNow)
-        lifecycleScope.launch { dbChatUseCase.insert(newChatItem) }
-        binding.editTextChattingMySpeech.setText("")
-        val testItems = (binding.recyclerViewFragmentChatting.adapter as? ChatAdapter)?.currentList?.toMutableList()
-        testItems?.add(newChatItem)
-        (binding.recyclerViewFragmentChatting.adapter as? ChatAdapter)?.submitList(testItems)
-        binding.recyclerViewFragmentChatting.post {
-            binding.recyclerViewFragmentChatting.smoothScrollToPosition(testItems?.size ?: (0 - 1))
+        val isMessageSent = sendMessage(messageId, message, timeNow)
+
+        if (isMessageSent) {
+            val newChatItem = ChatItem(messageId, fitGroupId, fitMateId, message, timeNow, "CHATTING")
+            lifecycleScope.launch { dbChatUseCase.insert(newChatItem) }
+
+            binding.editTextChattingMySpeech.setText("")
+            val testItems = (binding.recyclerViewFragmentChatting.adapter as? ChatAdapter)?.currentList?.toMutableList()
+//            testItems?.add(newChatItem)
+//            (binding.recyclerViewFragmentChatting.adapter as? ChatAdapter)?.submitList(testItems)
+            binding.recyclerViewFragmentChatting.post {
+                binding.recyclerViewFragmentChatting.smoothScrollToPosition(testItems?.size ?: (0 - 1))
+            }
+        } else {
+            Toast.makeText(context, "Message failed to send.", Toast.LENGTH_SHORT).show()
         }
     }
-
 }

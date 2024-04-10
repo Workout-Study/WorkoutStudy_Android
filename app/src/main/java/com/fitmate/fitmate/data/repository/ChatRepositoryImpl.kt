@@ -55,4 +55,8 @@ class ChatRepositoryImpl @Inject constructor(
 
     override suspend fun getLastChatItem(): ChatEntity = chatDao.getLastChatItem()
 
+    override suspend fun getChatItemsByFitGroupId(fitGroupId: Int): List<ChatItem> {
+        return chatDao.getChatItemsByFitGroupId(fitGroupId).map { it.toDBChat() }
+    }
+
 }
