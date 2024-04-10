@@ -21,4 +21,7 @@ interface ChatDao {
 
     @Query("SELECT * FROM Chat ORDER BY messageTime DESC LIMIT 1")
     suspend fun getLastChatItem(): ChatEntity
+
+    @Query("SELECT * FROM Chat WHERE fitGroupId = :fitGroupId")
+    suspend fun getChatItemsByFitGroupId(fitGroupId: Int): List<ChatEntity>
 }

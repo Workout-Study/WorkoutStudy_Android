@@ -12,10 +12,10 @@ interface NetworkDao {
 
     @GET("retrieve/message/")
     suspend fun retrieveMessage(
-        @Query("message-id") messageId: String,
-        @Query("fit-group-id") fitGroupId: Int,
-        @Query("fit-mate-id") fitMateId: Int,
-        @Query("message-time") messageTime: String,
-        @Query("message-type") messageType: String
+        @Query("messageId") messageId: String,
+        @Query("fitGroupId") fitGroupId: Int,
+        @Query("fitMateId") fitMateId: Int,
+        @Query("messageTime") messageTime: String,
+        @Query("messageType") messageType: String
     ): Response<ChatResponse>
 }
