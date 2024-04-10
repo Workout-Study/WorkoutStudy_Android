@@ -16,4 +16,6 @@ class DBChatUseCase @Inject constructor(
 
     suspend fun getLastChatItem() = chatRepository.getLastChatItem()
 
+    suspend fun getChatItemsByFitGroupId(fitGroupId: Int) = chatRepository.getChatItemsByFitGroupId(fitGroupId)
+
 }
