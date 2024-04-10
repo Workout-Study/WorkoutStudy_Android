@@ -24,7 +24,7 @@ class CarouselAdapter(private val navigateToGroupJoin: () -> Unit) : RecyclerVie
     override fun getItemCount(): Int = 10
 
     override fun onBindViewHolder(holder: ViewHolderClass, position: Int) {
-        holder.carouselImageView.setImageResource(R.drawable.ic_launcher_logo)
+        holder.carouselImageView.setImageResource(R.drawable.add_picture)
     }
 }
 
