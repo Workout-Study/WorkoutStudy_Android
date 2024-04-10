@@ -1,12 +1,14 @@
 package com.fitmate.fitmate.presentation.viewmodel
 
 import android.net.Uri
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.fitmate.fitmate.domain.model.CertificationImage
 import com.fitmate.fitmate.domain.model.DbCertification
+import com.fitmate.fitmate.domain.usecase.CertificationRecordNetworkUseCase
 import com.fitmate.fitmate.domain.usecase.DbCertificationUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
@@ -20,6 +22,7 @@ enum class CertificateState { NON_PROCEEDING, ADDED_START_IMAGE, PROCEEDING }
 @HiltViewModel
 class CertificationViewModel @Inject constructor(
     private val dbCertificationUseCase: DbCertificationUseCase,
+    private val certificationRecordNetworkUseCase: CertificationRecordNetworkUseCase
 ) : ViewModel() {
     //인증 진행 상태
     private val _state = MutableLiveData<CertificateState>()
@@ -47,16 +50,6 @@ class CertificationViewModel @Inject constructor(
     val doneEvent: LiveData<Pair<Boolean, String>>
         get() = _doneEvent
 
-    //파이어베이스에 저장하고 나온 url데이터들
-    private val startImages = mutableListOf<String>()
-    private val _startImageUrl = MutableLiveData<List<String>>()
-    val startImageUrl: LiveData<List<String>>
-        get() = _startImageUrl
-
-    private val endImages = mutableListOf<String>()
-    private val _endImageUrl = MutableLiveData<List<String>>()
-    val endImageUrl: LiveData<List<String>>
-        get() = _endImageUrl
 
     private val _completeUpload = MutableLiveData<Boolean>()
     val completeUpload: LiveData<Boolean>
@@ -66,6 +59,10 @@ class CertificationViewModel @Inject constructor(
     private val _urlMap = MutableLiveData<Map<String, MutableList<String>>>()
     val urlMap: LiveData<Map<String, MutableList<String>>>
         get() = _urlMap
+
+    private val _networkPostState = MutableLiveData<Pair<Boolean, String>>()
+    val networkPostState: LiveData<Pair<Boolean, String>>
+        get() = _networkPostState
 
     //인증 화면을 진행중이던 상태로 설정하는 메서드
     fun setStateCertificateProceed() {
@@ -108,18 +105,19 @@ class CertificationViewModel @Inject constructor(
         _endImageList.value = endImageList2
     }
 
-    //종료 이미지 삭제 메서드
+    //종료 이미지 특정 사진 삭제 메서드
     fun removeEndImage(index: Int) {
         endImageList2.removeAt(index)
         _endImageList.value = endImageList2
     }
 
+    //종료 이미지 라이브데이터 초기화
     fun resetEndImage() {
         endImageList2.clear()
         _endImageList.value = endImageList2
     }
 
-
+    //room에서 인증 데이터 가져오기
     fun getCertificationDataDb(id: Int) {
         viewModelScope.launch {
             withContext(Dispatchers.IO) {
@@ -129,7 +127,6 @@ class CertificationViewModel @Inject constructor(
                     }
                 }
             }
-
         }
     }
 
@@ -152,7 +149,7 @@ class CertificationViewModel @Inject constructor(
             }
         }
     }
-
+    //room 데이터 삭제
     fun deleteCertificationInfo() {
         viewModelScope.launch {
             dbCertificationUseCase.delete().also {
@@ -161,6 +158,7 @@ class CertificationViewModel @Inject constructor(
         }
     }
 
+    //room 데이터 업데이트
     fun updateCertificationInfo(item: DbCertification) {
         viewModelScope.launch {
             dbCertificationUseCase.update(item).also {
@@ -169,9 +167,26 @@ class CertificationViewModel @Inject constructor(
         }
     }
 
+    //이미지 스토리지에 저장 및 url받기
     fun uploadImageAndGetUrl(item: DbCertification) {
         viewModelScope.launch {
             _urlMap.value =  dbCertificationUseCase.uploadAndGetImageUrl(item)
+        }
+    }
+
+    //기록 백엔드에 전송
+    fun postCertificationRecord(item:DbCertification) {
+        viewModelScope.launch(Dispatchers.IO) {
+            val response = certificationRecordNetworkUseCase.postCertificationRecord(item)
+            withContext(Dispatchers.Main){
+                if(response.isSuccessful) {
+                    val result = response.body()
+                    Log.d("networkLog","$result")
+                    result?.let {
+                        _networkPostState.value = Pair(true, if (it.isRegisterSuccess) "업로드 성공" else "업로드 실패")
+                    }
+                }
+            }
         }
     }
 
