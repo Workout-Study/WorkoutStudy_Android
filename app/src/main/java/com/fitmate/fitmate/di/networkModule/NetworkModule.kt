@@ -16,28 +16,18 @@ import javax.inject.Singleton
 @Module
 @InstallIn(SingletonComponent::class)
 object NetworkModule {
-
-/*    @Provides
-    @Singleton
-    fun provideRetrofit(): Retrofit = Retrofit.Builder()
-        .baseUrl("http:3.38.227.26:8080/")
-        .client(okHttpClientInterceptor)
-        .addConverterFactory(GsonConverterFactory.create())
-        .build()
-
-    private val logging = HttpLoggingInterceptor().apply {
-        // 요청과 응답의 본문 내용까지 로그에 포함
-        level = HttpLoggingInterceptor.Level.BODY
-    }
-    //OKHttp Logging Interceptor
-    private val okHttpClientInterceptor = OkHttpClient.Builder()
-        .addInterceptor(logging)
-        .build()*/
-
+    //채팅 레트로핏 서비스 싱글톤
     @Provides
     @Singleton
-    fun provideFitGroupService(retrofit: Retrofit): NetworkDao = retrofit.create(NetworkDao::class.java)
+    fun provideFitGroupService(retrofit: Retrofit): NetworkDao {
+        val fitGroupBaseUrl = "http://3.38.227.26:8080/"
+        return retrofit.newBuilder()
+            .baseUrl(fitGroupBaseUrl)
+            .build()
+            .create(NetworkDao::class.java)
+    }
 
+    //채팅 레포지토리 싱글톤
     @Provides
     @Singleton
     fun providesContentRepository(networkDao: NetworkDao): NetworkRepository = NetworkRepositoryImpl(networkDao)

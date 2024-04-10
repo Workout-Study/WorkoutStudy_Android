@@ -1,8 +1,11 @@
 package com.fitmate.fitmate.di.networkModule
 
 import com.fitmate.fitmate.data.repository.CertificationRecordRepositoryImpl
+import com.fitmate.fitmate.data.repository.NetworkRepositoryImpl
+import com.fitmate.fitmate.data.source.dao.NetworkDao
 import com.fitmate.fitmate.data.source.remote.CertificationRecordService
 import com.fitmate.fitmate.domain.repository.CertificationRecordRepository
+import com.fitmate.fitmate.domain.repository.NetworkRepository
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -17,32 +20,15 @@ import javax.inject.Singleton
 @InstallIn(SingletonComponent::class)
 object CertificationNetworkModule {
 
-    @Singleton
-    private var BASE_URL = "http://43.202.247.71:8081/"
-
+    //인증 레트로핏 서비스 싱글톤
     @Provides
     @Singleton
-    fun provideRetrofit(): Retrofit = Retrofit.Builder()
-        .baseUrl(BASE_URL)
-        .client(okHttpClientInterceptor)
-        .addConverterFactory(GsonConverterFactory.create())
-        .build()
+    fun provideCertificationRecordService(retrofit: Retrofit): CertificationRecordService =
+        retrofit.create(CertificationRecordService::class.java)
 
-    private val logging = HttpLoggingInterceptor().apply {
-        // 요청과 응답의 본문 내용까지 로그에 포함
-        level = HttpLoggingInterceptor.Level.BODY
-    }
-
-    //OKHttp Logging Interceptor
-    private val okHttpClientInterceptor = OkHttpClient.Builder()
-        .addInterceptor(logging)
-        .build()
-
+    //인증 레포지토리 싱글톤
     @Provides
     @Singleton
-    fun provideCertificationRecordService(retrofit: Retrofit):CertificationRecordService = retrofit.create(CertificationRecordService::class.java)
-
-    @Provides
-    @Singleton
-    fun providesCertificationRecordRepository(certificationRecordService:CertificationRecordService): CertificationRecordRepository = CertificationRecordRepositoryImpl(certificationRecordService)
+    fun providesCertificationRecordRepository(certificationRecordService: CertificationRecordService): CertificationRecordRepository =
+        CertificationRecordRepositoryImpl(certificationRecordService)
 }
