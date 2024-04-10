@@ -10,7 +10,7 @@ import java.time.Instant
 @Entity("Certification")
 data class CertificationEntity(
     @PrimaryKey(true)
-    var id: Int ?= null,
+    var id: Int? = null,
     @ColumnInfo
     val userId: String,
     @ColumnInfo
@@ -18,9 +18,13 @@ data class CertificationEntity(
     @ColumnInfo
     var recordEndDate: Instant? = null,
     @ColumnInfo
-    val startImages:MutableList<Uri>,
+    val startImages: MutableList<Uri>,
     @ColumnInfo
-    var endImages:MutableList<Uri>,
+    var endImages: MutableList<Uri>,
     @ColumnInfo
-    var certificateTime: Long? = null
-): Serializable
+    var certificateTime: Long? = null,
+    @ColumnInfo
+    var startImagesUrl: MutableList<String>,
+    @ColumnInfo
+    var endImagesUrl: MutableList<String>
+) : Serializable
