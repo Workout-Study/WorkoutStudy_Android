@@ -6,7 +6,7 @@ import retrofit2.Response
 import retrofit2.http.GET
 import retrofit2.http.Query
 
-interface NetworkDao {
+interface ChatService {
     @GET("retrieve/fit-group/")
     suspend fun retrieveFitGroup(@Query("fitMateId") fitMateId: Int): Response<List<FitGroup>>
 
