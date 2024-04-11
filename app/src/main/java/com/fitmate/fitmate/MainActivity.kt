@@ -38,6 +38,9 @@ class MainActivity : AppCompatActivity(), ControlActivityInterface {
 
         //온보딩 조회 여부 확인
         viewModel.loadOnBoardingStateInPref()
+
+        if (intent.getStringExtra("navigateTo") == "certificateFragment") navController.navigate(R.id.certificateFragment)
+
     }
 
     private fun observeOnboardingState() {
