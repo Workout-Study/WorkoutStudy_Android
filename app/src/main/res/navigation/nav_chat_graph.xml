@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!--suppress NavigationFile -->
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/nav_chat_graph"
@@ -8,6 +9,12 @@
         android:id="@+id/chattingFragment"
         android:name="com.fitmate.fitmate.presentation.ui.chatting.ChattingFragment"
         android:label="ChattingFragment" >
+        <argument
+            android:name="fitGroupId"
+            app:argType="integer" />
+        <argument
+            android:name="fitMateId"
+            app:argType="integer" />
         <action
             android:id="@+id/action_chattingFragment_to_groupFineFragment"
             app:destination="@id/groupFineFragment" />

@@ -2,7 +2,6 @@ package com.fitmate.fitmate.di.networkModule
 
 import com.fitmate.fitmate.data.repository.CertificationRecordRepositoryImpl
 import com.fitmate.fitmate.data.repository.NetworkRepositoryImpl
-import com.fitmate.fitmate.data.source.dao.NetworkDao
 import com.fitmate.fitmate.data.source.remote.CertificationRecordService
 import com.fitmate.fitmate.domain.repository.CertificationRecordRepository
 import com.fitmate.fitmate.domain.repository.NetworkRepository

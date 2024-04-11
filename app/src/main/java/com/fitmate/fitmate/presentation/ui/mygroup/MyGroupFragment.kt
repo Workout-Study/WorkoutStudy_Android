@@ -2,7 +2,6 @@ package com.fitmate.fitmate.presentation.ui.mygroup
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -10,6 +9,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
+import com.bumptech.glide.Glide
 import com.fitmate.fitmate.ChatActivity
 import com.fitmate.fitmate.MainActivity
 import com.fitmate.fitmate.R
@@ -18,6 +18,8 @@ import com.fitmate.fitmate.util.ControlActivityInterface
 import com.fitmate.fitmate.domain.model.FitGroup
 import com.fitmate.fitmate.presentation.ui.mygroup.list.adapter.MyFitGroupAdapter
 import com.fitmate.fitmate.presentation.viewmodel.MyGroupViewModel
+import com.google.firebase.ktx.Firebase
+import com.google.firebase.storage.ktx.storage
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
@@ -54,7 +56,6 @@ class MyGroupFragment: Fragment(R.layout.fragment_my_group) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
         binding.floatingButtonMakeFitGroup.setOnClickListener { findNavController().navigate(R.id.makeGroupFragment) }
         observeFitGroupData()
         observeLoadingState()
@@ -89,14 +90,17 @@ class MyGroupFragment: Fragment(R.layout.fragment_my_group) {
         return networkFitGroups.map { networkGroup ->
             FitGroup(
                 networkGroup.fitGroupName,
-                "참가자: ${networkGroup.maxFitMate}명",
-                "생성일: ${networkGroup.createdAt}",
+                "${networkGroup.maxFitMate}명",
+                groupDateFormat(networkGroup.createdAt),
                 1,
                 networkGroup.id
             )
         }
     }
 
+    private fun groupDateFormat(createdAt: String): String {
+        return "Since ${createdAt.substring(0, 10).replace("-", ".")}"
+    }
 
     private fun updateEmptyViewVisibility(fitGroups: List<FitGroup>) {
         binding.textViewMyFitGroupEmpty.visibility = if (fitGroups.isEmpty()) View.VISIBLE else View.GONE
