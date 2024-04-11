@@ -44,6 +44,9 @@ class CertificateFragment : Fragment() {
     companion object {
         //사진 최대 선택 가능 갯수
         private const val IMAGE_PICK_MAX = 5
+        enum class NetworkState{
+            STATE_POST_BACK_END, STATE_UPLOAD_STORAGE,STATE_NON
+        }
     }
 
     private lateinit var binding: FragmentCertificateBinding
@@ -53,6 +56,7 @@ class CertificateFragment : Fragment() {
     private val viewModel: CertificationViewModel by viewModels()
     private var pickMultipleMedia = activityResultLauncher()
     private var totaleLapsedTime: Long = 0L
+    private var networkState:NetworkState = NetworkState.STATE_NON
 
     //서비스의 스톱워치 시간대를 가져오는 브로드캐스트 리시버
     private var broadcastReceiver = object : BroadcastReceiver() {
@@ -112,13 +116,13 @@ class CertificateFragment : Fragment() {
         viewModel.getCertificationDataDb(1)
         viewModel.certificationData.observe(viewLifecycleOwner) {
             if (it != null) {
-                if (it.recordEndDate == null){
+                if (it.recordEndDate == null && networkState == NetworkState.STATE_NON){
                     viewModel.setStateCertificateProceed()
                 }
-                else if (!it.endImagesUrl.isNullOrEmpty()){
+                else if (networkState == NetworkState.STATE_POST_BACK_END){
                     viewModel.postCertificationRecord(it)
                 }
-                else {
+                else if (networkState == NetworkState.STATE_UPLOAD_STORAGE) {
                     viewModel.uploadImageAndGetUrl(it)
                 }
             } else {
@@ -156,6 +160,7 @@ class CertificateFragment : Fragment() {
                 endImagesUrl =  endUrl
             )
             obj?.let {
+                networkState = NetworkState.STATE_POST_BACK_END
                 viewModel.updateCertificationInfo(it)
             }
 
@@ -223,8 +228,10 @@ class CertificateFragment : Fragment() {
                             return@setOnClickListener
                         } else {
                             //TODO 데이터를 포장해서 서버에 전송
+                            //통신 상태를 스토리지 업로드 상태로 변경
+                            networkState = NetworkState.STATE_UPLOAD_STORAGE
                             loadingTaskSettingStart()
-                            viewModel.certificationData.removeObservers(this)
+                            /*viewModel.certificationData.removeObservers(this)*/
                             viewModel.updateCertificationInfo(
                                 viewModel.certificationData.value!!.copy(
                                     recordEndDate = Instant.now(),
