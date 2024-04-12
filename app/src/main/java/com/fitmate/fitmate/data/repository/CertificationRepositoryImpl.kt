@@ -80,42 +80,38 @@ class CertificationRepositoryImpl @Inject constructor(
 
     override suspend fun uploadImageToStorage(item: DbCertification): Map<String, MutableList<String>> =
         withContext(Dispatchers.IO) {
-            val imageUrlMap = mutableMapOf<String, MutableList<String>>()
+            val imageUrlMap = mutableMapOf<String, MutableList<String>>(
+                "startUrls" to mutableListOf<String>(),
+                "endUrls" to mutableListOf<String>()
+            )
 
-            runBlocking {
-                // Start images 처리
-                val startDeferreds = item.startImages.mapIndexed { index, uri ->
+            // Start images 처리
+            val startImageJob = launch {
+                item.startImages.mapIndexed { index, uri ->
                     async(Dispatchers.IO) {
                         val startFileName =
                             "${item.userId}_certificate_${item.recordStartDate}_start_$index"
-                        if (imageUrlMap.containsKey("startUrls")) {
-                            imageUrlMap["startUrls"]?.add(uploadImage(uri, startFileName))
-                        } else {
-                            val newList = mutableListOf(uploadImage(uri, startFileName))
-                            imageUrlMap["startUrls"] = newList
-                        }
+                        imageUrlMap["startUrls"]?.add(uploadImage(uri, startFileName))
                     }
                 }
+            }
 
-                // End images 처리
-                val endDeferreds = item.endImages?.mapIndexed { index, uri ->
+            // End images 처리
+            val endImageJob = launch {
+                item.endImages?.mapIndexed { index, uri ->
                     async(Dispatchers.IO) {
                         val endFileName =
                             "${item.userId}_certificate_${item.recordEndDate}_end_$index"
-                        if (imageUrlMap.containsKey("endUrls")) {
-                            imageUrlMap["endUrls"]?.add(uploadImage(uri, endFileName))
-                        } else {
-                            val newList = mutableListOf(uploadImage(uri, endFileName))
-                            imageUrlMap["endUrls"] = newList
-                        }
+                        imageUrlMap["endUrls"]?.add(uploadImage(uri, endFileName))
                     }
                 }
-
-                // 모든 작업이 완료될 때까지 대기
-                startDeferreds.awaitAll()
-                endDeferreds?.awaitAll()
             }
-            imageUrlMap
+
+            // 모든 작업이 완료될 때까지 대기
+            startImageJob.join()
+            endImageJob.join()
+
+            return@withContext imageUrlMap
         }
 
     private suspend fun uploadImage(uri: Uri, fileName: String): String {
@@ -123,30 +119,20 @@ class CertificationRepositoryImpl @Inject constructor(
         val compressorFile = Compressor.compress(context, File(file)) {
             quality(0)
         }
-
-        val storageReference = storageRef.child(fileName)
-
-        // 이미 파일이 존재하는지 확인하고 있다면 삭제
-        try {
-            storageReference.delete().await()
-        } catch (e: Exception) {
-            // 이미 파일이 존재하지 않거나 삭제할 수 없는 경우
-        }
-
-        storageReference.putFile(Uri.fromFile(compressorFile)).await()
+        storageRef.child(fileName).putFile(Uri.fromFile(compressorFile)).await()
 
         // 업로드가 성공적으로 완료되었다면 다운로드 URL을 가져옴
-        return storageReference.downloadUrl.await().toString()
+        return storageRef.child(fileName).downloadUrl.await().toString()
     }
 
-    fun getPathFromURI(uri: Uri): String? {
+    private fun getPathFromURI(uri: Uri): String? {
+        var path: String? = null
         val projection = arrayOf(MediaStore.Images.Media.DATA)
-        val cursor = context.contentResolver.query(uri, projection, null, null, null)
-        cursor?.use {
-            val columnIndex = it.getColumnIndexOrThrow(MediaStore.Images.Media.DATA)
-            it.moveToFirst()
-            return it.getString(columnIndex)
+
+        context.contentResolver.query(uri, projection, null, null, null)?.use { cursor ->
+            cursor.moveToFirst()
+            path = cursor.getString(cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA))
         }
-        return null
+        return path
     }
 }
