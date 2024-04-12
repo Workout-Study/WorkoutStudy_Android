@@ -9,4 +9,16 @@ data class CertificationRecordDto(
     @SerializedName("multiMediaEndPoints") val multiMediaEndPoints: List<String>,
 )
 
-data class CertificationRecordResponse(@SerializedName("isRegisterSuccess") val isRegisterSuccess: Boolean)
+data class CertificationRecordResponseDto(
+    @SerializedName("isRegisterSuccess") val isRegisterSuccess: Boolean,
+    @SerializedName("fitRecordId") val fitRecordId: Int?
+)
+
+data class CertificationTargetFitGroupResponseDto(
+    @SerializedName("fitGroupDetails") val fitGroupItems: List<CertificationTargetFitGroupItemDto>,
+)
+
+data class CertificationTargetFitGroupItemDto(
+    @SerializedName("fitGroupId") val fitGroupId: String,
+    @SerializedName("fitGroupName") val fitGroupName: String,
+)

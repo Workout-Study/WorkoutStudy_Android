@@ -2,7 +2,9 @@ package com.fitmate.fitmate.di.networkModule
 
 import com.fitmate.fitmate.data.repository.CertificationRecordRepositoryImpl
 import com.fitmate.fitmate.data.repository.NetworkRepositoryImpl
+import com.fitmate.fitmate.data.source.dao.ChatService
 import com.fitmate.fitmate.data.source.remote.CertificationRecordService
+import com.fitmate.fitmate.data.source.remote.CertificationTargetGroupService
 import com.fitmate.fitmate.domain.repository.CertificationRecordRepository
 import com.fitmate.fitmate.domain.repository.NetworkRepository
 import dagger.Module
@@ -19,15 +21,28 @@ import javax.inject.Singleton
 @InstallIn(SingletonComponent::class)
 object CertificationNetworkModule {
 
-    //인증 레트로핏 서비스 싱글톤
+    //기록 레트로핏 서비스 싱글톤
     @Provides
     @Singleton
     fun provideCertificationRecordService(retrofit: Retrofit): CertificationRecordService =
         retrofit.create(CertificationRecordService::class.java)
 
-    //인증 레포지토리 싱글톤
+    //기록 레포지토리 싱글톤
     @Provides
     @Singleton
-    fun providesCertificationRecordRepository(certificationRecordService: CertificationRecordService): CertificationRecordRepository =
-        CertificationRecordRepositoryImpl(certificationRecordService)
+    fun providesCertificationRecordRepository(certificationRecordService: CertificationRecordService, certificationTargetGroupService: CertificationTargetGroupService): CertificationRecordRepository =
+        CertificationRecordRepositoryImpl(certificationRecordService,certificationTargetGroupService)
+
+    //내가 가입한 그룹 GET 서비스 싱글톤
+    @Provides
+    @Singleton
+    fun provideFitGroupService(retrofit: Retrofit): CertificationTargetGroupService {
+        val fitGroupBaseUrl = "http://43.202.247.71:8080/"
+        return retrofit.newBuilder()
+            .baseUrl(fitGroupBaseUrl)
+            .build()
+            .create(CertificationTargetGroupService::class.java)
+    }
+
+
 }
