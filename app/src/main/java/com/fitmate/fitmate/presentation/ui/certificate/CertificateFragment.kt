@@ -181,6 +181,7 @@ class CertificateFragment : Fragment() {
             //TODO 해당 Url을 room에 저장하고 가져와서 백엔드에 전달한다.
             val startUrl = urlMap["startUrls"]
             val endUrl = urlMap["endUrls"]
+
             val obj = viewModel.certificationData.value?.copy(
                 startImagesUrl = startUrl,
                 endImagesUrl = endUrl
@@ -231,7 +232,6 @@ class CertificateFragment : Fragment() {
             when (state) {
                 //인증 진행중인 상태
                 CertificateState.PROCEEDING -> {
-                    Log.d("stateObserve", "진행중인 상태")
                     //사진 추가 클릭 리스너 정의 및 설정
                     setEndImageAddButtonClick()
                     //리셋버튼 정의 및 설정
@@ -284,7 +284,6 @@ class CertificateFragment : Fragment() {
 
                 //사진 첨부가 되었고 인증 진행이 가능한 상태
                 CertificateState.ADDED_START_IMAGE -> {
-                    Log.d("stateObserve", "사진이 업로드된 상태")
                     binding.buttonCertificateConfirm.setOnClickListener {
                         //33버전 이상일 때 권한 요청
                         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.TIRAMISU) {
@@ -298,7 +297,6 @@ class CertificateFragment : Fragment() {
                 }
                 //최초 상태(아무것도 안한 상태)
                 CertificateState.NON_PROCEEDING -> {
-                    Log.d("stateObserve", "초기상태 진입")
                     //스타트 사진 이미지 첨부 버튼(ImageView) 설정
                     setStartImageAddButtonClick()
                 }
