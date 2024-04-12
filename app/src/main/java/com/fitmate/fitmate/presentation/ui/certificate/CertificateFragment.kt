@@ -150,7 +150,8 @@ class CertificateFragment : Fragment() {
 
                 "삭제 완료" -> {
                     if (networkState == NetworkState.STATE_TARGET_GROUP) {
-                        //TODO 프래그먼트 종료헤야함.
+                        //TODO 인증 완전 완료 상태.
+                        Toast.makeText(requireContext(), "업로드에 실패했습니다", Toast.LENGTH_SHORT).show()
                         val intent = Intent(this@CertificateFragment.context, StopWatchService::class.java).apply {
                             action = STOP_WATCH_RESET
                         }
@@ -158,6 +159,7 @@ class CertificateFragment : Fragment() {
 
                         findNavController().popBackStack()
                     } else {
+                        //인증 취소되었을 때 또는 업로드에 실패했을 경우.
                         val intent = Intent(this@CertificateFragment.context, StopWatchService::class.java).apply {
                             action = STOP_WATCH_RESET
                         }
@@ -194,6 +196,7 @@ class CertificateFragment : Fragment() {
             when (it.second) {
                 "업로드 성공" -> {
                     networkState = NetworkState.STATE_TARGET_GROUP
+                    //TODO 타겟 그룹으로 최종 통신 수행 해야함(아래 코드를 해당 통신 옵저버로 이동시켜야함.)
                     loadingTaskSettingEnd()
                     certificationReset()
                 }
@@ -256,7 +259,7 @@ class CertificateFragment : Fragment() {
                             ).show()
                             return@setOnClickListener
                         } else {
-                            //데이터를 포장해서 서버에 전송하는 작업
+                            //TODO 가입된 그룹을 통신을 통해 불러와서 다이얼로그에 띄워야함.선택이 완료되면 모든 통신이 시작됨
                             //통신 상태를 스토리지 업로드 상태로 변경
                             networkState = NetworkState.STATE_UPLOAD_STORAGE
                             loadingTaskSettingStart()
