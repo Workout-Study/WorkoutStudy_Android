@@ -130,6 +130,10 @@ class CertificationViewModel @Inject constructor(
         }
     }
 
+    fun resetCertificationLiveData() {
+        _certificationData.value = null
+    }
+
 
     //Room에 시작 데이터 삽입(인증 시작을 눌렀을 경우)
     fun insertCertificateInitInfo() {
@@ -177,20 +181,25 @@ class CertificationViewModel @Inject constructor(
     //기록 백엔드에 전송
     fun postCertificationRecord(item:DbCertification) {
         viewModelScope.launch(Dispatchers.IO) {
-            val response = certificationRecordNetworkUseCase.postCertificationRecord(item)
-            withContext(Dispatchers.Main){
-                if(response.isSuccessful) {
-                    val result = response.body()
-                    Log.d("networkLog","$result")
-                    result?.let {
-                        _networkPostState.value = Pair(true, if (it.isRegisterSuccess) "업로드 성공" else "업로드 실패")
+            try {
+                val response = certificationRecordNetworkUseCase.postCertificationRecord(item)
+                withContext(Dispatchers.Main) {
+                    if (response.isSuccessful) {
+                        val result = response.body()
+                        Log.d("networkLog", "$result")
+                        result?.let {
+                            _networkPostState.value =
+                                Pair(true, if (it.isRegisterSuccess) "업로드 성공" else "업로드 실패")
+                        }
                     }
+                }
+            }catch (e:Exception){
+                withContext(Dispatchers.Main){
+                    _networkPostState.value =
+                        Pair(true, "업로드 실패")
                 }
             }
         }
     }
 
-    fun changeCheckUploadComplete() {
-        _completeUpload.value = false
-    }
 }

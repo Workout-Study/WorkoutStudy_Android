@@ -192,6 +192,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textAppearance="@style/Font.bold20"
+                tools:ignore="SpeakableTextPresentCheck"
                 android:textColor="@color/turquoise"
                 app:certificate_button_state="@{viewModel.state}"
                 app:layout_constraintBottom_toBottomOf="parent"
