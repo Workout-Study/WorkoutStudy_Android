@@ -15,8 +15,8 @@ class CertificationImageAdapter(private val removeClick:(index:Int) -> Unit) : L
     private var isVisible = true
 
     //삭제 버튼 설정 버튼
-    fun changeVisible() {
-        isVisible = !isVisible
+    fun changeVisible(visible:Boolean) {
+        isVisible = visible
         notifyDataSetChanged()
     }
 
