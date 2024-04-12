@@ -10,7 +10,6 @@ import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.provider.Settings
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -18,7 +17,6 @@ import android.widget.Toast
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.RequiresApi
-import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.core.content.PermissionChecker
 import androidx.fragment.app.Fragment
@@ -151,8 +149,10 @@ class CertificateFragment : Fragment() {
                 "삭제 완료" -> {
                     if (networkState == NetworkState.STATE_TARGET_GROUP) {
                         //TODO 인증 완전 완료 상태.
-                        Toast.makeText(requireContext(), "업로드에 실패했습니다", Toast.LENGTH_SHORT).show()
-                        val intent = Intent(this@CertificateFragment.context, StopWatchService::class.java).apply {
+                        val intent = Intent(
+                            this@CertificateFragment.context,
+                            StopWatchService::class.java
+                        ).apply {
                             action = STOP_WATCH_RESET
                         }
                         requireContext().startService(intent)
@@ -160,16 +160,21 @@ class CertificateFragment : Fragment() {
                         findNavController().popBackStack()
                     } else {
                         //인증 취소되었을 때 또는 업로드에 실패했을 경우.
-                        val intent = Intent(this@CertificateFragment.context, StopWatchService::class.java).apply {
+                        val intent = Intent(
+                            this@CertificateFragment.context,
+                            StopWatchService::class.java
+                        ).apply {
                             action = STOP_WATCH_RESET
                         }
                         requireContext().startService(intent)
-                        LocalBroadcastManager.getInstance(requireContext()).unregisterReceiver(broadcastReceiver2)
+                        LocalBroadcastManager.getInstance(requireContext())
+                            .unregisterReceiver(broadcastReceiver2)
                         setRecyclerViewState(true)
                         viewModel.resetStartImage()
                         viewModel.resetEndImage()
                         viewModel.resetCertificationLiveData()
-                        binding.textViewCertificateTimer.text = getString(R.string.certificate_scr_timer)
+                        binding.textViewCertificateTimer.text =
+                            getString(R.string.certificate_scr_timer)
                         networkState = NetworkState.STATE_NON
                         viewModel.setStateCertificateNonProceeding()
                     }
@@ -193,20 +198,17 @@ class CertificateFragment : Fragment() {
 
         }
 
+        //포스트 통신 수행 결과
         viewModel.networkPostState.observe(viewLifecycleOwner) {
-            when (it.second) {
-                "업로드 성공" -> {
-                    networkState = NetworkState.STATE_TARGET_GROUP
-                    //TODO 타겟 그룹으로 최종 통신 수행 해야함(아래 코드를 해당 통신 옵저버로 이동시켜야함.)
-                    loadingTaskSettingEnd()
-                    certificationReset()
-                }
-
-                "업로드 실패" -> {
-                    loadingTaskSettingEnd()
-                    certificationReset()
-                    Toast.makeText(requireContext(), "업로드에 실패했습니다", Toast.LENGTH_SHORT).show()
-                }
+            if (it.isRegisterSuccess) {
+                networkState = NetworkState.STATE_TARGET_GROUP
+                //TODO 타겟 그룹으로 최종 통신 수행 해야함(아래 코드를 해당 통신 옵저버로 이동시켜야함.)
+                loadingTaskSettingEnd()
+                certificationReset()
+            } else {
+                loadingTaskSettingEnd()
+                certificationReset()
+                Toast.makeText(requireContext(), "업로드에 실패했습니다", Toast.LENGTH_SHORT).show()
             }
         }
 
@@ -261,17 +263,18 @@ class CertificateFragment : Fragment() {
                         } else {
                             //TODO 가입된 그룹을 통신을 통해 불러와서 다이얼로그에 띄워야함.선택이 완료되면 모든 통신이 시작됨
                             //통신 상태를 스토리지 업로드 상태로 변경
-                            networkState = NetworkState.STATE_UPLOAD_STORAGE
+/*                            networkState = NetworkState.STATE_UPLOAD_STORAGE
                             loadingTaskSettingStart()
-                            /*viewModel.certificationData.removeObservers(this)*/
                             viewModel.updateCertificationInfo(
                                 viewModel.certificationData.value!!.copy(
                                     recordEndDate = Instant.now(),
-                                    endImages = viewModel.endImageList.value?.map { it.imagesUri }?.toMutableList(),
-                                    certificateTime = totaleLapsedTime
-                                )
-                            )
+                                    endImages = viewModel.endImageList.value?.map { it.imagesUri }
+                                        ?.toMutableList(),
+                                    certificateTime = totaleLapsedTime)
+                            )*/
 
+                            // TODO 일단 그룹 불러오는건 여기 해놓음 위에 주석 내용을 다이얼로그 확인 쪽으로 옮겨야함(이거 통신에 대한 옵저버에서 다이얼로그 띄우기.)
+                            viewModel.getMyFitGroup("hyungoo")
                         }
 
                     }
@@ -419,7 +422,7 @@ class CertificateFragment : Fragment() {
 
 
     //시작 사진 첨부 수정 불가능하도록 설정하는 메서드
-    private fun setRecyclerViewState(visible:Boolean) {
+    private fun setRecyclerViewState(visible: Boolean) {
         certificationStartImageAdapter.changeVisible(visible)
     }
 
@@ -502,7 +505,8 @@ class CertificateFragment : Fragment() {
                     resultGroupList.add(dataList[idx])
                 }
             }
-            Toast.makeText(requireContext(),"${resultGroupList}에 기록합니다.",Toast.LENGTH_SHORT).show()
+            Toast.makeText(requireContext(), "${resultGroupList}에 기록합니다.", Toast.LENGTH_SHORT)
+                .show()
         }
         builder.show()
     }

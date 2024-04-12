@@ -6,7 +6,10 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.fitmate.fitmate.data.model.CertificationMapper.certificationRecordResponse
+import com.fitmate.fitmate.data.model.CertificationMapper.toCertificationTargetFitGroupResponse
 import com.fitmate.fitmate.domain.model.CertificationImage
+import com.fitmate.fitmate.domain.model.CertificationRecordResponse
 import com.fitmate.fitmate.domain.model.DbCertification
 import com.fitmate.fitmate.domain.usecase.CertificationRecordNetworkUseCase
 import com.fitmate.fitmate.domain.usecase.DbCertificationUseCase
@@ -22,7 +25,7 @@ enum class CertificateState { NON_PROCEEDING, ADDED_START_IMAGE, PROCEEDING }
 @HiltViewModel
 class CertificationViewModel @Inject constructor(
     private val dbCertificationUseCase: DbCertificationUseCase,
-    private val certificationRecordNetworkUseCase: CertificationRecordNetworkUseCase
+    private val certificationRecordNetworkUseCase: CertificationRecordNetworkUseCase,
 ) : ViewModel() {
     //인증 진행 상태
     private val _state = MutableLiveData<CertificateState>()
@@ -60,8 +63,9 @@ class CertificationViewModel @Inject constructor(
     val urlMap: LiveData<Map<String, MutableList<String>>>
         get() = _urlMap
 
-    private val _networkPostState = MutableLiveData<Pair<Boolean, String>>()
-    val networkPostState: LiveData<Pair<Boolean, String>>
+    private val _networkPostState =
+        MutableLiveData<CertificationRecordResponse>()
+    val networkPostState: LiveData<CertificationRecordResponse>
         get() = _networkPostState
 
     //인증 화면을 진행중이던 상태로 설정하는 메서드
@@ -153,6 +157,7 @@ class CertificationViewModel @Inject constructor(
             }
         }
     }
+
     //room 데이터 삭제
     fun deleteCertificationInfo() {
         viewModelScope.launch {
@@ -174,30 +179,48 @@ class CertificationViewModel @Inject constructor(
     //이미지 스토리지에 저장 및 url받기
     fun uploadImageAndGetUrl(item: DbCertification) {
         viewModelScope.launch {
-            _urlMap.value =  dbCertificationUseCase.uploadAndGetImageUrl(item)
+            _urlMap.value = dbCertificationUseCase.uploadAndGetImageUrl(item)
         }
     }
 
     //기록 백엔드에 전송
-    fun postCertificationRecord(item:DbCertification) {
+    fun postCertificationRecord(item: DbCertification) {
         viewModelScope.launch(Dispatchers.IO) {
             try {
                 val response = certificationRecordNetworkUseCase.postCertificationRecord(item)
                 withContext(Dispatchers.Main) {
                     if (response.isSuccessful) {
-                        val result = response.body()
-                        Log.d("networkLog", "$result")
+                        val result = response.body()?.certificationRecordResponse()
+                        result.let {
+                            _networkPostState.value = it
+                        }
+
+
+                    }
+                }
+            } catch (e: Exception) {
+                //통신 실패 했을 경우
+            }
+        }
+    }
+
+    //내가 가입한 fit그룹 통신해서 가져오기
+    fun getMyFitGroup(userId:String) {
+        viewModelScope.launch(Dispatchers.IO) {
+            try {
+                val response = certificationRecordNetworkUseCase.getMyFitGroup(userId)
+                withContext(Dispatchers.Main) {
+                    if (response.isSuccessful) {
+                        val result = response.body()?.toCertificationTargetFitGroupResponse()
                         result?.let {
-                            _networkPostState.value =
-                                Pair(true, if (it.isRegisterSuccess) "업로드 성공" else "업로드 실패")
+                            it.forEach {
+                                Log.d("testt",it.fitGroupName)
+                            }
                         }
                     }
                 }
-            }catch (e:Exception){
-                withContext(Dispatchers.Main){
-                    _networkPostState.value =
-                        Pair(true, "업로드 실패")
-                }
+            } catch (e: Exception) {
+                //통신 실패 했을 경우
             }
         }
     }
