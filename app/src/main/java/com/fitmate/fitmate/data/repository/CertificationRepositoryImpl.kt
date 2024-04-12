@@ -15,6 +15,7 @@ import id.zelory.compressor.Compressor
 import id.zelory.compressor.constraint.quality
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
+import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.launch
@@ -28,7 +29,7 @@ import javax.inject.Inject
 class CertificationRepositoryImpl @Inject constructor(
     private val certificationDao: CertificationDao,
     private val storageRef: StorageReference,
-    private val context: Context
+    private val context: Context,
 ) : CertificationRepository {
     override fun loadCertification(): Flow<List<DbCertification>> {
         return flow {
@@ -83,52 +84,59 @@ class CertificationRepositoryImpl @Inject constructor(
 
             runBlocking {
                 // Start images 처리
-                val startJob = launch {
-                    item.startImages.mapIndexed { index, uri ->
-                        async(Dispatchers.IO) {
-                            val startFileName =
-                                "${item.userId}_certificate_${item.recordStartDate}_start_$index"
-                            if (imageUrlMap.containsKey("startUrls")) {
-                                imageUrlMap["startUrls"]?.add(uploadImage(uri, startFileName))
-                            } else {
-                                val newList = mutableListOf(uploadImage(uri, startFileName))
-                                imageUrlMap["startUrls"] = newList
-                            }
+                val startDeferreds = item.startImages.mapIndexed { index, uri ->
+                    async(Dispatchers.IO) {
+                        val startFileName =
+                            "${item.userId}_certificate_${item.recordStartDate}_start_$index"
+                        if (imageUrlMap.containsKey("startUrls")) {
+                            imageUrlMap["startUrls"]?.add(uploadImage(uri, startFileName))
+                        } else {
+                            val newList = mutableListOf(uploadImage(uri, startFileName))
+                            imageUrlMap["startUrls"] = newList
                         }
                     }
                 }
 
-                val endJob = launch {
-                    // End images 처리
-                      item.endImages?.mapIndexed { index, uri ->
-                        async(Dispatchers.IO) {
-                            val endFileName =
-                                "${item.userId}_certificate_${item.recordEndDate}_end_$index"
-                            if (imageUrlMap.containsKey("endUrls")) {
-                                imageUrlMap["endUrls"]?.add(uploadImage(uri, endFileName))
-                            } else {
-                                val newList = mutableListOf(uploadImage(uri, endFileName))
-                                imageUrlMap["endUrls"] = newList
-                            }
+                // End images 처리
+                val endDeferreds = item.endImages?.mapIndexed { index, uri ->
+                    async(Dispatchers.IO) {
+                        val endFileName =
+                            "${item.userId}_certificate_${item.recordEndDate}_end_$index"
+                        if (imageUrlMap.containsKey("endUrls")) {
+                            imageUrlMap["endUrls"]?.add(uploadImage(uri, endFileName))
+                        } else {
+                            val newList = mutableListOf(uploadImage(uri, endFileName))
+                            imageUrlMap["endUrls"] = newList
                         }
                     }
                 }
+
                 // 모든 작업이 완료될 때까지 대기
-                startJob.join()
-                endJob.join()
+                startDeferreds.awaitAll()
+                endDeferreds?.awaitAll()
             }
             imageUrlMap
         }
 
     private suspend fun uploadImage(uri: Uri, fileName: String): String {
         val file = getPathFromURI(uri)
-        val compressorFile = Compressor.compress(context, File(file)){
+        val compressorFile = Compressor.compress(context, File(file)) {
             quality(0)
         }
-        storageRef.child(fileName).putFile(Uri.fromFile(compressorFile)).await()
+
+        val storageReference = storageRef.child(fileName)
+
+        // 이미 파일이 존재하는지 확인하고 있다면 삭제
+        try {
+            storageReference.delete().await()
+        } catch (e: Exception) {
+            // 이미 파일이 존재하지 않거나 삭제할 수 없는 경우
+        }
+
+        storageReference.putFile(Uri.fromFile(compressorFile)).await()
 
         // 업로드가 성공적으로 완료되었다면 다운로드 URL을 가져옴
-        return storageRef.child(fileName).downloadUrl.await().toString()
+        return storageReference.downloadUrl.await().toString()
     }
 
     fun getPathFromURI(uri: Uri): String? {

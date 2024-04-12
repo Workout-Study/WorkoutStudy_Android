@@ -44,8 +44,9 @@ class CertificateFragment : Fragment() {
     companion object {
         //사진 최대 선택 가능 갯수
         private const val IMAGE_PICK_MAX = 5
-        enum class NetworkState{
-            STATE_POST_BACK_END, STATE_UPLOAD_STORAGE,STATE_NON
+
+        enum class NetworkState {
+            STATE_POST_BACK_END, STATE_UPLOAD_STORAGE, STATE_NON, STATE_TARGET_GROUP
         }
     }
 
@@ -56,7 +57,7 @@ class CertificateFragment : Fragment() {
     private val viewModel: CertificationViewModel by viewModels()
     private var pickMultipleMedia = activityResultLauncher()
     private var totaleLapsedTime: Long = 0L
-    private var networkState:NetworkState = NetworkState.STATE_NON
+    private var networkState: NetworkState = NetworkState.STATE_NON
 
     //서비스의 스톱워치 시간대를 가져오는 브로드캐스트 리시버
     private var broadcastReceiver = object : BroadcastReceiver() {
@@ -116,13 +117,11 @@ class CertificateFragment : Fragment() {
         viewModel.getCertificationDataDb(1)
         viewModel.certificationData.observe(viewLifecycleOwner) {
             if (it != null) {
-                if (it.recordEndDate == null && networkState == NetworkState.STATE_NON){
+                if (it.recordEndDate == null && networkState == NetworkState.STATE_NON) {
                     viewModel.setStateCertificateProceed()
-                }
-                else if (networkState == NetworkState.STATE_POST_BACK_END){
+                } else if (networkState == NetworkState.STATE_POST_BACK_END) {
                     viewModel.postCertificationRecord(it)
-                }
-                else if (networkState == NetworkState.STATE_UPLOAD_STORAGE) {
+                } else if (networkState == NetworkState.STATE_UPLOAD_STORAGE) {
                     viewModel.uploadImageAndGetUrl(it)
                 }
             } else {
@@ -148,16 +147,41 @@ class CertificateFragment : Fragment() {
                 "업데이트 완료" -> {
                     viewModel.getCertificationDataDb(1)
                 }
+
+                "삭제 완료" -> {
+                    if (networkState == NetworkState.STATE_TARGET_GROUP) {
+                        //TODO 프래그먼트 종료헤야함.
+                        val intent = Intent(this@CertificateFragment.context, StopWatchService::class.java).apply {
+                            action = STOP_WATCH_RESET
+                        }
+                        requireContext().startService(intent)
+
+                        findNavController().popBackStack()
+                    } else {
+                        val intent = Intent(this@CertificateFragment.context, StopWatchService::class.java).apply {
+                            action = STOP_WATCH_RESET
+                        }
+                        requireContext().startService(intent)
+                        LocalBroadcastManager.getInstance(requireContext()).unregisterReceiver(broadcastReceiver2)
+                        setRecyclerViewState(true)
+                        viewModel.resetStartImage()
+                        viewModel.resetEndImage()
+                        viewModel.resetCertificationLiveData()
+                        binding.textViewCertificateTimer.text = getString(R.string.certificate_scr_timer)
+                        networkState = NetworkState.STATE_NON
+                        viewModel.setStateCertificateNonProceeding()
+                    }
+                }
             }
         }
 
-        viewModel.urlMap.observe(viewLifecycleOwner) {urlMap ->
+        viewModel.urlMap.observe(viewLifecycleOwner) { urlMap ->
             //TODO 해당 Url을 room에 저장하고 가져와서 백엔드에 전달한다.
             val startUrl = urlMap["startUrls"]
             val endUrl = urlMap["endUrls"]
             val obj = viewModel.certificationData.value?.copy(
                 startImagesUrl = startUrl,
-                endImagesUrl =  endUrl
+                endImagesUrl = endUrl
             )
             obj?.let {
                 networkState = NetworkState.STATE_POST_BACK_END
@@ -167,14 +191,17 @@ class CertificateFragment : Fragment() {
         }
 
         viewModel.networkPostState.observe(viewLifecycleOwner) {
-            when (it.second){
+            when (it.second) {
                 "업로드 성공" -> {
+                    networkState = NetworkState.STATE_TARGET_GROUP
                     loadingTaskSettingEnd()
                     certificationReset()
-                    viewModel.changeCheckUploadComplete()
                 }
-                "업로드 실패" -> {
 
+                "업로드 실패" -> {
+                    loadingTaskSettingEnd()
+                    certificationReset()
+                    Toast.makeText(requireContext(), "업로드에 실패했습니다", Toast.LENGTH_SHORT).show()
                 }
             }
         }
@@ -196,13 +223,12 @@ class CertificateFragment : Fragment() {
             certificationEndImageAdapter.notifyDataSetChanged()
         }
 
-
         //화면 상태에 따른 설정을 위한 state 구독
         viewModel.state.observe(viewLifecycleOwner) { state ->
             when (state) {
                 //인증 진행중인 상태
                 CertificateState.PROCEEDING -> {
-
+                    Log.d("stateObserve", "진행중인 상태")
                     //사진 추가 클릭 리스너 정의 및 설정
                     setEndImageAddButtonClick()
                     //리셋버튼 정의 및 설정
@@ -210,7 +236,7 @@ class CertificateFragment : Fragment() {
                         certificationReset()
                     }
                     //시작 사진 리사이클러뷰 삭제 막기
-                    setRecyclerViewState()
+                    setRecyclerViewState(false)
 
                     //리사이클러뷰 업데이트
                     certificationStartImageAdapter.submitList(viewModel.certificationData.value!!.startImages.map {
@@ -223,11 +249,14 @@ class CertificateFragment : Fragment() {
                     binding.buttonCertificateConfirm.setOnClickListener {
                         //마지막 사진 list.size가 0보다 크지않다면
                         if ((viewModel.endImageList.value?.size ?: 0) <= 0) {
-                            Toast.makeText(requireContext(),
-                                getString(R.string.certificate_scr_end_image_check_warning), Toast.LENGTH_SHORT).show()
+                            Toast.makeText(
+                                requireContext(),
+                                getString(R.string.certificate_scr_end_image_check_warning),
+                                Toast.LENGTH_SHORT
+                            ).show()
                             return@setOnClickListener
                         } else {
-                            //TODO 데이터를 포장해서 서버에 전송
+                            //데이터를 포장해서 서버에 전송하는 작업
                             //통신 상태를 스토리지 업로드 상태로 변경
                             networkState = NetworkState.STATE_UPLOAD_STORAGE
                             loadingTaskSettingStart()
@@ -235,8 +264,7 @@ class CertificateFragment : Fragment() {
                             viewModel.updateCertificationInfo(
                                 viewModel.certificationData.value!!.copy(
                                     recordEndDate = Instant.now(),
-                                    endImages = viewModel.endImageList.value?.map { it.imagesUri }
-                                        ?.toMutableList(),
+                                    endImages = viewModel.endImageList.value?.map { it.imagesUri }?.toMutableList(),
                                     certificateTime = totaleLapsedTime
                                 )
                             )
@@ -253,6 +281,7 @@ class CertificateFragment : Fragment() {
 
                 //사진 첨부가 되었고 인증 진행이 가능한 상태
                 CertificateState.ADDED_START_IMAGE -> {
+                    Log.d("stateObserve", "사진이 업로드된 상태")
                     binding.buttonCertificateConfirm.setOnClickListener {
                         //33버전 이상일 때 권한 요청
                         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.TIRAMISU) {
@@ -266,6 +295,7 @@ class CertificateFragment : Fragment() {
                 }
                 //최초 상태(아무것도 안한 상태)
                 CertificateState.NON_PROCEEDING -> {
+                    Log.d("stateObserve", "초기상태 진입")
                     //스타트 사진 이미지 첨부 버튼(ImageView) 설정
                     setStartImageAddButtonClick()
                 }
@@ -388,22 +418,12 @@ class CertificateFragment : Fragment() {
 
 
     //시작 사진 첨부 수정 불가능하도록 설정하는 메서드
-    private fun setRecyclerViewState() {
-        certificationStartImageAdapter.changeVisible()
+    private fun setRecyclerViewState(visible:Boolean) {
+        certificationStartImageAdapter.changeVisible(visible)
     }
 
     private fun certificationReset() {
         viewModel.deleteCertificationInfo()
-        val intent = Intent(this@CertificateFragment.context, StopWatchService::class.java).apply {
-            action = STOP_WATCH_RESET
-        }
-        requireContext().startService(intent)
-        LocalBroadcastManager.getInstance(requireContext()).unregisterReceiver(broadcastReceiver2)
-        setRecyclerViewState()
-        viewModel.resetStartImage()
-        viewModel.resetEndImage()
-        binding.textViewCertificateTimer.text = getString(R.string.certificate_scr_timer)
-        viewModel.setStateCertificateNonProceeding()
     }
 
     //12시간 초과시 프래그먼트 닫기
@@ -427,28 +447,31 @@ class CertificateFragment : Fragment() {
                 viewModel.insertCertificateInitInfo()
             }.show()
     }
+
     private val multiplePermissionsLauncher = registerForActivityResult(
-        ActivityResultContracts.RequestMultiplePermissions()) { permissions ->
+        ActivityResultContracts.RequestMultiplePermissions()
+    ) { permissions ->
         permissions.entries.forEach { (permission, isGranted) ->
-            when(permission){
-                Manifest.permission.READ_EXTERNAL_STORAGE ->{
-                    if (isGranted){
+            when (permission) {
+                Manifest.permission.READ_EXTERNAL_STORAGE -> {
+                    if (isGranted) {
                         pickMultipleMedia.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))
-                    }else{
-                        if (!shouldShowRequestPermissionRationale(Manifest.permission.READ_EXTERNAL_STORAGE)){
+                    } else {
+                        if (!shouldShowRequestPermissionRationale(Manifest.permission.READ_EXTERNAL_STORAGE)) {
                             showPermissionSettiongDialog()
-                        }else{
+                        } else {
                             showStoragePermissionDialog()
                         }
                     }
                 }
+
                 Manifest.permission.READ_MEDIA_IMAGES -> {
-                    if (isGranted){
+                    if (isGranted) {
                         pickMultipleMedia.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))
-                    }else{
-                        if (!shouldShowRequestPermissionRationale(Manifest.permission.READ_MEDIA_IMAGES)){
+                    } else {
+                        if (!shouldShowRequestPermissionRationale(Manifest.permission.READ_MEDIA_IMAGES)) {
                             showPermissionSettiongDialog()
-                        }else{
+                        } else {
                             showPermissionSettiongDialog()
                         }
                     }
@@ -457,7 +480,33 @@ class CertificateFragment : Fragment() {
         }
     }
 
-    fun showStoragePermissionDialog() {
+    private fun showSelectCertificateGroup() {
+        val dataList = arrayOf("축구를 좋아하는 모임", "다이어트 하는 모임", "스쿼트하는 모임")
+        val multiChoiceList = BooleanArray(dataList.size) { i -> false }
+        val resultGroupList = mutableListOf<String>()
+        val builder = MaterialAlertDialogBuilder(requireContext())
+        builder.setTitle("다중 선택 리스트 다이얼로그")
+
+        builder.setMultiChoiceItems(
+            dataList,
+            multiChoiceList
+        ) { dialogInterface: DialogInterface, i: Int, b: Boolean ->
+            multiChoiceList[i] = b
+        }
+
+        builder.setNegativeButton("취소", null)
+        builder.setPositiveButton("확인") { dialogInterface: DialogInterface, i: Int ->
+            for (idx in 0 until multiChoiceList.size) {
+                if (multiChoiceList[idx] == true) {
+                    resultGroupList.add(dataList[idx])
+                }
+            }
+            Toast.makeText(requireContext(),"${resultGroupList}에 기록합니다.",Toast.LENGTH_SHORT).show()
+        }
+        builder.show()
+    }
+
+    private fun showStoragePermissionDialog() {
         MaterialAlertDialogBuilder(requireContext())
             .setTitle(getString(R.string.permission_dialog_scr_guide))
             .setMessage(getString(R.string.permission_dialog_scr_guide_message))
@@ -472,7 +521,7 @@ class CertificateFragment : Fragment() {
 
 
     //권한 설정 화면을 위한 다이얼로그 띄우는 메서드
-    fun showPermissionSettiongDialog() {
+    private fun showPermissionSettiongDialog() {
         MaterialAlertDialogBuilder(requireContext())
             .setMessage(getString(R.string.permission_dialog_scr_guide_setting))
             .setPositiveButton(getString(R.string.permission_dialog_scr_guide_setting_select)) { dialogInterface: DialogInterface, i: Int ->
@@ -484,47 +533,51 @@ class CertificateFragment : Fragment() {
     }
 
     //앱 권한 세팅 화면으로 이동키시는 메서드
-    fun navigateToAppSetting() {
+    private fun navigateToAppSetting() {
         val intent = Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS).apply {
             data = Uri.fromParts("package", requireContext().packageName, null)
         }
         startActivity(intent)
     }
+
     //권한 확인 및 요청 메서드
-    fun requestPermission(){
+    private fun requestPermission() {
         if (
             Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU &&
-            (ContextCompat.checkSelfPermission(requireContext(),
+            (ContextCompat.checkSelfPermission(
+                requireContext(),
                 Manifest.permission.READ_MEDIA_IMAGES
             ) == PermissionChecker.PERMISSION_GRANTED)
         ) {
             pickMultipleMedia.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))
         } else if (
             Build.VERSION.SDK_INT >= Build.VERSION_CODES.UPSIDE_DOWN_CAKE
-            &&  ContextCompat.checkSelfPermission(requireContext(),
+            && ContextCompat.checkSelfPermission(
+                requireContext(),
                 Manifest.permission.READ_MEDIA_IMAGES
             ) == PermissionChecker.PERMISSION_DENIED
         ) {
             // 34이상이고 READ_MEDIA_VISUAL_USER_SELECTED만 허용되어있다면 권한 물어보는 다이얼로그를 띄워야함.
             /*showPermissionDialog()*/
             multiplePermissionsLauncher.launch(arrayOf(Manifest.permission.READ_MEDIA_IMAGES))
-        }  else if (ContextCompat.checkSelfPermission(requireContext(),
+        } else if (ContextCompat.checkSelfPermission(
+                requireContext(),
                 Manifest.permission.READ_EXTERNAL_STORAGE
             ) == PermissionChecker.PERMISSION_GRANTED
         ) {
             pickMultipleMedia.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))
         } else {
-            if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.S_V2){
+            if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.S_V2) {
                 //READ_EXTERNAL_STORAGE 권한 요청
                 multiplePermissionsLauncher.launch(arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE))
-            }else{
+            } else {
                 multiplePermissionsLauncher.launch(arrayOf(Manifest.permission.READ_MEDIA_IMAGES))
             }
         }
     }
 
-    fun loadingTaskSettingStart() {
-        binding.run {
+    private fun loadingTaskSettingStart() {
+        binding.apply {
             constraintLayoutRootContent.alpha = 0.5f
             buttonCertificateConfirm.isClickable = false
             buttonCertificateReset.isClickable = false
@@ -532,8 +585,8 @@ class CertificateFragment : Fragment() {
         }
     }
 
-    fun loadingTaskSettingEnd() {
-        binding.run {
+    private fun loadingTaskSettingEnd() {
+        binding.apply {
             constraintLayoutRootContent.alpha = 1f
             buttonCertificateConfirm.isClickable = true
             buttonCertificateReset.isClickable = true
