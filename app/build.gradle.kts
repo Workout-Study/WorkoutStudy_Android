@@ -92,6 +92,7 @@ dependencies {
     implementation("com.github.Tans5:horizontalnestedscrollview:0.1.0")
     implementation("com.squareup.okhttp3:logging-interceptor:4.12.0")
     implementation("id.zelory:compressor:3.0.1")
+    implementation("com.facebook.shimmer:shimmer:0.5.0")
 
     testImplementation(Libraries.Test.JUNIT)
 
