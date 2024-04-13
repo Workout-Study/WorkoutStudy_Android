@@ -7,6 +7,7 @@ import retrofit2.http.Query
 
 interface CertificationTargetGroupService {
 
-    @GET("fit-group-service/groups/filters")
+    /*@GET("fit-group-service/groups/filters")*/
+    @GET("group")
     suspend fun getTargetGroupList(@Query("user-id") userId:String): Response<CertificationTargetFitGroupResponseDto>
 }
