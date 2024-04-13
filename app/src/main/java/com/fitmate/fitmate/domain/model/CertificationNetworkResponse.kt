@@ -9,3 +9,7 @@ data class FitGroupItem(
    val fitGroupId: String,
    val fitGroupName: String,
 )
+
+data class ResisterCertificationRecordResponse(
+    val isRegisterSuccess: Boolean,
+)

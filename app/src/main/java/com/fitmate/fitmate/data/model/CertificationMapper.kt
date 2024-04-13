@@ -6,6 +6,8 @@ import com.fitmate.fitmate.data.model.entity.CertificationEntity
 import com.fitmate.fitmate.domain.model.CertificationRecordResponse
 import com.fitmate.fitmate.domain.model.DbCertification
 import com.fitmate.fitmate.domain.model.FitGroupItem
+import com.fitmate.fitmate.domain.model.ResisterCertificationRecord
+import com.fitmate.fitmate.domain.model.ResisterCertificationRecordResponse
 
 object CertificationMapper {
 
@@ -45,7 +47,7 @@ object CertificationMapper {
     )
 
     //data layer의 엔티티를 ui layer의 데이터로 변환
-    fun CertificationRecordResponseDto.certificationRecordResponse() = CertificationRecordResponse(
+    fun CertificationRecordResponseDto.toCertificationRecordResponse() = CertificationRecordResponse(
         isRegisterSuccess = this.isRegisterSuccess,
         fitRecordId = this.fitRecordId
     )
@@ -59,4 +61,14 @@ object CertificationMapper {
             )
         }
     }
+
+    fun ResisterCertificationRecord.toResisterCertificationRecordDto() = ResisterCertificationRecordDto(
+        requestUserId = this.requestUserId,
+        fitRecordId = this.fitRecordId,
+        fitGroupIds = this.fitGroupIds
+    )
+
+    fun ResisterCertificationRecordResponseDto.toResisterCertificationRecordResponse() = ResisterCertificationRecordResponse(
+        isRegisterSuccess = this.isRegisterSuccess,
+    )
 }
