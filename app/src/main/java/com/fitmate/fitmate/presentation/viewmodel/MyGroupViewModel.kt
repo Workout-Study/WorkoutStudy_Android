@@ -3,7 +3,7 @@ package com.fitmate.fitmate.presentation.viewmodel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.fitmate.fitmate.data.model.dto.FitGroup
-import com.fitmate.fitmate.domain.usecase.NetworkUseCase
+import com.fitmate.fitmate.domain.usecase.DBChatUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -14,7 +14,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class MyGroupViewModel @Inject constructor(
-    private val networkUseCase: NetworkUseCase
+    private val dbChatUseCase: DBChatUseCase
 ) : ViewModel() {
 
     private val _fitGroup = MutableStateFlow<List<FitGroup>>(emptyList())
@@ -32,7 +32,7 @@ class MyGroupViewModel @Inject constructor(
 
         viewModelScope.launch {
             _isLoading.value = true
-            val response = networkUseCase.retrieveFitGroup(fitMateId)
+            val response = dbChatUseCase.retrieveFitGroup(fitMateId)
 
             withContext(Dispatchers.Main) {
                 val result = response.body()

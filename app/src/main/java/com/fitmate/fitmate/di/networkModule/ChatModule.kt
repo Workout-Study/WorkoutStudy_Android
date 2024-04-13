@@ -1,8 +1,6 @@
 package com.fitmate.fitmate.di.networkModule
 
-import com.fitmate.fitmate.data.repository.NetworkRepositoryImpl
 import com.fitmate.fitmate.data.source.dao.ChatService
-import com.fitmate.fitmate.domain.repository.NetworkRepository
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -12,7 +10,7 @@ import javax.inject.Singleton
 
 @Module
 @InstallIn(SingletonComponent::class)
-object NetworkModule {
+object ChatModule {
     //채팅 레트로핏 서비스 싱글톤
     @Provides
     @Singleton
@@ -25,7 +23,8 @@ object NetworkModule {
     }
 
     //채팅 레포지토리 싱글톤
-    @Provides
-    @Singleton
-    fun providesContentRepository(chatService: ChatService): NetworkRepository = NetworkRepositoryImpl(chatService)
+//    @Provides
+//    @Singleton
+//    fun providesContentRepository(chatDao: ChatDao, chatDatabase: ChatDatabase, chatService: ChatService): ChatRepository = ChatRepositoryImpl(chatDao, chatDatabase, chatService)
 }
+
