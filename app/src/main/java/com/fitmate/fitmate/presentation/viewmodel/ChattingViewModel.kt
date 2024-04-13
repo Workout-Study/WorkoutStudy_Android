@@ -5,7 +5,6 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.fitmate.fitmate.data.model.dto.ChatResponse
-import com.fitmate.fitmate.domain.usecase.NetworkUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import androidx.lifecycle.viewModelScope
@@ -19,7 +18,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class ChattingViewModel @Inject constructor(
-    private val networkUseCase: NetworkUseCase, private val dbChatUseCase: DBChatUseCase
+    private val dbChatUseCase: DBChatUseCase
 ): ViewModel() {
 
     private val _chatResponse = MutableStateFlow<ChatResponse?>(null)
@@ -68,7 +67,7 @@ class ChattingViewModel @Inject constructor(
 
                 // 여기에서 네트워크 요청 로직을 수행
                 _isLoading.value = true
-                val response = networkUseCase.retrieveMessage(messageId, fitGroupId, fitMateId, messageTime, messageType)
+                val response = dbChatUseCase.retrieveMessage(messageId, fitGroupId, fitMateId, messageTime, messageType)
 
                 withContext(Dispatchers.Main) {
                     if (response.isSuccessful) {
