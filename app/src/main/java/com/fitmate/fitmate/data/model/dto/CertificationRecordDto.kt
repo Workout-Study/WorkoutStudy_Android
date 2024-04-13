@@ -11,7 +11,7 @@ data class CertificationRecordDto(
 
 data class CertificationRecordResponseDto(
     @SerializedName("isRegisterSuccess") val isRegisterSuccess: Boolean,
-    @SerializedName("fitRecordId") val fitRecordId: Int?
+    @SerializedName("fitRecordId") val fitRecordId: Int?,
 )
 
 data class CertificationTargetFitGroupResponseDto(
@@ -21,4 +21,14 @@ data class CertificationTargetFitGroupResponseDto(
 data class CertificationTargetFitGroupItemDto(
     @SerializedName("fitGroupId") val fitGroupId: String,
     @SerializedName("fitGroupName") val fitGroupName: String,
+)
+
+data class ResisterCertificationRecordDto(
+    @SerializedName("requestUserId") val requestUserId: String,
+    @SerializedName("fitRecordId") val fitRecordId: Int,
+    @SerializedName("fitGroupIds") val fitGroupIds: List<String>,
+)
+
+data class ResisterCertificationRecordResponseDto(
+    @SerializedName("isRegisterSuccess") val isRegisterSuccess: Boolean
 )

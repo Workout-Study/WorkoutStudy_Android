@@ -10,6 +10,7 @@ import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.provider.Settings
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -30,6 +31,7 @@ import com.fitmate.fitmate.R
 import com.fitmate.fitmate.databinding.FragmentCertificateBinding
 import com.fitmate.fitmate.domain.model.CertificationImage
 import com.fitmate.fitmate.domain.model.FitGroupItem
+import com.fitmate.fitmate.domain.model.ResisterCertificationRecord
 import com.fitmate.fitmate.presentation.ui.certificate.list.adapter.CertificationImageAdapter
 import com.fitmate.fitmate.presentation.viewmodel.CertificateState
 import com.fitmate.fitmate.presentation.viewmodel.CertificationViewModel
@@ -55,14 +57,15 @@ class CertificateFragment : Fragment() {
     private lateinit var certificationEndImageAdapter: CertificationImageAdapter
     private val viewModel: CertificationViewModel by viewModels()
     private var pickMultipleMedia = activityResultLauncher()
-    private var totaleLapsedTime: Long = 0L
+    private var totalElapsedTime: Long = 0L
+
     private var networkState: NetworkState = NetworkState.STATE_NON
 
     //서비스의 스톱워치 시간대를 가져오는 브로드캐스트 리시버
     private var broadcastReceiver = object : BroadcastReceiver() {
         override fun onReceive(context: Context?, intent: Intent?) {
             val elapsedTime = intent?.getLongExtra("elapsedTime", 0) ?: 0
-            totaleLapsedTime = elapsedTime
+            totalElapsedTime = elapsedTime
             binding.textViewCertificateTimer.text = formatTime(elapsedTime)
         }
     }
@@ -184,6 +187,7 @@ class CertificateFragment : Fragment() {
         }
 
         viewModel.urlMap.observe(viewLifecycleOwner) { urlMap ->
+            Log.d("testt",viewModel.selectedTarget.toString())
             //TODO 해당 Url을 room에 저장하고 가져와서 백엔드에 전달한다.
             val startUrl = urlMap["startUrls"]
             val endUrl = urlMap["endUrls"]
@@ -204,12 +208,23 @@ class CertificateFragment : Fragment() {
             if (it.isRegisterSuccess) {
                 networkState = NetworkState.STATE_TARGET_GROUP
                 //TODO 타겟 그룹으로 최종 통신 수행 해야함(아래 코드를 해당 통신 옵저버로 이동시켜야함.)
-                loadingTaskSettingEnd()
-                certificationReset()
+                it.fitRecordId?.let { recordId ->
+                    val resisterObj = ResisterCertificationRecord("hyungoo",recordId,viewModel.selectedTarget)
+                    viewModel.postResisterCertificationRecord(resisterObj)
+                }
+
             } else {
                 loadingTaskSettingEnd()
                 certificationReset()
                 Toast.makeText(requireContext(), "업로드에 실패했습니다", Toast.LENGTH_SHORT).show()
+            }
+        }
+
+        //최종 통신 수행 결과
+        viewModel.networkPostState2.observe(viewLifecycleOwner){
+            if (it.isRegisterSuccess){
+                loadingTaskSettingEnd()
+                certificationReset()
             }
         }
 
@@ -266,11 +281,8 @@ class CertificateFragment : Fragment() {
                             ).show()
                             return@setOnClickListener
                         } else {
-                            //TODO 가입된 그룹을 통신을 통해 불러와서 다이얼로그에 띄워야함.선택이 완료되면 모든 통신이 시작됨
-                            //통신 상태를 스토리지 업로드 상태로 변경
 
-
-                            // TODO 일단 그룹 불러오는건 여기 해놓음 위에 주석 내용을 다이얼로그 확인 쪽으로 옮겨야함(이거 통신에 대한 옵저버에서 다이얼로그 띄우기.)
+                            //그룹 선택하러 이동
                             viewModel.getMyFitGroup("hyungoo")
                         }
 
@@ -486,7 +498,7 @@ class CertificateFragment : Fragment() {
         val multiChoiceList = BooleanArray(dataList.size) { i -> false }
         val resultGroupIdList = mutableListOf<String>()
         val builder = MaterialAlertDialogBuilder(requireContext())
-        builder.setTitle("다중 선택 리스트 다이얼로그")
+        builder.setTitle("인증을 수행할 그룹을 선택해주세요")
 
         builder.setMultiChoiceItems(
             dataList,
@@ -503,7 +515,8 @@ class CertificateFragment : Fragment() {
                 }
             }
             if (resultGroupIdList.size > 0){
-                //TODO 최종 통신 진행
+                //최종 통신까지 진행 시작
+                viewModel.selectedTarget = resultGroupIdList
                 networkState = NetworkState.STATE_UPLOAD_STORAGE
                 loadingTaskSettingStart()
                 viewModel.updateCertificationInfo(
@@ -511,7 +524,7 @@ class CertificateFragment : Fragment() {
                         recordEndDate = Instant.now(),
                         endImages = viewModel.endImageList.value?.map { it.imagesUri }
                             ?.toMutableList(),
-                        certificateTime = totaleLapsedTime)
+                        certificateTime = totalElapsedTime)
                 )
                 Toast.makeText(requireContext(), "${resultGroupIdList}에 기록합니다.", Toast.LENGTH_SHORT).show()
             }else{
