@@ -66,7 +66,7 @@
     <string name="group_join_scr_comment">FitGroup 상세 정보</string>
     <string name="group_join_scr_script">선착순 모집</string>
     <string name="group_join_scr_confirm">가입 신청하기</string>
-    <string name="group_join_scr_now_people_term">00회 / 1주</string>
+    <string name="group_join_scr_now_people_term">0회 / 1주</string>
 
     <string name="onboarding_permission_scr_content">피트메이트를 100% 즐기기 위해서\n아래 권한들을 허용해주세요.</string>
     <string name="onboarding_permission_scr_text1">필수적 접근 권한</string>
