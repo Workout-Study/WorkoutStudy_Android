@@ -8,6 +8,7 @@ import retrofit2.http.POST
 
 interface CertificationRecordService {
 
-    @POST("my-fit-service/records")
+    /*@POST("my-fit-service/records")*/
+    @POST("records")
     suspend fun postCertificationRecord(@Body requestBody: CertificationRecordDto): Response<CertificationRecordResponseDto>
 }

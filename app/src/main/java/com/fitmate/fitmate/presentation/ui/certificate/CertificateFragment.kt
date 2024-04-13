@@ -29,6 +29,7 @@ import com.fitmate.fitmate.MainActivity
 import com.fitmate.fitmate.R
 import com.fitmate.fitmate.databinding.FragmentCertificateBinding
 import com.fitmate.fitmate.domain.model.CertificationImage
+import com.fitmate.fitmate.domain.model.FitGroupItem
 import com.fitmate.fitmate.presentation.ui.certificate.list.adapter.CertificationImageAdapter
 import com.fitmate.fitmate.presentation.viewmodel.CertificateState
 import com.fitmate.fitmate.presentation.viewmodel.CertificationViewModel
@@ -212,6 +213,10 @@ class CertificateFragment : Fragment() {
             }
         }
 
+        viewModel.myFitGroupData.observe(viewLifecycleOwner){
+            showSelectCertificateGroup(it)
+        }
+
         //기록 시작 이미지 첨부 및 삭제 여부를 구독
         viewModel.startImageList.observe(viewLifecycleOwner) {
             certificationStartImageAdapter.submitList(it)
@@ -263,15 +268,7 @@ class CertificateFragment : Fragment() {
                         } else {
                             //TODO 가입된 그룹을 통신을 통해 불러와서 다이얼로그에 띄워야함.선택이 완료되면 모든 통신이 시작됨
                             //통신 상태를 스토리지 업로드 상태로 변경
-/*                            networkState = NetworkState.STATE_UPLOAD_STORAGE
-                            loadingTaskSettingStart()
-                            viewModel.updateCertificationInfo(
-                                viewModel.certificationData.value!!.copy(
-                                    recordEndDate = Instant.now(),
-                                    endImages = viewModel.endImageList.value?.map { it.imagesUri }
-                                        ?.toMutableList(),
-                                    certificateTime = totaleLapsedTime)
-                            )*/
+
 
                             // TODO 일단 그룹 불러오는건 여기 해놓음 위에 주석 내용을 다이얼로그 확인 쪽으로 옮겨야함(이거 통신에 대한 옵저버에서 다이얼로그 띄우기.)
                             viewModel.getMyFitGroup("hyungoo")
@@ -484,10 +481,10 @@ class CertificateFragment : Fragment() {
         }
     }
 
-    private fun showSelectCertificateGroup() {
-        val dataList = arrayOf("축구를 좋아하는 모임", "다이어트 하는 모임", "스쿼트하는 모임")
+    private fun showSelectCertificateGroup(groupList: List<FitGroupItem>) {
+        val dataList = groupList.map { it.fitGroupName }.toTypedArray()
         val multiChoiceList = BooleanArray(dataList.size) { i -> false }
-        val resultGroupList = mutableListOf<String>()
+        val resultGroupIdList = mutableListOf<String>()
         val builder = MaterialAlertDialogBuilder(requireContext())
         builder.setTitle("다중 선택 리스트 다이얼로그")
 
@@ -502,11 +499,25 @@ class CertificateFragment : Fragment() {
         builder.setPositiveButton("확인") { dialogInterface: DialogInterface, i: Int ->
             for (idx in 0 until multiChoiceList.size) {
                 if (multiChoiceList[idx] == true) {
-                    resultGroupList.add(dataList[idx])
+                    resultGroupIdList.add(groupList[idx].fitGroupId)
                 }
             }
-            Toast.makeText(requireContext(), "${resultGroupList}에 기록합니다.", Toast.LENGTH_SHORT)
-                .show()
+            if (resultGroupIdList.size > 0){
+                //TODO 최종 통신 진행
+                networkState = NetworkState.STATE_UPLOAD_STORAGE
+                loadingTaskSettingStart()
+                viewModel.updateCertificationInfo(
+                    viewModel.certificationData.value!!.copy(
+                        recordEndDate = Instant.now(),
+                        endImages = viewModel.endImageList.value?.map { it.imagesUri }
+                            ?.toMutableList(),
+                        certificateTime = totaleLapsedTime)
+                )
+                Toast.makeText(requireContext(), "${resultGroupIdList}에 기록합니다.", Toast.LENGTH_SHORT).show()
+            }else{
+                Toast.makeText(requireContext(), "그룹을 하나 이상 선택하셔야합니다!", Toast.LENGTH_SHORT).show()
+            }
+
         }
         builder.show()
     }

@@ -11,6 +11,7 @@ import com.fitmate.fitmate.data.model.CertificationMapper.toCertificationTargetF
 import com.fitmate.fitmate.domain.model.CertificationImage
 import com.fitmate.fitmate.domain.model.CertificationRecordResponse
 import com.fitmate.fitmate.domain.model.DbCertification
+import com.fitmate.fitmate.domain.model.FitGroupItem
 import com.fitmate.fitmate.domain.usecase.CertificationRecordNetworkUseCase
 import com.fitmate.fitmate.domain.usecase.DbCertificationUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -53,20 +54,21 @@ class CertificationViewModel @Inject constructor(
     val doneEvent: LiveData<Pair<Boolean, String>>
         get() = _doneEvent
 
-
-    private val _completeUpload = MutableLiveData<Boolean>()
-    val completeUpload: LiveData<Boolean>
-        get() = _completeUpload
-
-
+    //스토리지에 저장하고 다운도르 받은 url 데이터
     private val _urlMap = MutableLiveData<Map<String, MutableList<String>>>()
     val urlMap: LiveData<Map<String, MutableList<String>>>
         get() = _urlMap
 
+    //1차 post작업 결과 데이터
     private val _networkPostState =
         MutableLiveData<CertificationRecordResponse>()
     val networkPostState: LiveData<CertificationRecordResponse>
         get() = _networkPostState
+
+    //내가 가입한 그룹의 정보를 담고있는 데이터
+    val _myFitGroupData = MutableLiveData<List<FitGroupItem>>()
+    val myFitGroupData: LiveData<List<FitGroupItem>>
+        get() = _myFitGroupData
 
     //인증 화면을 진행중이던 상태로 설정하는 메서드
     fun setStateCertificateProceed() {
@@ -213,9 +215,7 @@ class CertificationViewModel @Inject constructor(
                     if (response.isSuccessful) {
                         val result = response.body()?.toCertificationTargetFitGroupResponse()
                         result?.let {
-                            it.forEach {
-                                Log.d("testt",it.fitGroupName)
-                            }
+                            _myFitGroupData.value = it
                         }
                     }
                 }
