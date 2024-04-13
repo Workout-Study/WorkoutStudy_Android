@@ -33,7 +33,7 @@ object RetrofitModule {
     @Singleton
     fun provideRetrofit(okHttpClient: OkHttpClient): Retrofit = Retrofit.Builder()
         /*.baseUrl("http://43.202.247.71:8081/")*/
-        .baseUrl("https://22392bd9-1685-43d9-ae2e-17c6b9fc6beb.mock.pstmn.io/")
+        .baseUrl("https://3a5e7e05-ca25-425c-849c-809753f9bc75.mock.pstmn.io/")
         .client(okHttpClient)
         .addConverterFactory(GsonConverterFactory.create())
         .build()

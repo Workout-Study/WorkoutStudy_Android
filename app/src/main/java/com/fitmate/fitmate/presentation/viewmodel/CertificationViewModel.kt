@@ -1,17 +1,19 @@
 package com.fitmate.fitmate.presentation.viewmodel
 
 import android.net.Uri
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.fitmate.fitmate.data.model.CertificationMapper.certificationRecordResponse
+import com.fitmate.fitmate.data.model.CertificationMapper.toCertificationRecordResponse
 import com.fitmate.fitmate.data.model.CertificationMapper.toCertificationTargetFitGroupResponse
+import com.fitmate.fitmate.data.model.CertificationMapper.toResisterCertificationRecordResponse
 import com.fitmate.fitmate.domain.model.CertificationImage
 import com.fitmate.fitmate.domain.model.CertificationRecordResponse
 import com.fitmate.fitmate.domain.model.DbCertification
 import com.fitmate.fitmate.domain.model.FitGroupItem
+import com.fitmate.fitmate.domain.model.ResisterCertificationRecord
+import com.fitmate.fitmate.domain.model.ResisterCertificationRecordResponse
 import com.fitmate.fitmate.domain.usecase.CertificationRecordNetworkUseCase
 import com.fitmate.fitmate.domain.usecase.DbCertificationUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -69,6 +71,13 @@ class CertificationViewModel @Inject constructor(
     val _myFitGroupData = MutableLiveData<List<FitGroupItem>>()
     val myFitGroupData: LiveData<List<FitGroupItem>>
         get() = _myFitGroupData
+    lateinit var selectedTarget: List<String>
+
+    //최종 통신 결과 정보를 담고있는 데이터
+    private val _networkPostState2 =
+        MutableLiveData<ResisterCertificationRecordResponse>()
+    val networkPostState2: LiveData<ResisterCertificationRecordResponse>
+        get() = _networkPostState2
 
     //인증 화면을 진행중이던 상태로 설정하는 메서드
     fun setStateCertificateProceed() {
@@ -192,12 +201,10 @@ class CertificationViewModel @Inject constructor(
                 val response = certificationRecordNetworkUseCase.postCertificationRecord(item)
                 withContext(Dispatchers.Main) {
                     if (response.isSuccessful) {
-                        val result = response.body()?.certificationRecordResponse()
+                        val result = response.body()?.toCertificationRecordResponse()
                         result.let {
                             _networkPostState.value = it
                         }
-
-
                     }
                 }
             } catch (e: Exception) {
@@ -207,7 +214,7 @@ class CertificationViewModel @Inject constructor(
     }
 
     //내가 가입한 fit그룹 통신해서 가져오기
-    fun getMyFitGroup(userId:String) {
+    fun getMyFitGroup(userId: String) {
         viewModelScope.launch(Dispatchers.IO) {
             try {
                 val response = certificationRecordNetworkUseCase.getMyFitGroup(userId)
@@ -222,6 +229,26 @@ class CertificationViewModel @Inject constructor(
             } catch (e: Exception) {
                 //통신 실패 했을 경우
             }
+        }
+    }
+
+    fun postResisterCertificationRecord(item: ResisterCertificationRecord) {
+        viewModelScope.launch(Dispatchers.IO) {
+            try {
+                val response = certificationRecordNetworkUseCase.postResisterCertificationRecordToFitGroup(item)
+                withContext(Dispatchers.Main){
+                    if (response.isSuccessful) {
+                        val result = response.body()?.toResisterCertificationRecordResponse()
+                        result.let {
+                            _networkPostState2.value = it
+                        }
+                    }
+                }
+
+            } catch (e: Exception) {
+
+            }
+
         }
     }
 
