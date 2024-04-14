@@ -12,7 +12,6 @@ import com.fitmate.fitmate.domain.model.CategoryItem
 import com.fitmate.fitmate.presentation.ui.home.list.adapter.CategoryAdapter
 import com.fitmate.fitmate.presentation.viewmodel.GroupViewModel
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
@@ -22,58 +21,29 @@ class HomeCategoryFragment: Fragment(R.layout.fragment_home_category) {
     private val viewModel: GroupViewModel by viewModels()
 
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        viewModel.getFitGroups(true, 0, 1, 10)
+    }
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        binding = FragmentHomeCategoryBinding.bind(view)
 
-        setupRecyclerView()
+        initView(view)
         observeModel()
-        getFitGroups()
-    }
-
-    private fun getFitGroups() {
-        viewModel.getFitGroups(true, 0, 1, 10)
         getChipFitGroups()
     }
 
-    private fun getChipFitGroups() {
-//            binding.chipGroupCategory.setOnCheckedStateChangeListener { _, checkedIds ->
-//            /* TODO 해당 과정에서 네트워크 상 충돌이 되지 않는 부분에 대해 연구해야 함.*/
-//            if (checkedIds.isEmpty()) {
-//                /* TODO 전체 피트그룹을 보여주는 코드 */
-//                viewModel.getFitGroups(true, 0, 1, 10)
-//            } else {
-//                when(checkedIds[0]) {
-//                    R.id.chipCategory1 -> { viewModel.getFitGroups(false, 1, 1, 5) }
-//                    R.id.chipCategory2 -> { viewModel.getFitGroups(false, 2, 1, 5) }
-//                    R.id.chipCategory3 -> { viewModel.getFitGroups(false, 3, 1, 5) }
-//                    R.id.chipCategory4 -> { viewModel.getFitGroups(false, 4, 1, 5) }
-//                    R.id.chipCategory5 -> { viewModel.getFitGroups(false, 5, 1, 5) }
-//                    R.id.chipCategory6 -> { viewModel.getFitGroups(false, 6, 1, 5) }
-//                    R.id.chipCategory7 -> { viewModel.getFitGroups(false, 7, 1, 5) }
-//                    R.id.chipCategory8 -> { viewModel.getFitGroups(false, 8, 1, 5) }
-//                    R.id.chipCategory9 -> { viewModel.getFitGroups(false, 9, 1, 5) }
-//                }
-//            }
-//        }
-    }
-
-    private fun setupRecyclerView() {
+    private fun initView(view: View) {
+        binding = FragmentHomeCategoryBinding.bind(view)
         binding.recyclerViewCategory.layoutManager = LinearLayoutManager(context)
         binding.recyclerViewCategory.adapter = CategoryAdapter(this) {}
     }
 
     private fun observeModel() {
         lifecycleScope.launch {
-            binding.categoryShimmer.startShimmer()
-            binding.categoryShimmer.visibility = View.VISIBLE
-            binding.recyclerViewCategory.visibility = View.GONE
-
+            startShimmer()
             viewModel.fitGroups.observe(viewLifecycleOwner) { fitGroups ->
-                binding.categoryShimmer.stopShimmer()
-                binding.categoryShimmer.visibility = View.GONE
-                binding.recyclerViewCategory.visibility = View.VISIBLE
-
+                stopShimmer()
                 val categoryItems = fitGroups.content.map {
                     CategoryItem(
                         title = it.fitGroupName,
@@ -83,8 +53,36 @@ class HomeCategoryFragment: Fragment(R.layout.fragment_home_category) {
                         fitGroupId = it.fitGroupId
                     )
                 }
-                (binding.recyclerViewCategory.adapter as CategoryAdapter).submitList(categoryItems)
+                (binding.recyclerViewCategory.adapter as CategoryAdapter).submitList(categoryItems.toList())
             }
         }
+    }
+    private fun getChipFitGroups() {
+        val chipToCategoryMap = mapOf(
+            R.id.chipCategory1 to 1, R.id.chipCategory2 to 2, R.id.chipCategory3 to 3,
+            R.id.chipCategory4 to 4, R.id.chipCategory5 to 5, R.id.chipCategory6 to 6,
+            R.id.chipCategory7 to 7, R.id.chipCategory8 to 8, R.id.chipCategory9 to 9
+        )
+
+        binding.chipGroupCategory.setOnCheckedStateChangeListener { _, checkedIds ->
+            if (checkedIds.isEmpty()) {
+                viewModel.getFitGroups(true, 0, 1, 10)
+            } else {
+                val categoryId = chipToCategoryMap[checkedIds[0]] ?: return@setOnCheckedStateChangeListener
+                viewModel.getFitGroups(false, categoryId, 1, 5)
+            }
+        }
+    }
+
+    private fun startShimmer() {
+        binding.categoryShimmer.startShimmer()
+        binding.categoryShimmer.visibility = View.VISIBLE
+        binding.recyclerViewCategory.visibility = View.GONE
+    }
+
+    private fun stopShimmer() {
+        binding.categoryShimmer.stopShimmer()
+        binding.categoryShimmer.visibility = View.GONE
+        binding.recyclerViewCategory.visibility = View.VISIBLE
     }
 }

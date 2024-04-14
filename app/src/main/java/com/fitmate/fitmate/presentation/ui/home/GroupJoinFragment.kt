@@ -1,9 +1,11 @@
 package com.fitmate.fitmate.presentation.ui.home
 
+import android.graphics.Color
 import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.widget.Toast
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
@@ -52,9 +54,10 @@ class GroupJoinFragment: Fragment(R.layout.fragment_group_join) {
     }
 
     private fun updateUI(groupDetail: GroupDetailResponse) {
-        val adapter = ImageSliderAdapter(requireContext(), groupDetail.multiMediaEndPoints)
-        binding.imageViewItemDayCurrentDate.adapter = adapter
         binding.run {
+            val adapter = ImageSliderAdapter(requireContext(), groupDetail.multiMediaEndPoints)
+            imageViewItemDayCurrentDate.adapter = adapter
+
             toolbarGroupJoin.title = groupDetail.fitGroupName
             textViewGroupDetailName.text = groupDetail.fitGroupName
             textViewGroupDetailBottomNow.text = " 현재 ${groupDetail.presentFitMateCount}명"
@@ -65,22 +68,23 @@ class GroupJoinFragment: Fragment(R.layout.fragment_group_join) {
             textViewGroupDetailPresent.text = " 현재 ${groupDetail.presentFitMateCount}명"
             textViewGroupDetailCycle.text = " ${groupDetail.frequency}회 / 1주"
             chipGroupDetailCategory.text = when(groupDetail.category) {
-                1 ->  "헬스"
-                2 ->  "축구"
-                3 ->  "농구"
-                4 ->  "야구"
-                5 ->  "배드민턴"
-                6 ->  "필라테스"
-                7 ->  "기타"
+                1 ->  "헬스" 2 ->  "축구" 3 ->  "농구" 4 ->  "야구" 5 ->  "배드민턴" 6 ->  "필라테스" 7 ->  "기타"
                 else -> null
             }
+
+            val rate = groupDetail.presentFitMateCount.toFloat() / groupDetail.maxFitMate.toFloat()
+            val color = when {
+                rate >= 0.8 -> R.color.red
+                rate >= 0.4 -> R.color.turquoise
+                else ->  R.color.dark_gray
+            }
+            textViewGroupDetailNow.setTextColor(ContextCompat.getColor(requireContext(), color))
         }
     }
 
     private fun setupImageSlider(images: List<String>) {
         val adapter = ImageSliderAdapter(requireContext(), images)
         binding.imageViewItemDayCurrentDate.adapter = adapter
-        // Set initial value
         updateImageNum(0, images.size)
         binding.imageViewItemDayCurrentDate.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
             override fun onPageSelected(position: Int) {
