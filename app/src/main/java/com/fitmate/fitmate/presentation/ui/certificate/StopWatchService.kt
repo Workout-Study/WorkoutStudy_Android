@@ -144,7 +144,7 @@ class StopWatchService : Service() {
 
             STOP_WATCH_COMPLETE-> {
                 stopTimer()
-               /* stopSelf()*/
+                stopSelf()
             }
 
             else -> {startStopWatch()}
