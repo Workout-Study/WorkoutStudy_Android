@@ -16,4 +16,8 @@ object Versions {
     const val HILT = "2.51"
     const val ROOM = "2.6.1"
     const val RETROFIT = "2.10.0"
+    const val SCROLL_VIEW = "0.1.0"
+    const val COMPRESSOR = "3.0.1"
+    const val SHIMMER = "0.5.0"
+    const val OKHTTP = "4.12.0"
 }

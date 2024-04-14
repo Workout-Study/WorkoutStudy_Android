@@ -21,11 +21,7 @@ android {
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
 
         val apiKeys = listOf("NAVER_CLIENT", "NAVER_SECRET", "KAKAO_NATIVE_APP_KEY", "KAKAO_REST_API_KEY", "KAKAO_ADMIN_KEY", "CHAT_SERVER_ADDRESS")
-
-        apiKeys.forEach { key ->
-            val value = getApiKey(key)
-            buildConfigField("String", key, value)
-        }
+        apiKeys.forEach { key -> buildConfigField("String", key, getApiKey(key)) }
 
 //        buildConfigField("String", "NAVER_CLIENT", getApiKey("NAVER_CLIENT"))
 //        buildConfigField("String", "NAVER_SECRET", getApiKey("NAVER_SECRET"))
@@ -71,12 +67,19 @@ dependencies {
 
     implementation(Libraries.Indicator.INDICATOR)
     implementation(Libraries.Lottie.LOTTIE)
+    implementation(Libraries.Glide.GLIDE)
+    implementation(Libraries.Glide.BUMPTECH)
+    implementation(Libraries.Navigation.NAVIGATION)
+    implementation(Libraries.Navigation.NAVIGATION_UI)
+    implementation(Libraries.ScrollView.HORIZONTAL_NESTED_SCROLLVIEW)
+    implementation(Libraries.Compressor.ZELORY_COMPRESSOR)
+    implementation(Libraries.Shimmer.SHIMMER)
+
     implementation(platform(Libraries.Firebase.FIREBASE))
     implementation(Libraries.Firebase.ANALYTICS)
     implementation(Libraries.Firebase.STORAGE)
-    implementation(Libraries.Glide.GLIDE)
-    implementation(Libraries.Glide.BUMPTECH)
     implementation(Libraries.RETROFIT.RETROFIT_CONVERTER_GSON)
+    implementation(Libraries.OKHTTP.LOGGING)
 
     implementation(Libraries.Hilt.HILT)
     kapt(Libraries.Hilt.HILT_COMPILER)
@@ -85,14 +88,6 @@ dependencies {
     implementation(Libraries.Room.ROOM_RUNTIME)
     annotationProcessor(Libraries.Room.ROOM_COMPILER)
     kapt(Libraries.Room.ROOM_COMPILER)
-
-    implementation(Libraries.Navigation.NAVIGATION)
-    implementation(Libraries.Navigation.NAVIGATION_UI)
-
-    implementation("com.github.Tans5:horizontalnestedscrollview:0.1.0")
-    implementation("com.squareup.okhttp3:logging-interceptor:4.12.0")
-    implementation("id.zelory:compressor:3.0.1")
-    implementation("com.facebook.shimmer:shimmer:0.5.0")
 
     testImplementation(Libraries.Test.JUNIT)
 

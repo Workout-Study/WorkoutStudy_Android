@@ -56,4 +56,20 @@ object Libraries {
         const val RETROFIT_CONVERTER_GSON = "com.squareup.retrofit2:converter-gson:${Versions.RETROFIT}"
     }
 
+    object ScrollView {
+        const val HORIZONTAL_NESTED_SCROLLVIEW = "com.github.Tans5:horizontalnestedscrollview:${Versions.SCROLL_VIEW}"
+    }
+
+    object Compressor {
+        const val ZELORY_COMPRESSOR = "id.zelory:compressor:${Versions.COMPRESSOR}"
+    }
+
+    object Shimmer {
+        const val SHIMMER = "com.facebook.shimmer:shimmer:${Versions.SHIMMER}"
+    }
+
+    object OKHTTP {
+        const val LOGGING = "com.squareup.okhttp3:logging-interceptor:${Versions.OKHTTP}"
+    }
+
 }
