@@ -2,6 +2,8 @@ package com.fitmate.fitmate.data.source.remote
 
 import com.fitmate.fitmate.data.model.dto.GroupDetailResponse
 import com.fitmate.fitmate.data.model.dto.GroupResponse
+import com.fitmate.fitmate.data.model.dto.MyFitResponse
+import retrofit2.Response
 import retrofit2.http.GET
 
 interface GroupService {
@@ -24,4 +26,11 @@ interface GroupService {
 
     @GET("a9e31553-5323-4a05-838c-6321ef25c298")
     suspend fun getGroupDetail(): GroupDetailResponse
+
+//    @GET("/my-fit-service/my-fits/certifications/need-votes)
+//    suspend fun getMyFitGroupVotes(
+//        @Query("requestUserId") requestUserId: Int,
+//    ): Response<MyFitResponse>
+    @GET("70e08fe2-49a8-4426-a99f-016610cbc104")
+    suspend fun getMyFitGroupVotes(): Response<MyFitResponse>
 }

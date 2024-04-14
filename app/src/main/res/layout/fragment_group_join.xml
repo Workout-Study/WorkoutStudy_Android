@@ -151,7 +151,7 @@
                     android:layout_height="wrap_content"
                     android:text="@string/group_join_scr_now_people_now"
                     android:textAppearance="@style/Font.semibold20"
-                    android:textColor="#ff0000"
+                    android:textColor="@color/violet"
                     app:layout_constraintBottom_toBottomOf="@+id/textView6"
                     app:layout_constraintEnd_toStartOf="@+id/textViewGroupDetailMax"
                     app:layout_constraintTop_toTopOf="@+id/textView6"
