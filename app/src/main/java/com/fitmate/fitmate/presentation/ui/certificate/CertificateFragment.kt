@@ -58,7 +58,6 @@ class CertificateFragment : Fragment() {
     private val viewModel: CertificationViewModel by viewModels()
     private var pickMultipleMedia = activityResultLauncher()
     private var totalElapsedTime: Long = 0L
-
     private var networkState: NetworkState = NetworkState.STATE_NON
 
     //서비스의 스톱워치 시간대를 가져오는 브로드캐스트 리시버
@@ -153,14 +152,6 @@ class CertificateFragment : Fragment() {
                 "삭제 완료" -> {
                     if (networkState == NetworkState.STATE_TARGET_GROUP) {
                         //TODO 인증 완전 완료 상태.
-                        val intent = Intent(
-                            this@CertificateFragment.context,
-                            StopWatchService::class.java
-                        ).apply {
-                            action = STOP_WATCH_RESET
-                        }
-                        requireContext().startService(intent)
-
                         findNavController().popBackStack()
                     } else {
                         //인증 취소되었을 때 또는 업로드에 실패했을 경우.
@@ -229,6 +220,7 @@ class CertificateFragment : Fragment() {
         }
 
         viewModel.myFitGroupData.observe(viewLifecycleOwner){
+            loadingTaskSettingEnd()
             showSelectCertificateGroup(it)
         }
 
@@ -283,6 +275,7 @@ class CertificateFragment : Fragment() {
                         } else {
 
                             //그룹 선택하러 이동
+                            loadingTaskSettingStart()
                             viewModel.getMyFitGroup("hyungoo")
                         }
 
@@ -516,6 +509,13 @@ class CertificateFragment : Fragment() {
             }
             if (resultGroupIdList.size > 0){
                 //최종 통신까지 진행 시작
+                val intent = Intent(
+                    this@CertificateFragment.context,
+                    StopWatchService::class.java
+                ).apply {
+                    action = STOP_WATCH_RESET
+                }
+                requireContext().startService(intent)
                 viewModel.selectedTarget = resultGroupIdList
                 networkState = NetworkState.STATE_UPLOAD_STORAGE
                 loadingTaskSettingStart()
@@ -530,7 +530,6 @@ class CertificateFragment : Fragment() {
             }else{
                 Toast.makeText(requireContext(), "그룹을 하나 이상 선택하셔야합니다!", Toast.LENGTH_SHORT).show()
             }
-
         }
         builder.show()
     }
@@ -608,8 +607,8 @@ class CertificateFragment : Fragment() {
     private fun loadingTaskSettingStart() {
         binding.apply {
             constraintLayoutRootContent.alpha = 0.5f
-            buttonCertificateConfirm.isClickable = false
-            buttonCertificateReset.isClickable = false
+            buttonCertificateConfirm.isEnabled = false
+            buttonCertificateReset.isEnabled = false
             progressBarSubmitLoading.visibility = View.VISIBLE
         }
     }
@@ -617,9 +616,11 @@ class CertificateFragment : Fragment() {
     private fun loadingTaskSettingEnd() {
         binding.apply {
             constraintLayoutRootContent.alpha = 1f
-            buttonCertificateConfirm.isClickable = true
-            buttonCertificateReset.isClickable = true
+            buttonCertificateConfirm.isEnabled = true
+            buttonCertificateReset.isEnabled = true
             progressBarSubmitLoading.visibility = View.GONE
         }
     }
+
+
 }
