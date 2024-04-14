@@ -1,14 +1,19 @@
-package com.fitmate.fitmate.ui.myfit.list.adapter
+package com.fitmate.fitmate.presentation.ui.mygroup.list.adapter
 
+import android.content.Intent
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
+import com.fitmate.fitmate.ChatActivity
 import com.fitmate.fitmate.databinding.ItemGroupBinding
 import com.fitmate.fitmate.domain.model.FitGroup
 import com.fitmate.fitmate.ui.myfit.list.MyFitGroupViewHolder
 
-class MyFitGroupAdapter(private val itemClick:(FitGroup) -> Unit) : ListAdapter<FitGroup, MyFitGroupViewHolder>(diffUtil) {
+class MyFitGroupAdapter(private val itemClick:(FitGroup) -> Unit) : ListAdapter<FitGroup, MyFitGroupViewHolder>(
+    diffUtil
+) {
 
 
     override fun onCreateViewHolder(

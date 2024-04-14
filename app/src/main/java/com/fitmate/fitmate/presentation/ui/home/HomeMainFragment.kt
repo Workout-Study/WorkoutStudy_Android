@@ -1,37 +1,52 @@
 package com.fitmate.fitmate.presentation.ui.home
 
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.fitmate.fitmate.R
+import com.fitmate.fitmate.data.model.dto.VoteCertification
 import com.fitmate.fitmate.databinding.FragmentHomeMainBinding
 import com.fitmate.fitmate.domain.model.VoteItem
 import com.fitmate.fitmate.presentation.ui.home.list.adapter.CarouselAdapter
 import com.fitmate.fitmate.presentation.ui.home.list.adapter.VoteAdapter
+import com.fitmate.fitmate.presentation.viewmodel.HomeMainViewModel
 import com.google.android.material.carousel.CarouselLayoutManager
 import com.google.android.material.carousel.CarouselStrategy
 import com.google.android.material.carousel.MultiBrowseCarouselStrategy
+import dagger.hilt.android.AndroidEntryPoint
+import java.time.ZonedDateTime
+import java.time.format.DateTimeFormatter
 
-class HomeMainFragment : Fragment() {
+@AndroidEntryPoint
+class HomeMainFragment : Fragment(R.layout.fragment_home_main) {
 
     private lateinit var binding: FragmentHomeMainBinding
+    private lateinit var recyclerView: RecyclerView
+    private val viewModel: HomeMainViewModel by viewModels()
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
-        binding = FragmentHomeMainBinding.inflate(inflater, container, false)
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        viewModel.fetchMyFitGroupVotes()
+    }
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        initView(view)
         setCarousel(MultiBrowseCarouselStrategy())
-        setVote()
+        observeViewModel()
+    }
 
-        return binding.root
+
+    private fun initView(view: View) {
+        binding = FragmentHomeMainBinding.bind(view)
+        recyclerView = binding.recyclerViewHomeMain
+        recyclerView.layoutManager = LinearLayoutManager(context)
+        recyclerView.adapter = VoteAdapter(this) {}
     }
 
     private fun setCarousel(carouselStrategy: CarouselStrategy){
@@ -45,14 +60,46 @@ class HomeMainFragment : Fragment() {
         carouselView.adapter = carouselAdapter
     }
 
-    private fun setVote() {
-        val recyclerView: RecyclerView = binding.recyclerViewHomeMain
-        val voteAdapter = VoteAdapter { _ -> findNavController().navigate(R.id.groupVoteFragment2) }
-        val testItems = listOf(VoteItem(title = "Test FitGroup", fitmate = "김성호", percent = 3, time = 5))
-
-        recyclerView.layoutManager = LinearLayoutManager(context)
-        recyclerView.adapter = voteAdapter
-        voteAdapter.submitList(testItems)
+    private fun observeViewModel() {
+        startShimmer()
+        viewModel.fitGroupVotes.observe(viewLifecycleOwner) { result ->
+            stopShimmer()
+            result.onSuccess { groups ->
+                val voteItems = groups.map { group ->
+                    group.certificationList.map { cert ->
+                        VoteItem(
+                            title = group.groupName,
+                            fitMate = cert.requestUserId,
+                            percent = formatPercent(cert),
+                            time = formatDate(cert),
+                            image = cert.multiMediaEndPoints.firstOrNull() ?: "",
+                            groupId = group.groupId
+                        )}}.flatten().distinctBy { it.title + it.fitMate + it.time }
+                val voteAdapter = binding.recyclerViewHomeMain.adapter as VoteAdapter
+                voteAdapter.submitList(voteItems)
+            }
+        }
     }
 
+    private fun startShimmer() {
+        binding.homeShimmer.startShimmer()
+        binding.homeShimmer.visibility = View.VISIBLE
+        binding.recyclerViewHomeMain.visibility = View.GONE
+    }
+
+    private fun stopShimmer() {
+        binding.homeShimmer.stopShimmer()
+        binding.homeShimmer.visibility = View.GONE
+        binding.recyclerViewHomeMain.visibility = View.VISIBLE
+    }
+
+    private fun formatPercent(cert: VoteCertification): Int {
+        return if (cert.agreeCount + cert.disagreeCount > 0) (cert.agreeCount * 100) / (cert.agreeCount + cert.disagreeCount) else 0
+    }
+
+    private fun formatDate(cert: VoteCertification): String {
+        return ZonedDateTime.parse(cert.voteEndDate).format(
+            DateTimeFormatter.ofPattern("(MM/dd) HH:mm 종료")
+        )
+    }
 }

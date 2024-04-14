@@ -31,40 +31,48 @@
             android:layout_marginTop="20dp"
             android:layout_marginEnd="35dp"
             android:layout_marginBottom="20dp"
+            android:ellipsize="end"
+            android:maxLines="1"
             app:layout_constraintBottom_toBottomOf="@+id/imageViewItemCategoryFitgroupBackground"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="@+id/imageViewItemCategoryFitgroupBackground"
             app:layout_constraintVertical_bias="1.0"
-            app:srcCompat="@mipmap/ic_launcher_logo"
+            app:srcCompat="@drawable/ic_launcher_logo"
             android:contentDescription="@null" />
 
         <TextView
             android:id="@+id/textViewItemCategoryFitgroupTitle"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="35dp"
+            android:layout_marginTop="-5dp"
+            android:layout_marginEnd="10dp"
+            android:ellipsize="end"
+            android:maxLines="1"
             android:text="@{categoryItem.title}"
             android:textAppearance="@style/Font.bold16"
             android:textColor="@color/turquoise"
+            app:layout_constraintEnd_toStartOf="@+id/imageViewItemCategoryFitgroupThumbnail"
+            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="@+id/imageViewItemCategoryFitgroupBackground"
-            app:layout_constraintTop_toTopOf="@+id/imageViewItemCategoryFitgroupThumbnail"
-            android:contentDescription="@null" />
+            app:layout_constraintTop_toTopOf="@+id/imageViewItemCategoryFitgroupThumbnail" />
 
         <ImageView
             android:id="@+id/imageViewItemCategoryIconCalendar"
             android:layout_width="17dp"
             android:layout_height="17dp"
-            app:tint="@color/zircon"
+            android:layout_marginBottom="-5dp"
+            android:contentDescription="@null"
             app:layout_constraintBottom_toBottomOf="@+id/imageViewItemCategoryFitgroupThumbnail"
             app:layout_constraintStart_toStartOf="@+id/textViewItemCategoryFitgroupTitle"
             app:srcCompat="@drawable/ic_baseline_calendar_24"
-            android:contentDescription="@null" />
+            app:tint="@color/zircon" />
 
         <TextView
             android:id="@+id/textViewItemCategoryCountFit"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@{categoryItem.fitCount + `회 / 1주`}"
+            android:text="@{categoryItem.fitCount}"
             android:textAppearance="@style/Font.bold12"
             android:textColor="@color/zircon"
             app:layout_constraintBottom_toBottomOf="@+id/imageViewItemCategoryIconCalendar"
@@ -88,7 +96,7 @@
             android:id="@+id/textViewItemCategoryCountPeople"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@{categoryItem.peopleCount + ` / 20`}"
+            android:text="@{categoryItem.peopleCount}"
             android:textAppearance="@style/Font.bold12"
             android:textColor="@color/zircon"
             app:layout_constraintBottom_toBottomOf="@+id/imageViewItemCategoryIconPeople"
@@ -97,12 +105,17 @@
 
         <TextView
             android:id="@+id/textViewItemCategoryComment"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="5dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="10dp"
+            android:ellipsize="end"
+            android:maxLines="3"
             android:text="@{categoryItem.comment}"
             android:textAppearance="@style/Font.regular10"
             android:textColor="@color/zircon"
+            app:layout_constraintEnd_toStartOf="@+id/imageViewItemCategoryFitgroupThumbnail"
+            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="@+id/textViewItemCategoryFitgroupTitle"
             app:layout_constraintTop_toBottomOf="@+id/textViewItemCategoryFitgroupTitle" />
 

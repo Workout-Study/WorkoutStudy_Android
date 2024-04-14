@@ -26,8 +26,6 @@ class MyFitHistoryViewHolder(
     fun binding(item: FitHistory) {
         binding.data = item
         //내부 리사이클러뷰
-        Log.d("testt", "리사이클러뷰 뷰홀더 바인딩부분")
-
         item.groupList.forEach { text ->
             val textView = ItemForListViewBinding.inflate(LayoutInflater.from(context))
             textView.text1.text = text

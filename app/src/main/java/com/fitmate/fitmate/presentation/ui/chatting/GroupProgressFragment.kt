@@ -24,7 +24,7 @@ class GroupProgressFragment: Fragment(R.layout.fragment_progress) {
 
         val recyclerView: RecyclerView = binding.recyclerProgress
         val adapter = GroupProgressAdapter {}
-        val testItems = listOf(MyFitGroupProgress("김성호", null, 5, 7))
+        val testItems = listOf(MyFitGroupProgress("김성호", null, 7, 3))
 
         recyclerView.layoutManager = LinearLayoutManager(context)
         recyclerView.adapter = adapter

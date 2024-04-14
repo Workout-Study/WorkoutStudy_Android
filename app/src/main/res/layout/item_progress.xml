@@ -66,5 +66,14 @@
             app:layout_constraintTop_toBottomOf="@+id/textViewItemProgressName"
             tools:progress="4" />
 
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@{@string/my_fit_scr_group_progress_text(data.nowProgress,data.maxProgress)}"
+            app:layout_constraintStart_toStartOf="@+id/progressBarItemProgress"
+            app:layout_constraintEnd_toEndOf="@+id/progressBarItemProgress"
+            app:layout_constraintTop_toTopOf="@+id/progressBarItemProgress"
+            app:layout_constraintBottom_toBottomOf="@+id/progressBarItemProgress"/>
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

@@ -30,9 +30,9 @@
 
     <string name="item_vote_scr_title">[ FITGROUP NAME ]</string>
     <string name="item_vote_scr_context">[***]님이 운동 기록을 시작하였습니다.</string>
-    <string name="item_vote_scr_per_comment">"찬성률 : "</string>
-    <string name="item_vote_scr_per">[**]%</string>
-    <string name="item_vote_scr_time">종료 3시간 전</string>
+    <string name="item_vote_scr_per_comment">찬성률 : </string>
+    <string name="item_vote_scr_per">"%d"</string>
+    <string name="item_vote_scr_time">"%s"</string>
 
     <string name="item_category_scr_title">[ FITGROUP NAME ]</string>
     <string name="item_category_scr_comment">안녕하세요. 반갑습니다. 운동 같이 열심히 해보아요!\n안녕하세요. 반갑습니다. 운동 같이 열심히 해보아요!</string>
@@ -57,17 +57,19 @@
     <string name="login_scr_naver">네이버로 시작하기</string>
     <string name="login_scr_button_tour">둘러보기 ></string>
 
-    <string name="group_join_scr_group_name">[ FITGROUP NAME ]</string>
-    <string name="group_join_scr_now_people">현재 [**]명</string>
-    <string name="group_join_scr_now_people_now">[**]명</string>
-    <string name="group_join_scr_now_people_total">/ [**]명</string>
-    <string name="group_join_scr_comment">이 곳은 FITGROUP에 대한 상세정보가 들어가는 곳입니다.\n이 곳은 FITGROUP에 대한 상세정보가 들어가는 곳입니다.\n이 곳은 FITGROUP에 대한 상세정보가 들어가는 곳입니다.\n</string>
+    <string name="group_join_scr_default_name"> </string>
+    <string name="group_join_scr_image_num">0 / 0</string>
+    <string name="group_join_scr_category">카테고리</string>
+    <string name="group_join_scr_now_people">현재 00명</string>
+    <string name="group_join_scr_now_people_now">00명</string>
+    <string name="group_join_scr_now_people_total">/ 00명</string>
+    <string name="group_join_scr_comment">FitGroup 상세 정보</string>
     <string name="group_join_scr_script">선착순 모집</string>
     <string name="group_join_scr_confirm">가입 신청하기</string>
-    <string name="group_join_scr_now_people_term">[**]회 / 1주</string>
+    <string name="group_join_scr_now_people_term">0회 / 1주</string>
 
     <string name="onboarding_permission_scr_content">피트메이트를 100% 즐기기 위해서\n아래 권한들을 허용해주세요.</string>
-    <string name="onboarding_permission_scr_text1">필수적 접근 권한.</string>
+    <string name="onboarding_permission_scr_text1">필수적 접근 권한</string>
     <string name="onboarding_permission_scr_camera">카메라</string>
     <string name="onboarding_permission_scr_camera_text">운동을 기록하기 위한 카메라에 접근하기 위해\n카메라 권한이 필요합니다.</string>
     <string name="onboarding_permission_scr_memory">저장공간</string>
@@ -85,6 +87,7 @@
     <string name="my_fit_scr_fit_off_spacebar">\t피트오프</string>
     <string name="my_fit_scr_fit_record_spacebar">\t기록하기</string>
     <string name="my_fit_scr_fit_timer_text">[00:00:00]</string>
+    <string name="my_fit_scr_group_progress_text">%d / %d</string>
 
     <string name="my_group_scr_toolbar">My FitGroup</string>
 
@@ -146,11 +149,28 @@
     <string name="certificate_scr_toolbar">운동 기록하기</string>
     <string name="certificate_scr_timer">00 : 00 : 00</string>
     <string name="certificate_scr_confirm">\t\t FIT 기록 시작하기 \t\t</string>
-
+    <string name="certificate_scr_confirm_unactive">인증을 시작하려면 사진을 첨부해주세요!</string>
+    <string name="certificate_scr_image_add_warning">사진은 최대 5장까지 첨부할 수 있습니다!</string>
+    <string name="certificate_scr_end_image_check_warning">종료 사진을 하나 이상 첨부해주세요!</string>
+    <string name="certificate_scr_confirm_finish">인증 완료하기</string>
+    <string name="certificate_scr_dialog_title">알림 권한이 없습니다!</string>
+    <string name="certificate_scr_dialog_message">알림 권한을 허용하지 않으면 인증 과정에서 운동 시간과 알림을 확인할 수 없습니다!</string>
+    <string name="certificate_scr_dialog_positive_button">권한 허용하러가기</string>
+    <string name="certificate_scr_dialog_negative_button">알림 없이 진행하기</string>
 
     <string name="my_fit_off_scr_toolbar">나의 피트오프 열람</string>
     <string name="my_fit_off_scr_empty_text">피트 오프 데이터가 존재하지 않습니다</string>
 
-    <string name="group_vote_scr_toolbar">그룹 투표 현황</string>.
+    <string name="group_vote_scr_toolbar">그룹 투표 현황</string>
+
+    <string name="permission_dialog_scr_guide_setting">저장소 권한을 항상 모두 허용해야만 갤러리에 접근할 수 있습니다!</string>
+    <string name="permission_dialog_scr_guide_setting_select">권한 설정하러 가기</string>
+    <string name="permission_dialog_scr_guide_setting_cancel">취소</string>
+
+    <string name="permission_dialog_scr_guide">정말 거부하시겠습니까?</string>
+    <string name="permission_dialog_scr_guide_message">저장소 권한을 허용하지 않으면 사진 첨부를 할 수 없습니다!</string>
+    <string name="permission_dialog_scr_guide_select">권한 허용하러가기</string>
+    <string name="permission_dialog_scr_guide_cancel">취소</string>
+
 
 </resources>

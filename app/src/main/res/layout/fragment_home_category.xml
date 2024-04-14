@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
-
-
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -10,16 +9,18 @@
         android:background="@color/zircon"
         android:orientation="vertical">
 
-
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
             android:gravity="center_horizontal"
             android:orientation="vertical">
 
             <com.google.android.material.chip.ChipGroup
+                android:id="@+id/chipGroupCategory"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                app:singleSelection="true">
 
                 <com.google.android.material.chip.Chip
                     android:id="@+id/chipCategory1"
@@ -29,10 +30,10 @@
                     android:checkable="true"
                     android:text="@string/category_scr_1"
                     android:textAlignment="center"
-                    android:textColor="@color/turquoise"
-                    app:chipBackgroundColor="@color/violet"
+                    android:textColor="@color/chip_text_selector"
+                    app:chipBackgroundColor="@color/chip_color_selector"
                     app:chipIcon="@drawable/ic_baseline_mountain_24"
-                    app:chipIconTint="@color/turquoise"
+                    app:chipIconTint="@color/chip_text_selector"
                     app:chipMinTouchTargetSize="48dp" />
 
                 <com.google.android.material.chip.Chip
@@ -40,13 +41,13 @@
                     style="@style/Theme.Fitmate.Chip"
                     android:layout_width="100dp"
                     android:layout_height="wrap_content"
-                    android:checkable="false"
+                    android:checkable="true"
                     android:text="@string/category_scr_2"
                     android:textAlignment="center"
-                    android:textColor="@color/turquoise"
-                    app:chipBackgroundColor="@color/violet"
+                    android:textColor="@color/chip_text_selector"
+                    app:chipBackgroundColor="@color/chip_color_selector"
                     app:chipIcon="@drawable/ic_baseline_normal_24"
-                    app:chipIconTint="@color/turquoise"
+                    app:chipIconTint="@color/chip_text_selector"
                     app:chipMinTouchTargetSize="48dp" />
 
                 <com.google.android.material.chip.Chip
@@ -54,13 +55,13 @@
                     style="@style/Theme.Fitmate.Chip"
                     android:layout_width="100dp"
                     android:layout_height="wrap_content"
-                    android:checkable="false"
+                    android:checkable="true"
                     android:text="@string/category_scr_3"
                     android:textAlignment="center"
-                    android:textColor="@color/turquoise"
-                    app:chipBackgroundColor="@color/violet"
+                    android:textColor="@color/chip_text_selector"
+                    app:chipBackgroundColor="@color/chip_color_selector"
                     app:chipIcon="@drawable/ic_baseline_health_24"
-                    app:chipIconTint="@color/turquoise"
+                    app:chipIconTint="@color/chip_text_selector"
                     app:chipMinTouchTargetSize="48dp" />
 
                 <com.google.android.material.chip.Chip
@@ -71,10 +72,10 @@
                     android:checkable="true"
                     android:text="@string/category_scr_4"
                     android:textAlignment="center"
-                    android:textColor="@color/turquoise"
-                    app:chipBackgroundColor="@color/violet"
+                    android:textColor="@color/chip_text_selector"
+                    app:chipBackgroundColor="@color/chip_color_selector"
                     app:chipIcon="@drawable/ic_baseline_swim_24"
-                    app:chipIconTint="@color/turquoise"
+                    app:chipIconTint="@color/chip_text_selector"
                     app:chipMinTouchTargetSize="48dp" />
 
                 <com.google.android.material.chip.Chip
@@ -85,10 +86,10 @@
                     android:checkable="true"
                     android:text="@string/category_scr_5"
                     android:textAlignment="center"
-                    android:textColor="@color/turquoise"
-                    app:chipBackgroundColor="@color/violet"
+                    android:textColor="@color/chip_text_selector"
+                    app:chipBackgroundColor="@color/chip_color_selector"
                     app:chipIcon="@drawable/ic_baseline_soccer_24"
-                    app:chipIconTint="@color/turquoise"
+                    app:chipIconTint="@color/chip_text_selector"
                     app:chipMinTouchTargetSize="48dp" />
 
                 <com.google.android.material.chip.Chip
@@ -99,10 +100,10 @@
                     android:checkable="true"
                     android:text="@string/category_scr_6"
                     android:textAlignment="center"
-                    android:textColor="@color/turquoise"
-                    app:chipBackgroundColor="@color/violet"
+                    android:textColor="@color/chip_text_selector"
+                    app:chipBackgroundColor="@color/chip_color_selector"
                     app:chipIcon="@drawable/ic_baseline_basketball_24"
-                    app:chipIconTint="@color/turquoise"
+                    app:chipIconTint="@color/chip_text_selector"
                     app:chipMinTouchTargetSize="48dp" />
 
                 <com.google.android.material.chip.Chip
@@ -113,10 +114,10 @@
                     android:checkable="true"
                     android:text="@string/category_scr_7"
                     android:textAlignment="center"
-                    android:textColor="@color/turquoise"
-                    app:chipBackgroundColor="@color/violet"
+                    android:textColor="@color/chip_text_selector"
+                    app:chipBackgroundColor="@color/chip_color_selector"
                     app:chipIcon="@drawable/ic_baseline_baseball_24"
-                    app:chipIconTint="@color/turquoise"
+                    app:chipIconTint="@color/chip_text_selector"
                     app:chipMinTouchTargetSize="48dp" />
 
                 <com.google.android.material.chip.Chip
@@ -127,10 +128,10 @@
                     android:checkable="true"
                     android:text="@string/category_scr_8"
                     android:textAlignment="center"
-                    android:textColor="@color/turquoise"
-                    app:chipBackgroundColor="@color/violet"
+                    android:textColor="@color/chip_text_selector"
+                    app:chipBackgroundColor="@color/chip_color_selector"
                     app:chipIcon="@drawable/ic_baseline_biking_24"
-                    app:chipIconTint="@color/turquoise"
+                    app:chipIconTint="@color/chip_text_selector"
                     app:chipMinTouchTargetSize="48dp" />
 
                 <com.google.android.material.chip.Chip
@@ -141,10 +142,10 @@
                     android:checkable="true"
                     android:text="@string/category_scr_9"
                     android:textAlignment="center"
-                    android:textColor="@color/turquoise"
-                    app:chipBackgroundColor="@color/violet"
+                    android:textColor="@color/chip_text_selector"
+                    app:chipBackgroundColor="@color/chip_color_selector"
                     app:chipIcon="@drawable/ic_baseline_climbing_24"
-                    app:chipIconTint="@color/turquoise"
+                    app:chipIconTint="@color/chip_text_selector"
                     app:chipMinTouchTargetSize="48dp" />
 
             </com.google.android.material.chip.ChipGroup>
@@ -157,20 +158,39 @@
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"
             android:background="?android:attr/listDivider" />
 
-        <LinearLayout
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:padding="10dp">
+            android:layout_height="match_parent">
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/recyclerView_category"
                 android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="1" />
-        </LinearLayout>
+                android:layout_height="match_parent" />
 
+            <com.facebook.shimmer.ShimmerFrameLayout
+                android:id="@+id/categoryShimmer"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical">
+
+                    <include layout="@layout/item_category_shimmer" />
+                    <include layout="@layout/item_category_shimmer" />
+                    <include layout="@layout/item_category_shimmer" />
+                    <include layout="@layout/item_category_shimmer" />
+                    <include layout="@layout/item_category_shimmer" />
+
+                </LinearLayout>
+
+            </com.facebook.shimmer.ShimmerFrameLayout>
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
     </LinearLayout>
 </layout>
