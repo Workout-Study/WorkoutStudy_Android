@@ -1,20 +1,14 @@
 package com.fitmate.fitmate.di.networkModule
 
 import com.fitmate.fitmate.data.repository.CertificationRecordRepositoryImpl
-import com.fitmate.fitmate.data.repository.NetworkRepositoryImpl
-import com.fitmate.fitmate.data.source.dao.ChatService
 import com.fitmate.fitmate.data.source.remote.CertificationRecordService
 import com.fitmate.fitmate.data.source.remote.CertificationTargetGroupService
 import com.fitmate.fitmate.domain.repository.CertificationRecordRepository
-import com.fitmate.fitmate.domain.repository.NetworkRepository
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
-import okhttp3.OkHttpClient
-import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
-import retrofit2.converter.gson.GsonConverterFactory
 import javax.inject.Singleton
 
 @Module
@@ -44,6 +38,5 @@ object CertificationNetworkModule {
             .build()
             .create(CertificationTargetGroupService::class.java)
     }
-
 
 }
