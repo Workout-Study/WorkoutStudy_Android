@@ -1,5 +1,7 @@
 package com.fitmate.fitmate.data.model.dto
 
+import com.google.gson.annotations.SerializedName
+
 data class GroupResponse(
     val content: List<Content>,
     val pageable: Pageable,
@@ -61,4 +63,25 @@ data class GroupDetailResponse(
     val createdAt: String,
     val maxFitMate: Int,
     val state: Boolean
+)
+
+data class MyFitResponse(
+    @SerializedName("needVoteCertificationFitGroupList") val fitGroupList: List<MyFitGroupVote>
+)
+
+data class MyFitGroupVote(
+    @SerializedName("fitGroupId") val groupId: Int,
+    @SerializedName("fitGroupName") val groupName: String,
+    @SerializedName("needVoteCertificationList") val certificationList: List<VoteCertification>
+)
+
+data class VoteCertification(
+    @SerializedName("certificationId") val certificationId: Int,
+    @SerializedName("recordId") val recordId: Int,
+    @SerializedName("certificationRequestUserId") val requestUserId: String,
+    @SerializedName("agreeCount") val agreeCount: Int,
+    @SerializedName("disagreeCount") val disagreeCount: Int,
+    @SerializedName("maxAgreeCount") val maxAgreeCount: Int,
+    @SerializedName("voteEndDate") val voteEndDate: String,
+    @SerializedName("recordMultiMediaEndPoints") val multiMediaEndPoints: List<String>
 )
