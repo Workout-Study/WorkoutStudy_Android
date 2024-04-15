@@ -14,10 +14,19 @@ import com.fitmate.fitmate.R
 import com.fitmate.fitmate.presentation.viewmodel.CertificateState
 import java.net.URI
 
+//인증화면 사진 설정하는 메서드(uri를 통한 바인딩이므로 잘 확인하고 사용해야함.)
 @BindingAdapter("uri")
-fun ImageView.setImage(image: String) {
+fun ImageView.setImageByUri(image: String) {
     Glide.with(this)
         .load(image.toUri())
+        .into(this)
+}
+
+@BindingAdapter("url")
+fun ImageView.setImageByUrl(imageUrl:String) {
+    Glide.with(this)
+        .load(imageUrl)
+        .circleCrop()
         .into(this)
 }
 
@@ -83,3 +92,5 @@ fun Button.resetButtonSetState(state: CertificateState) {
         }
     }
 }
+
+

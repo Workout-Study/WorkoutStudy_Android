@@ -9,7 +9,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.fitmate.fitmate.R
 import com.fitmate.fitmate.databinding.FragmentProgressBinding
-import com.fitmate.fitmate.domain.model.MyFitGroupProgress
+import com.fitmate.fitmate.domain.model.FitProgressItem
 import com.fitmate.fitmate.presentation.ui.chatting.list.adapter.GroupProgressAdapter
 
 class GroupProgressFragment: Fragment(R.layout.fragment_progress) {
@@ -24,7 +24,7 @@ class GroupProgressFragment: Fragment(R.layout.fragment_progress) {
 
         val recyclerView: RecyclerView = binding.recyclerProgress
         val adapter = GroupProgressAdapter {}
-        val testItems = listOf(MyFitGroupProgress("김성호", null, 7, 3))
+        val testItems = listOf(FitProgressItem(1, "김성호", "보류",  1, 7,  3))
 
         recyclerView.layoutManager = LinearLayoutManager(context)
         recyclerView.adapter = adapter
