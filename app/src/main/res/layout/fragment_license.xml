@@ -49,7 +49,7 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="10dp"
                 android:text="@string/license_scr_openSourceScript"
-                android:textAppearance="@style/Font.regular10" />
+                android:textAppearance="@style/Font.regular12" />
 
         </LinearLayout>
 
