@@ -7,7 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ScrollView
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.lifecycleScope
+import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.PagerSnapHelper
@@ -15,24 +15,22 @@ import com.fitmate.fitmate.MainActivity
 import com.fitmate.fitmate.R
 import com.fitmate.fitmate.databinding.FragmentMyfitBinding
 import com.fitmate.fitmate.domain.model.FitHistory
-import com.fitmate.fitmate.domain.model.MyFitGroupProgress
 import com.fitmate.fitmate.presentation.ui.myfit.list.adapter.MonthListAdapter
+import com.fitmate.fitmate.presentation.viewmodel.MtFitViewModel
 import com.fitmate.fitmate.ui.myfit.list.adapter.MyFitGroupProgressAdapter
 import com.fitmate.fitmate.ui.myfit.list.adapter.MyFitHistoryAdapter
 import com.fitmate.fitmate.util.ControlActivityInterface
-import com.google.android.material.appbar.AppBarLayout
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class MyFitFragment : Fragment() {
     private lateinit var binding: FragmentMyfitBinding
     private lateinit var controlActivityInterface: ControlActivityInterface
 
     private val fitGroupProgressAdapter: MyFitGroupProgressAdapter by lazy { MyFitGroupProgressAdapter() }
     private lateinit var fitHistoryAdapter: MyFitHistoryAdapter
-    private var isAppBarExpanded = true
+
+    private val viewModel: MtFitViewModel by viewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -112,15 +110,14 @@ class MyFitFragment : Fragment() {
     }
 
     private fun initMockData() {
-        val mockData = listOf<MyFitGroupProgress>(
-            MyFitGroupProgress(
-                title = "축구를 좋아하는 사람들",
-                maxProgress = 4,
-                nowProgress = 2
-            ), MyFitGroupProgress(title = "축구를 좋아하는 사람들", maxProgress = 7, nowProgress = 6)
-        )
-        fitGroupProgressAdapter.submitList(mockData) {
-            if (mockData.isNotEmpty()) {
+        observeNetworkMyProgress()
+
+        viewModel.getMyFitProgress("hyungoo")
+    }
+
+    private fun observeNetworkMyProgress() = viewModel.fitProgressItem.observe(viewLifecycleOwner){ fitProgressList ->
+        fitGroupProgressAdapter.submitList(fitProgressList) {
+            if (fitProgressList.isNotEmpty()) {
                 binding.containerFragmentMyFitNotHasFitGroup.visibility = View.GONE
             }else{
                 binding.containerFragmentMyFitNotHasFitGroup.visibility = View.VISIBLE
