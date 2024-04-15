@@ -7,4 +7,6 @@ data class VoteItem(
     val time: String,
     val image: String,
     val groupId: Int,
+    val startTime: String?,
+    val endTime: String?,
 )

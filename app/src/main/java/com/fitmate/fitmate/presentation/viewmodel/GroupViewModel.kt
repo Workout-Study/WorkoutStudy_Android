@@ -4,6 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.fitmate.fitmate.data.model.dto.EachFitResponse
 import com.fitmate.fitmate.data.model.dto.GroupDetailResponse
 import com.fitmate.fitmate.data.model.dto.GroupResponse
 import com.fitmate.fitmate.domain.usecase.GroupUseCase
@@ -19,6 +20,9 @@ class GroupViewModel @Inject constructor(private val groupUseCase: GroupUseCase)
     private val _groupDetail = MutableLiveData<GroupDetailResponse>()
     val groupDetail: LiveData<GroupDetailResponse> = _groupDetail
 
+    private val _fitGroupVotes = MutableLiveData<EachFitResponse>()
+    val fitGroupVotes: LiveData<EachFitResponse> = _fitGroupVotes
+
     fun getFitGroups(withMaxGroup: Boolean, category: Int, pageNumber: Int, pageSize: Int) {
         viewModelScope.launch {
             val response = groupUseCase(withMaxGroup, category, pageNumber, pageSize)
@@ -30,6 +34,14 @@ class GroupViewModel @Inject constructor(private val groupUseCase: GroupUseCase)
         viewModelScope.launch{
             val response = groupUseCase(fitGroupId)
             _groupDetail.value = response
+        }
+    }
+    fun fetchFitGroupVotes() {
+        viewModelScope.launch {
+            val response = groupUseCase.eachFitGroupVotes()
+            if(response.isSuccessful) {
+                _fitGroupVotes.postValue(response.body())
+            }
         }
     }
 }

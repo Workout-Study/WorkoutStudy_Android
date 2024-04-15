@@ -8,8 +8,10 @@ import com.fitmate.fitmate.data.model.dto.ChatResponse
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import androidx.lifecycle.viewModelScope
+import com.fitmate.fitmate.data.model.dto.EachFitResponse
 import com.fitmate.fitmate.data.model.entity.ChatEntity
 import com.fitmate.fitmate.domain.usecase.DBChatUseCase
+import com.fitmate.fitmate.domain.usecase.GroupUseCase
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
@@ -29,22 +31,6 @@ class ChattingViewModel @Inject constructor(
 
     private val _lastChatItem = MutableLiveData<ChatEntity?>()
     val lastChatItem: LiveData<ChatEntity?> = _lastChatItem
-
-//    fun retrieveMessage(messageId: String, fitGroupId: Int, fitMateId: Int, messageTime: String, messageType: String) {
-//        viewModelScope.launch {
-//            _isLoading.value = true
-//            val response = networkUseCase.retrieveMessage(messageId, fitGroupId, fitMateId, messageTime, messageType)
-//
-//            withContext(Dispatchers.Main) {
-//                if (response.isSuccessful) {
-//                    _chatResponse.value = response.body()
-//                }
-//                _isLoading.value = false
-//            }
-//        }
-//    }
-// TODO 지금은 임시지만 나중에 채팅이 다른 디바이스에서도 서로 통신이 가능할 경우, 해당 함수를 사용해야 함.
-// TODO 현재는 기기 1개 fitmateId 1개로 해서 이렇게 될 수 밖에 없지만, 추후에 복수 이상의 fitMateId가 들어오고 서로 채팅을 치고 안보는 상황에 해당 함수를 사용해야 함.
 
     fun retrieveMessage() {
         viewModelScope.launch {
@@ -87,5 +73,4 @@ class ChattingViewModel @Inject constructor(
     private fun formatCustomDateTime(isoDateTime: String): String {
         return isoDateTime.replace("T", " ")
     }
-
 }

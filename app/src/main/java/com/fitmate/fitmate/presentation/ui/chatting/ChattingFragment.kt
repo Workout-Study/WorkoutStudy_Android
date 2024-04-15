@@ -1,5 +1,7 @@
 package com.fitmate.fitmate.presentation.ui.chatting
 
+import android.content.ClipData
+import android.content.ClipboardManager
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
@@ -23,6 +25,7 @@ import com.fitmate.fitmate.domain.model.ChatItem
 import com.fitmate.fitmate.domain.usecase.DBChatUseCase
 import com.fitmate.fitmate.presentation.ui.chatting.list.adapter.ChatAdapter
 import com.fitmate.fitmate.presentation.viewmodel.ChattingViewModel
+import com.fitmate.fitmate.presentation.viewmodel.GroupViewModel
 import com.fitmate.fitmate.util.HeightProvider
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
@@ -47,7 +50,9 @@ class ChattingFragment : Fragment(R.layout.fragment_chatting) {
     private lateinit var heightProvider: HeightProvider
     @Inject lateinit var dbChatUseCase: DBChatUseCase
     private val viewModel: ChattingViewModel by viewModels()
+    private val group: GroupViewModel by viewModels()
     private var webSocket: WebSocket? = null
+    private var penaltyAccountNumber: String? = null
     private var fitGroupId: Int = -1
     private var fitMateId: Int = -1
 
@@ -55,6 +60,7 @@ class ChattingFragment : Fragment(R.layout.fragment_chatting) {
         super.onCreate(savedInstanceState)
         fitGroupId = requireArguments().getInt("fitGroupId", -1)
         fitMateId = requireArguments().getInt("fitMateId", -1)
+        group.groupDetail(fitGroupId)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -88,25 +94,45 @@ class ChattingFragment : Fragment(R.layout.fragment_chatting) {
 
     private fun setupClickListeners() {
         binding.run {
-            imageViewChattingToolbarForDrawerLayout.setOnClickListener { toggleDrawer() }
-            buttonFragmentChattingFine.setOnClickListener { findNavController().navigate(R.id.groupFineFragment) }
-            buttonFragmentChattingVote.setOnClickListener { findNavController().navigate(R.id.groupVoteFragment) }
-            buttonFragmentChattingFitMateProgress.setOnClickListener { findNavController().navigate(R.id.groupProgressFragment) }
-            buttonFragmentChattingFitOff.setOnClickListener { findNavController().navigate(R.id.groupFitOffFragment) }
-            imageViewChattingFragmentOpenContentList.setOnClickListener { toggleExtraFunctionContainer() }
-            buttonFragmentChattingExit.setOnClickListener { activity?.finish() }
-
-            buttonFragmentChattingCertification.setOnClickListener {
-                val intent = Intent(activity, MainActivity::class.java).apply { putExtra("navigateTo", "certificateFragment") }
-                startActivity(intent)
-                activity?.finish()
-            }
-
-            buttonFragmentChattingTransfer.setOnClickListener {
-                hideKeyboard()
-                Toast.makeText(context, "Group 계좌가 복사되었습니다.", Toast.LENGTH_SHORT).show()
-            }
+            val clickMappings = mapOf(
+                buttonFragmentChattingFitMateProgress to { navigate(R.id.groupProgressFragment, true) },
+                buttonFragmentChattingVote to { navigate(R.id.groupVoteFragment, true) },
+                buttonFragmentChattingFine to { navigate(R.id.groupFineFragment, true) },
+                buttonFragmentChattingFitOff to { navigate(R.id.groupFitOffFragment, false) },
+                buttonFragmentChattingTransfer to { copyAccountNum() },
+                buttonFragmentChattingCertification to { navigate() },
+                imageViewChattingFragmentOpenContentList to { toggleExtraFunctionContainer() },
+                buttonFragmentChattingExit to { activity?.finish() },
+                imageViewChattingToolbarForDrawerLayout to { toggleDrawer() },
+            )
+            clickMappings.forEach { (button, action) -> button.setOnClickListener { action() } }
         }
+    }
+
+    private fun navigate(fragmentId: Int, isBundle: Boolean) {
+        if(isBundle){
+            val bundle = Bundle()
+            bundle.putInt("groupId", fitGroupId)
+            findNavController().navigate(fragmentId, bundle)
+        } else {
+            Toast.makeText(context, "추후 업데이트 예정입니다.", Toast.LENGTH_SHORT).show()
+        }
+    }
+
+    private fun navigate() {
+        val intent = Intent(activity, MainActivity::class.java).apply { putExtra("navigateTo", "certificateFragment") }
+        startActivity(intent)
+        activity?.finish()
+    }
+
+    private fun copyAccountNum() {
+        hideKeyboard()
+        group.groupDetail.observe(viewLifecycleOwner) {groupDetail ->
+            penaltyAccountNumber = groupDetail.penaltyAccountNumber
+        }
+        val clipboard = context?.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
+        val clip = ClipData.newPlainText("Group Account Number", penaltyAccountNumber)
+        clipboard.setPrimaryClip(clip)
     }
 
     private fun toggleDrawer() {

@@ -187,10 +187,7 @@
                     <include layout="@layout/item_category_shimmer" />
 
                 </LinearLayout>
-
             </com.facebook.shimmer.ShimmerFrameLayout>
-
-
         </androidx.constraintlayout.widget.ConstraintLayout>
     </LinearLayout>
 </layout>

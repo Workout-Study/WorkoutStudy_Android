@@ -13,7 +13,7 @@ import androidx.viewpager2.widget.ViewPager2
 import com.fitmate.fitmate.R
 import com.fitmate.fitmate.data.model.dto.GroupDetailResponse
 import com.fitmate.fitmate.databinding.FragmentGroupJoinBinding
-import com.fitmate.fitmate.presentation.ui.home.list.adapter.ImageSliderAdapter
+import com.fitmate.fitmate.presentation.ui.home.list.adapter.HomeViewPageAdapter
 import com.fitmate.fitmate.presentation.viewmodel.GroupViewModel
 import com.fitmate.fitmate.util.ControlActivityInterface
 import dagger.hilt.android.AndroidEntryPoint
@@ -55,7 +55,7 @@ class GroupJoinFragment: Fragment(R.layout.fragment_group_join) {
 
     private fun updateUI(groupDetail: GroupDetailResponse) {
         binding.run {
-            val adapter = ImageSliderAdapter(requireContext(), groupDetail.multiMediaEndPoints)
+            val adapter = HomeViewPageAdapter(requireContext(), groupDetail.multiMediaEndPoints)
             imageViewItemDayCurrentDate.adapter = adapter
 
             toolbarGroupJoin.title = groupDetail.fitGroupName
@@ -83,7 +83,7 @@ class GroupJoinFragment: Fragment(R.layout.fragment_group_join) {
     }
 
     private fun setupImageSlider(images: List<String>) {
-        val adapter = ImageSliderAdapter(requireContext(), images)
+        val adapter = HomeViewPageAdapter(requireContext(), images)
         binding.imageViewItemDayCurrentDate.adapter = adapter
         updateImageNum(0, images.size)
         binding.imageViewItemDayCurrentDate.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
