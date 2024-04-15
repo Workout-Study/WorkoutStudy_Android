@@ -7,77 +7,89 @@
 
     </data>
 
-    <LinearLayout
+    <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:baselineAligned="false"
-        android:orientation="vertical">
+        android:fillViewport="true">
 
-        <TextView
-            android:id="@+id/textViewMainTitle1"
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="20dp"
-            android:layout_marginTop="20dp"
-            android:text="@string/home_main_scr_title_1"
-            android:textAppearance="@style/Font.semibold20" />
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recyclerViewHomeCarousel"
-            android:layout_width="match_parent"
-            android:layout_height="200dp"
-            android:layout_margin="10dp"
-            android:layout_marginTop="20dp"
-            tools:listitem="@layout/item_main_carousel">
-
-        </androidx.recyclerview.widget.RecyclerView>
-
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="30dp">
+            android:layout_height="match_parent"
+            android:baselineAligned="false"
+            android:orientation="vertical">
 
             <TextView
-                android:id="@+id/textViewMainTitle2"
-                android:layout_width="wrap_content"
+                android:id="@+id/textViewMainTitle1"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="20dp"
-                android:text="@string/home_main_scr_title_2"
-                android:textAppearance="@style/Font.semibold20"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-        </androidx.constraintlayout.widget.ConstraintLayout>
-
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
+                android:layout_marginLeft="20dp"
+                android:layout_marginTop="20dp"
+                android:text="@string/home_main_scr_title_1"
+                android:textAppearance="@style/Font.semibold20" />
 
             <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/recyclerViewHomeMain"
+                android:id="@+id/recyclerViewHomeCarousel"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                tools:layout_editor_absoluteY="588dp" />
+                android:layout_height="200dp"
+                android:layout_margin="10dp"
+                android:layout_marginTop="20dp"
+                android:nestedScrollingEnabled="false"
+                android:overScrollMode="never"
+                tools:listitem="@layout/item_main_carousel">
 
-            <com.facebook.shimmer.ShimmerFrameLayout
-                android:id="@+id/homeShimmer"
+            </androidx.recyclerview.widget.RecyclerView>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="30dp">
+
+                <TextView
+                    android:id="@+id/textViewMainTitle2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="20dp"
+                    android:text="@string/home_main_scr_title_2"
+                    android:textAppearance="@style/Font.semibold20"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
 
-                <LinearLayout
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/recyclerViewHomeMain"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:orientation="vertical">
+                    tools:layout_editor_absoluteY="588dp" />
 
-                    <include layout="@layout/item_category_shimmer" />
-                    <include layout="@layout/item_category_shimmer" />
-                    <include layout="@layout/item_category_shimmer" />
+                <com.facebook.shimmer.ShimmerFrameLayout
+                    android:id="@+id/homeShimmer"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
 
-                </LinearLayout>
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="vertical">
 
-            </com.facebook.shimmer.ShimmerFrameLayout>
-        </androidx.constraintlayout.widget.ConstraintLayout>
+                        <include layout="@layout/item_category_shimmer" />
 
-    </LinearLayout>
+                        <include layout="@layout/item_category_shimmer" />
+
+                        <include layout="@layout/item_category_shimmer" />
+
+                    </LinearLayout>
+
+                </com.facebook.shimmer.ShimmerFrameLayout>
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </LinearLayout>
+
+    </androidx.core.widget.NestedScrollView>
+
 </layout>
