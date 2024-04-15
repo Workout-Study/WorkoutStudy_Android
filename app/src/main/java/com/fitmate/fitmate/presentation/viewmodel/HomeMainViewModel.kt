@@ -19,7 +19,7 @@ class HomeMainViewModel @Inject constructor(
 
     fun fetchMyFitGroupVotes() {
         viewModelScope.launch {
-            val result = groupUseCase.fetchFitVotes()
+            val result = groupUseCase.myFitGroupVotes()
             _fitGroupVotes.value = result
         }
     }

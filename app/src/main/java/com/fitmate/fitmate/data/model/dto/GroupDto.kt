@@ -85,3 +85,21 @@ data class VoteCertification(
     @SerializedName("voteEndDate") val voteEndDate: String,
     @SerializedName("recordMultiMediaEndPoints") val multiMediaEndPoints: List<String>
 )
+
+data class EachFitResponse(
+    val fitCertificationDetails: List<GroupCertificationDetail>
+)
+
+data class GroupCertificationDetail(
+    val certificationId: Int,
+    val recordId: Int,
+    val certificationRequestUserId: String,
+    val isUserVoteDone: Boolean,
+    val isUserAgree: Boolean,
+    val agreeCount: Int,
+    val disagreeCount: Int,
+    val maxAgreeCount: Int,
+    val fitRecordStartDate: String,
+    val fitRecordEndDate: String,
+    val voteEndDate: String
+)

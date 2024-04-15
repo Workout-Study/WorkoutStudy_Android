@@ -14,6 +14,8 @@ class DayViewHolder(
     private val onItemClick: (position: Int) -> Unit
 ) : RecyclerView.ViewHolder(view) {
     private val binding = ItemListDayBinding.bind(view)
+    private var lastClickTime = 0L
+    private val debouncePeriod = 500 // 500 milliseconds
 
     private val fitDates = listOf( // TODO 예시데이터를 집어넣은 것으로, 해당 달에 운동한 날짜의 데이터를 모두 가져와 해당 리스트에 담아야 함.
         LocalDate.of(2024, 4, 14),
@@ -48,6 +50,18 @@ class DayViewHolder(
 
         binding.root.setOnClickListener {
             onItemClick(date.dayOfMonth)
+        }
+    }
+
+    init {
+        binding.root.setOnClickListener {
+            val currentTime = System.currentTimeMillis()
+            if (currentTime - lastClickTime > debouncePeriod) {
+                lastClickTime = currentTime
+                onItemClick(adapterPosition)
+            } else {
+                onItemClick(0)
+            }
         }
     }
 }

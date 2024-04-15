@@ -9,10 +9,10 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.fitmate.fitmate.R
 
-class ImageSliderAdapter(
+class HomeViewPageAdapter(
     val context: Context,
     private val images: List<String>
-) : RecyclerView.Adapter<ImageSliderAdapter.ImageViewHolder>() {
+) : RecyclerView.Adapter<HomeViewPageAdapter.ImageViewHolder>() {
 
     inner class ImageViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         val imageView: ImageView = view.findViewById(R.id.imageView)

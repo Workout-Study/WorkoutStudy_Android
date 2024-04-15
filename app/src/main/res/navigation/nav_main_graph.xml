@@ -133,7 +133,7 @@
     <fragment
         android:id="@+id/groupVoteFragment2"
         android:name="com.fitmate.fitmate.presentation.ui.chatting.GroupVoteFragment"
-        android:label="GroupVoteFragment" />
+        android:label="@string/group_vote_scr_toolbar" />
     <fragment
         android:id="@+id/loginWebViewFragment"
         android:name="com.fitmate.fitmate.presentation.ui.login.LoginWebViewFragment"
