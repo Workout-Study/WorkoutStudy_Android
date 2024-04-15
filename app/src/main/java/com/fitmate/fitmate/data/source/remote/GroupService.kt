@@ -1,5 +1,6 @@
 package com.fitmate.fitmate.data.source.remote
 
+import com.fitmate.fitmate.data.model.dto.EachFitResponse
 import com.fitmate.fitmate.data.model.dto.GroupDetailResponse
 import com.fitmate.fitmate.data.model.dto.GroupResponse
 import com.fitmate.fitmate.data.model.dto.MyFitResponse
@@ -33,4 +34,7 @@ interface GroupService {
 //    ): Response<MyFitResponse>
     @GET("70e08fe2-49a8-4426-a99f-016610cbc104")
     suspend fun getMyFitGroupVotes(): Response<MyFitResponse>
+
+    @GET("19e89fb6-dad0-4cdc-acc3-7a26603f2cad")
+    suspend fun getEachFitGroupVotes(): Response<EachFitResponse>
 }

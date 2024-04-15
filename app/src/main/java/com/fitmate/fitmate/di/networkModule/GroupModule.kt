@@ -15,7 +15,7 @@ import javax.inject.Singleton
 object GroupModule {
     @Provides
     @Singleton
-    fun provideCategoryService(retrofit: Retrofit): GroupService {
+    fun provideGroupService(retrofit: Retrofit): GroupService {
         // val fitGroupBaseUrl = "http://43.202.247.71:8080"
         val fitGroupBaseUrl = "https://run.mocky.io/v3/"
         return retrofit.newBuilder()

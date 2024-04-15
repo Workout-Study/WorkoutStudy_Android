@@ -218,7 +218,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
                     android:backgroundTint="@color/stateBlue"
-                    app:icon="@drawable/ic_baseline_rest_24"
+                    app:icon="@drawable/ic_baseline_send_money_24"
                     app:layout_constraintStart_toStartOf="@+id/buttonFragmentChattingFitMateProgress"
                     app:layout_constraintTop_toBottomOf="@+id/textViewFragmentChattingFitMateProgress" />
 
@@ -243,8 +243,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
                     android:backgroundTint="@color/stateBlue"
-                    app:icon="@drawable/ic_baseline_rest_24"
-                    app:layout_constraintHorizontal_bias="0.5"
+                    app:icon="@drawable/ic_baseline_timer_24"
                     app:layout_constraintStart_toStartOf="@+id/buttonFragmentChattingVote"
                     app:layout_constraintTop_toBottomOf="@+id/textViewFragmentChattingFitMateProgress" />
 

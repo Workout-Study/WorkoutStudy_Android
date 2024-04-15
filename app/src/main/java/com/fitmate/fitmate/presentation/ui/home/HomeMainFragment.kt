@@ -73,7 +73,9 @@ class HomeMainFragment : Fragment(R.layout.fragment_home_main) {
                             percent = formatPercent(cert),
                             time = formatDate(cert),
                             image = cert.multiMediaEndPoints.firstOrNull() ?: "",
-                            groupId = group.groupId
+                            groupId = group.groupId,
+                            startTime = null,
+                            endTime = null
                         )}}.flatten().distinctBy { it.title + it.fitMate + it.time }
                 val voteAdapter = binding.recyclerViewHomeMain.adapter as VoteAdapter
                 voteAdapter.submitList(voteItems)
