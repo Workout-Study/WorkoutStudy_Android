@@ -1,37 +1,42 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:layout_margin="10dp"
-    android:orientation="vertical">
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <TextView
-        android:id="@+id/textViewLicenseItemTitle"
+    <data>
+        <variable
+            name="data"
+            type="com.fitmate.fitmate.domain.model.LicenseItem" />
+    </data>
+
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/license_scr_item_title"
-        android:textAppearance="@style/Font.bold10" />
+        android:layout_margin="10dp"
+        android:orientation="vertical">
 
-    <TextView
-        android:id="@+id/textViewLicenseItemLink"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:text="@string/license_scr_item_link"
-        android:textAppearance="@style/Font.regular10" />
+        <TextView
+            android:id="@+id/textViewLicenseItemTitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@{data.name}"
+            android:textAppearance="@style/Font.bold16" />
 
-    <TextView
-        android:id="@+id/textViewLicenseItemCopyright"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/license_scr_item_copyright"
-        android:textAppearance="@style/Font.regular10" />
+        <TextView
+            android:id="@+id/textViewLicenseItemLink"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:clickable="true"
+            android:focusable="true"
+            android:text="@{data.url}"
+            android:textAppearance="@style/Font.regular12"
+            android:textColor="#0000FF" />
 
-    <TextView
-        android:id="@+id/textViewLicenseItemLicense"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/license_scr_item_license"
-        android:textAppearance="@style/Font.regular10" />
+        <TextView
+            android:id="@+id/textViewLicenseItemCopyright"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@{data.copyright + ` | ` + data.license}"
+            android:textAppearance="@style/Font.regular12" />
 
-</LinearLayout>
+    </LinearLayout>
+</layout>

@@ -172,7 +172,7 @@ class UserInfoFragment : Fragment(R.layout.fragment_user_info) {
     }
 
     private fun announcement() {
-        Toast.makeText(context, "지정된 공지사항이 없습니다.", Toast.LENGTH_SHORT).show()
+        Toast.makeText(context, "지정된 공지사항이 존재하지 않습니다.", Toast.LENGTH_SHORT).show()
     }
 
     private fun logout() {
@@ -188,7 +188,7 @@ class UserInfoFragment : Fragment(R.layout.fragment_user_info) {
     }
 
     private fun navigateFitOff() {
-        navigateTo(R.id.action_userInfoFragment_to_myFitOffFragment)
+        Toast.makeText(context, "추후 업데이트 예정입니다.", Toast.LENGTH_SHORT).show()
     }
 
     //교육용 팝업 띄우는 메서드
