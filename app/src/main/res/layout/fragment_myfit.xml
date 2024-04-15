@@ -4,7 +4,9 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
-
+        <variable
+            name="viewModel"
+            type="com.fitmate.fitmate.presentation.viewmodel.MyFitViewModel" />
     </data>
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout
@@ -82,6 +84,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:orientation="vertical"
+                        app:myfit_group_data_is_empty="@{viewModel.fitProgressItem}"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/textViewMyFitPercent">
@@ -104,6 +107,24 @@
                             android:textAppearance="@style/Font.semibold16"
                             android:textColor="@color/turquoise" />
                     </LinearLayout>
+
+
+                    <com.facebook.shimmer.ShimmerFrameLayout
+                        android:id="@+id/progressShimmer"
+                        app:layout_constraintTop_toBottomOf="@+id/containerFragmentMyFitNotHasFitGroup"
+                        android:layout_width="match_parent"
+                        app:myfit_group_data_shimmer="@{viewModel.fitProgressItem}"
+                        android:layout_height="match_parent">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical">
+
+                            <include layout="@layout/item_fit_grogress_shimmer"/>
+                        </LinearLayout>
+
+                    </com.facebook.shimmer.ShimmerFrameLayout>
 
 
                     <androidx.core.widget.NestedScrollView

@@ -14,12 +14,12 @@ import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 @HiltViewModel
-class MtFitViewModel @Inject constructor(
+class MyFitViewModel @Inject constructor(
     private val myFitUseCase: MyFitUseCase
 ): ViewModel() {
-    private val _FitProgressItem = MutableLiveData<List<FitProgressItem>>()
+    private val _fitProgressItem = MutableLiveData<List<FitProgressItem>>()
     val fitProgressItem: LiveData<List<FitProgressItem>>
-        get() = _FitProgressItem
+        get() = _fitProgressItem
 
     //내 fit 진척도 가져오는 메서드
     fun getMyFitProgress(userId: String) {
@@ -29,7 +29,7 @@ class MtFitViewModel @Inject constructor(
                 withContext(Dispatchers.Main){
                     val result = response.body()?.toMyFitProgressResponse()
                     result?.let {
-                        _FitProgressItem.value = it
+                        _fitProgressItem.value = it
                     }
                 }
             }

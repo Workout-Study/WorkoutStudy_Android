@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ScrollView
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
@@ -16,7 +17,7 @@ import com.fitmate.fitmate.R
 import com.fitmate.fitmate.databinding.FragmentMyfitBinding
 import com.fitmate.fitmate.domain.model.FitHistory
 import com.fitmate.fitmate.presentation.ui.myfit.list.adapter.MonthListAdapter
-import com.fitmate.fitmate.presentation.viewmodel.MtFitViewModel
+import com.fitmate.fitmate.presentation.viewmodel.MyFitViewModel
 import com.fitmate.fitmate.ui.myfit.list.adapter.MyFitGroupProgressAdapter
 import com.fitmate.fitmate.ui.myfit.list.adapter.MyFitHistoryAdapter
 import com.fitmate.fitmate.util.ControlActivityInterface
@@ -27,10 +28,10 @@ class MyFitFragment : Fragment() {
     private lateinit var binding: FragmentMyfitBinding
     private lateinit var controlActivityInterface: ControlActivityInterface
 
-    private val fitGroupProgressAdapter: MyFitGroupProgressAdapter by lazy { MyFitGroupProgressAdapter() }
+    private val fitGroupProgressAdapter: MyFitGroupProgressAdapter by lazy { MyFitGroupProgressAdapter(requireContext()) }
     private lateinit var fitHistoryAdapter: MyFitHistoryAdapter
 
-    private val viewModel: MtFitViewModel by viewModels()
+    private val viewModel: MyFitViewModel by viewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -38,6 +39,8 @@ class MyFitFragment : Fragment() {
         savedInstanceState: Bundle?,
     ): View {
         binding = FragmentMyfitBinding.inflate(layoutInflater)
+        binding.lifecycleOwner = viewLifecycleOwner
+        binding.viewModel = viewModel
         controlActivityInterface = activity as MainActivity
         controlActivityInterface.viewNavigationBar()
         return binding.root
@@ -102,7 +105,8 @@ class MyFitFragment : Fragment() {
     private fun initButtonClickListener() {
 
         binding.buttonFragmentMyFitFitOff.setOnClickListener {
-            findNavController().navigate(R.id.action_myFitFragment_to_myFitOffFragment)
+            //findNavController().navigate(R.id.action_myFitFragment_to_myFitOffFragment)
+            Toast.makeText(requireContext(),"추후 업데이트 예정입니다",Toast.LENGTH_SHORT).show()
         }
         binding.buttonFragmentMyFitRecord.setOnClickListener {
             findNavController().navigate(R.id.action_myFitFragment_to_certificateFragment)
@@ -117,11 +121,6 @@ class MyFitFragment : Fragment() {
 
     private fun observeNetworkMyProgress() = viewModel.fitProgressItem.observe(viewLifecycleOwner){ fitProgressList ->
         fitGroupProgressAdapter.submitList(fitProgressList) {
-            if (fitProgressList.isNotEmpty()) {
-                binding.containerFragmentMyFitNotHasFitGroup.visibility = View.GONE
-            }else{
-                binding.containerFragmentMyFitNotHasFitGroup.visibility = View.VISIBLE
-            }
             binding.recyclerviewMyFitFragmentMyFitProgress.adapter = fitGroupProgressAdapter
         }
     }
