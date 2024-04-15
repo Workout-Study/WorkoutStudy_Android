@@ -5,10 +5,10 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import com.fitmate.fitmate.databinding.ItemProgressBinding
-import com.fitmate.fitmate.domain.model.MyFitGroupProgress
+import com.fitmate.fitmate.domain.model.FitProgressItem
 import com.fitmate.fitmate.ui.myfit.list.MyFitGroupProgressViewHolder
 
-class MyFitGroupProgressAdapter : ListAdapter<MyFitGroupProgress, MyFitGroupProgressViewHolder>(diffUtil) {
+class MyFitGroupProgressAdapter : ListAdapter<FitProgressItem, MyFitGroupProgressViewHolder>(diffUtil) {
 
 
     override fun onCreateViewHolder(
@@ -23,19 +23,19 @@ class MyFitGroupProgressAdapter : ListAdapter<MyFitGroupProgress, MyFitGroupProg
     }
 
     companion object {
-        private val diffUtil = object: DiffUtil.ItemCallback<MyFitGroupProgress>() {
+        private val diffUtil = object: DiffUtil.ItemCallback<FitProgressItem>() {
             override fun areItemsTheSame(
-                oldItem: MyFitGroupProgress,
-                newItem: MyFitGroupProgress,
+                oldItem: FitProgressItem,
+                newItem: FitProgressItem,
             ): Boolean {
                 return oldItem == newItem
             }
 
             override fun areContentsTheSame(
-                oldItem: MyFitGroupProgress,
-                newItem: MyFitGroupProgress,
+                oldItem: FitProgressItem,
+                newItem: FitProgressItem,
             ): Boolean {
-                return oldItem.title == newItem.title
+                return oldItem.itemId == newItem.itemId
             }
 
         }

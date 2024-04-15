@@ -6,7 +6,7 @@
     <data>
         <variable
             name="data"
-            type="com.fitmate.fitmate.domain.model.MyFitGroupProgress" />
+            type="com.fitmate.fitmate.domain.model.FitProgressItem" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -32,7 +32,7 @@
             android:layout_width="50dp"
             android:layout_height="50dp"
             android:layout_marginStart="20dp"
-            android:background="@drawable/ic_circle"
+            app:url="@{data.thumbnailEndPoint}"
             android:contentDescription="@null"
             app:layout_constraintBottom_toBottomOf="@+id/imageViewItemProgressBackground"
             app:layout_constraintStart_toStartOf="@+id/imageViewItemProgressBackground"
@@ -42,7 +42,7 @@
             android:id="@+id/textViewItemProgressName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@{data.title}"
+            android:text="@{data.itemName}"
             android:layout_marginStart="10dp"
             android:textAppearance="@style/Font.semibold16"
             android:textColor="@color/white"
@@ -57,8 +57,8 @@
             android:layout_height="25dp"
             android:layout_marginStart="10dp"
             android:layout_marginEnd="20dp"
-            android:progress="@{data.nowProgress}"
-            android:max="@{data.maxProgress}"
+            android:progress="@{data.certificationCount}"
+            android:max="@{data.frequency}"
             android:progressDrawable="@drawable/drawable_progress"
             app:layout_constraintBottom_toBottomOf="@+id/imageViewItemProgressThumbnail"
             app:layout_constraintEnd_toEndOf="@+id/imageViewItemProgressBackground"
@@ -69,7 +69,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@{@string/my_fit_scr_group_progress_text(data.nowProgress,data.maxProgress)}"
+            android:text="@{@string/my_fit_scr_group_progress_text(data.certificationCount,data.frequency)}"
             app:layout_constraintStart_toStartOf="@+id/progressBarItemProgress"
             app:layout_constraintEnd_toEndOf="@+id/progressBarItemProgress"
             app:layout_constraintTop_toTopOf="@+id/progressBarItemProgress"
