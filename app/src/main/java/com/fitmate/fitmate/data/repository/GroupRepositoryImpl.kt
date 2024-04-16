@@ -1,6 +1,8 @@
 package com.fitmate.fitmate.data.repository
 
 import com.fitmate.fitmate.data.model.dto.EachFitResponse
+import com.fitmate.fitmate.data.model.dto.FitGroupDetail
+import com.fitmate.fitmate.data.model.dto.FitGroupProgress
 import com.fitmate.fitmate.data.model.dto.GroupDetailResponse
 import com.fitmate.fitmate.data.model.dto.GroupResponse
 import com.fitmate.fitmate.data.model.dto.MyFitGroupVote
@@ -25,5 +27,13 @@ class GroupRepositoryImpl(private val groupService: GroupService) : GroupReposit
 
     override suspend fun getEachGroupVotes(): Response<EachFitResponse> {
         return groupService.getEachFitGroupVotes()
+    }
+
+    override suspend fun getFitMateList(): Response<FitGroupDetail> {
+        return groupService.getFitMateList()
+    }
+
+    override suspend fun getFitMateProgress(): Response<FitGroupProgress> {
+        return groupService.getFitMateProgress()
     }
 }

@@ -29,7 +29,7 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
     private fun setupViewPagerAndTabs() {
         val adapter = ViewPagerAdapter(childFragmentManager, viewLifecycleOwner.lifecycle, fragments)
         binding.pager2Main.adapter = adapter
-        binding.pager2Main.isUserInputEnabled = false
+        //binding.pager2Main.isUserInputEnabled = false
         TabLayoutMediator(binding.tabs, binding.pager2Main) { tab, position ->
             tab.text = if (fragments[position] is HomeMainFragment) {
                 "홈"

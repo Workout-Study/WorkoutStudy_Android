@@ -1,5 +1,6 @@
 package com.fitmate.fitmate.di.networkModule
 
+import com.fitmate.fitmate.BuildConfig
 import com.fitmate.fitmate.data.source.dao.ChatService
 import dagger.Module
 import dagger.Provides
@@ -15,7 +16,7 @@ object ChatModule {
     @Provides
     @Singleton
     fun provideFitGroupService(retrofit: Retrofit): ChatService {
-        val fitGroupBaseUrl = "http://3.38.227.26:8080/"
+        val fitGroupBaseUrl = "http://${BuildConfig.CHAT_SERVER_ADDRESS}:8888/"
         return retrofit.newBuilder()
             .baseUrl(fitGroupBaseUrl)
             .build()
