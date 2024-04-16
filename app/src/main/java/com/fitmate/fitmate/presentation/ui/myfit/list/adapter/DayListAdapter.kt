@@ -25,21 +25,17 @@ class DayListAdapter(
             oldItem == newItem
     }
 ) {
-    private var selectedPosition = RecyclerView.NO_POSITION
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): DayViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.item_list_day, parent, false)
         return DayViewHolder(view, tempMonth) { position ->
             onItemClick(position)
-            notifyItemChanged(selectedPosition)
-            selectedPosition = position
-            notifyItemChanged(selectedPosition)
         }
     }
 
     override fun onBindViewHolder(holder: DayViewHolder, position: Int) {
         val date = dayList[position]
-        holder.bind(date, position, position == selectedPosition)
+        holder.bind(date)
     }
 
     override fun getItemCount(): Int = dayList.size
