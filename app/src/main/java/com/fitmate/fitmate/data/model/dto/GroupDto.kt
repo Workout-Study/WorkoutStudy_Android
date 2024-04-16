@@ -103,3 +103,36 @@ data class GroupCertificationDetail(
     val fitRecordEndDate: String,
     val voteEndDate: String
 )
+
+data class FitGroupDetail(
+    @SerializedName("fitGroupId") val fitGroupId: Int,
+    @SerializedName("fitLeaderDetail") val fitLeaderDetail: FitLeaderDetail,
+    @SerializedName("fitMateDetails") val fitMateDetails: List<FitMateDetail>
+)
+
+data class FitLeaderDetail(
+    @SerializedName("fitLeaderUserId") val fitLeaderUserId: String,
+    @SerializedName("createdAt") val createdAt: String
+)
+
+data class FitMateDetail(
+    @SerializedName("fitMateId") val fitMateId: Int,
+    @SerializedName("fitMateUserId") val fitMateUserId: String,
+    @SerializedName("createdAt") val createdAt: String
+)
+
+data class FitGroupProgress(
+    @SerializedName("fitGroupId") val fitGroupId: Int,
+    @SerializedName("fitGroupName") val fitGroupName: String,
+    @SerializedName("cycle") val cycle: Int,
+    @SerializedName("frequency") val frequency: Int,
+    @SerializedName("fitCertificationProgresses") val fitCertificationProgresses: List<FitGroupProgressList>
+)
+
+data class FitGroupProgressList(
+    @SerializedName("fitMateUserId")
+    val fitMateUserId: String,
+
+    @SerializedName("certificationCount")
+    val certificationCount: Int
+)

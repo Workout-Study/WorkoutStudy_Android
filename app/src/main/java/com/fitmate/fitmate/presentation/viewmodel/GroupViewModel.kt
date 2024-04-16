@@ -6,6 +6,8 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.fitmate.fitmate.data.model.dto.EachFitResponse
 import com.fitmate.fitmate.data.model.dto.FitGroup
+import com.fitmate.fitmate.data.model.dto.FitGroupDetail
+import com.fitmate.fitmate.data.model.dto.FitGroupProgress
 import com.fitmate.fitmate.data.model.dto.GroupDetailResponse
 import com.fitmate.fitmate.data.model.dto.GroupResponse
 import com.fitmate.fitmate.domain.usecase.DBChatUseCase
@@ -35,6 +37,12 @@ class GroupViewModel @Inject constructor(
     private val _fitGroup = MutableStateFlow<List<FitGroup>>(emptyList())
     val fitGroup: StateFlow<List<FitGroup>> = _fitGroup
 
+    private val _fitMateList = MutableLiveData<FitGroupDetail>()
+    val fitMateList: LiveData<FitGroupDetail> = _fitMateList
+
+    private val _fitMateProgress = MutableLiveData<FitGroupProgress>()
+    val fitMateProgress: LiveData<FitGroupProgress> = _fitMateProgress
+
     private val _isLoading = MutableStateFlow(false)
     val isLoading: StateFlow<Boolean> = _isLoading
 
@@ -56,8 +64,37 @@ class GroupViewModel @Inject constructor(
     fun fetchFitGroupVotes() {
         viewModelScope.launch {
             val response = groupUseCase.eachFitGroupVotes()
-            if(response.isSuccessful) {
-                _fitGroupVotes.postValue(response.body())
+            _fitGroupVotes.value = response.body()
+        }
+    }
+
+    fun getFitMateList() {
+        viewModelScope.launch {
+            _isLoading.value = true
+            try {
+                val response = groupUseCase.getFitMateList()
+                if (response.isSuccessful) {
+                    _fitMateList.value = response.body()
+                }
+                _isLoading.value = false
+            } catch (e: Exception) {
+                // 에러 처리
+                _isLoading.value = false
+            }
+        }
+    }
+
+    fun getFitMateProgress() {
+        viewModelScope.launch {
+            _isLoading.value = true
+            try {
+                val response = groupUseCase.getFitMateProgress()
+                if(response.isSuccessful) {
+                    _fitMateProgress.value = response.body()
+                }
+            } catch (e: Exception) {
+                // 에러 처리
+                _isLoading.value = false
             }
         }
     }

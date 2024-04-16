@@ -1,6 +1,8 @@
 package com.fitmate.fitmate.domain.repository
 
 import com.fitmate.fitmate.data.model.dto.EachFitResponse
+import com.fitmate.fitmate.data.model.dto.FitGroupDetail
+import com.fitmate.fitmate.data.model.dto.FitGroupProgress
 import com.fitmate.fitmate.data.model.dto.GroupDetailResponse
 import com.fitmate.fitmate.data.model.dto.GroupResponse
 import com.fitmate.fitmate.data.model.dto.MyFitGroupVote
@@ -14,4 +16,8 @@ interface GroupRepository {
     suspend fun myFitGroupVotes(): Result<List<MyFitGroupVote>>
 
     suspend fun getEachGroupVotes(): Response<EachFitResponse>
+
+    suspend fun getFitMateList(): Response<FitGroupDetail>
+
+    suspend fun getFitMateProgress(): Response<FitGroupProgress>
 }

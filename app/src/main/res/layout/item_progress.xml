@@ -32,11 +32,12 @@
             android:layout_width="50dp"
             android:layout_height="50dp"
             android:layout_marginStart="20dp"
-            app:url="@{data.thumbnailEndPoint}"
+            android:background="@drawable/ic_circle"
             android:contentDescription="@null"
             app:layout_constraintBottom_toBottomOf="@+id/imageViewItemProgressBackground"
             app:layout_constraintStart_toStartOf="@+id/imageViewItemProgressBackground"
-            app:layout_constraintTop_toTopOf="@+id/imageViewItemProgressBackground" />
+            app:layout_constraintTop_toTopOf="@+id/imageViewItemProgressBackground"
+            app:url="@{data.thumbnailEndPoint}" />
 
         <TextView
             android:id="@+id/textViewItemProgressName"
