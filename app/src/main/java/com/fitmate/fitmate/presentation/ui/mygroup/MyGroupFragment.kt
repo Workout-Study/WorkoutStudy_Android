@@ -9,7 +9,6 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
-import com.bumptech.glide.Glide
 import com.fitmate.fitmate.ChatActivity
 import com.fitmate.fitmate.MainActivity
 import com.fitmate.fitmate.R
@@ -17,9 +16,7 @@ import com.fitmate.fitmate.databinding.FragmentMyGroupBinding
 import com.fitmate.fitmate.util.ControlActivityInterface
 import com.fitmate.fitmate.domain.model.FitGroup
 import com.fitmate.fitmate.presentation.ui.mygroup.list.adapter.MyFitGroupAdapter
-import com.fitmate.fitmate.presentation.viewmodel.MyGroupViewModel
-import com.google.firebase.ktx.Firebase
-import com.google.firebase.storage.ktx.storage
+import com.fitmate.fitmate.presentation.viewmodel.GroupViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
@@ -30,7 +27,7 @@ class MyGroupFragment: Fragment(R.layout.fragment_my_group) {
     private lateinit var binding: FragmentMyGroupBinding
     private lateinit var adapter: MyFitGroupAdapter
     private lateinit var controlActivityInterface: ControlActivityInterface
-    private val viewModel: MyGroupViewModel by viewModels()
+    private val viewModel: GroupViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

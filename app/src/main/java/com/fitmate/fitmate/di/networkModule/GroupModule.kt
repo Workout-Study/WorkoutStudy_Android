@@ -26,5 +26,5 @@ object GroupModule {
 
     @Provides
     @Singleton
-    fun providesContentRepository(categoryService: GroupService): GroupRepository = GroupRepositoryImpl(categoryService)
+    fun providesContentRepository(groupService: GroupService): GroupRepository = GroupRepositoryImpl(groupService)
 }
