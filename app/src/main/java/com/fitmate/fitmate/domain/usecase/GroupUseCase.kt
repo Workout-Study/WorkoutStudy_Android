@@ -1,6 +1,8 @@
 package com.fitmate.fitmate.domain.usecase
 
 import com.fitmate.fitmate.data.model.dto.EachFitResponse
+import com.fitmate.fitmate.data.model.dto.FitGroupDetail
+import com.fitmate.fitmate.data.model.dto.FitGroupProgress
 import com.fitmate.fitmate.data.model.dto.GroupDetailResponse
 import com.fitmate.fitmate.data.model.dto.GroupResponse
 import com.fitmate.fitmate.data.model.dto.MyFitGroupVote
@@ -13,9 +15,13 @@ class GroupUseCase @Inject constructor(private val groupRepository: GroupReposit
         return groupRepository.getFilteredFitGroups(withMaxGroup, category, pageNumber, pageSize)
     }
 
-    suspend operator fun invoke(fitGroupId: Int): GroupDetailResponse =groupRepository.getFitGroupDetail(fitGroupId)
+    suspend operator fun invoke(fitGroupId: Int): GroupDetailResponse = groupRepository.getFitGroupDetail(fitGroupId)
 
     suspend fun myFitGroupVotes(): Result<List<MyFitGroupVote>> = groupRepository.myFitGroupVotes()
 
     suspend fun eachFitGroupVotes(): Response<EachFitResponse> = groupRepository.getEachGroupVotes()
+
+    suspend fun getFitMateList(): Response<FitGroupDetail> = groupRepository.getFitMateList()
+
+    suspend fun getFitMateProgress(): Response<FitGroupProgress> = groupRepository.getFitMateProgress()
 }

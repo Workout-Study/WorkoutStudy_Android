@@ -8,6 +8,8 @@ import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.view.inputmethod.InputMethodManager
+import android.widget.Button
+import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
 import androidx.core.view.GravityCompat
@@ -24,6 +26,8 @@ import com.fitmate.fitmate.databinding.FragmentChattingBinding
 import com.fitmate.fitmate.domain.model.ChatItem
 import com.fitmate.fitmate.domain.usecase.DBChatUseCase
 import com.fitmate.fitmate.presentation.ui.chatting.list.adapter.ChatAdapter
+import com.fitmate.fitmate.presentation.ui.chatting.list.adapter.FitMate
+import com.fitmate.fitmate.presentation.ui.chatting.list.adapter.FitMateListAdapter
 import com.fitmate.fitmate.presentation.viewmodel.ChattingViewModel
 import com.fitmate.fitmate.presentation.viewmodel.GroupViewModel
 import com.fitmate.fitmate.util.HeightProvider
@@ -53,6 +57,7 @@ class ChattingFragment : Fragment(R.layout.fragment_chatting) {
     private val group: GroupViewModel by viewModels()
     private var webSocket: WebSocket? = null
     private var penaltyAccountNumber: String? = null
+    private var userId = "fitLeaderUserId"      // TODO 실제로 userId를 로그인 후 디바이스에 Preference나 DataStore로 저장해야 함.
     private var fitGroupId: Int = -1
     private var fitMateId: Int = -1
 
@@ -61,6 +66,7 @@ class ChattingFragment : Fragment(R.layout.fragment_chatting) {
         fitGroupId = requireArguments().getInt("fitGroupId", -1)
         fitMateId = requireArguments().getInt("fitMateId", -1)
         group.groupDetail(fitGroupId)
+        group.getFitMateList()
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -136,10 +142,23 @@ class ChattingFragment : Fragment(R.layout.fragment_chatting) {
     }
 
     private fun toggleDrawer() {
-        binding.drawerLayoutForFragmentChatting.apply {
-            if (isDrawerOpen(GravityCompat.END)) closeDrawer(GravityCompat.END) else openDrawer(GravityCompat.END)
+        val includedLayout = view?.findViewById<View>(R.id.includeFragmentChattingMyInfo)
+        val textView = includedLayout?.findViewById<TextView>(R.id.textViewItemChattingFitMateName)
+        val fitMateListAdapter = FitMateListAdapter(emptyList())
+        binding.recyclerViewFragmentChattingForFitMateList.adapter = fitMateListAdapter
+        binding.recyclerViewFragmentChattingForFitMateList.layoutManager = LinearLayoutManager(context)
+
+        group.fitMateList.observe(viewLifecycleOwner) { fitMateList ->
+            val isLeader = fitMateList.fitLeaderDetail.fitLeaderUserId == userId
+            Log.d("woojugoing_isLeader", isLeader.toString())
+            fitMateList.fitMateDetails.firstOrNull { it.fitMateId == fitMateId }?.let { textView?.text = it.fitMateUserId }
+            val filteredFitMates = fitMateList.fitMateDetails.filter { it.fitMateId != fitMateId }.map { FitMate(it.fitMateId, it.fitMateUserId,it.createdAt) }
+            (binding.recyclerViewFragmentChattingForFitMateList.adapter as FitMateListAdapter).updateData(filteredFitMates, isLeader)
         }
+
+        binding.drawerLayoutForFragmentChatting.apply { if (isDrawerOpen(GravityCompat.END)) closeDrawer(GravityCompat.END) else openDrawer(GravityCompat.END) }
     }
+
 
     private fun toggleExtraFunctionContainer() {
         binding.containerExtraFunction.also { container ->
@@ -177,7 +196,7 @@ class ChattingFragment : Fragment(R.layout.fragment_chatting) {
 
     private fun setupWebSocketConnection(fitGroupId: String) {
         val client = OkHttpClient()
-        val request = Request.Builder().url("ws://${chatServerAddress}:8080/chat?fitGroupId=${fitGroupId}&fitMateId=${fitMateId}").build()
+        val request = Request.Builder().url("ws://${chatServerAddress}:8888/chat?fitGroupId=${fitGroupId}&fitMateId=${fitMateId}").build()
 
         webSocket = client.newWebSocket(request, object : WebSocketListener() {
             override fun onOpen(webSocket: WebSocket, response: Response) {

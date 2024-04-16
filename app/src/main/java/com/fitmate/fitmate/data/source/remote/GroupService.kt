@@ -1,6 +1,8 @@
 package com.fitmate.fitmate.data.source.remote
 
 import com.fitmate.fitmate.data.model.dto.EachFitResponse
+import com.fitmate.fitmate.data.model.dto.FitGroupDetail
+import com.fitmate.fitmate.data.model.dto.FitGroupProgress
 import com.fitmate.fitmate.data.model.dto.GroupDetailResponse
 import com.fitmate.fitmate.data.model.dto.GroupResponse
 import com.fitmate.fitmate.data.model.dto.MyFitResponse
@@ -37,4 +39,10 @@ interface GroupService {
 
     @GET("19e89fb6-dad0-4cdc-acc3-7a26603f2cad")
     suspend fun getEachFitGroupVotes(): Response<EachFitResponse>
+
+    @GET("1a68ebeb-9c5d-42aa-97dc-45ed1071d34f")
+    suspend fun getFitMateList(): Response<FitGroupDetail>
+
+    @GET("df0f9622-f2db-4fd0-bedb-eb940e6c7c9c")
+    suspend fun getFitMateProgress(): Response<FitGroupProgress>
 }

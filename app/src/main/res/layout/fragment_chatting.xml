@@ -284,23 +284,46 @@
                     android:layout_width="match_parent"
                     android:layout_height="30dp" />
 
+                <com.google.android.material.divider.MaterialDivider
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="10dp"/>
+
                 <include
                     android:id="@+id/includeFragmentChattingMyInfo"
                     layout="@layout/item_chatting_fit_mate" />
+
+                <com.google.android.material.divider.MaterialDivider
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"/>
+
+                <TextView
+                    android:id="@+id/textView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="20dp"
+                    android:layout_marginTop="20dp"
+                    android:text="피트 메이트 목록"
+                    android:textAppearance="@style/Font.semibold20"
+                    android:textColor="@color/zircon" />
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/recyclerViewFragmentChattingForFitMateList"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="20dp"
-                    toos:itemCount="3"
-                    toos:listitem="@layout/item_chatting_fit_mate" />
+                    android:layout_marginTop="20dp" />
 
 
                 <View
                     android:layout_width="0dp"
                     android:layout_height="0dp"
                     android:layout_weight="1" />
+
+                <com.google.android.material.divider.MaterialDivider
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="10dp"/>
 
                 <Button
                     android:id="@+id/buttonFragmentChattingExit"
