@@ -35,7 +35,14 @@
             android:id="@+id/textViewLicenseItemCopyright"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@{data.copyright + ` | ` + data.license}"
+            android:text="@{data.copyright}"
+            android:textAppearance="@style/Font.regular12" />
+
+        <TextView
+            android:id="@+id/textViewLicenseItemlicense"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@{data.license}"
             android:textAppearance="@style/Font.regular12" />
 
     </LinearLayout>

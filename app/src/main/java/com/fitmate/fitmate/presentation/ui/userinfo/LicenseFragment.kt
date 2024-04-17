@@ -33,7 +33,7 @@ class LicenseFragment: Fragment(R.layout.fragment_license) {
 
     private fun setupRecyclerView() {
         binding.recyclerViewLicense.layoutManager = LinearLayoutManager(context)
-        binding.recyclerViewLicense.adapter = LicenseAdapter()
+        binding.recyclerViewLicense.adapter = LicenseAdapter(this)
         val divider = DividerItemDecoration(context, LinearLayoutManager.VERTICAL)
         binding.recyclerViewLicense.addItemDecoration(divider)
     }

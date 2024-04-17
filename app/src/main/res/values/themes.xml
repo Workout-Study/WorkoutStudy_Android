@@ -26,5 +26,11 @@
         <item name="android:background">@color/zircon</item>
     </style>
 
+    <style name="Theme.Fitmate.license" parent="ThemeOverlay.Material3.MaterialAlertDialog">
+        <item name="android:fontFamily">@font/pretendard_medium</item>
+        <item name="android:background">@color/zircon</item>
+        <item name="android:textSize">@dimen/text_XS</item>
+    </style>
+
 
 </resources>
