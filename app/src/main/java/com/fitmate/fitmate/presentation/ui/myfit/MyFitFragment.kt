@@ -141,7 +141,7 @@ class MyFitFragment : Fragment() {
         }
     }
 
-    open inner class CalendarHandler() {
+    inner class CalendarHandler() {
         //TODO 여기에 통신의 결과를 쌓아둘 데이터 리스트(mutable)를 생성한다.
         fun getMyFitHistoryInfo(monthDate:Int): List<LocalDate> {
 

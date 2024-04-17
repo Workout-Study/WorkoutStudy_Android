@@ -14,3 +14,16 @@ data class MyFitProgressDto(
     @SerializedName("frequency") val frequency: Int,
     @SerializedName("certificationCount") val certificationCount: Int,
 )
+
+data class MyFitHistoryResponseDto(
+    @SerializedName("content") val content: List<MyFitCertificationContent>,
+    @SerializedName("pageable") val pageable: List<MyFitCertificationContent>,
+)
+
+data class MyFitCertificationContent(
+    @SerializedName("fitRecordId") val fitRecordId: Int,
+    @SerializedName("recordStartDate") val recordStartDate: String,
+    @SerializedName("recordEndDate") val recordEndDate: String,
+    @SerializedName("createdAt") val createdAt: String,
+    @SerializedName("multiMediaEndPoints") val multiMediaEndPoints: List<String>,
+)
