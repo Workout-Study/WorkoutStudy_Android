@@ -1,5 +1,6 @@
 package com.fitmate.fitmate.presentation.ui.myfit
 
+import android.content.Context
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -22,16 +23,22 @@ import com.fitmate.fitmate.ui.myfit.list.adapter.MyFitGroupProgressAdapter
 import com.fitmate.fitmate.ui.myfit.list.adapter.MyFitHistoryAdapter
 import com.fitmate.fitmate.util.ControlActivityInterface
 import dagger.hilt.android.AndroidEntryPoint
+import java.time.LocalDate
 
 @AndroidEntryPoint
 class MyFitFragment : Fragment() {
     private lateinit var binding: FragmentMyfitBinding
     private lateinit var controlActivityInterface: ControlActivityInterface
 
-    private val fitGroupProgressAdapter: MyFitGroupProgressAdapter by lazy { MyFitGroupProgressAdapter(requireContext()) }
+    private val fitGroupProgressAdapter: MyFitGroupProgressAdapter by lazy {
+        MyFitGroupProgressAdapter(
+            requireContext()
+        )
+    }
     private lateinit var fitHistoryAdapter: MyFitHistoryAdapter
 
     private val viewModel: MyFitViewModel by viewModels()
+
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -67,9 +74,10 @@ class MyFitFragment : Fragment() {
 
     private fun initCalendar() {
         binding.recyclerViewCalendar.run {
-            layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
-            adapter = MonthListAdapter(){month,day->
-                Log.d("testt",month.toString() +"월" + day.toString()+"일")
+            layoutManager =
+                LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
+            adapter = MonthListAdapter(CalendarHandler()) { month, day ->
+                Log.d("testt", month.toString() + "월" + day.toString() + "일")
             }
             scrollToPosition(Int.MAX_VALUE / 2)
             PagerSnapHelper().attachToRecyclerView(this)
@@ -96,7 +104,7 @@ class MyFitFragment : Fragment() {
             )
         )
         fitHistoryAdapter = MyFitHistoryAdapter(requireContext())
-        fitHistoryAdapter.submitList(mockData){
+        fitHistoryAdapter.submitList(mockData) {
             binding.recyclerViewMyFitFragmentFitHistory.adapter = fitHistoryAdapter
         }
 
@@ -106,7 +114,7 @@ class MyFitFragment : Fragment() {
 
         binding.buttonFragmentMyFitFitOff.setOnClickListener {
             //findNavController().navigate(R.id.action_myFitFragment_to_myFitOffFragment)
-            Toast.makeText(requireContext(),"추후 업데이트 예정입니다",Toast.LENGTH_SHORT).show()
+            Toast.makeText(requireContext(), "추후 업데이트 예정입니다", Toast.LENGTH_SHORT).show()
         }
         binding.buttonFragmentMyFitRecord.setOnClickListener {
             findNavController().navigate(R.id.action_myFitFragment_to_certificateFragment)
@@ -119,18 +127,34 @@ class MyFitFragment : Fragment() {
         viewModel.getMyFitProgress("hyungoo")
     }
 
-    private fun observeNetworkMyProgress() = viewModel.fitProgressItem.observe(viewLifecycleOwner){ fitProgressList ->
-        fitGroupProgressAdapter.submitList(fitProgressList) {
-            binding.recyclerviewMyFitFragmentMyFitProgress.adapter = fitGroupProgressAdapter
+    private fun observeNetworkMyProgress() =
+        viewModel.fitProgressItem.observe(viewLifecycleOwner) { fitProgressList ->
+            fitGroupProgressAdapter.submitList(fitProgressList) {
+                binding.recyclerviewMyFitFragmentMyFitProgress.adapter = fitGroupProgressAdapter
+            }
         }
-    }
 
-
-
-    private fun setToggleAppBar(){
+    private fun setToggleAppBar() {
         binding.floatingButtonScrollTop.setOnClickListener {
             binding.contentsNestedSScrollView.fullScroll(ScrollView.FOCUS_UP)
-            binding.toolbarLayout.setExpanded(true,true)
+            binding.toolbarLayout.setExpanded(true, true)
         }
     }
+
+    open inner class CalendarHandler() {
+        //TODO 여기에 통신의 결과를 쌓아둘 데이터 리스트(mutable)를 생성한다.
+        fun getMyFitHistoryInfo(monthDate:Int): List<LocalDate> {
+
+            val test = viewModel.fitProgressItem.value
+            Log.d("testt","데이터는"+test?.size.toString())
+            return listOf(
+                LocalDate.of(2024, 4, 14),
+                LocalDate.of(2024, 4, 25),
+                LocalDate.of(2024, 5, 25)
+            )
+
+        }
+
+    }
+
 }
