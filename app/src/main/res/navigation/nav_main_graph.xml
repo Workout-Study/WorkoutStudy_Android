@@ -145,4 +145,8 @@
             android:id="@+id/action_loginWebViewFragment_to_homeFragment"
             app:destination="@id/homeFragment" />
     </fragment>
+    <fragment
+        android:id="@+id/nicknameFragment"
+        android:name="com.fitmate.fitmate.presentation.ui.login.NicknameFragment"
+        android:label="NicknameFragment" />
 </navigation>

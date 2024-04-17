@@ -21,4 +21,10 @@
         <item name="android:textAppearance">@style/Font.regular12</item>
     </style>
 
+    <style name="Theme.Fitmate.Dialog" parent="ThemeOverlay.Material3.MaterialAlertDialog">
+        <item name="android:fontFamily">@font/pretendard_medium</item>
+        <item name="android:background">@color/zircon</item>
+    </style>
+
+
 </resources>

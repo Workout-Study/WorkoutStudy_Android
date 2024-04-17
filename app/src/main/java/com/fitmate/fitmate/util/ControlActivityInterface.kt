@@ -1,8 +1,10 @@
 package com.fitmate.fitmate.util
 
+import android.view.View
+
 interface ControlActivityInterface {
     fun goneNavigationBar()
     fun viewNavigationBar()
-
-    // TODO 키보드 컨트롤 하는 내용
+    fun hideKeyboard()
+    fun showKeyboard(view: View)
 }

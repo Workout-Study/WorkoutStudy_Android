@@ -12,6 +12,7 @@ import android.provider.MediaStore
 import android.provider.Settings
 import android.util.Log
 import android.view.View
+import android.widget.EditText
 import android.widget.ImageView
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
@@ -87,12 +88,13 @@ class UserInfoFragment : Fragment(R.layout.fragment_user_info) {
 
     private fun setClickListener() {
         listOf(
-            binding.textViewUserInfoContent1,
-            binding.textViewUserInfoContent2,
-            binding.textViewUserInfoContent3,
-            binding.textViewUserInfoContent4,
-            binding.textViewUserInfoContent5,
-            binding.textViewUserInfoContent6
+            binding.textViewUserInfoProfile,
+            binding.textViewUserInfoNickname,
+            binding.textViewUserInfoFitOff,
+            binding.textViewUserInfoNotice,
+            binding.textViewUserInfoOSS,
+            binding.textViewUserInfoLogout,
+            binding.textViewUserInfoWithDraw
         ).forEach { textView ->
             textView.setOnClickListener { handleOnClick(textView.id) }
         }
@@ -100,12 +102,13 @@ class UserInfoFragment : Fragment(R.layout.fragment_user_info) {
 
     private fun handleOnClick(viewId: Int) {
         when (viewId) {
-            R.id.textViewUserInfoContent1 -> requestPermission()//TODO 권한 체크로 변경하고 권한 체크하는 곳에서 이동하도록 변경
-            R.id.textViewUserInfoContent2 -> navigateFitOff()
-            R.id.textViewUserInfoContent3 -> announcement()
-            R.id.textViewUserInfoContent4 -> navigateLicense()
-            R.id.textViewUserInfoContent5 -> logout()
-            R.id.textViewUserInfoContent6 -> withdraw()
+            R.id.textViewUserInfoProfile -> requestPermission()//TODO 권한 체크로 변경하고 권한 체크하는 곳에서 이동하도록 변경
+            R.id.textViewUserInfoNickname -> changeNickname()
+            R.id.textViewUserInfoFitOff -> navigateFitOff()
+            R.id.textViewUserInfoNotice -> notice()
+            R.id.textViewUserInfoOSS -> navigateLicense()
+            R.id.textViewUserInfoLogout -> logout()
+            R.id.textViewUserInfoWithDraw -> withdraw()
         }
     }
 
@@ -118,15 +121,21 @@ class UserInfoFragment : Fragment(R.layout.fragment_user_info) {
         val preview = imagePreviewView.findViewById<ImageView>(R.id.imageViewPreview)
 
         Glide.with(this).load(uri).into(preview)
-        AlertDialog.Builder(requireContext()).setView(imagePreviewView)
+        MaterialAlertDialogBuilder(requireContext(), R.style.Theme_Fitmate_Dialog)
+            .setView(imagePreviewView)
             .setPositiveButton(android.R.string.ok) { dialog, _ ->
                 dialog.dismiss()
-                Glide.with(this).load(uri).apply(RequestOptions().circleCrop())
+                Glide.with(this)
+                    .load(uri)
+                    .apply(RequestOptions().circleCrop())
                     .into(binding.imageViewUserInfoIcon)
                 imageUpload("test_user_id")
-            }.setNegativeButton(android.R.string.cancel) { dialog, _ ->
+            }
+            .setNegativeButton(android.R.string.cancel) { dialog, _ ->
                 dialog.dismiss()
-            }.show()
+            }
+            .show()
+
     }
 
     private fun imageUpload(userId: String) {
@@ -171,12 +180,13 @@ class UserInfoFragment : Fragment(R.layout.fragment_user_info) {
         )
     }
 
-    private fun announcement() {
+    private fun notice() {
         Toast.makeText(context, "지정된 공지사항이 존재하지 않습니다.", Toast.LENGTH_SHORT).show()
     }
 
     private fun logout() {
-        navigateTo(R.id.action_userInfoFragment_to_loginFragment)
+        //navigateTo(R.id.action_userInfoFragment_to_loginFragment)
+        findNavController().navigate(R.id.nicknameFragment)
     }
 
     private fun withdraw() {
@@ -191,9 +201,31 @@ class UserInfoFragment : Fragment(R.layout.fragment_user_info) {
         Toast.makeText(context, "추후 업데이트 예정입니다.", Toast.LENGTH_SHORT).show()
     }
 
+    private fun changeNickname() {
+        val dialogView = layoutInflater.inflate(R.layout.dialog_user_change_nick, null)
+        val editTextNewNickname = dialogView.findViewById<EditText>(R.id.editTextNewNickname)
+
+        MaterialAlertDialogBuilder(requireContext(), R.style.Theme_Fitmate_Dialog).apply {
+            setView(dialogView)
+            setPositiveButton("저장") { dialog, which ->
+                val newNickname = editTextNewNickname.text.toString().trim()
+                Toast.makeText(context, "${newNickname}님 닉네임 변경 사실을 그룹에 알려주세요!", Toast.LENGTH_SHORT).show()
+                Log.d("woojugoing_change_nickname", newNickname)
+                sendServerToNickname(newNickname)
+            }
+            setNegativeButton("취소") { dialog, which -> dialog.cancel() }
+        }.show()
+    }
+
+    private fun sendServerToNickname(newNickname: String) {
+        // TODO 서버에 닉네임 변경 사항을 올려보내는 과정 완료 시 변경되게 if문 추가
+        binding.textViewUserInfoName.text = newNickname
+    }
+
+
     //교육용 팝업 띄우는 메서드
     fun showPermissionDialog() {
-        MaterialAlertDialogBuilder(requireContext())
+        MaterialAlertDialogBuilder(requireContext(), R.style.Theme_Fitmate_Dialog)
             .setTitle(getString(R.string.permission_dialog_scr_guide))
             .setMessage(getString(R.string.permission_dialog_scr_guide_message))
             .setPositiveButton(getString(R.string.permission_dialog_scr_guide_select)) { dialogInterface: DialogInterface, i: Int ->
@@ -207,7 +239,7 @@ class UserInfoFragment : Fragment(R.layout.fragment_user_info) {
 
     //권한 설정 화면을 위한 다이얼로그 띄우는 메서드
     fun showPermissionSettiongDialog() {
-        MaterialAlertDialogBuilder(requireContext())
+        MaterialAlertDialogBuilder(requireContext(), R.style.Theme_Fitmate_Dialog)
             .setMessage(getString(R.string.permission_dialog_scr_guide_setting))
             .setPositiveButton(getString(R.string.permission_dialog_scr_guide_setting_select)) { dialogInterface: DialogInterface, i: Int ->
                 navigateToAppSetting()
