@@ -443,7 +443,7 @@ class CertificateFragment : Fragment() {
     //알림 권한 교육용 팝업
     @RequiresApi(Build.VERSION_CODES.TIRAMISU)
     fun showNotificationPermissionDialog() {
-        MaterialAlertDialogBuilder(requireContext())
+        MaterialAlertDialogBuilder(requireContext(), R.style.Theme_Fitmate_Dialog)
             .setTitle(getString(R.string.certificate_scr_dialog_title))
             .setMessage(getString(R.string.certificate_scr_dialog_message))
             .setPositiveButton(getString(R.string.certificate_scr_dialog_positive_button)) { dialogInterface: DialogInterface, i: Int ->
@@ -490,7 +490,7 @@ class CertificateFragment : Fragment() {
         val dataList = groupList.map { it.fitGroupName }.toTypedArray()
         val multiChoiceList = BooleanArray(dataList.size) { i -> false }
         val resultGroupIdList = mutableListOf<String>()
-        val builder = MaterialAlertDialogBuilder(requireContext())
+        val builder = MaterialAlertDialogBuilder(requireContext(), R.style.Theme_Fitmate_Dialog)
         builder.setTitle("인증을 수행할 그룹을 선택해주세요")
 
         builder.setMultiChoiceItems(
@@ -535,7 +535,7 @@ class CertificateFragment : Fragment() {
     }
 
     private fun showStoragePermissionDialog() {
-        MaterialAlertDialogBuilder(requireContext())
+        MaterialAlertDialogBuilder(requireContext(), R.style.Theme_Fitmate_Dialog)
             .setTitle(getString(R.string.permission_dialog_scr_guide))
             .setMessage(getString(R.string.permission_dialog_scr_guide_message))
             .setPositiveButton(getString(R.string.permission_dialog_scr_guide_select)) { dialogInterface: DialogInterface, i: Int ->
@@ -550,7 +550,7 @@ class CertificateFragment : Fragment() {
 
     //권한 설정 화면을 위한 다이얼로그 띄우는 메서드
     private fun showPermissionSettiongDialog() {
-        MaterialAlertDialogBuilder(requireContext())
+        MaterialAlertDialogBuilder(requireContext(), R.style.Theme_Fitmate_Dialog)
             .setMessage(getString(R.string.permission_dialog_scr_guide_setting))
             .setPositiveButton(getString(R.string.permission_dialog_scr_guide_setting_select)) { dialogInterface: DialogInterface, i: Int ->
                 navigateToAppSetting()

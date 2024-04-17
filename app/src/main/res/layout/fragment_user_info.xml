@@ -46,7 +46,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
-                android:text="Since 2000.01.01"
+                android:text="Since 2024.04.21"
                 android:textAppearance="@style/Font.regular16"
                 android:textColor="@color/zircon"
                 app:layout_constraintBottom_toBottomOf="@+id/imageViewUserInfoIcon"
@@ -76,14 +76,14 @@
                 android:id="@+id/textViewUserInfoTitle2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="130dp"
+                android:layout_marginTop="150dp"
                 android:text="고객센터"
                 android:textAppearance="@style/Font.regular12"
                 app:layout_constraintStart_toStartOf="@+id/textViewUserInfoTitle1"
                 app:layout_constraintTop_toBottomOf="@+id/textViewUserInfoTitle1" />
 
             <TextView
-                android:id="@+id/textViewUserInfoContent1"
+                android:id="@+id/textViewUserInfoProfile"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="30dp"
@@ -95,59 +95,70 @@
                 app:layout_constraintTop_toBottomOf="@+id/textViewUserInfoTitle1" />
 
             <TextView
-                android:id="@+id/textViewUserInfoContent2"
+                android:id="@+id/textViewUserInfoNickname"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:text="회원 닉네임 변경"
+                android:textAppearance="@style/Font.medium16"
+                android:textColor="@color/violet"
+                app:layout_constraintStart_toStartOf="@+id/textViewUserInfoProfile"
+                app:layout_constraintTop_toBottomOf="@+id/textViewUserInfoProfile" />
+
+            <TextView
+                android:id="@+id/textViewUserInfoFitOff"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
                 android:text="나의 피트오프 열람"
                 android:textAppearance="@style/Font.medium16"
                 android:textColor="@color/violet"
-                app:layout_constraintStart_toStartOf="@+id/textViewUserInfoContent1"
-                app:layout_constraintTop_toBottomOf="@+id/textViewUserInfoContent1" />
+                app:layout_constraintStart_toStartOf="@+id/textViewUserInfoProfile"
+                app:layout_constraintTop_toBottomOf="@+id/textViewUserInfoNickname" />
 
             <TextView
-                android:id="@+id/textViewUserInfoContent3"
+                android:id="@+id/textViewUserInfoNotice"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
                 android:text="공지사항"
                 android:textAppearance="@style/Font.medium16"
                 android:textColor="@color/violet"
-                app:layout_constraintStart_toStartOf="@+id/textViewUserInfoContent1"
+                app:layout_constraintStart_toStartOf="@+id/textViewUserInfoProfile"
                 app:layout_constraintTop_toBottomOf="@+id/textViewUserInfoTitle2" />
 
             <TextView
-                android:id="@+id/textViewUserInfoContent4"
+                android:id="@+id/textViewUserInfoOSS"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
                 android:text="Open Source License"
                 android:textAppearance="@style/Font.medium16"
                 android:textColor="@color/violet"
-                app:layout_constraintStart_toStartOf="@+id/textViewUserInfoContent1"
-                app:layout_constraintTop_toBottomOf="@+id/textViewUserInfoContent3" />
+                app:layout_constraintStart_toStartOf="@+id/textViewUserInfoProfile"
+                app:layout_constraintTop_toBottomOf="@+id/textViewUserInfoNotice" />
 
             <TextView
-                android:id="@+id/textViewUserInfoContent5"
+                android:id="@+id/textViewUserInfoLogout"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
                 android:text="로그아웃"
                 android:textAppearance="@style/Font.medium16"
                 android:textColor="@color/violet"
-                app:layout_constraintStart_toStartOf="@+id/textViewUserInfoContent1"
-                app:layout_constraintTop_toBottomOf="@+id/textViewUserInfoContent4" />
+                app:layout_constraintStart_toStartOf="@+id/textViewUserInfoProfile"
+                app:layout_constraintTop_toBottomOf="@+id/textViewUserInfoOSS" />
 
             <TextView
-                android:id="@+id/textViewUserInfoContent6"
+                android:id="@+id/textViewUserInfoWithDraw"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
                 android:text="회원 탈퇴"
                 android:textAppearance="@style/Font.medium16"
                 android:textColor="@color/violet"
-                app:layout_constraintStart_toStartOf="@+id/textViewUserInfoContent1"
-                app:layout_constraintTop_toBottomOf="@+id/textViewUserInfoContent5" />
+                app:layout_constraintStart_toStartOf="@+id/textViewUserInfoProfile"
+                app:layout_constraintTop_toBottomOf="@+id/textViewUserInfoLogout" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </LinearLayout>
