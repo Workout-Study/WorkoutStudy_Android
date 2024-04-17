@@ -21,7 +21,7 @@ class GroupVoteViewHolder(private val binding: ItemVoteBinding, val fragment: Fr
     fun bind(item: VoteItem) {
         binding.voteItem = item
         binding.buttonItemVoteFitgroupVote.setOnClickListener {
-            val dialog = MaterialAlertDialogBuilder(fragment.requireContext())
+            val dialog = MaterialAlertDialogBuilder(fragment.requireContext(), R.style.Theme_Fitmate_Dialog)
             dialog.run {
                 setVoteCustomDialog(item)
             }
