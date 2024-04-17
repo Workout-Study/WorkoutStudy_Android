@@ -5,6 +5,7 @@ import android.view.View
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.fitmate.fitmate.databinding.ItemListMonthBinding
+import com.fitmate.fitmate.presentation.ui.myfit.MyFitFragment
 import com.fitmate.fitmate.presentation.ui.myfit.list.adapter.DayListAdapter
 import java.time.LocalDate
 import java.time.ZoneId
@@ -19,6 +20,7 @@ abstract class MonthViewHolder(
 
 class MonthView(
     private val binding: ItemListMonthBinding,
+    private val calendarHandler: MyFitFragment.CalendarHandler,
     private val onclick:(monthPosition:Int ,dayPosition: Int) -> Unit
 ) : MonthViewHolder(binding.root) {
     private val calendar: Calendar = Calendar.getInstance()
@@ -43,7 +45,7 @@ class MonthView(
             calendar.add(Calendar.WEEK_OF_MONTH, 1)
         }
         val dayListManager = GridLayoutManager(binding.root.context, 7)
-        val dayListAdapter = DayListAdapter(tempMonth, dayList) { position ->
+        val dayListAdapter = DayListAdapter(tempMonth, dayList, calendarHandler) { position ->
             onclick(tempMonth,position)
         }
         binding.itemMonthDayList.apply {
