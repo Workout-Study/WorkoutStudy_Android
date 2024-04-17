@@ -5,10 +5,12 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import com.fitmate.fitmate.databinding.ItemListMonthBinding
+import com.fitmate.fitmate.presentation.ui.myfit.MyFitFragment
 import com.fitmate.fitmate.presentation.ui.myfit.list.MonthView
 import com.fitmate.fitmate.presentation.ui.myfit.list.MonthViewHolder
 
 class MonthListAdapter(
+    private val calendarHandler: MyFitFragment.CalendarHandler,
     private val onclick: (monthPosition:Int ,dayPosition:Int)->Unit
 ) : ListAdapter<Int, MonthViewHolder>(
     object : DiffUtil.ItemCallback<Int>() {
@@ -29,7 +31,7 @@ class MonthListAdapter(
             parent,
             false
         )
-        return MonthView(binding,onclick)
+        return MonthView(binding,calendarHandler,onclick)
     }
 
     override fun onBindViewHolder(holder: MonthViewHolder, position: Int) {

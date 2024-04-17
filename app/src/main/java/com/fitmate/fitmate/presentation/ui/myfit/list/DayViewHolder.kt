@@ -7,18 +7,21 @@ import java.time.DayOfWeek
 import java.time.LocalDate
 import androidx.core.content.ContextCompat
 import com.fitmate.fitmate.databinding.ItemListDayBinding
+import com.fitmate.fitmate.presentation.ui.myfit.MyFitFragment
 
 class DayViewHolder(
     view: View,
     private val tempMonth: Int,
+    private val calendarHandler: MyFitFragment.CalendarHandler,
     private val onItemClick: (position: Int) -> Unit
 ) : RecyclerView.ViewHolder(view) {
     private val binding = ItemListDayBinding.bind(view)
 
-    private val fitDates = listOf( // TODO 예시데이터를 집어넣은 것으로, 해당 달에 운동한 날짜의 데이터를 모두 가져와 해당 리스트에 담아야 함.
+    private val fitHistoryData = calendarHandler.getMyFitHistoryInfo(tempMonth)
+/*    private val fitDates = listOf( // TODO 예시데이터를 집어넣은 것으로, 해당 달에 운동한 날짜의 데이터를 모두 가져와 해당 리스트에 담아야 함.
         LocalDate.of(2024, 4, 14),
         LocalDate.of(2024, 4, 25)
-    )
+    )*/
 
     fun bind(date: LocalDate) {
         val context = binding.root.context
@@ -36,7 +39,7 @@ class DayViewHolder(
             binding.itemDayText.setTextColor(dayOfWeekColor)
         }
 
-        if (fitDates.contains(date)) {
+        if (fitHistoryData.contains(date)) {
             binding.itemDayText.setTextColor(ContextCompat.getColor(context, R.color.black))
             binding.imageViewItemDayCurrentDate.setImageResource(R.drawable.ic_circle)
             binding.imageViewItemDayCurrentDate.visibility = View.VISIBLE
