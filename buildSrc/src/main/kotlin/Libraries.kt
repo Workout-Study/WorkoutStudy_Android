@@ -72,4 +72,8 @@ object Libraries {
         const val LOGGING = "com.squareup.okhttp3:logging-interceptor:${Versions.OKHTTP}"
     }
 
+    object Splash {
+        const val SPLASH_SCREEN = "androidx.core:core-splashscreen:${Versions.SPLASH}"
+    }
+
 }

@@ -1,11 +1,17 @@
 package com.fitmate.fitmate
 
+import android.animation.Animator
+import android.animation.AnimatorListenerAdapter
+import android.animation.ObjectAnimator
 import android.content.Context
+import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 import androidx.activity.viewModels
+import androidx.annotation.RequiresApi
+import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
@@ -27,17 +33,18 @@ class MainActivity : AppCompatActivity(), ControlActivityInterface {
     //존재한다면 서버로 넘김
     //넘겨받은 결과에 따라 유효하면 메인 프래그먼트로
     //유효하지 않으면 로그인 창으로
+    @RequiresApi(Build.VERSION_CODES.S)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        val splashScreen = installSplashScreen()
+        splash(splashScreen)
         //바인딩 및 네비게이션 컨트롤러 초기화 작업
         initSetting()
         setContentView(binding.root)
         //바텀 navigation 설정
         setNavigation()
-
         //온보딩 조회 결과 구독
         observeOnboardingState()
-
         //온보딩 조회 여부 확인
         viewModel.loadOnBoardingStateInPref()
 
@@ -62,6 +69,21 @@ class MainActivity : AppCompatActivity(), ControlActivityInterface {
         val navHostFragment =
             supportFragmentManager.findFragmentById(R.id.fragmentContainerViewMain) as NavHostFragment
         navController = navHostFragment.navController
+    }
+
+    @RequiresApi(Build.VERSION_CODES.S)
+    private fun splash(splashScreen: androidx.core.splashscreen.SplashScreen) {
+        splashScreen.setOnExitAnimationListener {
+            val objectAnnotation = ObjectAnimator.ofPropertyValuesHolder()
+            objectAnnotation.duration = 2000
+            objectAnnotation.addListener(object : AnimatorListenerAdapter() {
+                override fun onAnimationEnd(animation: Animator) {
+                    super.onAnimationEnd(animation)
+                    it.remove()
+                }
+            })
+            objectAnnotation.start()
+        }
     }
 
     private fun setNavigation() {

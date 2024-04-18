@@ -20,4 +20,5 @@ object Versions {
     const val COMPRESSOR = "3.0.1"
     const val SHIMMER = "0.5.0"
     const val OKHTTP = "4.12.0"
+    const val SPLASH = "1.0.1"
 }
