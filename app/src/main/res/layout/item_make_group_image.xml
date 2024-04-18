@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+        <variable
+            name="data"
+            type="com.fitmate.fitmate.domain.model.CertificationImage" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="5dp">
+
+        <androidx.cardview.widget.CardView
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:id="@+id/cardViewItemCertificateStart"
+            android:layout_width="70dp"
+            android:layout_height="70dp"
+            android:layout_gravity="center_vertical"
+            app:cardCornerRadius="10dp">
+
+            <ImageView
+                android:id="@+id/imageViewFitStartSelectImage"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                app:uri="@{data.imagesUri.toString()}"
+                android:background="@color/dark_gray"
+                android:scaleType="centerInside" />
+
+            <ImageView
+                android:id="@+id/imageViewRemoveItemMakeGroupImage"
+                android:layout_gravity="end"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:src="@drawable/baseline_remove_24"
+                app:layout_constraintTop_toTopOf="@+id/imageViewItemCertificate"
+                app:layout_constraintEnd_toEndOf="@+id/imageViewItemCertificate"
+                android:background="@drawable/ic_circle"
+                app:tint="@color/red" />
+
+        </androidx.cardview.widget.CardView>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>
