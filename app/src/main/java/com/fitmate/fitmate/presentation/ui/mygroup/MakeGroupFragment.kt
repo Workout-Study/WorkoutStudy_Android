@@ -231,7 +231,7 @@ class MakeGroupFragment : Fragment(R.layout.fragment_make_group) {
                         pickMultipleMedia.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))
                     } else {
                         if (!shouldShowRequestPermissionRationale(Manifest.permission.READ_EXTERNAL_STORAGE)) {
-                            showPermissionSettiongDialog()
+                            showPermissionSettingDialog()
                         } else {
                             showStoragePermissionDialog()
                         }
@@ -243,9 +243,9 @@ class MakeGroupFragment : Fragment(R.layout.fragment_make_group) {
                         pickMultipleMedia.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))
                     } else {
                         if (!shouldShowRequestPermissionRationale(Manifest.permission.READ_MEDIA_IMAGES)) {
-                            showPermissionSettiongDialog()
+                            showPermissionSettingDialog()
                         } else {
-                            showPermissionSettiongDialog()
+                            showPermissionSettingDialog()
                         }
                     }
                 }
@@ -268,7 +268,7 @@ class MakeGroupFragment : Fragment(R.layout.fragment_make_group) {
     }
 
     //권한 설정 창으로 이동시키기 위한 다이얼로그
-    private fun showPermissionSettiongDialog() {
+    private fun showPermissionSettingDialog() {
         MaterialAlertDialogBuilder(requireContext())
             .setMessage(getString(R.string.permission_dialog_scr_guide_setting))
             .setPositiveButton(getString(R.string.permission_dialog_scr_guide_setting_select)) { dialogInterface: DialogInterface, i: Int ->
@@ -287,6 +287,7 @@ class MakeGroupFragment : Fragment(R.layout.fragment_make_group) {
         startActivity(intent)
     }
 
+    //키보드 내리고 포커스까지 해제해주는 역할.
     fun hideKeyboard() {
         if (activity?.currentFocus != null){
             val imm = activity?.getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
