@@ -1,6 +1,7 @@
 package com.fitmate.fitmate.presentation.ui.mygroup
 
 import android.Manifest
+import android.content.Context.INPUT_METHOD_SERVICE
 import android.content.DialogInterface
 import android.content.Intent
 import android.net.Uri
@@ -11,7 +12,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.SeekBar
+import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
@@ -29,10 +30,8 @@ import com.fitmate.fitmate.R
 import com.fitmate.fitmate.databinding.FragmentMakeGroupBinding
 import com.fitmate.fitmate.domain.model.BankList
 import com.fitmate.fitmate.domain.model.CertificationImage
-import com.fitmate.fitmate.presentation.ui.certificate.CertificateFragment
 import com.fitmate.fitmate.presentation.ui.mygroup.list.adapter.BankListAdapter
 import com.fitmate.fitmate.presentation.ui.mygroup.list.adapter.MakeGroupImageAdapter
-import com.fitmate.fitmate.presentation.viewmodel.CertificateState
 import com.fitmate.fitmate.presentation.viewmodel.MakeGroupViewModel
 import com.fitmate.fitmate.util.ControlActivityInterface
 import com.fitmate.fitmate.util.readData
@@ -118,7 +117,9 @@ class MakeGroupFragment : Fragment(R.layout.fragment_make_group) {
     private fun settingSeekBarListener() {
         binding.seekBarMakeGroupFitNum.addOnSliderTouchListener(object :
             Slider.OnSliderTouchListener {
-            override fun onStartTrackingTouch(slider: Slider) {}
+            override fun onStartTrackingTouch(slider: Slider) {
+                hideKeyboard()
+            }
 
             override fun onStopTrackingTouch(slider: Slider) {
                 viewModel.setGroupFitCycle(slider.value.toInt())
@@ -127,7 +128,9 @@ class MakeGroupFragment : Fragment(R.layout.fragment_make_group) {
 
         binding.seekBarMakeGroupPeople.addOnSliderTouchListener(object :
             Slider.OnSliderTouchListener {
-            override fun onStartTrackingTouch(slider: Slider) {}
+            override fun onStartTrackingTouch(slider: Slider) {
+                hideKeyboard()
+            }
 
             override fun onStopTrackingTouch(slider: Slider) {
                 viewModel.setGroupFitMateLimit(slider.value.toInt())
@@ -157,6 +160,7 @@ class MakeGroupFragment : Fragment(R.layout.fragment_make_group) {
         requestPermission()
     }
     fun collapseBottomSheet() {
+        hideKeyboard()
         bottomSheetBehavior.state = STATE_COLLAPSED
     }
 
@@ -179,7 +183,6 @@ class MakeGroupFragment : Fragment(R.layout.fragment_make_group) {
                 }
             }
         }
-
 
     //권한 확인 및 요청 메서드
     private fun requestPermission() {
@@ -282,5 +285,13 @@ class MakeGroupFragment : Fragment(R.layout.fragment_make_group) {
             data = Uri.fromParts("package", requireContext().packageName, null)
         }
         startActivity(intent)
+    }
+
+    fun hideKeyboard() {
+        if (activity?.currentFocus != null){
+            val imm = activity?.getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
+            imm.hideSoftInputFromWindow(activity?.currentFocus!!.windowToken, 0)
+            activity?.currentFocus!!.clearFocus()
+        }
     }
 }
