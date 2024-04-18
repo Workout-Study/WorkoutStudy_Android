@@ -74,6 +74,7 @@ dependencies {
     implementation(Libraries.ScrollView.HORIZONTAL_NESTED_SCROLLVIEW)
     implementation(Libraries.Compressor.ZELORY_COMPRESSOR)
     implementation(Libraries.Shimmer.SHIMMER)
+    implementation(Libraries.Splash.SPLASH_SCREEN)
 
     implementation(platform(Libraries.Firebase.FIREBASE))
     implementation(Libraries.Firebase.ANALYTICS)
