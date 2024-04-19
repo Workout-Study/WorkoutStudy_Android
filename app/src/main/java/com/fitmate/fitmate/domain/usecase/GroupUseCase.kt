@@ -6,6 +6,7 @@ import com.fitmate.fitmate.data.model.dto.FitGroupProgress
 import com.fitmate.fitmate.data.model.dto.GroupDetailResponse
 import com.fitmate.fitmate.data.model.dto.GroupResponse
 import com.fitmate.fitmate.data.model.dto.MyFitGroupVote
+import com.fitmate.fitmate.data.model.dto.VoteRequest
 import com.fitmate.fitmate.domain.repository.GroupRepository
 import retrofit2.Response
 import javax.inject.Inject
@@ -24,4 +25,6 @@ class GroupUseCase @Inject constructor(private val groupRepository: GroupReposit
     suspend fun getFitMateList(): Response<FitGroupDetail> = groupRepository.getFitMateList()
 
     suspend fun getFitMateProgress(): Response<FitGroupProgress> = groupRepository.getFitMateProgress()
+
+    suspend fun registerVote(voteRequest: VoteRequest) = groupRepository.registerVote(voteRequest)
 }
