@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.fitmate.fitmate.R
+import com.fitmate.fitmate.domain.model.MyFitRecordHistoryDetail
 import com.fitmate.fitmate.presentation.ui.myfit.MyFitFragment
 import com.fitmate.fitmate.presentation.ui.myfit.list.DayViewHolder
 import java.time.LocalDate
@@ -17,6 +18,7 @@ class DayListAdapter(
     //해당 월의 리스트
     private val dayList: MutableList<LocalDate>,
     private val calendarHandler: MyFitFragment.CalendarHandler,
+    private var firRecordHistoryData: List<MyFitRecordHistoryDetail>,
     private val onItemClick: (position: Int) -> Unit
 ) : ListAdapter<LocalDate, DayViewHolder>(
     object : DiffUtil.ItemCallback<LocalDate>() {
@@ -30,7 +32,7 @@ class DayListAdapter(
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): DayViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.item_list_day, parent, false)
-        return DayViewHolder(view, tempMonth, calendarHandler) { position ->
+        return DayViewHolder(view, tempMonth, calendarHandler,firRecordHistoryData) { position ->
             onItemClick(position)
         }
     }
