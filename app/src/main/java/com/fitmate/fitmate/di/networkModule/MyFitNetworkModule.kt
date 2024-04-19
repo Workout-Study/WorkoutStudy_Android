@@ -23,7 +23,7 @@ object MyFitNetworkModule {
     @Singleton
     fun provideMyFitService(retrofit: Retrofit): MyFitService {
         /*val fitProgressBaseUrl = "http://43.202.247.71:8080/"*/
-        val fitProgressBaseUrl = "https://236bb035-58bf-4127-ac62-e874502a9391.mock.pstmn.io/"
+        val fitProgressBaseUrl = "https://run.mocky.io/v3/"
         return retrofit.newBuilder()
             .baseUrl(fitProgressBaseUrl)
             .build()
