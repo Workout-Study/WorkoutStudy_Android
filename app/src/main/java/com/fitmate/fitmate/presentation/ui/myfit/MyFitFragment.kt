@@ -13,17 +13,21 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.PagerSnapHelper
+import androidx.recyclerview.widget.RecyclerView
 import com.fitmate.fitmate.MainActivity
 import com.fitmate.fitmate.R
 import com.fitmate.fitmate.databinding.FragmentMyfitBinding
 import com.fitmate.fitmate.domain.model.FitHistory
+import com.fitmate.fitmate.presentation.ui.myfit.list.adapter.DayListAdapter
 import com.fitmate.fitmate.presentation.ui.myfit.list.adapter.MonthListAdapter
 import com.fitmate.fitmate.presentation.viewmodel.MyFitViewModel
 import com.fitmate.fitmate.ui.myfit.list.adapter.MyFitGroupProgressAdapter
 import com.fitmate.fitmate.ui.myfit.list.adapter.MyFitHistoryAdapter
 import com.fitmate.fitmate.util.ControlActivityInterface
 import dagger.hilt.android.AndroidEntryPoint
+import java.time.Instant
 import java.time.LocalDate
+import java.time.ZoneId
 
 @AndroidEntryPoint
 class MyFitFragment : Fragment() {
@@ -35,6 +39,8 @@ class MyFitFragment : Fragment() {
             requireContext()
         )
     }
+
+    private lateinit var calendarAdapter: MonthListAdapter
     private lateinit var fitHistoryAdapter: MyFitHistoryAdapter
 
     private val viewModel: MyFitViewModel by viewModels()
@@ -55,11 +61,12 @@ class MyFitFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
 
+        Log.d("calanderFuck","onViewCreated")
         //툴바 버튼 클릭 리스너 초기화
         initButtonClickListener()
 
-        //그룹 fitProgress 리사이클러뷰 mock 데이터 연결
-        initMockData()
+        //그룹 fitProgress 리사이클러뷰 데이터 연결
+        observeFitProgress()
 
         //운동 기록 리사이클러뷰 mock 데이터 연결
         initMockData2()
@@ -67,18 +74,24 @@ class MyFitFragment : Fragment() {
         // 캘린더 연결
         initCalendar()
 
+        //캘린더에서 통신한 운동 기록 데이터를 감시
+        viewModel.myFitRecordHistory.observe(viewLifecycleOwner) {
+            calendarAdapter.updateMyFitHistoryData(it)
+        }
+
         //플로팅 버튼
         setToggleAppBar()
 
     }
 
     private fun initCalendar() {
+        calendarAdapter = MonthListAdapter(CalendarHandler()) { month, day ->
+            Log.d("testt", month.toString() + "월" + day.toString() + "일")
+        }
         binding.recyclerViewCalendar.run {
             layoutManager =
                 LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
-            adapter = MonthListAdapter(CalendarHandler()) { month, day ->
-                Log.d("testt", month.toString() + "월" + day.toString() + "일")
-            }
+            adapter = calendarAdapter
             scrollToPosition(Int.MAX_VALUE / 2)
             PagerSnapHelper().attachToRecyclerView(this)
         }
@@ -121,9 +134,8 @@ class MyFitFragment : Fragment() {
         }
     }
 
-    private fun initMockData() {
+    private fun observeFitProgress() {
         observeNetworkMyProgress()
-
         viewModel.getMyFitProgress("hyungoo")
     }
 
@@ -142,7 +154,18 @@ class MyFitFragment : Fragment() {
     }
 
     inner class CalendarHandler() {
-        //TODO 여기에 통신의 결과를 쌓아둘 데이터 리스트(mutable)를 생성한다.
+        var innerAdapter: DayListAdapter? = null
+        val vM = viewModel
+        var monthTemp: Int? = null
+        fun networkMyFitRecordHistory(year:Int, month:Int){
+            if (monthTemp != month){
+                monthTemp = month
+                val (startDate, endDate) = getStartAndEndInstantsForYearMonth(year,month)
+                viewModel.getMyFitRecordHistory("hyungoo",startDate, endDate)
+            }
+        }
+
+/*        //TODO 여기에 통신의 결과를 쌓아둘 데이터 리스트(mutable)를 생성한다.
         fun getMyFitHistoryInfo(monthDate:Int): List<LocalDate> {
 
             val test = viewModel.fitProgressItem.value
@@ -152,9 +175,19 @@ class MyFitFragment : Fragment() {
                 LocalDate.of(2024, 4, 25),
                 LocalDate.of(2024, 5, 25)
             )
+        }*/
 
+        fun getStartAndEndInstantsForYearMonth(year: Int, month: Int): Pair<String, String> {
+            // 입력된 년도와 월로 LocalDate 객체 생성
+            val firstDayOfMonth = LocalDate.of(year, month, 1)
+            val lastDayOfMonth = firstDayOfMonth.plusMonths(1).minusDays(1)
+
+            // 해당 월의 첫 번째 날의 00:00:00과 마지막 날의 23:59:59의 Instant 구하기
+            val startInstant = firstDayOfMonth.atStartOfDay(ZoneId.systemDefault()).toInstant().toString()
+            val endInstant = lastDayOfMonth.atStartOfDay(ZoneId.systemDefault()).plusDays(1).minusSeconds(1).toInstant().toString()
+
+            return Pair(startInstant, endInstant)
         }
-
     }
 
 }
