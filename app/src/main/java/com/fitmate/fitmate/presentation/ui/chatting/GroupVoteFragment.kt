@@ -14,6 +14,7 @@ import com.fitmate.fitmate.R
 import com.fitmate.fitmate.data.model.dto.GroupCertificationDetail
 import com.fitmate.fitmate.databinding.FragmentGroupVoteBinding
 import com.fitmate.fitmate.domain.model.VoteItem
+import com.fitmate.fitmate.domain.usecase.GroupUseCase
 import com.fitmate.fitmate.presentation.ui.chatting.list.adapter.GroupVoteAdapter
 import com.fitmate.fitmate.presentation.viewmodel.GroupViewModel
 import com.fitmate.fitmate.util.ControlActivityInterface
@@ -47,7 +48,7 @@ class GroupVoteFragment: Fragment(R.layout.fragment_group_vote) {
         binding.materialToolbarGroupVote.setupWithNavController(findNavController())
 
         val recyclerView: RecyclerView = binding.recyclerGroupVote
-        val adapter = GroupVoteAdapter(this) {}
+        val adapter = GroupVoteAdapter(this, viewModel) {}
 
         recyclerView.layoutManager = LinearLayoutManager(context)
         recyclerView.adapter = adapter

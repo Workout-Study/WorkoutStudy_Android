@@ -136,3 +136,14 @@ data class FitGroupProgressList(
     @SerializedName("certificationCount")
     val certificationCount: Int
 )
+
+data class VoteRequest(
+    val requestUserId: String,
+    val agree: Boolean,
+    val targetCategory: Int,
+    val targetId: Int
+)
+
+data class VoteResponse(
+    val isRegisterSuccess: Boolean
+)

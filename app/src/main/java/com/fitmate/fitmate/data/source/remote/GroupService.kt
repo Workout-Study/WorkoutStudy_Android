@@ -6,8 +6,12 @@ import com.fitmate.fitmate.data.model.dto.FitGroupProgress
 import com.fitmate.fitmate.data.model.dto.GroupDetailResponse
 import com.fitmate.fitmate.data.model.dto.GroupResponse
 import com.fitmate.fitmate.data.model.dto.MyFitResponse
+import com.fitmate.fitmate.data.model.dto.VoteRequest
+import com.fitmate.fitmate.data.model.dto.VoteResponse
 import retrofit2.Response
+import retrofit2.http.Body
 import retrofit2.http.GET
+import retrofit2.http.POST
 
 interface GroupService {
 
@@ -45,4 +49,7 @@ interface GroupService {
 
     @GET("df0f9622-f2db-4fd0-bedb-eb940e6c7c9c")
     suspend fun getFitMateProgress(): Response<FitGroupProgress>
+
+    @POST("3d8abaa3-42c8-4bd7-a23d-7e69585c168c")
+    suspend fun registerVote(@Body voteRequest: VoteRequest): Response<VoteResponse>
 }
