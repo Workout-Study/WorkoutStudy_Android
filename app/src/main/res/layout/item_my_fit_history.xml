@@ -6,7 +6,7 @@
     <data>
         <variable
             name="data"
-            type="com.fitmate.fitmate.domain.model.FitHistory" />
+            type="com.fitmate.fitmate.domain.model.MyFitRecordHistoryDetail" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -20,8 +20,9 @@
             android:id="@+id/textViewItemMyFitHistoryRecord"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            app:startTime="@{data.recordStartDate}"
+            app:endTime="@{data.recordEndDate}"
             tools:text="@string/my_fit_scr_fit_timer_text"
-            android:text="@{data.fitTime}"
             android:textAppearance="@style/Font.bold12"
             android:textColor="@color/turquoise"
             app:layout_constraintStart_toStartOf="parent"
@@ -45,28 +46,29 @@
             android:layout_height="0dp"
             android:layout_marginTop="5dp"
             android:orientation="vertical"
-            app:layout_constraintEnd_toStartOf="@+id/imageViewMyFitItemSecondCertification"
+            app:layout_constraintEnd_toStartOf="@+id/imageViewMyItemFitFirstCertification"
             app:layout_constraintStart_toStartOf="@+id/textViewGroupName"
             app:layout_constraintTop_toBottomOf="@+id/textViewGroupName"
             app:layout_constraintBottom_toBottomOf="parent">
-
         </LinearLayout>
-
-        <ImageView
-            android:id="@+id/imageViewMyItemFitFirstCertification"
-            android:layout_width="81dp"
-            android:layout_height="144dp"
-            android:src="@color/white"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/textViewItemMyFitHistoryRecord" />
 
         <ImageView
             android:id="@+id/imageViewMyFitItemSecondCertification"
             android:layout_width="81dp"
             android:layout_height="144dp"
+            app:fit_history_end_image="@{data.multiMediaEndPoints}"
+            android:src="@drawable/ic_launcher_logo"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/textViewItemMyFitHistoryRecord" />
+
+        <ImageView
+            android:id="@+id/imageViewMyItemFitFirstCertification"
+            android:layout_width="81dp"
+            android:layout_height="144dp"
             android:layout_marginEnd="10dp"
-            android:src="@color/white"
-            app:layout_constraintEnd_toStartOf="@+id/imageViewMyItemFitFirstCertification"
+            app:fit_history_start_image="@{data.multiMediaEndPoints}"
+            android:src="@drawable/ic_launcher_logo"
+            app:layout_constraintEnd_toStartOf="@+id/imageViewMyFitItemSecondCertification"
             app:layout_constraintTop_toTopOf="@+id/textViewItemMyFitHistoryRecord" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>

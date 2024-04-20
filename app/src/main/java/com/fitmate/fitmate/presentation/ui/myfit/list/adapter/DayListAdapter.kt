@@ -18,7 +18,8 @@ class DayListAdapter(
     //해당 월의 리스트
     private val dayList: MutableList<LocalDate>,
     private val calendarHandler: MyFitFragment.CalendarHandler,
-    private val onItemClick: (position: Int) -> Unit
+    private val yearMonth: Pair<String,String>,
+    private val onItemClick: (data: List<MyFitRecordHistoryDetail>) -> Unit
 ) : ListAdapter<LocalDate, DayViewHolder>(
     object : DiffUtil.ItemCallback<LocalDate>() {
         override fun areItemsTheSame(oldItem: LocalDate, newItem: LocalDate): Boolean =
@@ -31,9 +32,7 @@ class DayListAdapter(
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): DayViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.item_list_day, parent, false)
-        return DayViewHolder(view, tempMonth, calendarHandler) { position ->
-            onItemClick(position)
-        }
+        return DayViewHolder(view, tempMonth, calendarHandler, yearMonth, onItemClick)
     }
 
     override fun onBindViewHolder(holder: DayViewHolder, position: Int) {

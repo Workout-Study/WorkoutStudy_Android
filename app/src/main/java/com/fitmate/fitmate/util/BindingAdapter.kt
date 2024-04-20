@@ -7,6 +7,7 @@ import android.view.View
 import android.widget.Button
 import android.widget.ImageView
 import android.widget.LinearLayout
+import android.widget.TextView
 import androidx.cardview.widget.CardView
 import androidx.core.net.toUri
 import androidx.databinding.BindingAdapter
@@ -19,6 +20,8 @@ import com.fitmate.fitmate.R
 import com.fitmate.fitmate.domain.model.FitProgressItem
 import com.fitmate.fitmate.presentation.viewmodel.CertificateState
 import java.net.URI
+import java.time.Duration
+import java.time.Instant
 
 //인증화면 사진 설정하는 메서드(uri를 통한 바인딩이므로 잘 확인하고 사용해야함.)
 @BindingAdapter("uri")
@@ -28,12 +31,41 @@ fun ImageView.setImageByUri(image: String) {
         .into(this)
 }
 
+//url로 사진 설정하는 메서드(동그라미)
 @BindingAdapter("url")
 fun ImageView.setImageByUrl(imageUrl: String) {
     Glide.with(this)
         .load(imageUrl)
         .circleCrop()
         .into(this)
+}
+//마이피트 운동 기록 시작 사진 설정하는 메서드
+@BindingAdapter("fit_history_start_image")
+fun ImageView.setStartImageByUrlRectangle(imageUrlList: List<String>) {
+    val image = imageUrlList.firstOrNull {
+        it.contains("start_0")
+    }
+    if (!image.isNullOrEmpty()) {
+        Glide.with(this)
+            .load(image)
+            .into(this)
+    } else {
+        // 이미지가 없을 경우 기본 이미지를 설정하거나 다른 처리를 수행할 수 있습니다.
+    }
+}
+//마이피트 운동 기록 끝 사진 설정하는 메서드
+@BindingAdapter("fit_history_end_image")
+fun ImageView.setEndImageByUrlRectangle(imageUrlList: List<String>) {
+    val image = imageUrlList.firstOrNull {
+        it.contains("end_0")
+    }
+    if (!image.isNullOrEmpty()) {
+        Glide.with(this)
+            .load(image)
+            .into(this)
+    } else {
+        // 이미지가 없을 경우 기본 이미지를 설정하거나 다른 처리를 수행할 수 있습니다.
+    }
 }
 
 //인증 화면의 종료 사진 첨부 컨테이너 visible 설정
@@ -126,6 +158,25 @@ fun ShimmerFrameLayout.setVisibleShimmer(data: List<FitProgressItem>?) {
         this.visibility = View.GONE
     }
 }
+
+//my fit fitHistory 리사이클러뷰 텍스트 설정(운동 시간 계산)
+@BindingAdapter(value = ["startTime", "endTime"], requireAll = true)
+fun TextView.calculateTotalFitTime(startTime:String, endTime:String) {
+    val startInstant = Instant.parse(startTime)
+    val endInstant = Instant.parse(endTime)
+
+    val duration = Duration.between(startInstant,endInstant)
+
+    val totalSecond: Long = duration.seconds
+    val hours = totalSecond / 3600
+    val minutes = (totalSecond % 3600) / 60
+    val seconds = totalSecond % 60
+
+    val resultText = String.format("%02d : %02d : %02d", hours, minutes, seconds)
+    this.text = resultText
+}
+
+
 
 
 
