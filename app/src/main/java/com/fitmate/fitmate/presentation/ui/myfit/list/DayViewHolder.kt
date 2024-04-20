@@ -17,16 +17,9 @@ class DayViewHolder(
     view: View,
     private val tempMonth: Int,
     private val calendarHandler: MyFitFragment.CalendarHandler,
-    private var fitRecordHistoryData: List<MyFitRecordHistoryDetail>,
     private val onItemClick: (position: Int) -> Unit
 ) : RecyclerView.ViewHolder(view) {
     private val binding = ItemListDayBinding.bind(view)
-
-/*    private val fitHistoryData = calendarHandler.getMyFitHistoryInfo(tempMonth)
-    private val fitDates = listOf( // TODO 예시데이터를 집어넣은 것으로, 해당 달에 운동한 날짜의 데이터를 모두 가져와 해당 리스트에 담아야 함.
-        LocalDate.of(2024, 4, 14),
-        LocalDate.of(2024, 4, 25)
-    )*/
 
     fun bind(date: LocalDate) {
         val context = binding.root.context
@@ -43,8 +36,9 @@ class DayViewHolder(
             binding.itemDayText.setTextColor(dayOfWeekColor)
         }
 
-        if (fitRecordHistoryData.isNotEmpty()){
-            val fitDateList = fitRecordHistoryData.map { fitHistoryData ->
+        if (calendarHandler.fitRecordHistoryDataResult.isNotEmpty()){
+
+            val fitDateList = calendarHandler.fitRecordHistoryDataResult.map { fitHistoryData ->
                     Instant.parse(fitHistoryData.recordStartDate).atZone(ZoneId.systemDefault()).toLocalDate()
                 }
             if (fitDateList.contains(date)){
@@ -55,13 +49,6 @@ class DayViewHolder(
                 binding.imageViewItemDayCurrentDate.alpha = 0.3f
             }
         }
-/*        if (fitHistoryData.contains(date)) {
-            binding.itemDayText.setTextColor(ContextCompat.getColor(context, R.color.black))
-            binding.imageViewItemDayCurrentDate.setImageResource(R.drawable.ic_circle)
-            binding.imageViewItemDayCurrentDate.visibility = View.VISIBLE
-            binding.imageViewItemDayCurrentDate.setColorFilter(ContextCompat.getColor(context, R.color.turquoise))
-            binding.imageViewItemDayCurrentDate.alpha = 0.3f
-        }*/
 
         binding.itemDayText.alpha = if (tempMonth != date.monthValue) 0.0f else 1.0f
 
