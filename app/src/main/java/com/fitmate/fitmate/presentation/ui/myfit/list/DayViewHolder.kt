@@ -17,7 +17,8 @@ class DayViewHolder(
     view: View,
     private val tempMonth: Int,
     private val calendarHandler: MyFitFragment.CalendarHandler,
-    private val onItemClick: (position: Int) -> Unit
+    private val yearMonth: Pair<String,String>,
+    private val onItemClick: (data: List<MyFitRecordHistoryDetail>) -> Unit
 ) : RecyclerView.ViewHolder(view) {
     private val binding = ItemListDayBinding.bind(view)
 
@@ -56,7 +57,11 @@ class DayViewHolder(
             if (tempMonth != date.monthValue){
                 return@setOnClickListener
             }else{
-                onItemClick(date.dayOfMonth)
+                val containCheckText = String.format("%d-%02d-%02d", yearMonth.first.toInt(), yearMonth.second.toInt(), date.dayOfMonth.toInt())
+                val dayHistoryResultList = calendarHandler.fitRecordHistoryDataResult.filter {
+                    it.recordStartDate.contains(containCheckText)
+                }
+                onItemClick(dayHistoryResultList)
             }
 
         }
