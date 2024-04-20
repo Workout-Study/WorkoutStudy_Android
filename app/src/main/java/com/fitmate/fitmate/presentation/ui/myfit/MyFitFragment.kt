@@ -18,6 +18,7 @@ import com.fitmate.fitmate.MainActivity
 import com.fitmate.fitmate.R
 import com.fitmate.fitmate.databinding.FragmentMyfitBinding
 import com.fitmate.fitmate.domain.model.FitHistory
+import com.fitmate.fitmate.domain.model.MyFitRecordHistoryDetail
 import com.fitmate.fitmate.presentation.ui.myfit.list.adapter.DayListAdapter
 import com.fitmate.fitmate.presentation.ui.myfit.list.adapter.MonthListAdapter
 import com.fitmate.fitmate.presentation.viewmodel.MyFitViewModel
@@ -60,8 +61,6 @@ class MyFitFragment : Fragment() {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-
-        Log.d("calanderFuck","onViewCreated")
         //툴바 버튼 클릭 리스너 초기화
         initButtonClickListener()
 
@@ -76,12 +75,12 @@ class MyFitFragment : Fragment() {
 
         //캘린더에서 통신한 운동 기록 데이터를 감시
         viewModel.myFitRecordHistory.observe(viewLifecycleOwner) {
-            calendarAdapter.updateMyFitHistoryData(it)
+            calendarAdapter.calendarHandler.fitRecordHistoryDataResult = it
+            calendarAdapter.notifyDataSetChanged()
         }
 
         //플로팅 버튼
         setToggleAppBar()
-
     }
 
     private fun initCalendar() {
@@ -156,26 +155,16 @@ class MyFitFragment : Fragment() {
     inner class CalendarHandler() {
         var innerAdapter: DayListAdapter? = null
         val vM = viewModel
-        var monthTemp: Int? = null
-        fun networkMyFitRecordHistory(year:Int, month:Int){
-            if (monthTemp != month){
-                monthTemp = month
-                val (startDate, endDate) = getStartAndEndInstantsForYearMonth(year,month)
-                viewModel.getMyFitRecordHistory("hyungoo",startDate, endDate)
+        var fitRecordHistoryDataResult: List<MyFitRecordHistoryDetail> = emptyList()
+        var tempMonth: Int? = null
+        fun networkMyFitRecordHistory(year: Int, month: Int) {
+            if (tempMonth != month){
+                tempMonth = month
+                val (startDate, endDate) = getStartAndEndInstantsForYearMonth(year, month)
+                viewModel.getMyFitRecordHistory("hyungoo", startDate, endDate)
             }
+
         }
-
-/*        //TODO 여기에 통신의 결과를 쌓아둘 데이터 리스트(mutable)를 생성한다.
-        fun getMyFitHistoryInfo(monthDate:Int): List<LocalDate> {
-
-            val test = viewModel.fitProgressItem.value
-            Log.d("testt","데이터는"+test?.size.toString())
-            return listOf(
-                LocalDate.of(2024, 4, 14),
-                LocalDate.of(2024, 4, 25),
-                LocalDate.of(2024, 5, 25)
-            )
-        }*/
 
         fun getStartAndEndInstantsForYearMonth(year: Int, month: Int): Pair<String, String> {
             // 입력된 년도와 월로 LocalDate 객체 생성
@@ -183,8 +172,11 @@ class MyFitFragment : Fragment() {
             val lastDayOfMonth = firstDayOfMonth.plusMonths(1).minusDays(1)
 
             // 해당 월의 첫 번째 날의 00:00:00과 마지막 날의 23:59:59의 Instant 구하기
-            val startInstant = firstDayOfMonth.atStartOfDay(ZoneId.systemDefault()).toInstant().toString()
-            val endInstant = lastDayOfMonth.atStartOfDay(ZoneId.systemDefault()).plusDays(1).minusSeconds(1).toInstant().toString()
+            val startInstant =
+                firstDayOfMonth.atStartOfDay(ZoneId.systemDefault()).toInstant().toString()
+            val endInstant =
+                lastDayOfMonth.atStartOfDay(ZoneId.systemDefault()).plusDays(1).minusSeconds(1)
+                    .toInstant().toString()
 
             return Pair(startInstant, endInstant)
         }

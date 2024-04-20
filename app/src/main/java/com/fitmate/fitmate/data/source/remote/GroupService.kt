@@ -23,7 +23,7 @@ interface GroupService {
 //        @Query("pageSize") pageSize: Int,
 //    ): GroupResponse
 
-    @GET("c6e3459d-8cbc-44ee-97c3-1f0c4dab0a76")
+    @GET("2fc7f451-202d-406e-ac11-329dea59e691")
     suspend fun getGroup(): GroupResponse
 
 //    @GET("/fit-group-service/groups/")
@@ -31,14 +31,14 @@ interface GroupService {
 //        @Query("fit-group-id") fitGroupId: Int
 //    ): GroupDetailResponse
 
-    @GET("a9e31553-5323-4a05-838c-6321ef25c298")
+    @GET("8ec6a3d5-9b6b-45b5-ad6d-29cd0bc58a73")
     suspend fun getGroupDetail(): GroupDetailResponse
 
 //    @GET("/my-fit-service/my-fits/certifications/need-votes)
 //    suspend fun getMyFitGroupVotes(
 //        @Query("requestUserId") requestUserId: Int,
 //    ): Response<MyFitResponse>
-    @GET("70e08fe2-49a8-4426-a99f-016610cbc104")
+    @GET("c8d5a2b2-743e-429f-b984-c302e7deffb2")
     suspend fun getMyFitGroupVotes(): Response<MyFitResponse>
 
     @GET("19e89fb6-dad0-4cdc-acc3-7a26603f2cad")
