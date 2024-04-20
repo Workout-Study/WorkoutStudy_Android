@@ -17,25 +17,19 @@ import java.util.Date
 import kotlin.properties.Delegates
 
 class MonthListAdapter(
-    private val calendarHandler: MyFitFragment.CalendarHandler,
-    private val onclick: (monthPosition:Int ,dayPosition:Int) -> Unit,
+    val calendarHandler: MyFitFragment.CalendarHandler,
+    private val onclick: (monthPosition: Int, dayPosition: Int) -> Unit,
 ) : ListAdapter<Int, MonthViewHolder>(
     object : DiffUtil.ItemCallback<Int>() {
         override fun areItemsTheSame(oldItem: Int, newItem: Int): Boolean =
             oldItem == newItem
+
 
         override fun areContentsTheSame(oldItem: Int, newItem: Int): Boolean =
             oldItem == newItem
     }
 ) {
     val center = Int.MAX_VALUE / 2
-    private var firRecordHistoryData: List<MyFitRecordHistoryDetail> = emptyList()
-
-
-    fun updateMyFitHistoryData(data: List<MyFitRecordHistoryDetail>) {
-        firRecordHistoryData = data
-        calendarHandler.innerAdapter?.notifyDataSetChanged()
-    }
 
     override fun getItemCount(): Int = Int.MAX_VALUE
 
@@ -45,13 +39,11 @@ class MonthListAdapter(
             parent,
             false
         )
-        return MonthView(binding,calendarHandler,firRecordHistoryData,onclick)
+        return MonthView(binding, calendarHandler, onclick)
     }
 
     override fun onBindViewHolder(holder: MonthViewHolder, position: Int) {
         val monthOffset = position - center
         holder.bind(monthOffset, position)
     }
-
-
 }

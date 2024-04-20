@@ -18,7 +18,6 @@ class DayListAdapter(
     //해당 월의 리스트
     private val dayList: MutableList<LocalDate>,
     private val calendarHandler: MyFitFragment.CalendarHandler,
-    private var firRecordHistoryData: List<MyFitRecordHistoryDetail>,
     private val onItemClick: (position: Int) -> Unit
 ) : ListAdapter<LocalDate, DayViewHolder>(
     object : DiffUtil.ItemCallback<LocalDate>() {
@@ -32,7 +31,7 @@ class DayListAdapter(
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): DayViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.item_list_day, parent, false)
-        return DayViewHolder(view, tempMonth, calendarHandler,firRecordHistoryData) { position ->
+        return DayViewHolder(view, tempMonth, calendarHandler) { position ->
             onItemClick(position)
         }
     }
