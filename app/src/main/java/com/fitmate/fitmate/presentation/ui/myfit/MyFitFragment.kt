@@ -1,6 +1,5 @@
 package com.fitmate.fitmate.presentation.ui.myfit
 
-import android.content.Context
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -13,11 +12,9 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.PagerSnapHelper
-import androidx.recyclerview.widget.RecyclerView
 import com.fitmate.fitmate.MainActivity
 import com.fitmate.fitmate.R
 import com.fitmate.fitmate.databinding.FragmentMyfitBinding
-import com.fitmate.fitmate.domain.model.FitHistory
 import com.fitmate.fitmate.domain.model.MyFitRecordHistoryDetail
 import com.fitmate.fitmate.presentation.ui.myfit.list.adapter.DayListAdapter
 import com.fitmate.fitmate.presentation.ui.myfit.list.adapter.MonthListAdapter
@@ -26,7 +23,6 @@ import com.fitmate.fitmate.ui.myfit.list.adapter.MyFitGroupProgressAdapter
 import com.fitmate.fitmate.ui.myfit.list.adapter.MyFitHistoryAdapter
 import com.fitmate.fitmate.util.ControlActivityInterface
 import dagger.hilt.android.AndroidEntryPoint
-import java.time.Instant
 import java.time.LocalDate
 import java.time.ZoneId
 
@@ -68,7 +64,7 @@ class MyFitFragment : Fragment() {
         observeFitProgress()
 
         //운동 기록 리사이클러뷰 mock 데이터 연결
-        initMockData2()
+        initMyFitHistoryRecyclerView()
 
         // 캘린더 연결
         initCalendar()
@@ -84,8 +80,10 @@ class MyFitFragment : Fragment() {
     }
 
     private fun initCalendar() {
-        calendarAdapter = MonthListAdapter(CalendarHandler()) { month, day ->
-            Log.d("testt", month.toString() + "월" + day.toString() + "일")
+        calendarAdapter = MonthListAdapter(CalendarHandler()) { fitHistoryList ->
+            Log.d("tlqkf","$fitHistoryList")
+            Log.d("tlqkf",fitHistoryAdapter.toString())
+            fitHistoryAdapter.submitList(fitHistoryList.toMutableList())
         }
         binding.recyclerViewCalendar.run {
             layoutManager =
@@ -94,32 +92,15 @@ class MyFitFragment : Fragment() {
             scrollToPosition(Int.MAX_VALUE / 2)
             PagerSnapHelper().attachToRecyclerView(this)
         }
+        calendarAdapter.calendarHandler.myFitHistoryAdapter = fitHistoryAdapter
     }
 
-    private fun initMockData2() {
-        val mockData = listOf<FitHistory>(
-            FitHistory(
-                fitTime = "01:22:44",
-                groupList = arrayListOf("축구를 좋아하는 사람들", "3대600", "다이어트 하는 사람들")
-            ),
-            FitHistory(
-                fitTime = "01:33:24",
-                groupList = arrayListOf("축구를 좋아하는 사람들", "3대600", "다이어트 하는 사람들")
-            ),
-            FitHistory(
-                fitTime = "01:33:24",
-                groupList = arrayListOf("축구를 좋아하는 사람들", "3대600", "다이어트 하는 사람들")
-            ),
-            FitHistory(
-                fitTime = "01:33:24",
-                groupList = arrayListOf("축구를 좋아하는 사람들", "3대600", "다이어트 하는 사람들")
-            )
-        )
+    private fun initMyFitHistoryRecyclerView() {
         fitHistoryAdapter = MyFitHistoryAdapter(requireContext())
-        fitHistoryAdapter.submitList(mockData) {
-            binding.recyclerViewMyFitFragmentFitHistory.adapter = fitHistoryAdapter
+        binding.recyclerViewMyFitFragmentFitHistory.apply {
+            fitHistoryAdapter = MyFitHistoryAdapter(requireContext())
+            adapter = fitHistoryAdapter
         }
-
     }
 
     private fun initButtonClickListener() {
@@ -156,6 +137,7 @@ class MyFitFragment : Fragment() {
         var innerAdapter: DayListAdapter? = null
         val vM = viewModel
         var fitRecordHistoryDataResult: List<MyFitRecordHistoryDetail> = emptyList()
+        var myFitHistoryAdapter: MyFitHistoryAdapter? = null
         var tempMonth: Int? = null
         fun networkMyFitRecordHistory(year: Int, month: Int) {
             if (tempMonth != month){
@@ -163,7 +145,6 @@ class MyFitFragment : Fragment() {
                 val (startDate, endDate) = getStartAndEndInstantsForYearMonth(year, month)
                 viewModel.getMyFitRecordHistory("hyungoo", startDate, endDate)
             }
-
         }
 
         fun getStartAndEndInstantsForYearMonth(year: Int, month: Int): Pair<String, String> {

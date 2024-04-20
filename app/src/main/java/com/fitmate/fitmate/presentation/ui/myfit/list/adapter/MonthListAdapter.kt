@@ -18,7 +18,7 @@ import kotlin.properties.Delegates
 
 class MonthListAdapter(
     val calendarHandler: MyFitFragment.CalendarHandler,
-    private val onclick: (monthPosition: Int, dayPosition: Int) -> Unit,
+    private val onItemClick: (data: List<MyFitRecordHistoryDetail>) -> Unit
 ) : ListAdapter<Int, MonthViewHolder>(
     object : DiffUtil.ItemCallback<Int>() {
         override fun areItemsTheSame(oldItem: Int, newItem: Int): Boolean =
@@ -39,7 +39,7 @@ class MonthListAdapter(
             parent,
             false
         )
-        return MonthView(binding, calendarHandler, onclick)
+        return MonthView(binding, calendarHandler, onItemClick)
     }
 
     override fun onBindViewHolder(holder: MonthViewHolder, position: Int) {

@@ -10,10 +10,11 @@ import com.fitmate.fitmate.databinding.ItemMyFitHistoryBinding
 import com.fitmate.fitmate.databinding.ItemProgressBinding
 import com.fitmate.fitmate.domain.model.FitHistory
 import com.fitmate.fitmate.domain.model.MyFitGroupProgress
+import com.fitmate.fitmate.domain.model.MyFitRecordHistoryDetail
 import com.fitmate.fitmate.ui.myfit.list.MyFitGroupProgressViewHolder
 import com.fitmate.fitmate.ui.myfit.list.MyFitHistoryViewHolder
 
-class MyFitHistoryAdapter(private val context:Context): ListAdapter<FitHistory, MyFitHistoryViewHolder>(diffUtil) {
+class MyFitHistoryAdapter(private val context:Context): ListAdapter<MyFitRecordHistoryDetail, MyFitHistoryViewHolder>(diffUtil) {
 
 
     override fun onCreateViewHolder(
@@ -28,21 +29,20 @@ class MyFitHistoryAdapter(private val context:Context): ListAdapter<FitHistory, 
     }
 
     companion object {
-        private val diffUtil = object: DiffUtil.ItemCallback<FitHistory>() {
+        private val diffUtil = object: DiffUtil.ItemCallback<MyFitRecordHistoryDetail>() {
             override fun areItemsTheSame(
-                oldItem: FitHistory,
-                newItem: FitHistory,
+                oldItem: MyFitRecordHistoryDetail,
+                newItem: MyFitRecordHistoryDetail,
             ): Boolean {
                 return oldItem == newItem
             }
 
             override fun areContentsTheSame(
-                oldItem: FitHistory,
-                newItem: FitHistory,
+                oldItem: MyFitRecordHistoryDetail,
+                newItem: MyFitRecordHistoryDetail,
             ): Boolean {
-                return oldItem == newItem
+                return oldItem.fitRecordId == newItem.fitRecordId
             }
-
         }
     }
 
