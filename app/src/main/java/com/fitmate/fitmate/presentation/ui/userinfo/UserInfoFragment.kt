@@ -2,19 +2,18 @@ package com.fitmate.fitmate.presentation.ui.userinfo
 
 import android.Manifest.permission.READ_EXTERNAL_STORAGE
 import android.Manifest.permission.READ_MEDIA_IMAGES
-import android.app.AlertDialog
 import android.content.DialogInterface
 import android.content.Intent
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
-import android.provider.MediaStore
 import android.provider.Settings
 import android.util.Log
 import android.view.View
 import android.widget.EditText
 import android.widget.ImageView
 import android.widget.Toast
+import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
@@ -34,7 +33,6 @@ import com.google.firebase.storage.ktx.storage
 class UserInfoFragment : Fragment(R.layout.fragment_user_info) {
 
     private lateinit var binding: FragmentUserInfoBinding
-    private lateinit var uri: Uri
 
     private val multiplePermissionsLauncher = registerForActivityResult(
         ActivityResultContracts.RequestMultiplePermissions()) { permissions ->
@@ -66,16 +64,9 @@ class UserInfoFragment : Fragment(R.layout.fragment_user_info) {
         }
     }
 
-    private val registerForActivityResult =
-        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
-            when (result.resultCode) {
-                AppCompatActivity.RESULT_OK -> {
-                    uri = result.data?.data!!
-                    Log.d("testt", uri.toString())
-                    showImagePreview()
-                }
-            }
-        }
+    private val pickMedia = registerForActivityResult(ActivityResultContracts.PickVisualMedia()) { uri ->
+        if (uri != null) showImagePreview(uri)
+    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -102,7 +93,7 @@ class UserInfoFragment : Fragment(R.layout.fragment_user_info) {
 
     private fun handleOnClick(viewId: Int) {
         when (viewId) {
-            R.id.textViewUserInfoProfile -> requestPermission()//TODO 권한 체크로 변경하고 권한 체크하는 곳에서 이동하도록 변경
+            R.id.textViewUserInfoProfile -> requestPermission() //TODO 권한 체크로 변경하고 권한 체크하는 곳에서 이동하도록 변경
             R.id.textViewUserInfoNickname -> changeNickname()
             R.id.textViewUserInfoFitOff -> navigateFitOff()
             R.id.textViewUserInfoNotice -> notice()
@@ -112,11 +103,9 @@ class UserInfoFragment : Fragment(R.layout.fragment_user_info) {
         }
     }
 
-    private fun navigateTo(actionId: Int) {
-        findNavController().navigate(actionId)
-    }
+    private fun navigateTo(actionId: Int) { findNavController().navigate(actionId) }
 
-    private fun showImagePreview() {
+    private fun showImagePreview(uri: Uri) {
         val imagePreviewView = layoutInflater.inflate(R.layout.dialog_user_thumbnail, null)
         val preview = imagePreviewView.findViewById<ImageView>(R.id.imageViewPreview)
 
@@ -129,16 +118,14 @@ class UserInfoFragment : Fragment(R.layout.fragment_user_info) {
                     .load(uri)
                     .apply(RequestOptions().circleCrop())
                     .into(binding.imageViewUserInfoIcon)
-                imageUpload("test_user_id")
+                imageUpload("test_user_id", uri)
             }
-            .setNegativeButton(android.R.string.cancel) { dialog, _ ->
-                dialog.dismiss()
-            }
+            .setNegativeButton(android.R.string.cancel) { dialog, _ -> dialog.dismiss() }
             .show()
 
     }
 
-    private fun imageUpload(userId: String) {
+    private fun imageUpload(userId: String, uri: Uri) {
         val activity = activity ?: return
         val storage = Firebase.storage
         val storageRef = storage.getReference("user_profile")
@@ -147,8 +134,7 @@ class UserInfoFragment : Fragment(R.layout.fragment_user_info) {
         val userRef = storageRef.child(fileName)
 
         userRef.putFile(uri).addOnSuccessListener {
-            userRef.downloadUrl.addOnSuccessListener { downloadUri ->
-                val downloadURL = downloadUri.toString()
+            userRef.downloadUrl.addOnSuccessListener {
                 activity.getSharedPreferences("UserInfo", AppCompatActivity.MODE_PRIVATE).edit()
                     .apply {
                         putString("profileImageUri", uri.toString())
@@ -173,11 +159,7 @@ class UserInfoFragment : Fragment(R.layout.fragment_user_info) {
     }
 
     private fun accessGallery() {
-        registerForActivityResult.launch(
-            Intent(
-                Intent.ACTION_PICK, MediaStore.Images.Media.INTERNAL_CONTENT_URI
-            )
-        )
+        pickMedia.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))
     }
 
     private fun notice() {
@@ -207,13 +189,13 @@ class UserInfoFragment : Fragment(R.layout.fragment_user_info) {
 
         MaterialAlertDialogBuilder(requireContext(), R.style.Theme_Fitmate_Dialog).apply {
             setView(dialogView)
-            setPositiveButton("저장") { dialog, which ->
+            setPositiveButton("저장") { _, _ ->
                 val newNickname = editTextNewNickname.text.toString().trim()
                 Toast.makeText(context, "${newNickname}님 닉네임 변경 사실을 그룹에 알려주세요!", Toast.LENGTH_SHORT).show()
                 Log.d("woojugoing_change_nickname", newNickname)
                 sendServerToNickname(newNickname)
             }
-            setNegativeButton("취소") { dialog, which -> dialog.cancel() }
+            setNegativeButton("취소") { dialog, _ -> dialog.cancel() }
         }.show()
     }
 
@@ -224,40 +206,40 @@ class UserInfoFragment : Fragment(R.layout.fragment_user_info) {
 
 
     //교육용 팝업 띄우는 메서드
-    fun showPermissionDialog() {
+    private fun showPermissionDialog() {
         MaterialAlertDialogBuilder(requireContext(), R.style.Theme_Fitmate_Dialog)
             .setTitle(getString(R.string.permission_dialog_scr_guide))
             .setMessage(getString(R.string.permission_dialog_scr_guide_message))
-            .setPositiveButton(getString(R.string.permission_dialog_scr_guide_select)) { dialogInterface: DialogInterface, i: Int ->
+            .setPositiveButton(getString(R.string.permission_dialog_scr_guide_select)) { _, _ ->
                 //권한 물어보기
                 requestPermission()
             }
-            .setNegativeButton(getString(R.string.permission_dialog_scr_guide_cancel)) { dialogInterface: DialogInterface, i: Int ->
+            .setNegativeButton(getString(R.string.permission_dialog_scr_guide_cancel)) { dialogInterface: DialogInterface, _ ->
                 dialogInterface.cancel()
             }.show()
     }
 
     //권한 설정 화면을 위한 다이얼로그 띄우는 메서드
-    fun showPermissionSettiongDialog() {
+    private fun showPermissionSettiongDialog() {
         MaterialAlertDialogBuilder(requireContext(), R.style.Theme_Fitmate_Dialog)
             .setMessage(getString(R.string.permission_dialog_scr_guide_setting))
-            .setPositiveButton(getString(R.string.permission_dialog_scr_guide_setting_select)) { dialogInterface: DialogInterface, i: Int ->
+            .setPositiveButton(getString(R.string.permission_dialog_scr_guide_setting_select)) { _, _ ->
                 navigateToAppSetting()
             }
-            .setNegativeButton(getString(R.string.permission_dialog_scr_guide_setting_cancel)) { dialogInterface: DialogInterface, i: Int ->
+            .setNegativeButton(getString(R.string.permission_dialog_scr_guide_setting_cancel)) { dialogInterface: DialogInterface, _ ->
                 dialogInterface.cancel()
             }.show()
     }
 
     //앱 권한 세팅 화면으로 이동키시는 메서드
-    fun navigateToAppSetting() {
+    private fun navigateToAppSetting() {
         val intent = Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS).apply {
             data = Uri.fromParts("package", requireContext().packageName, null)
         }
         startActivity(intent)
     }
     //권한 확인 및 요청 메서드
-    fun requestPermission(){
+    private fun requestPermission(){
         if (
             Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU &&
             (ContextCompat.checkSelfPermission(requireContext(), READ_MEDIA_IMAGES) == PERMISSION_GRANTED)
