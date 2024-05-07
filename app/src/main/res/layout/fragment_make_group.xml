@@ -19,6 +19,7 @@
         android:background="@color/zircon">
 
         <LinearLayout
+            android:id="@+id/rootLayout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical">
@@ -293,6 +294,7 @@
                         android:text="@string/make_group_scr_confirm"
                         android:textAppearance="@style/Font.bold20"
                         android:textColor="@color/turquoise"
+                        android:onClick="@{() -> fragment_make_group.onclickConfirmButton()}"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintHorizontal_bias="0.5"
                         app:layout_constraintStart_toStartOf="parent"
@@ -305,5 +307,22 @@
         <include
             android:id="@+id/bankBottomSheetLayout"
             layout="@layout/bank_bottom_sheet"/>
+
+        <com.airbnb.lottie.LottieAnimationView
+            android:id="@+id/progressBarSubmitLoading"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            app:lottie_rawRes="@raw/loading_progress"
+            android:layout_gravity="center"
+            app:lottie_autoPlay="true"
+            app:lottie_loop="true"/>
+
+        <View
+            android:id="@+id/loadingLayoutView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="gone"
+            android:background="@color/white"/>
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 </layout>

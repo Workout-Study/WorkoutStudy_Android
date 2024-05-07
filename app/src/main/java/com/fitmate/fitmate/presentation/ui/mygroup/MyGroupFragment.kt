@@ -31,7 +31,7 @@ class MyGroupFragment: Fragment(R.layout.fragment_my_group) {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        viewModel.retrieveFitGroup(1)
+        //viewModel.retrieveFitGroup(1)
     }
 
     override fun onCreateView(

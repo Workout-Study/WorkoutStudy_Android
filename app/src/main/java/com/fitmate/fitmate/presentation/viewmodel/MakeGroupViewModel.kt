@@ -1,40 +1,62 @@
 package com.fitmate.fitmate.presentation.viewmodel
 
+import android.net.Uri
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.fitmate.fitmate.domain.model.Bank
 import com.fitmate.fitmate.domain.model.CertificationImage
+import com.fitmate.fitmate.domain.usecase.MakeFitGroupUseCase
+import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.launch
 import java.util.StringTokenizer
+import javax.inject.Inject
 
-class MakeGroupViewModel: ViewModel() {
+@HiltViewModel
+class MakeGroupViewModel @Inject constructor(
+    private val makeGroupUseCase: MakeFitGroupUseCase
+): ViewModel() {
+    //그룹 이름 라이브 데이터
     val groupName = MutableLiveData<String>("")
 
+    //그룹 계좌 은행 정보 라이브 데이터
     private val _bankInfo = MutableLiveData<Bank>(Bank(null, "은행 선택"))
     val bankInfo: LiveData<Bank>
         get() = _bankInfo
 
+    //그룹 계좌 번호 라이브 데이터
     val bankAccount = MutableLiveData<String>()
 
+    //그룹 카테고리 라이브 데이터
     private val _groupCategory = MutableLiveData<String>()
     val groupCategory: LiveData<String>
         get() = _groupCategory
 
+    //그룹 운동 주기 라이브 데이터
     private val _groupFitCycle = MutableLiveData<Int>(0)
     val groupFitCycle:LiveData<Int>
         get() = _groupFitCycle
 
+    //그룹 최대 인원 수 라이브 데이터
     private val _groupFitMateLimit = MutableLiveData<Int>(0)
     val groupFitMateLimit:LiveData<Int>
         get() = _groupFitMateLimit
 
+    //그룹 상세 정보 라이브 데이터
     val groupContent = MutableLiveData<String>()
 
 
     private val groupImageList2 = mutableListOf<CertificationImage>()
+    //그룹 사진 Uri 라이브 데이터
     private val _groupImageList = MutableLiveData<List<CertificationImage>>()
     val groupImageList: LiveData<List<CertificationImage>>
         get() = _groupImageList
+
+    //그룹 사진 Url 라이브 데이터
+    private val _groupImageUrlList = MutableLiveData<List<String>>()
+    val groupImageUrlList: LiveData<List<String>>
+        get() = _groupImageUrlList
 
     //은행 선택 메서드
     fun setBankInfo(data:Bank) {
@@ -66,5 +88,14 @@ class MakeGroupViewModel: ViewModel() {
     fun removeImage(index:Int) {
         groupImageList2.removeAt(index)
         _groupImageList.value = groupImageList2
+    }
+
+     fun uploadImageAndGetUrl(userId:String){
+        viewModelScope.launch {
+            val imageList = groupImageList.value?.map {
+                it.imagesUri
+            }
+            _groupImageUrlList.value = makeGroupUseCase.uploadGroupImageAndGetUrl(userId, groupName.value ?: "알 수 없는 그룹", imageList ?: mutableListOf())
+        }
     }
 }
