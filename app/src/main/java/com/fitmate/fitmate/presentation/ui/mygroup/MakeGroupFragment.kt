@@ -18,6 +18,7 @@ import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
 import androidx.core.content.PermissionChecker
+import androidx.core.view.isVisible
 import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -39,8 +40,10 @@ import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetBehavior.STATE_COLLAPSED
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.slider.Slider
+import dagger.hilt.android.AndroidEntryPoint
 
-class MakeGroupFragment : Fragment(R.layout.fragment_make_group) {
+@AndroidEntryPoint
+class MakeGroupFragment : Fragment() {
     companion object {
         //사진 최대 선택 가능 갯수
         private const val IMAGE_PICK_MAX = 5
@@ -74,6 +77,9 @@ class MakeGroupFragment : Fragment(R.layout.fragment_make_group) {
 
         //이미지 변동사항을 감시해서 리사이클러뷰 업데이트(추가 및 삭제)
         observeImageChange()
+
+        //이미지 스토리지 업로드 결과 감시
+        observeUploadImageToStorage()
 
         //바텀 시트 리사이클러뷰 설정(은행)
         settingBottomSheetAdapter()
@@ -159,9 +165,79 @@ class MakeGroupFragment : Fragment(R.layout.fragment_make_group) {
         }
         requestPermission()
     }
+
     fun collapseBottomSheet() {
         hideKeyboard()
         bottomSheetBehavior.state = STATE_COLLAPSED
+    }
+
+    //그룹 만들기 버튼 클릭 시 리스너 설정
+    fun onclickConfirmButton() {
+        //키모드 내리기
+        hideKeyboard()
+
+        //유효성 검사
+        if (!checkInputValidation()) return
+
+        viewModel.uploadImageAndGetUrl("hyungoo")
+
+        binding.loadingLayoutView.apply {
+            visibility = View.VISIBLE
+            alpha = 0.5f
+            isClickable = true
+        }
+        binding.progressBarSubmitLoading.visibility = View.VISIBLE
+        Log.d("imageTest", "${ viewModel.groupImageList.value }")
+    }
+
+    //입력 값 유효성 겅사
+    private fun checkInputValidation(): Boolean {
+        when {
+            viewModel.groupName.value.isNullOrBlank() -> {
+                Toast.makeText(requireContext(),"그룹 이름을 입력해주세요!",Toast.LENGTH_SHORT).show()
+                return false
+            }
+            viewModel.bankInfo.value?.value.isNullOrBlank() -> {
+                Toast.makeText(requireContext(),"계좌의 은행을 선택해주세요!",Toast.LENGTH_SHORT).show()
+                return false
+            }
+            viewModel.bankAccount.value.isNullOrBlank() -> {
+                Toast.makeText(requireContext(),"계좌 번호를 입력해주세요!",Toast.LENGTH_SHORT).show()
+                return false
+            }
+            viewModel.groupCategory.value.isNullOrBlank() -> {
+                Toast.makeText(requireContext(),"그룹 카테고리를 선택헤주세요ㅕ",Toast.LENGTH_SHORT).show()
+                return false
+            }
+            viewModel.groupFitCycle.value == 0 -> {
+                Toast.makeText(requireContext(),"운동횟수(운동 주기)가 0 이하입니다!",Toast.LENGTH_SHORT).show()
+                return false
+            }
+            viewModel.groupFitMateLimit.value == 0 -> {
+                Toast.makeText(requireContext(),"최대 인원 수가 0 이하입니다!",Toast.LENGTH_SHORT).show()
+                return false
+            }
+            viewModel.groupContent.value.isNullOrBlank() -> {
+                Toast.makeText(requireContext(),"상세 설명을 입력해주세요!",Toast.LENGTH_SHORT).show()
+                return false
+            }
+            viewModel.groupImageList.value.isNullOrEmpty() -> {
+                Toast.makeText(requireContext(),"그룹 사진을 한장 이상 첨부해주세요!",Toast.LENGTH_SHORT).show()
+                return false
+            }
+            else -> { return true }
+        }
+    }
+
+    private fun observeUploadImageToStorage(){
+        viewModel.groupImageUrlList.observe(viewLifecycleOwner){
+            binding.loadingLayoutView.apply {
+                visibility = View.GONE
+                alpha = 1f
+                isClickable = false
+            }
+            binding.progressBarSubmitLoading.visibility = View.GONE
+        }
     }
 
     private fun activityResultLauncher() =

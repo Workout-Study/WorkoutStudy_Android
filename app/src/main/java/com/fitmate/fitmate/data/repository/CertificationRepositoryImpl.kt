@@ -120,13 +120,13 @@ class CertificationRepositoryImpl @Inject constructor(
             val compressorFile = Compressor.compress(context, File(file)) {
                 quality(0)
             }
-            storageRef.child(fileName).putFile(Uri.fromFile(compressorFile)).await()
+            storageRef.child("user_certificate/").child(fileName).putFile(Uri.fromFile(compressorFile)).await()
             // 업로드가 성공적으로 완료되었다면 다운로드 URL을 가져옴
-            return storageRef.child(fileName).downloadUrl.await().toString()
+            return storageRef.child("user_certificate/").child(fileName).downloadUrl.await().toString()
         }catch (e:FileAlreadyExistsException){
-            storageRef.child(fileName).putFile(uri).await()
+            storageRef.child("user_certificate/").child(fileName).putFile(uri).await()
             // 업로드가 성공적으로 완료되었다면 다운로드 URL을 가져옴
-            return storageRef.child(fileName).downloadUrl.await().toString()
+            return storageRef.child("user_certificate/").child(fileName).downloadUrl.await().toString()
         }
     }
 
