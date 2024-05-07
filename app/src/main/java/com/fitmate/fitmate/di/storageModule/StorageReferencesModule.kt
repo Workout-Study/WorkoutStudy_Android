@@ -1,4 +1,4 @@
-package com.fitmate.fitmate.di.certificationModule
+package com.fitmate.fitmate.di.storageModule
 
 import com.google.firebase.Firebase
 import com.google.firebase.storage.StorageReference
@@ -9,15 +9,14 @@ import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import javax.inject.Singleton
 
-
 @Module
 @InstallIn(SingletonComponent::class)
-object CertificationStorageModule {
+object StorageReferencesModule {
 
     @Singleton
     @Provides
-    fun provideStorageRef(): StorageReference{
+    fun provideStorageRef(): StorageReference {
         val storage = Firebase.storage
-        return storage.reference.child("user_certificate/")
+        return storage.reference
     }
 }
