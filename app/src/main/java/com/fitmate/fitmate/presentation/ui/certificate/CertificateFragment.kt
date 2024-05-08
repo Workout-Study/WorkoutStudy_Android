@@ -103,6 +103,7 @@ class CertificateFragment : Fragment() {
         binding.lifecycleOwner = viewLifecycleOwner
         binding.viewModel = viewModel
         binding.materialToolbarCertificate.setupWithNavController(findNavController())
+
         //바텀 네비 삭제.
         removeBottomNavi()
 
@@ -114,134 +115,55 @@ class CertificateFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        //초기 인증 상태 설정
         viewModel.setStateCertificateNonProceeding()
         viewModel.getCertificationDataDb(1)
-        viewModel.certificationData.observe(viewLifecycleOwner) {
-            if (it != null) {
-                if (it.recordEndDate == null && networkState == NetworkState.STATE_NON) {
-                    viewModel.setStateCertificateProceed()
-                } else if (networkState == NetworkState.STATE_POST_BACK_END) {
-                    viewModel.postCertificationRecord(it)
-                } else if (networkState == NetworkState.STATE_UPLOAD_STORAGE) {
-                    viewModel.uploadImageAndGetUrl(it)
-                }
-            } else {
-                viewModel.setStateCertificateNonProceeding()
-            }
-        }
-        //room과의 통신 결과를 구독
-        viewModel.doneEvent.observe(viewLifecycleOwner) {
-            when (it.second) {
-                "저장 완료" -> {
-                    //room에 저장이 되었을 때 타이머 실행(포그라운드 서비스)
-                    val intent = Intent(
-                        this@CertificateFragment.context,
-                        StopWatchService::class.java
-                    ).apply {
-                        action = STOP_WATCH_START
-                    }
-                    requireContext().startService(intent)
-                    //room에 초기 데이터 저장
-                    viewModel.getCertificationDataDb(1)
-                }
 
-                "업데이트 완료" -> {
-                    viewModel.getCertificationDataDb(1)
-                }
+        //room데이터 읽은 결과 구독
+        observeReadCertificationRoomData()
 
-                "삭제 완료" -> {
-                    if (networkState == NetworkState.STATE_TARGET_GROUP) {
-                        //TODO 인증 완전 완료 상태.
-                        findNavController().popBackStack()
-                    } else {
-                        //인증 취소되었을 때 또는 업로드에 실패했을 경우.
-                        val intent = Intent(
-                            this@CertificateFragment.context,
-                            StopWatchService::class.java
-                        ).apply {
-                            action = STOP_WATCH_RESET
-                        }
-                        requireContext().startService(intent)
-                        LocalBroadcastManager.getInstance(requireContext())
-                            .unregisterReceiver(broadcastReceiver2)
-                        setRecyclerViewState(true)
-                        viewModel.resetStartImage()
-                        viewModel.resetEndImage()
-                        viewModel.resetCertificationLiveData()
-                        binding.textViewCertificateTimer.text =
-                            getString(R.string.certificate_scr_timer)
-                        networkState = NetworkState.STATE_NON
-                        viewModel.setStateCertificateNonProceeding()
-                    }
-                }
-            }
-        }
+        //room데이터 CUD(생성 수정, 삭제) 결과를 구독
+        observeCUDCertificationRoomData()
 
-        viewModel.urlMap.observe(viewLifecycleOwner) { urlMap ->
-            Log.d("testt",viewModel.selectedTarget.toString())
-            //TODO 해당 Url을 room에 저장하고 가져와서 백엔드에 전달한다.
-            val startUrl = urlMap["startUrls"]
-            val endUrl = urlMap["endUrls"]
+        //스토리지에 사진 업로드 결과 구독
+        observeUploadImageResult()
 
-            val obj = viewModel.certificationData.value?.copy(
-                startImagesUrl = startUrl,
-                endImagesUrl = endUrl
-            )
-            obj?.let {
-                networkState = NetworkState.STATE_POST_BACK_END
-                viewModel.updateCertificationInfo(it)
-            }
+        //기록 통신 수행 결과 구독
+        observeRecord1PostResult()
 
-        }
+        //최종 통신 수행 결과 구독
+        observeRecord2PostResult()
 
-        //포스트 통신 수행 결과
-        viewModel.networkPostState.observe(viewLifecycleOwner) {
-            if (it.isRegisterSuccess) {
-                networkState = NetworkState.STATE_TARGET_GROUP
-                //TODO 타겟 그룹으로 최종 통신 수행 해야함(아래 코드를 해당 통신 옵저버로 이동시켜야함.)
-                it.fitRecordId?.let { recordId ->
-                    val resisterObj = ResisterCertificationRecord("hyungoo",recordId,viewModel.selectedTarget)
-                    viewModel.postResisterCertificationRecord(resisterObj)
-                }
-
-            } else {
-                loadingTaskSettingEnd()
-                certificationReset()
-                Toast.makeText(requireContext(), "업로드에 실패했습니다", Toast.LENGTH_SHORT).show()
-            }
-        }
-
-        //최종 통신 수행 결과
-        viewModel.networkPostState2.observe(viewLifecycleOwner){
-            if (it.isRegisterSuccess){
-                loadingTaskSettingEnd()
-                certificationReset()
-            }
-        }
-
-        viewModel.myFitGroupData.observe(viewLifecycleOwner){
-            loadingTaskSettingEnd()
-            showSelectCertificateGroup(it)
-        }
+        //내가 가입되어있는 그룹 리스트 통신 결과 구독
+        observeMyFitGroupListDataResult()
 
         //기록 시작 이미지 첨부 및 삭제 여부를 구독
-        viewModel.startImageList.observe(viewLifecycleOwner) {
-            certificationStartImageAdapter.submitList(it)
-            certificationStartImageAdapter.notifyDataSetChanged()
-            if (it.isEmpty()) {
-                viewModel.setStateCertificateNonProceeding()
-            } else {
-                viewModel.setStateCertificateAddedStartImage()
-            }
-        }
+        observeStartImageState()
 
         // 기록 종료 이미지 첨부 및 삭제 여부 구독
-        viewModel.endImageList.observe(viewLifecycleOwner) {
-            certificationEndImageAdapter.submitList(it)
-            certificationEndImageAdapter.notifyDataSetChanged()
-        }
+        observeEndImageState()
 
         //화면 상태에 따른 설정을 위한 state 구독
+        observeCertificationState()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        val filter = IntentFilter("timer-update")
+        //타이머 브로드 캐스트 구독
+        LocalBroadcastManager.getInstance(requireContext())
+            .registerReceiver(broadcastReceiver, filter)
+    }
+
+    override fun onPause() {
+        super.onPause()
+        //브로드 캐스트 리시버 구독 해제
+        LocalBroadcastManager.getInstance(requireContext()).unregisterReceiver(broadcastReceiver)
+        LocalBroadcastManager.getInstance(requireContext()).unregisterReceiver(broadcastReceiver2)
+    }
+
+    private fun observeCertificationState() {
         viewModel.state.observe(viewLifecycleOwner) { state ->
             when (state) {
                 //인증 진행중인 상태
@@ -291,7 +213,7 @@ class CertificateFragment : Fragment() {
                 CertificateState.ADDED_START_IMAGE -> {
                     binding.buttonCertificateConfirm.setOnClickListener {
                         //33버전 이상일 때 권한 요청
-                        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.TIRAMISU) {
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
                             permissionResult.launch(
                                 Manifest.permission.POST_NOTIFICATIONS
                             )
@@ -311,20 +233,150 @@ class CertificateFragment : Fragment() {
         }
     }
 
-    override fun onResume() {
-        super.onResume()
-        val filter = IntentFilter("timer-update")
-        //타이머 브로드 캐스트 구독
-        LocalBroadcastManager.getInstance(requireContext())
-            .registerReceiver(broadcastReceiver, filter)
+    private fun observeEndImageState() {
+        viewModel.endImageList.observe(viewLifecycleOwner) {
+            certificationEndImageAdapter.submitList(it)
+            certificationEndImageAdapter.notifyDataSetChanged()
+        }
     }
 
-    override fun onPause() {
-        super.onPause()
-        //브로드 캐스트 리시버 구독 해제
-        LocalBroadcastManager.getInstance(requireContext()).unregisterReceiver(broadcastReceiver)
-        LocalBroadcastManager.getInstance(requireContext()).unregisterReceiver(broadcastReceiver2)
+    private fun observeStartImageState() {
+        viewModel.startImageList.observe(viewLifecycleOwner) {
+            certificationStartImageAdapter.submitList(it)
+            certificationStartImageAdapter.notifyDataSetChanged()
+            if (it.isEmpty()) {
+                viewModel.setStateCertificateNonProceeding()
+            } else {
+                viewModel.setStateCertificateAddedStartImage()
+            }
+        }
     }
+
+    private fun observeMyFitGroupListDataResult() {
+        viewModel.myFitGroupData.observe(viewLifecycleOwner) {
+            if (it.isEmpty()) {
+                guideEmptyMyFitGroupState()
+
+            } else {
+                loadingTaskSettingEnd()
+                showSelectCertificateGroup(it)
+            }
+
+        }
+    }
+
+    private fun observeRecord2PostResult() {
+        viewModel.networkPostState2.observe(viewLifecycleOwner) {
+            if (it.isRegisterSuccess) {
+                loadingTaskSettingEnd()
+                certificationReset()
+            }
+        }
+    }
+
+    private fun observeRecord1PostResult() {
+        viewModel.networkPostState.observe(viewLifecycleOwner) {
+            if (it.isRegisterSuccess) {
+                networkState = NetworkState.STATE_TARGET_GROUP
+                // 타겟 그룹으로 최종 통신 수행(아래 코드를 해당 통신 옵저버로 이동시켜야함.)
+                it.fitRecordId?.let { recordId ->
+                    val resisterObj =
+                        ResisterCertificationRecord("hyungoo", recordId, viewModel.selectedTarget)
+                    viewModel.postResisterCertificationRecord(resisterObj)
+                }
+
+            } else {
+                loadingTaskSettingEnd()
+                certificationReset()
+                Toast.makeText(requireContext(), "업로드에 실패했습니다", Toast.LENGTH_SHORT).show()
+            }
+        }
+    }
+
+    private fun observeUploadImageResult() {
+        viewModel.urlMap.observe(viewLifecycleOwner) { urlMap ->
+            Log.d("testt", viewModel.selectedTarget.toString())
+            //TODO 해당 Url을 room에 저장하고 가져와서 백엔드에 전달한다.
+            val startUrl = urlMap["startUrls"]
+            val endUrl = urlMap["endUrls"]
+
+            val obj = viewModel.certificationData.value?.copy(
+                startImagesUrl = startUrl,
+                endImagesUrl = endUrl
+            )
+            obj?.let {
+                networkState = NetworkState.STATE_POST_BACK_END
+                viewModel.updateCertificationInfo(it)
+            }
+        }
+    }
+
+    private fun observeCUDCertificationRoomData() {
+        viewModel.doneEvent.observe(viewLifecycleOwner) {
+            when (it.second) {
+                "저장 완료" -> {
+                    //room에 저장이 되었을 때 타이머 실행(포그라운드 서비스)
+                    val intent = Intent(
+                        this@CertificateFragment.context,
+                        StopWatchService::class.java
+                    ).apply {
+                        action = STOP_WATCH_START
+                    }
+                    requireContext().startService(intent)
+                    //room에 초기 데이터 저장
+                    viewModel.getCertificationDataDb(1)
+                }
+
+                "업데이트 완료" -> {
+                    viewModel.getCertificationDataDb(1)
+                }
+
+                "삭제 완료" -> {
+                    if (networkState == NetworkState.STATE_TARGET_GROUP) {
+                        //TODO 인증 완전 완료 상태.
+                        findNavController().popBackStack()
+                    } else {
+                        //인증 취소되었을 때 또는 업로드에 실패했을 경우.
+                        val intent = Intent(
+                            this@CertificateFragment.context,
+                            StopWatchService::class.java
+                        ).apply {
+                            action = STOP_WATCH_RESET
+                        }
+                        requireContext().startService(intent)
+                        LocalBroadcastManager.getInstance(requireContext())
+                            .unregisterReceiver(broadcastReceiver2)
+                        setRecyclerViewState(true)
+                        viewModel.resetStartImage()
+                        viewModel.resetEndImage()
+                        viewModel.resetCertificationLiveData()
+                        binding.textViewCertificateTimer.text =
+                            getString(R.string.certificate_scr_timer)
+                        networkState = NetworkState.STATE_NON
+                        viewModel.setStateCertificateNonProceeding()
+                    }
+                }
+            }
+        }
+    }
+
+    private fun observeReadCertificationRoomData() {
+        viewModel.certificationData.observe(viewLifecycleOwner) {
+            if (it != null) {
+                if (it.recordEndDate == null && networkState == NetworkState.STATE_NON) {
+                    viewModel.setStateCertificateProceed()
+                } else if (networkState == NetworkState.STATE_POST_BACK_END) {
+                    viewModel.postCertificationRecord(it)
+                } else if (networkState == NetworkState.STATE_UPLOAD_STORAGE) {
+                    viewModel.uploadImageAndGetUrl(it)
+                }
+            } else {
+                viewModel.setStateCertificateNonProceeding()
+            }
+        }
+    }
+
+
 
     //브로드 캐스트 리시버로 받은 초를 시/분/초로 변환
     private fun formatTime(seconds: Long): String {
@@ -464,7 +516,7 @@ class CertificateFragment : Fragment() {
                         pickMultipleMedia.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))
                     } else {
                         if (!shouldShowRequestPermissionRationale(Manifest.permission.READ_EXTERNAL_STORAGE)) {
-                            showPermissionSettiongDialog()
+                            showPermissionSettingDialog()
                         } else {
                             showStoragePermissionDialog()
                         }
@@ -476,9 +528,9 @@ class CertificateFragment : Fragment() {
                         pickMultipleMedia.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))
                     } else {
                         if (!shouldShowRequestPermissionRationale(Manifest.permission.READ_MEDIA_IMAGES)) {
-                            showPermissionSettiongDialog()
+                            showPermissionSettingDialog()
                         } else {
-                            showPermissionSettiongDialog()
+                            showPermissionSettingDialog()
                         }
                     }
                 }
@@ -534,6 +586,22 @@ class CertificateFragment : Fragment() {
         builder.show()
     }
 
+    private fun guideEmptyMyFitGroupState() {
+        MaterialAlertDialogBuilder(requireContext(), R.style.Theme_Fitmate_Dialog)
+            .setTitle("회원님은 현재 가입된 그룹이 없습니다!")
+            .setMessage("인증을 진행할 그룹이 존재하지 않으면 인증을 더이상 진행할 수 없습니다")
+            .setPositiveButton("그룹 가입하러 가기") { dialogInterface: DialogInterface, i: Int ->
+                //TODO 인증 취소하고 가입하러 보내기
+                loadingTaskSettingEnd()
+                certificationReset()
+            }
+            .setNegativeButton("인증 취소하고 머무르기") { dialogInterface: DialogInterface, i: Int ->
+                //TODO 인증 취소하기
+                loadingTaskSettingEnd()
+                certificationReset()
+            }.show()
+    }
+
     private fun showStoragePermissionDialog() {
         MaterialAlertDialogBuilder(requireContext(), R.style.Theme_Fitmate_Dialog)
             .setTitle(getString(R.string.permission_dialog_scr_guide))
@@ -549,7 +617,7 @@ class CertificateFragment : Fragment() {
 
 
     //권한 설정 화면을 위한 다이얼로그 띄우는 메서드
-    private fun showPermissionSettiongDialog() {
+    private fun showPermissionSettingDialog() {
         MaterialAlertDialogBuilder(requireContext(), R.style.Theme_Fitmate_Dialog)
             .setMessage(getString(R.string.permission_dialog_scr_guide_setting))
             .setPositiveButton(getString(R.string.permission_dialog_scr_guide_setting_select)) { dialogInterface: DialogInterface, i: Int ->
@@ -621,6 +689,4 @@ class CertificateFragment : Fragment() {
             progressBarSubmitLoading.visibility = View.GONE
         }
     }
-
-
 }
