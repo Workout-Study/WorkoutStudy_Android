@@ -9,6 +9,6 @@ interface CertificationTargetGroupService {
 
     /*@GET("fit-group-service/groups/filters")*/
     //@GET("group")
-    @GET("cfeffd3f-44fb-4795-aaa1-9d9ff04d33c9")
+    @GET("807f76c3-68e2-440e-8db3-37005d3a06b1")
     suspend fun getTargetGroupList(@Query("user-id") userId:String): Response<CertificationTargetFitGroupResponseDto>
 }
