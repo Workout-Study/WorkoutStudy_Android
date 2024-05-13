@@ -13,7 +13,7 @@ interface MyFitService {
     suspend fun getMyFitProgress(@Query("requestUserId") userId: String): Response<MyFitProgressResponseDto>
 
     /*@GET("my-fit-service/records/filters")*/
-    @GET("359fb81c-8ccb-4576-8d6e-1bc091e7f3df")
+    @GET("4dec0c6c-1be6-4725-8808-658e4c23ef2b")
     suspend fun getMyFitRecordHistory(
         @Query("userId") userId: String,
         @Query("recordEndStartDate") startDate: String,
