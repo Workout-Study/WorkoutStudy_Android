@@ -5,6 +5,7 @@ object Libraries {
         const val APP_COMPAT = "androidx.appcompat:appcompat:${Versions.APP_COMPAT}"
         const val CONSTRAINT_LAYOUT = "androidx.constraintlayout:constraintlayout:${Versions.CONSTRAINT_LAYOUT}"
         const val ACTIVITY = "androidx.activity:activity-ktx:${Versions.ACTIVITY}"
+        const val LEGACY = "androidx.legacy:legacy-support-v4:${Versions.LEGACY}"
     }
 
     object Test {
