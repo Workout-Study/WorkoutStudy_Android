@@ -32,7 +32,9 @@ class DayViewHolder(
         }
 
         if (date.isEqual(LocalDate.now())) {
-            binding.itemDayLayout.setBackgroundResource(R.drawable.bg_border_selected)
+            if(tempMonth == date.monthValue) {
+                binding.itemDayLayout.setBackgroundResource(R.drawable.bg_border_selected)
+            }
         } else {
             binding.itemDayText.setTextColor(dayOfWeekColor)
         }
