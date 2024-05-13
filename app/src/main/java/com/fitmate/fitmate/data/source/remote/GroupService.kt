@@ -23,7 +23,7 @@ interface GroupService {
 //        @Query("pageSize") pageSize: Int,
 //    ): GroupResponse
 
-    @GET("2fc7f451-202d-406e-ac11-329dea59e691")
+    @GET("178873d4-c41a-484a-a247-1331e26f7421")
     suspend fun getGroup(): GroupResponse
 
 //    @GET("/fit-group-service/groups/")
@@ -31,25 +31,25 @@ interface GroupService {
 //        @Query("fit-group-id") fitGroupId: Int
 //    ): GroupDetailResponse
 
-    @GET("8ec6a3d5-9b6b-45b5-ad6d-29cd0bc58a73")
+    @GET("1ee11220-486a-4000-84ac-d5a8a0665034")
     suspend fun getGroupDetail(): GroupDetailResponse
 
 //    @GET("/my-fit-service/my-fits/certifications/need-votes)
 //    suspend fun getMyFitGroupVotes(
 //        @Query("requestUserId") requestUserId: Int,
 //    ): Response<MyFitResponse>
-    @GET("c8d5a2b2-743e-429f-b984-c302e7deffb2")
+    @GET("878f9c64-f400-4652-9d9e-b4718356e1f6")
     suspend fun getMyFitGroupVotes(): Response<MyFitResponse>
 
-    @GET("19e89fb6-dad0-4cdc-acc3-7a26603f2cad")
+    @GET("98b35a9e-e3f9-4b4d-8d6a-c4402296a699")
     suspend fun getEachFitGroupVotes(): Response<EachFitResponse>
 
-    @GET("1a68ebeb-9c5d-42aa-97dc-45ed1071d34f")
+    @GET("db3e8aeb-8bf9-4f86-8aff-cfd72d1003c4")
     suspend fun getFitMateList(): Response<FitGroupDetail>
 
-    @GET("df0f9622-f2db-4fd0-bedb-eb940e6c7c9c")
+    @GET("4f5e4667-96f3-4c19-9b1a-4a70ba6636fb")
     suspend fun getFitMateProgress(): Response<FitGroupProgress>
 
-    @POST("3d8abaa3-42c8-4bd7-a23d-7e69585c168c")
+    @POST("0eaf8c2d-c61f-4ac9-9a64-67f2f5700646")
     suspend fun registerVote(@Body voteRequest: VoteRequest): Response<VoteResponse>
 }
