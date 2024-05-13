@@ -47,7 +47,7 @@ class CertificateFragment : Fragment() {
         private const val IMAGE_PICK_MAX = 5
 
         enum class NetworkState {
-            STATE_POST_BACK_END, STATE_UPLOAD_STORAGE, STATE_NON, STATE_TARGET_GROUP
+            STATE_POST_BACK_END, STATE_UPLOAD_STORAGE, STATE_NON, STATE_TARGET_GROUP, CANCEL_CERTIFICATION
         }
     }
 
@@ -335,6 +335,21 @@ class CertificateFragment : Fragment() {
                     if (networkState == NetworkState.STATE_TARGET_GROUP) {
                         //TODO 인증 완전 완료 상태.
                         findNavController().popBackStack()
+                    } else if (networkState == NetworkState.CANCEL_CERTIFICATION) {
+                        val intent = Intent(
+                            this@CertificateFragment.context,
+                            StopWatchService::class.java
+                        ).apply {
+                            action = STOP_WATCH_RESET
+                        }
+                        requireContext().startService(intent)
+                        val bundle = Bundle()
+                        bundle.putInt("viewPagerPosition", 1)
+                        findNavController().navigate(
+                            R.id.action_certificateFragment_to_homeFragment,
+                            bundle
+                        )
+
                     } else {
                         //인증 취소되었을 때 또는 업로드에 실패했을 경우.
                         val intent = Intent(
@@ -375,7 +390,6 @@ class CertificateFragment : Fragment() {
             }
         }
     }
-
 
 
     //브로드 캐스트 리시버로 받은 초를 시/분/초로 변환
@@ -559,7 +573,7 @@ class CertificateFragment : Fragment() {
                     resultGroupIdList.add(groupList[idx].fitGroupId)
                 }
             }
-            if (resultGroupIdList.size > 0){
+            if (resultGroupIdList.size > 0) {
                 //최종 통신까지 진행 시작
                 val intent = Intent(
                     this@CertificateFragment.context,
@@ -578,8 +592,9 @@ class CertificateFragment : Fragment() {
                             ?.toMutableList(),
                         certificateTime = totalElapsedTime)
                 )
-                Toast.makeText(requireContext(), "${resultGroupIdList}에 기록합니다.", Toast.LENGTH_SHORT).show()
-            }else{
+                Toast.makeText(requireContext(), "${resultGroupIdList}에 기록합니다.", Toast.LENGTH_SHORT)
+                    .show()
+            } else {
                 Toast.makeText(requireContext(), "그룹을 하나 이상 선택하셔야합니다!", Toast.LENGTH_SHORT).show()
             }
         }
@@ -592,9 +607,7 @@ class CertificateFragment : Fragment() {
             .setMessage("인증을 진행할 그룹이 존재하지 않으면 인증을 더이상 진행할 수 없습니다")
             .setPositiveButton("그룹 가입하러 가기") { dialogInterface: DialogInterface, i: Int ->
                 //TODO 인증 취소하고 가입하러 보내기
-                val bundle = Bundle()
-                bundle.putInt("viewPagerPosition", 1)
-                findNavController().navigate(R.id.action_certificateFragment_to_homeFragment, bundle)
+                networkState = NetworkState.CANCEL_CERTIFICATION
                 loadingTaskSettingEnd()
                 certificationReset()
             }
