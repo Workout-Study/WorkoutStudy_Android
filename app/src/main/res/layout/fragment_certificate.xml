@@ -208,6 +208,7 @@
                 android:layout_height="wrap_content"
                 android:backgroundTint="@color/red"
                 android:text="인증 취소"
+                android:textAppearance="@style/Font.bold16"
                 app:certificate_reset_button_state="@{viewModel.state}"
                 app:icon="@drawable/baseline_close_24"
                 app:layout_constraintBottom_toBottomOf="parent"
