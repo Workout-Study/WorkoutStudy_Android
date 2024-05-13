@@ -64,6 +64,7 @@ dependencies {
     implementation(Libraries.Material.MATERIAL)
     implementation(Libraries.AndroidX.CONSTRAINT_LAYOUT)
     implementation(Libraries.AndroidX.ACTIVITY)
+    implementation(Libraries.AndroidX.LEGACY)
 
     implementation(Libraries.Indicator.INDICATOR)
     implementation(Libraries.Lottie.LOTTIE)
