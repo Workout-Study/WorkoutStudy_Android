@@ -105,7 +105,17 @@
     <fragment
         android:id="@+id/certificateFragment"
         android:name="com.fitmate.fitmate.presentation.ui.certificate.CertificateFragment"
-        android:label="@string/certificate_scr_toolbar" />
+        android:label="@string/certificate_scr_toolbar" >
+        <action
+            android:id="@+id/action_certificateFragment_to_homeFragment"
+            app:popUpTo="@id/homeFragment"
+            app:popUpToInclusive="true"
+            app:destination="@id/homeFragment">
+            <argument
+                android:name="viewPagerPosition"
+                app:argType="integer"/>
+        </action>
+    </fragment>
     <fragment
         android:id="@+id/userInfoFragment"
         android:name="com.fitmate.fitmate.presentation.ui.userinfo.UserInfoFragment"
