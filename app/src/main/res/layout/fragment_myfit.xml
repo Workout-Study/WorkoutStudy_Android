@@ -7,6 +7,9 @@
         <variable
             name="viewModel"
             type="com.fitmate.fitmate.presentation.viewmodel.MyFitViewModel" />
+        <variable
+            name="my_fit_fragment"
+            type="com.fitmate.fitmate.presentation.ui.myfit.MyFitFragment" />
     </data>
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout
@@ -106,6 +109,7 @@
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
                             android:text="@string/my_fit_scr_guide_enter_group2"
+                            android:onClick="@{() -> my_fit_fragment.onClickGuideEnterGroup()}"
                             android:textAppearance="@style/Font.semibold16"
                             android:textColor="@color/turquoise" />
                     </LinearLayout>

@@ -51,6 +51,7 @@ class MyFitFragment : Fragment() {
         binding = FragmentMyfitBinding.inflate(layoutInflater)
         binding.lifecycleOwner = viewLifecycleOwner
         binding.viewModel = viewModel
+        binding.myFitFragment = this
         controlActivityInterface = activity as MainActivity
         controlActivityInterface.viewNavigationBar()
         return binding.root
@@ -70,13 +71,23 @@ class MyFitFragment : Fragment() {
         initCalendar()
 
         //캘린더에서 통신한 운동 기록 데이터를 감시
+        observeMyfitHistoryInCalendar()
+
+        //플로팅 버튼
+        setToggleAppBar()
+    }
+
+    fun onClickGuideEnterGroup() {
+        val bundle = Bundle()
+        bundle.putInt("viewPagerPosition", 1)
+         findNavController().navigate(R.id.action_myFitFragment_to_homeFragment, bundle)
+    }
+
+    private fun observeMyfitHistoryInCalendar() {
         viewModel.myFitRecordHistory.observe(viewLifecycleOwner) {
             calendarAdapter.calendarHandler.fitRecordHistoryDataResult = it
             calendarAdapter.notifyDataSetChanged()
         }
-
-        //플로팅 버튼
-        setToggleAppBar()
     }
 
     private fun initCalendar() {

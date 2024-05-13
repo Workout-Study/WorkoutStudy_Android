@@ -29,23 +29,23 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
         super.onViewCreated(view, savedInstanceState)
         binding = FragmentHomeBinding.bind(view)
 
+        //바텀 네비게이션 설정
         (activity as MainActivity).viewNavigationBar()
 
+        //뷰페이저2 및 탭 레이아웃 설정
         setupViewPagerAndTabs()
-
-        setViewPagerPositionByArg()
-    }
-
-    private fun setViewPagerPositionByArg() {
-        if (setViewPagerItem == 1) {
-            binding.pager2Main.currentItem = 1
-        }
     }
 
     private fun setupViewPagerAndTabs() {
         val adapter = ViewPagerAdapter(childFragmentManager, viewLifecycleOwner.lifecycle, fragments)
         binding.pager2Main.adapter = adapter
+
+        if (setViewPagerItem == 1) {
+            binding.pager2Main.setCurrentItem(1, false)
+        }
+
         //binding.pager2Main.isUserInputEnabled = false
+
         TabLayoutMediator(binding.tabs, binding.pager2Main) { tab, position ->
             tab.text = if (fragments[position] is HomeMainFragment) {
                 "홈"
