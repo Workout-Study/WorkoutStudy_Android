@@ -177,6 +177,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/my_fit_scr_fit_off_spacebar"
+                        android:textAppearance="@style/Font.regular16"
                         app:icon="@drawable/ic_baseline_rest_24"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
@@ -189,6 +190,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginStart="12dp"
                         android:text="@string/my_fit_scr_fit_record_spacebar"
+                        android:textAppearance="@style/Font.regular16"
                         app:icon="@drawable/ic_baseline_timer_24"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintStart_toEndOf="@+id/buttonFragmentMyFitFitOff"
@@ -207,7 +209,8 @@
             android:layout_height="wrap_content"
             android:layout_gravity="bottom|end"
             android:layout_margin="16dp"
-            android:src="@drawable/add_picture"/>
+            android:backgroundTint="@color/turquoise"
+            android:src="@drawable/baseline_vertical_align_top_24"/>
 
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 </layout>
