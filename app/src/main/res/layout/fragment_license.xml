@@ -38,32 +38,37 @@
                 android:textColor="@color/zircon" />
         </LinearLayout>
 
-        <LinearLayout
+        <androidx.core.widget.NestedScrollView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:layout_height="match_parent" >
 
-            <TextView
-                android:id="@+id/textViewLicenseCopyrightScript"
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="10dp"
-                android:text="@string/license_scr_openSourceScript"
-                android:textAppearance="@style/Font.regular12" />
+                android:orientation="vertical">
 
-        </LinearLayout>
+                <TextView
+                    android:id="@+id/textViewLicenseCopyrightScript"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="10dp"
+                    android:text="@string/license_scr_openSourceScript"
+                    android:textAppearance="@style/Font.regular12" />
 
-        <View
-            android:id="@+id/dividerLicense"
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="?android:attr/listDivider" />
+                <View
+                    android:id="@+id/dividerLicense"
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="?android:attr/listDivider" />
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recyclerViewLicense"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_margin="10dp" />
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/recyclerViewLicense"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_margin="10dp" />
+
+            </LinearLayout>
+        </androidx.core.widget.NestedScrollView>
 
     </LinearLayout>
 </layout>
