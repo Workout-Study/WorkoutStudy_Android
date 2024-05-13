@@ -12,6 +12,8 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
         android:orientation="vertical">
 
         <ImageView
@@ -30,7 +32,7 @@
             android:id="@+id/imageViewItemCategoryFitgroupThumbnail"
             android:layout_width="80dp"
             android:layout_height="80dp"
-            android:layout_marginStart="30dp"
+            android:layout_marginStart="20dp"
             android:layout_marginTop="20dp"
             android:layout_marginBottom="20dp"
             android:contentDescription="@null"
@@ -98,7 +100,7 @@
             android:id="@+id/buttonItemVoteFitgroupVote"
             android:layout_width="wrap_content"
             android:layout_height="40dp"
-            android:layout_marginEnd="30dp"
+            android:layout_marginEnd="20dp"
             android:backgroundTint="@color/stateBlue"
             android:text="투표 하기"
             android:textAppearance="@style/Font.regular12"
