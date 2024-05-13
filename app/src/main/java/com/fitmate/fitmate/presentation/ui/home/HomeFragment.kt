@@ -18,12 +18,28 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
     private val homeMainFragment = HomeMainFragment()
     private val homeCategoryFragment = HomeCategoryFragment()
     private val fragments = listOf(homeMainFragment, homeCategoryFragment)
+    private var setViewPagerItem = 0
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setViewPagerItem = arguments?.getInt("viewPagerPosition")?: 0
+    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding = FragmentHomeBinding.bind(view)
+
         (activity as MainActivity).viewNavigationBar()
+
         setupViewPagerAndTabs()
+
+        setViewPagerPositionByArg()
+    }
+
+    private fun setViewPagerPositionByArg() {
+        if (setViewPagerItem == 1) {
+            binding.pager2Main.currentItem = 1
+        }
     }
 
     private fun setupViewPagerAndTabs() {

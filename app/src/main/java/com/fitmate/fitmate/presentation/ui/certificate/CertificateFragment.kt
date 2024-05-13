@@ -592,6 +592,9 @@ class CertificateFragment : Fragment() {
             .setMessage("인증을 진행할 그룹이 존재하지 않으면 인증을 더이상 진행할 수 없습니다")
             .setPositiveButton("그룹 가입하러 가기") { dialogInterface: DialogInterface, i: Int ->
                 //TODO 인증 취소하고 가입하러 보내기
+                val bundle = Bundle()
+                bundle.putInt("viewPagerPosition", 1)
+                findNavController().navigate(R.id.action_certificateFragment_to_homeFragment, bundle)
                 loadingTaskSettingEnd()
                 certificationReset()
             }
