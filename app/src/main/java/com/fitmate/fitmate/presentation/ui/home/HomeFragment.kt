@@ -44,7 +44,7 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
             binding.pager2Main.setCurrentItem(1, false)
         }
 
-        //binding.pager2Main.isUserInputEnabled = false
+        binding.pager2Main.isUserInputEnabled = false
 
         TabLayoutMediator(binding.tabs, binding.pager2Main) { tab, position ->
             tab.text = if (fragments[position] is HomeMainFragment) {

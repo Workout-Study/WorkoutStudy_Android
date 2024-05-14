@@ -61,6 +61,17 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
 
+                <TextView
+                    android:id="@+id/textViewHomeNoGroup"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="가입된 FitGroup이 없습니다."
+                    android:visibility="gone"
+                    app:layout_constraintBottom_toBottomOf="@+id/homeShimmer"
+                    app:layout_constraintEnd_toEndOf="@+id/homeShimmer"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="@+id/homeShimmer" />
+
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/recyclerViewHomeMain"
                     android:layout_width="match_parent"

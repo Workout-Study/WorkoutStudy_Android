@@ -16,6 +16,8 @@ import com.fitmate.fitmate.presentation.ui.home.list.adapter.VoteAdapter
 import com.fitmate.fitmate.presentation.viewmodel.HomeMainViewModel
 import com.google.android.material.carousel.CarouselLayoutManager
 import com.google.android.material.carousel.CarouselStrategy
+import com.google.android.material.carousel.FullScreenCarouselStrategy
+import com.google.android.material.carousel.HeroCarouselStrategy
 import com.google.android.material.carousel.MultiBrowseCarouselStrategy
 import dagger.hilt.android.AndroidEntryPoint
 import java.time.ZonedDateTime
@@ -37,7 +39,7 @@ class HomeMainFragment : Fragment(R.layout.fragment_home_main) {
         super.onViewCreated(view, savedInstanceState)
 
         initView(view)
-        setCarousel(MultiBrowseCarouselStrategy())
+        setCarousel()
         observeViewModel()
     }
 
@@ -49,12 +51,20 @@ class HomeMainFragment : Fragment(R.layout.fragment_home_main) {
         recyclerView.adapter = VoteAdapter(this) {}
     }
 
-    private fun setCarousel(carouselStrategy: CarouselStrategy){
+    private fun setCarousel(){
         val carouselView: RecyclerView = binding.recyclerViewHomeCarousel.apply {
-            layoutManager = CarouselLayoutManager(carouselStrategy)    // TODO 나중에 Carousel의 방식을 추후 이미지 적용 후 변경해봐야 함.
+            layoutManager = CarouselLayoutManager(MultiBrowseCarouselStrategy())    // TODO 나중에 Carousel의 방식을 추후 이미지 적용 후 변경해봐야 함.
         }
 
-        val carouselAdapter = CarouselAdapter {
+        val imageUrls = listOf(
+            "https://scontent-ssn1-1.xx.fbcdn.net/v/t1.6435-9/118785784_3128783457234268_5350155294171284268_n.jpg?stp=dst-jpg_p600x600&_nc_cat=105&ccb=1-7&_nc_sid=5f2048&_nc_ohc=KlX3sdWkYZEAb6ho-Rs&_nc_ht=scontent-ssn1-1.xx&oh=00_AfBP6Ii-VR3bYD81PQvGBV0gxsDaIVPkMLs4BKMLiP532Q&oe=664A9DF8",
+            "https://img.sbs.co.kr/newimg/news/20221219/201732615_500.jpg",
+            "https://news.seoul.go.kr/env/files/2021/06/1KakaoTalk_20210601_190713975.png",
+            "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQj9Che43hJa0kWL-Z1-zHZycqccPbaHuKZxvPfQ9Xg1Q&s",
+            "https://health.chosun.com/site/data/img_dir/2022/07/08/2022070801727_0.jpg"
+        )
+
+        val carouselAdapter = CarouselAdapter(imageUrls) {
             findNavController().navigate(R.id.action_homeFragment_to_groupJoinFragment)
         }
         carouselView.adapter = carouselAdapter
@@ -68,14 +78,10 @@ class HomeMainFragment : Fragment(R.layout.fragment_home_main) {
                 val voteItems = groups.map { group ->
                     group.certificationList.map { cert ->
                         VoteItem(
-                            title = group.groupName,
-                            fitMate = cert.requestUserId,
-                            percent = formatPercent(cert),
-                            time = formatDate(cert),
+                            title = group.groupName, fitMate = cert.requestUserId,
+                            percent = formatPercent(cert), time = formatDate(cert),
                             image = cert.multiMediaEndPoints.firstOrNull() ?: "",
-                            groupId = group.groupId,
-                            startTime = null,
-                            endTime = null
+                            groupId = group.groupId, startTime = null, endTime = null
                         )}}.flatten().distinctBy { it.title + it.fitMate + it.time }
                 val voteAdapter = binding.recyclerViewHomeMain.adapter as VoteAdapter
                 voteAdapter.submitList(voteItems)
