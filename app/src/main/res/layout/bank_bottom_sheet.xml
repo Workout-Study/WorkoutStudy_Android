@@ -20,7 +20,7 @@
             android:layout_width="30dp"
             android:layout_height="2dp"
             android:layout_marginTop="15dp"
-            android:background="@color/gray"
+            android:background="@color/white"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -32,10 +32,10 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="40dp"
             android:gravity="center"
-            android:text="은행 선택"
-            android:textColor="@color/black"
+            android:text="@string/make_group_scr_select_bank"
+            android:textAppearance="@style/Font.bold24"
+            android:textColor="@color/white"
             android:textSize="18sp"
-            android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />

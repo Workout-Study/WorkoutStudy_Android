@@ -102,16 +102,18 @@ fun Button.buttonSetState(state: CertificateState) {
     when (state) {
         CertificateState.NON_PROCEEDING -> {
             this.isEnabled = false
+            setTextColor(this.context.getColor(R.color.dark_gray))
             this.text = this.context.getString(R.string.certificate_scr_confirm_unactive)
         }
-
         CertificateState.ADDED_START_IMAGE -> {
             this.isEnabled = true
+            setTextColor(this.context.getColor(R.color.turquoise))
             this.text = this.context.getString(R.string.certificate_scr_confirm)
         }
 
         CertificateState.PROCEEDING -> {
             this.isEnabled = true
+            setTextColor(this.context.getColor(R.color.turquoise))
             this.text = this.context.getString(R.string.certificate_scr_confirm_finish)
         }
     }
