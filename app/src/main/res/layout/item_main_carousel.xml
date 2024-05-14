@@ -16,11 +16,11 @@
 
         <ImageView
             android:id="@+id/carousel_image_view"
-            android:layout_width="200dp"
+            android:layout_width="match_parent"
             android:layout_height="200dp"
+            android:contentDescription="@null"
             android:scaleType="centerCrop"
-            tools:srcCompat="@drawable/add_picture"
-            android:contentDescription="@null" />
+            tools:srcCompat="@drawable/add_picture" />
 
     </com.google.android.material.carousel.MaskableFrameLayout>
 </layout>
