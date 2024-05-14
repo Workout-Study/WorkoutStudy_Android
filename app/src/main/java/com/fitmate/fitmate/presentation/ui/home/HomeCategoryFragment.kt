@@ -1,6 +1,7 @@
 package com.fitmate.fitmate.presentation.ui.home
 
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -19,18 +20,24 @@ class HomeCategoryFragment: Fragment(R.layout.fragment_home_category) {
 
     private lateinit var binding: FragmentHomeCategoryBinding
     private val viewModel: GroupViewModel by viewModels()
-
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        viewModel.getFitGroups(true, 0, 1, 10)
-    }
+    private val TAG = "HomeCategoryFragment"
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
         initView(view)
         observeModel()
         getChipFitGroups()
+    }
+
+    override fun onPause() {
+        super.onPause()
+        Log.d(TAG, "onPause() activated")
+        getAllFitGroups()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        Log.d(TAG, "onResume() activated")
+        getAllFitGroups()
     }
 
     private fun initView(view: View) {
@@ -40,9 +47,10 @@ class HomeCategoryFragment: Fragment(R.layout.fragment_home_category) {
     }
 
     private fun observeModel() {
-        lifecycleScope.launch {
-            startShimmer()
-            viewModel.fitGroups.observe(viewLifecycleOwner) { fitGroups ->
+        startShimmer()
+        viewModel.fitGroups.observe(viewLifecycleOwner) { fitGroups ->
+            lifecycleScope.launch {
+                Log.d(TAG, "observeModel() activated")
                 stopShimmer()
                 val categoryItems = fitGroups.content.map {
                     CategoryItem(
@@ -66,12 +74,19 @@ class HomeCategoryFragment: Fragment(R.layout.fragment_home_category) {
 
         binding.chipGroupCategory.setOnCheckedStateChangeListener { _, checkedIds ->
             if (checkedIds.isEmpty()) {
+                Log.d(TAG, "connect in 0")
                 viewModel.getFitGroups(true, 0, 1, 10)
             } else {
                 val categoryId = chipToCategoryMap[checkedIds[0]] ?: return@setOnCheckedStateChangeListener
+                Log.d(TAG, "connect in $categoryId")
                 viewModel.getFitGroups(false, categoryId, 1, 5)
             }
         }
+    }
+
+    private fun getAllFitGroups() {
+        binding.chipGroupCategory.clearCheck()
+        viewModel.getFitGroups(false, 0, 1, 10)
     }
 
     private fun startShimmer() {
