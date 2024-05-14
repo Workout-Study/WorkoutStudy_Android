@@ -23,7 +23,7 @@
             app:startTime="@{data.recordStartDate}"
             app:endTime="@{data.recordEndDate}"
             tools:text="@string/my_fit_scr_fit_timer_text"
-            android:textAppearance="@style/Font.bold12"
+            android:textAppearance="@style/Font.bold16"
             android:textColor="@color/turquoise"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -34,7 +34,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="5dp"
             android:text="FitGroup"
-            android:textAppearance="@style/Font.bold12"
+            android:textAppearance="@style/Font.bold16"
             android:textColor="@color/white"
             app:layout_constraintStart_toStartOf="@+id/textViewItemMyFitHistoryRecord"
             app:layout_constraintTop_toBottomOf="@+id/textViewItemMyFitHistoryRecord" />
