@@ -4,7 +4,9 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
-
+        <variable
+            name="fragment"
+            type="com.fitmate.fitmate.presentation.ui.mygroup.MyGroupFragment" />
     </data>
 
     <LinearLayout
@@ -33,12 +35,14 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal|center_vertical"
                 android:gravity="center"
-                android:text="가입된 FitGroup이 업습니다"
+                android:text="가입된 FitGroup이 존재하지 않습니다."
+                android:textAppearance="@style/Font.semibold16"
                 android:visibility="gone"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="parent"
+                tools:visibility="visible" />
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/recyclerViewMyFitGroupList"
@@ -47,7 +51,10 @@
                 android:layout_margin="10dp"
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                 tools:itemCount="10"
-                tools:listitem="@layout/item_group" />
+                tools:layout_editor_absoluteX="10dp"
+                tools:layout_editor_absoluteY="10dp"
+                tools:listitem="@layout/item_group"
+                tools:visibility="gone" />
 
             <com.google.android.material.floatingactionbutton.FloatingActionButton
                 android:id="@+id/floatingButtonMakeFitGroup"
@@ -55,11 +62,12 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="16dp"
                 android:backgroundTint="@color/violet"
+                android:foregroundGravity="bottom"
                 android:src="@drawable/ic_baseline_pencil_24"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.95"
+                app:layout_constraintVertical_bias="1.0"
                 app:pressedTranslationZ="6dp"
                 app:tint="@color/white" />
 
