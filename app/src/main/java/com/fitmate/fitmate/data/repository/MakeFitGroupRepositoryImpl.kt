@@ -3,6 +3,11 @@ package com.fitmate.fitmate.data.repository
 import android.content.Context
 import android.net.Uri
 import android.provider.MediaStore
+import com.fitmate.fitmate.data.model.MakeFitGroupMapper.toRegisterFitGroupDto
+import com.fitmate.fitmate.data.model.dto.RegisterFitGroupResponseDto
+import com.fitmate.fitmate.data.model.dto.RequestRegisterFitGroupBodyDto
+import com.fitmate.fitmate.data.source.remote.RegisterFitGroupService
+import com.fitmate.fitmate.domain.model.RequestRegisterFitGroupBody
 import com.fitmate.fitmate.domain.repository.MakeFitGroupRepository
 import com.google.firebase.storage.StorageReference
 import id.zelory.compressor.Compressor
@@ -10,14 +15,14 @@ import id.zelory.compressor.constraint.quality
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
-import kotlinx.coroutines.coroutineScope
-import kotlinx.coroutines.launch
 import kotlinx.coroutines.tasks.await
 import kotlinx.coroutines.withContext
+import retrofit2.Response
 import java.io.File
 import javax.inject.Inject
 
 class MakeFitGroupRepositoryImpl @Inject constructor(
+    private val registerFitGroupService: RegisterFitGroupService,
     private val storageRef: StorageReference,
     private val context: Context,
 ) : MakeFitGroupRepository {
@@ -71,5 +76,9 @@ class MakeFitGroupRepositoryImpl @Inject constructor(
             path = cursor.getString(cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA))
         }
         return path
+    }
+
+    override suspend fun postRegisterFitGroup(registerGroupItem: RequestRegisterFitGroupBodyDto): Response<RegisterFitGroupResponseDto> {
+        return registerFitGroupService.registerFitGroup(registerGroupItem)
     }
 }

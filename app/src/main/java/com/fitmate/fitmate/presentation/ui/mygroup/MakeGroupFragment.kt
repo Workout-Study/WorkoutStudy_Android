@@ -179,15 +179,21 @@ class MakeGroupFragment : Fragment() {
         //유효성 검사
         if (!checkInputValidation()) return
 
+        //사진 업로드 및 url 다운로드
         viewModel.uploadImageAndGetUrl("hyungoo")
 
+        //로딩 실행
+        loadingViewVisible()
+    }
+
+    private fun loadingViewVisible() {
         binding.loadingLayoutView.apply {
             visibility = View.VISIBLE
             alpha = 0.5f
             isClickable = true
         }
+
         binding.progressBarSubmitLoading.visibility = View.VISIBLE
-        Log.d("imageTest", "${ viewModel.groupImageList.value }")
     }
 
     //입력 값 유효성 겅사
@@ -222,7 +228,7 @@ class MakeGroupFragment : Fragment() {
                 return false
             }
             viewModel.groupImageList.value.isNullOrEmpty() -> {
-                Toast.makeText(requireContext(),"그룹 사진을 한장 이상 첨부해주세요!",Toast.LENGTH_SHORT).show()
+                Toast.makeText(requireContext(),"그룹 사진을 한 장 이상 첨부해주세요!",Toast.LENGTH_SHORT).show()
                 return false
             }
             else -> { return true }
@@ -231,13 +237,21 @@ class MakeGroupFragment : Fragment() {
 
     private fun observeUploadImageToStorage(){
         viewModel.groupImageUrlList.observe(viewLifecycleOwner){
-            binding.loadingLayoutView.apply {
-                visibility = View.GONE
-                alpha = 1f
-                isClickable = false
-            }
-            binding.progressBarSubmitLoading.visibility = View.GONE
+            //로딩 종료
+            loadingViewGone()
+
+            //TODO post 작업 수행
         }
+    }
+
+    private fun loadingViewGone() {
+        binding.loadingLayoutView.apply {
+            visibility = View.GONE
+            alpha = 1f
+            isClickable = false
+        }
+
+        binding.progressBarSubmitLoading.visibility = View.GONE
     }
 
     private fun activityResultLauncher() =
