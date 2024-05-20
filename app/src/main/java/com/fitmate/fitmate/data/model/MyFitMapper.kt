@@ -10,7 +10,7 @@ import com.fitmate.fitmate.domain.model.MyFitRecordHistoryGroupInfo
 object MyFitMapper {
 
     fun MyFitProgressResponseDto.toMyFitProgressResponse(): List<FitProgressItem> {
-        return this.MyFitProgressResponse.map {
+        return this.myFitProgressResponse.map {
             FitProgressItem(
                 itemId = it.fitGroupId,
                 itemName = it.fitGroupName,
