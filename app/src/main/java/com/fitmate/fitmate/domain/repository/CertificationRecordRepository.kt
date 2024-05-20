@@ -11,5 +11,6 @@ interface CertificationRecordRepository {
     suspend fun postCertificationRecord(requestRecordBody:DbCertification): Response<CertificationRecordResponseDto>
 
     suspend fun getMyFitGroupInfo(userId:String):Response<CertificationTargetFitGroupResponseDto>
+
     suspend fun postCertificationRecordToFitGroup(requestResisterCertificationRecordBody: ResisterCertificationRecord):Response<ResisterCertificationRecordResponseDto>
 }
