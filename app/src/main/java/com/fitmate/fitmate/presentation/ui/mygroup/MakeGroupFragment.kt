@@ -31,10 +31,12 @@ import com.fitmate.fitmate.R
 import com.fitmate.fitmate.databinding.FragmentMakeGroupBinding
 import com.fitmate.fitmate.domain.model.BankList
 import com.fitmate.fitmate.domain.model.CertificationImage
+import com.fitmate.fitmate.domain.model.RequestRegisterFitGroupBody
 import com.fitmate.fitmate.presentation.ui.mygroup.list.adapter.BankListAdapter
 import com.fitmate.fitmate.presentation.ui.mygroup.list.adapter.MakeGroupImageAdapter
 import com.fitmate.fitmate.presentation.viewmodel.MakeGroupViewModel
 import com.fitmate.fitmate.util.ControlActivityInterface
+import com.fitmate.fitmate.util.GroupCategory
 import com.fitmate.fitmate.util.readData
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetBehavior.STATE_COLLAPSED
@@ -81,6 +83,9 @@ class MakeGroupFragment : Fragment() {
         //이미지 스토리지 업로드 결과 감시
         observeUploadImageToStorage()
 
+        //post 작업 감시
+        observePostMakeGroupRegister()
+
         //바텀 시트 리사이클러뷰 설정(은행)
         settingBottomSheetAdapter()
 
@@ -92,6 +97,16 @@ class MakeGroupFragment : Fragment() {
 
         //시크바 리스너 설정(주 운동 횟수, 최대 인원 수)
         settingSeekBarListener()
+    }
+
+    private fun observePostMakeGroupRegister() {
+        viewModel.postResult.observe(viewLifecycleOwner) {
+            //로딩 종료
+            loadingViewGone()
+
+            Log.d("tlqkf",it.isRegisterSuccess.toString())
+
+        }
     }
 
     private fun observeImageChange() {
@@ -236,13 +251,39 @@ class MakeGroupFragment : Fragment() {
     }
 
     private fun observeUploadImageToStorage(){
-        viewModel.groupImageUrlList.observe(viewLifecycleOwner){
-            //로딩 종료
-            loadingViewGone()
+        viewModel.groupImageUrlList.observe(viewLifecycleOwner){urls ->
 
+            Log.d("tlqkf","사진 업로드 완료")
             //TODO post 작업 수행
+            val postData = RequestRegisterFitGroupBody(
+                requestUserId = "222222",
+                fitGroupName = viewModel.groupName.value.toString(),
+                penaltyAmount = 5000L,
+                penaltyAccountBankCode = viewModel.bankInfo.value!!.value!!,
+                penaltyAccountNumber = viewModel.bankAccount.value!!,
+                category = getCategoryCode(),
+                introduction = viewModel.groupContent.value!!,
+                frequency = viewModel.groupFitCycle.value!!,
+                maxFitMate = viewModel.groupFitMateLimit.value!!,
+                multiMediaEndPoints = urls
+            )
+            viewModel.postRegisterFitGroup(postData)
         }
     }
+
+    private fun getCategoryCode() = when (viewModel.groupCategory.value.toString()) {
+            requireContext().getString(R.string.category_scr_1) -> GroupCategory.CLIMBING.code
+            requireContext().getString(R.string.category_scr_2) -> GroupCategory.LIFE_SPORTS.code
+            requireContext().getString(R.string.category_scr_3) -> GroupCategory.WEIGHT_TRAINING.code
+            requireContext().getString(R.string.category_scr_4) -> GroupCategory.SWIMMING.code
+            requireContext().getString(R.string.category_scr_5) -> GroupCategory.SOCCER.code
+            requireContext().getString(R.string.category_scr_6) -> GroupCategory.BASKETBALL.code
+            requireContext().getString(R.string.category_scr_7) -> GroupCategory.BASEBALL.code
+            requireContext().getString(R.string.category_scr_8) -> GroupCategory.BIKING.code
+            requireContext().getString(R.string.category_scr_9) -> GroupCategory.CLIMBING.code
+            else -> throw IllegalArgumentException("Invalid category")
+        }
+
 
     private fun loadingViewGone() {
         binding.loadingLayoutView.apply {
