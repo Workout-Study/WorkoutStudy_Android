@@ -92,8 +92,6 @@ class MyFitFragment : Fragment() {
 
     private fun initCalendar() {
         calendarAdapter = MonthListAdapter(CalendarHandler()) { fitHistoryList ->
-            Log.d("tlqkf","$fitHistoryList")
-            Log.d("tlqkf",fitHistoryAdapter.toString())
             fitHistoryAdapter.submitList(fitHistoryList.toMutableList())
         }
         binding.recyclerViewCalendar.run {

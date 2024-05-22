@@ -112,7 +112,7 @@ class MakeGroupViewModel @Inject constructor(
         viewModelScope.launch {
             val response = makeGroupUseCase.postRegisterFitGroup(item.toRegisterFitGroupDto())
             if (response.isSuccessful){
-                val result = makeGroupUseCase.postRegisterFitGroup(item.toRegisterFitGroupDto()).body()
+                val result = response.body()
                 result?.let { resultData ->
                     _postResult.value = resultData.toResponseRegisterFitGroup()
                 }

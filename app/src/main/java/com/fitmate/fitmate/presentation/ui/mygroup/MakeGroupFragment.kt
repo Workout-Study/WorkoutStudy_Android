@@ -103,9 +103,6 @@ class MakeGroupFragment : Fragment() {
         viewModel.postResult.observe(viewLifecycleOwner) {
             //로딩 종료
             loadingViewGone()
-
-            Log.d("tlqkf",it.isRegisterSuccess.toString())
-
         }
     }
 
@@ -252,11 +249,9 @@ class MakeGroupFragment : Fragment() {
 
     private fun observeUploadImageToStorage(){
         viewModel.groupImageUrlList.observe(viewLifecycleOwner){urls ->
-
-            Log.d("tlqkf","사진 업로드 완료")
             //TODO post 작업 수행
             val postData = RequestRegisterFitGroupBody(
-                requestUserId = "222222",
+                requestUserId = "567843",
                 fitGroupName = viewModel.groupName.value.toString(),
                 penaltyAmount = 5000L,
                 penaltyAccountBankCode = viewModel.bankInfo.value!!.value!!,
