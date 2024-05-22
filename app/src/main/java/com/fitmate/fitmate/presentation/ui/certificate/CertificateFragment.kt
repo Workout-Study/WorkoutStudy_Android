@@ -268,9 +268,16 @@ class CertificateFragment : Fragment() {
     private fun observeRecord2PostResult() {
         viewModel.networkPostState2.observe(viewLifecycleOwner) {
             if (it.isRegisterSuccess) {
+                Log.d("wpqkf","성공 초기화 수행")
                 loadingTaskSettingEnd()
                 certificationReset()
             }
+            //TODO 최종 통신 실패했을 때 처리 필요
+            /*else{
+                Log.d("wpqkf","오류 초기화 수행")
+                loadingTaskSettingEnd()
+                certificationReset()
+            }*/
         }
     }
 
@@ -281,14 +288,10 @@ class CertificateFragment : Fragment() {
                 // 타겟 그룹으로 최종 통신 수행(아래 코드를 해당 통신 옵저버로 이동시켜야함.)
                 it.fitRecordId?.let { recordId ->
                     val resisterObj =
-                        ResisterCertificationRecord("hyungoo", recordId, viewModel.selectedTarget)
+                        ResisterCertificationRecord("111111", recordId, viewModel.selectedTarget)
                     viewModel.postResisterCertificationRecord(resisterObj)
                 }
 
-            } else {
-                loadingTaskSettingEnd()
-                certificationReset()
-                Toast.makeText(requireContext(), "업로드에 실패했습니다", Toast.LENGTH_SHORT).show()
             }
         }
     }
@@ -495,6 +498,7 @@ class CertificateFragment : Fragment() {
     }
 
     private fun certificationReset() {
+        Log.d("recordNetworkTest","초기화 메서드 실행")
         viewModel.deleteCertificationInfo()
     }
 

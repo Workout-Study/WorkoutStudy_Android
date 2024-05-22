@@ -155,7 +155,7 @@ class CertificationViewModel @Inject constructor(
     fun insertCertificateInitInfo() {
         val obj = DbCertification(
             id = 1,
-            userId = "hyungoo",
+            userId = "111111",
             recordStartDate = Instant.now(),
             startImages = mutableListOf<Uri>().apply {
                 _startImageList.value?.forEach { data ->
@@ -243,6 +243,10 @@ class CertificationViewModel @Inject constructor(
                         result.let {
                             _networkPostState2.value = it
                         }
+                    }else{
+                        _networkPostState2.value = ResisterCertificationRecordResponse(
+                            false
+                        )
                     }
                 }
 
