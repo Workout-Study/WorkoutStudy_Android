@@ -20,7 +20,7 @@ android {
         versionName = AppConfig.versionName
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
 
-        val apiKeys = listOf("NAVER_CLIENT", "NAVER_SECRET", "KAKAO_NATIVE_APP_KEY", "KAKAO_REST_API_KEY", "KAKAO_ADMIN_KEY", "CHAT_SERVER_ADDRESS")
+        val apiKeys = listOf("NAVER_CLIENT", "NAVER_SECRET", "KAKAO_NATIVE_APP_KEY", "KAKAO_REST_API_KEY", "KAKAO_ADMIN_KEY", "SERVER_IP")
         apiKeys.forEach { key -> buildConfigField("String", key, getApiKey(key)) }
 
 //        buildConfigField("String", "NAVER_CLIENT", getApiKey("NAVER_CLIENT"))
