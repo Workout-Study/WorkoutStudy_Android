@@ -16,7 +16,7 @@ import com.fitmate.fitmate.databinding.FragmentMyGroupBinding
 import com.fitmate.fitmate.util.ControlActivityInterface
 import com.fitmate.fitmate.domain.model.FitGroup
 import com.fitmate.fitmate.presentation.ui.mygroup.list.adapter.MyFitGroupAdapter
-import com.fitmate.fitmate.presentation.viewmodel.GroupViewModel
+import com.fitmate.fitmate.presentation.viewmodel.ChattingViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
@@ -27,7 +27,7 @@ class MyGroupFragment: Fragment(R.layout.fragment_my_group) {
     private lateinit var binding: FragmentMyGroupBinding
     private lateinit var adapter: MyFitGroupAdapter
     private lateinit var controlActivityInterface: ControlActivityInterface
-    private val viewModel: GroupViewModel by viewModels()
+    private val viewModel: ChattingViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
