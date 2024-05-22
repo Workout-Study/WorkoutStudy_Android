@@ -16,7 +16,7 @@ object ChatModule {
     @Provides
     @Singleton
     fun provideFitGroupService(retrofit: Retrofit): ChatService {
-        val fitGroupBaseUrl = "http://${BuildConfig.CHAT_SERVER_ADDRESS}:8888/"
+        val fitGroupBaseUrl = "http://${BuildConfig.SERVER_IP}:8888/"
         return retrofit.newBuilder()
             .baseUrl(fitGroupBaseUrl)
             .build()
