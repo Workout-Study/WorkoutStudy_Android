@@ -13,7 +13,7 @@ class CertificationRecordNetworkUseCase @Inject constructor(
 ) {
     suspend fun postCertificationRecord(item:DbCertification):Response<CertificationRecordResponseDto> = certificationRecordRepository.postCertificationRecord(item)
 
-    suspend fun getMyFitGroup(userId:String):Response<CertificationTargetFitGroupResponseDto> = certificationRecordRepository.getMyFitGroupInfo(userId)
+    suspend fun getMyFitGroup(userId:Int):Response<CertificationTargetFitGroupResponseDto> = certificationRecordRepository.getMyFitGroupInfo(userId)
 
     suspend fun postResisterCertificationRecordToFitGroup(item:ResisterCertificationRecord) = certificationRecordRepository.postCertificationRecordToFitGroup(item)
 }

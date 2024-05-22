@@ -198,7 +198,7 @@ class CertificateFragment : Fragment() {
 
                             //그룹 선택하러 이동
                             loadingTaskSettingStart()
-                            viewModel.getMyFitGroup("hyungoo")
+                            viewModel.getMyFitGroup(111111)
                         }
 
                     }
