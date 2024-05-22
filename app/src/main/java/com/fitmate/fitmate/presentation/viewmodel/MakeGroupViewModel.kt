@@ -5,8 +5,12 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.fitmate.fitmate.data.model.MakeFitGroupMapper.toRegisterFitGroupDto
+import com.fitmate.fitmate.data.model.MakeFitGroupMapper.toResponseRegisterFitGroup
 import com.fitmate.fitmate.domain.model.Bank
 import com.fitmate.fitmate.domain.model.CertificationImage
+import com.fitmate.fitmate.domain.model.RequestRegisterFitGroupBody
+import com.fitmate.fitmate.domain.model.ResponseRegisterFitGroup
 import com.fitmate.fitmate.domain.usecase.MakeFitGroupUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
@@ -58,6 +62,11 @@ class MakeGroupViewModel @Inject constructor(
     val groupImageUrlList: LiveData<List<String>>
         get() = _groupImageUrlList
 
+    //최종 post 결과를 받는 라이브 데이터
+    private val _postResult = MutableLiveData<ResponseRegisterFitGroup>()
+    val postResult: LiveData<ResponseRegisterFitGroup>
+        get() = _postResult
+
     //은행 선택 메서드
     fun setBankInfo(data:Bank) {
         _bankInfo.value = data
@@ -96,6 +105,18 @@ class MakeGroupViewModel @Inject constructor(
                 it.imagesUri
             }
             _groupImageUrlList.value = makeGroupUseCase.uploadGroupImageAndGetUrl(userId, groupName.value ?: "알 수 없는 그룹", imageList ?: mutableListOf())
+        }
+    }
+
+    fun postRegisterFitGroup(item: RequestRegisterFitGroupBody) {
+        viewModelScope.launch {
+            val response = makeGroupUseCase.postRegisterFitGroup(item.toRegisterFitGroupDto())
+            if (response.isSuccessful){
+                val result = makeGroupUseCase.postRegisterFitGroup(item.toRegisterFitGroupDto()).body()
+                result?.let { resultData ->
+                    _postResult.value = resultData.toResponseRegisterFitGroup()
+                }
+            }
         }
     }
 }
