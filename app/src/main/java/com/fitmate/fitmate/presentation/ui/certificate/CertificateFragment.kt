@@ -268,7 +268,6 @@ class CertificateFragment : Fragment() {
     private fun observeRecord2PostResult() {
         viewModel.networkPostState2.observe(viewLifecycleOwner) {
             if (it.isRegisterSuccess) {
-                Log.d("wpqkf","성공 초기화 수행")
                 loadingTaskSettingEnd()
                 certificationReset()
             }
