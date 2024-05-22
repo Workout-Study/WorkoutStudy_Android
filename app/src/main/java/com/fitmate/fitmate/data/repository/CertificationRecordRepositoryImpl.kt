@@ -21,7 +21,7 @@ class CertificationRecordRepositoryImpl @Inject constructor(
         return certificationRecordService.postCertificationRecord(requestRecordBody.toCertificationRecordDto())
     }
 
-    override suspend fun getMyFitGroupInfo(userId: String): Response<CertificationTargetFitGroupResponseDto> {
+    override suspend fun getMyFitGroupInfo(userId: Int): Response<CertificationTargetFitGroupResponseDto> {
         return certificationTargetGroupService.getTargetGroupList(userId)
     }
 
