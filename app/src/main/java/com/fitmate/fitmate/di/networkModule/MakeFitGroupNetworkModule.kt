@@ -19,8 +19,13 @@ object MakeFitGroupNetworkModule {
 
     @Singleton
     @Provides
-    fun provideRegisterFitGroupService(retrofit:Retrofit): RegisterFitGroupService =
-        retrofit.create(RegisterFitGroupService::class.java)
+    fun provideRegisterFitGroupService(retrofit:Retrofit): RegisterFitGroupService {
+        val makeGroupBaseUrl = "http://43.200.62.156:8080/"
+        return retrofit.newBuilder()
+            .baseUrl(makeGroupBaseUrl)
+            .build()
+            .create(RegisterFitGroupService::class.java)
+    }
 
     @Singleton
     @Provides
