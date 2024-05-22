@@ -1,6 +1,7 @@
 package com.fitmate.fitmate.presentation.viewmodel
 
 import android.net.Uri
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -214,7 +215,7 @@ class CertificationViewModel @Inject constructor(
     }
 
     //내가 가입한 fit그룹 통신해서 가져오기
-    fun getMyFitGroup(userId: String) {
+    fun getMyFitGroup(userId: Int) {
         viewModelScope.launch(Dispatchers.IO) {
             try {
                 val response = certificationRecordNetworkUseCase.getMyFitGroup(userId)
