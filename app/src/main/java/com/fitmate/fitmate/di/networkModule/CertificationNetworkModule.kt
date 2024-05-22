@@ -31,9 +31,9 @@ object CertificationNetworkModule {
     @Provides
     @Singleton
     fun provideFitGroupService(retrofit: Retrofit): CertificationTargetGroupService {
-        /*val fitGroupBaseUrl = "http://43.202.247.71:8080/"*/
         //val fitGroupBaseUrl = "https://cfcd4b3c-24e1-4275-bffe-66197bef03d2.mock.pstmn.io/"
-        val fitGroupBaseUrl = "https://run.mocky.io/v3/"
+        //val fitGroupBaseUrl = "https://run.mocky.io/v3/"
+        val fitGroupBaseUrl = "http://43.200.62.156:8080/"
         return retrofit.newBuilder()
             .baseUrl(fitGroupBaseUrl)
             .build()

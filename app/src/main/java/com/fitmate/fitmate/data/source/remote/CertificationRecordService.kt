@@ -9,12 +9,13 @@ import retrofit2.http.Body
 import retrofit2.http.POST
 
 interface CertificationRecordService {
-    /*@POST("my-fit-service/records")*/
-    @POST("records")
 
+    //@POST("records")
+    @POST("my-fit-service/records")
     suspend fun postCertificationRecord(@Body requestBody: CertificationRecordDto): Response<CertificationRecordResponseDto>
-    /*@POST("my-fit-service/certifications")*/
-    @POST("mates")
+
+    //@POST("mates")
+    @POST("my-fit-service/certifications")
     suspend fun postCertificationRecordToFitGroup(@Body requestBody: ResisterCertificationRecordDto): Response<ResisterCertificationRecordResponseDto>
 
 
