@@ -5,7 +5,6 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.fitmate.fitmate.data.model.dto.EachFitResponse
-import com.fitmate.fitmate.data.model.dto.FitGroup
 import com.fitmate.fitmate.data.model.dto.FitGroupDetail
 import com.fitmate.fitmate.data.model.dto.FitGroupProgress
 import com.fitmate.fitmate.data.model.dto.GroupDetailResponse
@@ -15,18 +14,15 @@ import com.fitmate.fitmate.data.model.dto.VoteResponse
 import com.fitmate.fitmate.domain.usecase.DBChatUseCase
 import com.fitmate.fitmate.domain.usecase.GroupUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import retrofit2.Response
 import javax.inject.Inject
 
 @HiltViewModel
 class GroupViewModel @Inject constructor(
-    private val groupUseCase: GroupUseCase,
-    private val dbChatUseCase: DBChatUseCase
+    private val groupUseCase: GroupUseCase
 ) : ViewModel() {
     private val _fitGroups = MutableLiveData<GroupResponse>()
     val fitGroups: LiveData<GroupResponse> = _fitGroups
@@ -36,9 +32,6 @@ class GroupViewModel @Inject constructor(
 
     private val _fitGroupVotes = MutableLiveData<EachFitResponse>()
     val fitGroupVotes: LiveData<EachFitResponse> = _fitGroupVotes
-
-    private val _fitGroup = MutableStateFlow<List<FitGroup>>(emptyList())
-    val fitGroup: StateFlow<List<FitGroup>> = _fitGroup
 
     private val _fitMateList = MutableLiveData<FitGroupDetail>()
     val fitMateList: LiveData<FitGroupDetail> = _fitMateList
@@ -113,18 +106,4 @@ class GroupViewModel @Inject constructor(
         }
     }
 
-    fun retrieveFitGroup(fitMateId: Int) {
-        if (isDataLoadedOnce) return
-        viewModelScope.launch {
-            _isLoading.value = true
-            val response = dbChatUseCase.retrieveFitGroup(fitMateId)
-
-            withContext(Dispatchers.Main) {
-                val result = response.body()
-                _fitGroup.value = result!!
-                _isLoading.value = false
-                isDataLoadedOnce = true
-            }
-        }
-    }
 }
