@@ -1,7 +1,9 @@
 package com.fitmate.fitmate.data.model
 
+import com.fitmate.fitmate.data.model.dto.RegisterFitGroupResponseDto
 import com.fitmate.fitmate.data.model.dto.RequestRegisterFitGroupBodyDto
 import com.fitmate.fitmate.domain.model.RequestRegisterFitGroupBody
+import com.fitmate.fitmate.domain.model.ResponseRegisterFitGroup
 
 object MakeFitGroupMapper {
 
@@ -20,6 +22,11 @@ object MakeFitGroupMapper {
             maxFitMate = this.maxFitMate,
             multiMediaEndPoints = this.multiMediaEndPoints,
         )
+    }
 
+    fun   RegisterFitGroupResponseDto.toResponseRegisterFitGroup(): ResponseRegisterFitGroup {
+        return ResponseRegisterFitGroup(
+            isRegisterSuccess = this.isRegisterSuccess
+        )
     }
 }
