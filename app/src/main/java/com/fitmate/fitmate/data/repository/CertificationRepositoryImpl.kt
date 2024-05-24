@@ -123,7 +123,7 @@ class CertificationRepositoryImpl @Inject constructor(
             storageRef.child("user_certificate/").child(fileName).putFile(Uri.fromFile(compressorFile)).await()
             // 업로드가 성공적으로 완료되었다면 다운로드 URL을 가져옴
             return storageRef.child("user_certificate/").child(fileName).downloadUrl.await().toString()
-        }catch (e:FileAlreadyExistsException){
+        }catch (e:Exception){
             storageRef.child("user_certificate/").child(fileName).putFile(uri).await()
             // 업로드가 성공적으로 완료되었다면 다운로드 URL을 가져옴
             return storageRef.child("user_certificate/").child(fileName).downloadUrl.await().toString()
