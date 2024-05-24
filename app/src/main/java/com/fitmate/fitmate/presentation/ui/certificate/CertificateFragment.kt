@@ -268,11 +268,20 @@ class CertificateFragment : Fragment() {
     private fun observeRecord2PostResult() {
         viewModel.networkPostState2.observe(viewLifecycleOwner) {
             if (it.isRegisterSuccess) {
+                val intent = Intent(
+                    this@CertificateFragment.context,
+                    StopWatchService::class.java
+                ).apply {
+                    action = STOP_WATCH_RESET
+                }
+                requireContext().startService(intent)
                 loadingTaskSettingEnd()
                 certificationReset()
             }
-            //TODO 최종 통신 실패했을 때 처리 필요
             else{
+                //TODO 스낵바 처리 해야함
+                networkState = NetworkState.STATE_NON
+                Toast.makeText(requireContext(), "인증이 불가한 그룹에 인증을 시도하셨습니다!",Toast.LENGTH_SHORT).show()
                 loadingTaskSettingEnd()
                 //certificationReset()
             }
@@ -336,7 +345,7 @@ class CertificateFragment : Fragment() {
 
                 "삭제 완료" -> {
                     if (networkState == NetworkState.STATE_TARGET_GROUP) {
-                        //TODO 인증 완전 완료 상태.
+                        //인증 완전 완료 상태.
                         findNavController().popBackStack()
                     } else if (networkState == NetworkState.CANCEL_CERTIFICATION) {
                         val intent = Intent(
@@ -380,6 +389,7 @@ class CertificateFragment : Fragment() {
 
     private fun observeReadCertificationRoomData() {
         viewModel.certificationData.observe(viewLifecycleOwner) {
+            Log.d("testt",it.toString())
             if (it != null) {
                 if (it.recordEndDate == null && networkState == NetworkState.STATE_NON) {
                     viewModel.setStateCertificateProceed()
@@ -387,6 +397,8 @@ class CertificateFragment : Fragment() {
                     viewModel.postCertificationRecord(it)
                 } else if (networkState == NetworkState.STATE_UPLOAD_STORAGE) {
                     viewModel.uploadImageAndGetUrl(it)
+                }else{
+                    viewModel.setStateCertificateProceed()
                 }
             } else {
                 viewModel.setStateCertificateNonProceeding()
@@ -578,13 +590,13 @@ class CertificateFragment : Fragment() {
             }
             if (resultGroupIdList.size > 0) {
                 //최종 통신까지 진행 시작
-                val intent = Intent(
+/*                val intent = Intent(
                     this@CertificateFragment.context,
                     StopWatchService::class.java
                 ).apply {
                     action = STOP_WATCH_RESET
                 }
-                requireContext().startService(intent)
+                requireContext().startService(intent)*/
                 viewModel.selectedTarget = resultGroupIdList
                 networkState = NetworkState.STATE_UPLOAD_STORAGE
                 loadingTaskSettingStart()
