@@ -13,11 +13,8 @@ import com.fitmate.fitmate.databinding.FragmentHomeMainBinding
 import com.fitmate.fitmate.domain.model.VoteItem
 import com.fitmate.fitmate.presentation.ui.home.list.adapter.CarouselAdapter
 import com.fitmate.fitmate.presentation.ui.home.list.adapter.VoteAdapter
-import com.fitmate.fitmate.presentation.viewmodel.HomeMainViewModel
+import com.fitmate.fitmate.presentation.viewmodel.VoteViewModel
 import com.google.android.material.carousel.CarouselLayoutManager
-import com.google.android.material.carousel.CarouselStrategy
-import com.google.android.material.carousel.FullScreenCarouselStrategy
-import com.google.android.material.carousel.HeroCarouselStrategy
 import com.google.android.material.carousel.MultiBrowseCarouselStrategy
 import dagger.hilt.android.AndroidEntryPoint
 import java.time.ZonedDateTime
@@ -28,7 +25,7 @@ class HomeMainFragment : Fragment(R.layout.fragment_home_main) {
 
     private lateinit var binding: FragmentHomeMainBinding
     private lateinit var recyclerView: RecyclerView
-    private val viewModel: HomeMainViewModel by viewModels()
+    private val viewModel: VoteViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -65,14 +62,16 @@ class HomeMainFragment : Fragment(R.layout.fragment_home_main) {
         )
 
         val carouselAdapter = CarouselAdapter(imageUrls) {
-            findNavController().navigate(R.id.action_homeFragment_to_groupJoinFragment)
+            val bundle = Bundle()
+            bundle.putInt("groupId", 10)
+            findNavController().navigate(R.id.action_homeFragment_to_groupJoinFragment, bundle)
         }
         carouselView.adapter = carouselAdapter
     }
 
     private fun observeViewModel() {
         startShimmer()
-        viewModel.fitGroupVotes.observe(viewLifecycleOwner) { result ->
+        viewModel.myGroupVotes.observe(viewLifecycleOwner) { result ->
             stopShimmer()
             result.onSuccess { groups ->
                 val voteItems = groups.map { group ->

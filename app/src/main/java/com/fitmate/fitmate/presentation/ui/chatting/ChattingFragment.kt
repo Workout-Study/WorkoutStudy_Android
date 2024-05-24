@@ -49,10 +49,11 @@ import javax.inject.Inject
 @AndroidEntryPoint
 class ChattingFragment : Fragment(R.layout.fragment_chatting) {
 
-    companion object { const val chatServerAddress = BuildConfig.SERVER_IP }
+    companion object { const val chatServerAddress = BuildConfig.CHAT_SERVER_ADDRESS }
     private lateinit var binding: FragmentChattingBinding
     private lateinit var heightProvider: HeightProvider
     @Inject lateinit var dbChatUseCase: DBChatUseCase
+    private val TAG = "ChattingFragment"
     private val viewModel: ChattingViewModel by viewModels()
     private val group: GroupViewModel by viewModels()
     private var webSocket: WebSocket? = null
@@ -65,8 +66,8 @@ class ChattingFragment : Fragment(R.layout.fragment_chatting) {
         super.onCreate(savedInstanceState)
         fitGroupId = requireArguments().getInt("fitGroupId", -1)
         fitMateId = requireArguments().getInt("fitMateId", -1)
-        group.groupDetail(fitGroupId)
-        group.getFitMateList()
+        Log.d(TAG, "fitGroupId = $fitGroupId, fitMateId = $fitMateId")
+        group.getFitGroupDetail(fitGroupId)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -142,13 +143,14 @@ class ChattingFragment : Fragment(R.layout.fragment_chatting) {
     }
 
     private fun toggleDrawer() {
+        group.getFitMateList(fitGroupId)
         val includedLayout = view?.findViewById<View>(R.id.includeFragmentChattingMyInfo)
         val textView = includedLayout?.findViewById<TextView>(R.id.textViewItemChattingFitMateName)
         val fitMateListAdapter = FitMateListAdapter(emptyList())
         binding.recyclerViewFragmentChattingForFitMateList.adapter = fitMateListAdapter
         binding.recyclerViewFragmentChattingForFitMateList.layoutManager = LinearLayoutManager(context)
 
-        group.fitMateList.observe(viewLifecycleOwner) { fitMateList ->
+        group.getMate.observe(viewLifecycleOwner) { fitMateList ->
             val isLeader = fitMateList.fitLeaderDetail.fitLeaderUserId == userId
             Log.d("woojugoing_isLeader", isLeader.toString())
             fitMateList.fitMateDetails.firstOrNull { it.fitMateId == fitMateId }?.let { textView?.text = it.fitMateUserId }

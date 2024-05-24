@@ -14,6 +14,7 @@ import com.fitmate.fitmate.domain.model.VoteItem
 import com.fitmate.fitmate.presentation.ui.chatting.list.adapter.VoteViewPageAdapter
 import com.fitmate.fitmate.domain.usecase.GroupUseCase
 import com.fitmate.fitmate.presentation.viewmodel.GroupViewModel
+import com.fitmate.fitmate.presentation.viewmodel.VoteViewModel
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import kotlinx.coroutines.launch
 import java.time.Duration
@@ -25,7 +26,7 @@ import java.time.format.DateTimeFormatter
 class GroupVoteViewHolder(
     private val binding: ItemVoteBinding,
     private val fragment: Fragment,
-    private val viewModel: GroupViewModel,
+    private val viewModel: VoteViewModel,
     private val onClick: (VoteItem) -> Unit
 ): RecyclerView.ViewHolder(binding.root) {
 

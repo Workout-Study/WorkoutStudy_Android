@@ -7,11 +7,13 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.fitmate.fitmate.MainActivity
 import com.fitmate.fitmate.R
 import com.fitmate.fitmate.databinding.FragmentHomeCategoryBinding
 import com.fitmate.fitmate.domain.model.CategoryItem
 import com.fitmate.fitmate.presentation.ui.home.list.adapter.CategoryAdapter
 import com.fitmate.fitmate.presentation.viewmodel.GroupViewModel
+import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
@@ -31,7 +33,6 @@ class HomeCategoryFragment: Fragment(R.layout.fragment_home_category) {
     override fun onPause() {
         super.onPause()
         Log.d(TAG, "onPause() activated")
-        getAllFitGroups()
     }
 
     override fun onResume() {
@@ -48,20 +49,18 @@ class HomeCategoryFragment: Fragment(R.layout.fragment_home_category) {
 
     private fun observeModel() {
         startShimmer()
-        viewModel.fitGroups.observe(viewLifecycleOwner) { fitGroups ->
-            lifecycleScope.launch {
-                Log.d(TAG, "observeModel() activated")
-                stopShimmer()
-                val categoryItems = fitGroups.content.map {
-                    CategoryItem(
-                        title = it.fitGroupName,
-                        fitCount = "${it.frequency}회 / 1주",
-                        peopleCount = "${it.presentFitMateCount} / ${it.maxFitMate}",
-                        comment = it.introduction,
-                        fitGroupId = it.fitGroupId
-                    )
+        viewModel.run {
+            categoryItems.observe(viewLifecycleOwner) { categoryItems ->
+                lifecycleScope.launch {
+                    stopShimmer()
+                    (binding.recyclerViewCategory.adapter as CategoryAdapter).submitList(categoryItems.toList())
                 }
-                (binding.recyclerViewCategory.adapter as CategoryAdapter).submitList(categoryItems.toList())
+            }
+
+            errorMessage.observe(viewLifecycleOwner) { errorMessage ->
+                if(errorMessage != null) {
+                    Snackbar.make(binding.root, errorMessage, Snackbar.LENGTH_LONG).show()
+                }
             }
         }
     }
@@ -75,18 +74,18 @@ class HomeCategoryFragment: Fragment(R.layout.fragment_home_category) {
         binding.chipGroupCategory.setOnCheckedStateChangeListener { _, checkedIds ->
             if (checkedIds.isEmpty()) {
                 Log.d(TAG, "connect in 0")
-                viewModel.getFitGroups(true, 0, 1, 10)
+                viewModel.getGroups(true)
             } else {
                 val categoryId = chipToCategoryMap[checkedIds[0]] ?: return@setOnCheckedStateChangeListener
                 Log.d(TAG, "connect in $categoryId")
-                viewModel.getFitGroups(false, categoryId, 1, 5)
+                viewModel.getGroups(false, categoryId, 0, 5)
             }
         }
     }
 
     private fun getAllFitGroups() {
         binding.chipGroupCategory.clearCheck()
-        viewModel.getFitGroups(false, 0, 1, 10)
+        viewModel.getGroups(true)
     }
 
     private fun startShimmer() {
