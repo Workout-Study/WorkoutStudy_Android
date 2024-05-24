@@ -2,6 +2,8 @@ package com.fitmate.fitmate.presentation.ui.home
 
 import android.graphics.Color
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.util.Log
 import android.view.View
 import android.widget.Toast
@@ -54,24 +56,35 @@ class GroupJoinFragment: Fragment(R.layout.fragment_group_join) {
             setupImageSlider(groupDetail.multiMediaEndPoints)
         }
 
-        observeErrorMessages()
+        observeMessages()
     }
 
     private fun joinGroupConfirm() {
         binding.buttonJoinGroupConfirm.setOnClickListener {
             viewModel.registerFitMate(1, groupId) // requestUserId, fitGroupId
+
+            // Handler를 사용하여 1초 후에 네비게이션 동작을 실행
+            Handler(Looper.getMainLooper()).postDelayed({
+                findNavController().navigate(R.id.action_groupJoinFragment_to_homeFragment)
+            }, 500)
         }
     }
 
-    private fun observeErrorMessages() {
+    private fun observeMessages() {
         viewModel.errorMessage.observe(viewLifecycleOwner) { errorMessage ->
-            if (errorMessage != null) {
-                Snackbar.make(binding.root, errorMessage, Snackbar.LENGTH_LONG).show()
-                viewModel.clearErrorMessage() // 에러 메시지 초기화 메소드 추가 필요
+            if (!errorMessage.isNullOrEmpty()) {
+                Snackbar.make(binding.root, errorMessage, Snackbar.LENGTH_SHORT).show()
+                viewModel.clearErrorMessage()
+            }
+        }
+
+        viewModel.successMessage.observe(viewLifecycleOwner) { successMessage ->
+            if (!successMessage.isNullOrEmpty()) {
+                Snackbar.make(binding.root, successMessage, Snackbar.LENGTH_SHORT).show()
+                viewModel.clearSuccessMessage()
             }
         }
     }
-
 
     private fun updateUI(groupDetail: GetFitGroupDetail) {
         binding.run {
