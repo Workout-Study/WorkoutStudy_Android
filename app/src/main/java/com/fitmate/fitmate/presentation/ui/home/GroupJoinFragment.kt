@@ -11,17 +11,19 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.viewpager2.widget.ViewPager2
 import com.fitmate.fitmate.R
-import com.fitmate.fitmate.data.model.dto.GroupDetailResponse
+import com.fitmate.fitmate.data.model.dto.GetFitGroupDetail
 import com.fitmate.fitmate.databinding.FragmentGroupJoinBinding
 import com.fitmate.fitmate.presentation.ui.home.list.adapter.HomeViewPageAdapter
 import com.fitmate.fitmate.presentation.viewmodel.GroupViewModel
 import com.fitmate.fitmate.util.ControlActivityInterface
+import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class GroupJoinFragment: Fragment(R.layout.fragment_group_join) {
 
     private lateinit var binding: FragmentGroupJoinBinding
+    private val TAG = "GroupJoinFragment"
     private val viewModel: GroupViewModel by viewModels()
     private var groupId = -1
 
@@ -44,16 +46,34 @@ class GroupJoinFragment: Fragment(R.layout.fragment_group_join) {
 
         (activity as ControlActivityInterface).goneNavigationBar()
         binding.toolbarGroupJoin.setNavigationOnClickListener { findNavController().popBackStack() }
-        binding.buttonJoinGroupConfirm.setOnClickListener { findNavController().navigate(R.id.action_groupJoinFragment_to_homeFragment) }
+        joinGroupConfirm()
 
-        viewModel.groupDetail(groupId)
+        viewModel.getFitGroupDetail(groupId)
         viewModel.groupDetail.observe(viewLifecycleOwner) { groupDetail ->
             updateUI(groupDetail)
             setupImageSlider(groupDetail.multiMediaEndPoints)
         }
+
+        observeErrorMessages()
     }
 
-    private fun updateUI(groupDetail: GroupDetailResponse) {
+    private fun joinGroupConfirm() {
+        binding.buttonJoinGroupConfirm.setOnClickListener {
+            viewModel.registerFitMate(1, groupId) // requestUserId, fitGroupId
+        }
+    }
+
+    private fun observeErrorMessages() {
+        viewModel.errorMessage.observe(viewLifecycleOwner) { errorMessage ->
+            if (errorMessage != null) {
+                Snackbar.make(binding.root, errorMessage, Snackbar.LENGTH_LONG).show()
+                viewModel.clearErrorMessage() // 에러 메시지 초기화 메소드 추가 필요
+            }
+        }
+    }
+
+
+    private fun updateUI(groupDetail: GetFitGroupDetail) {
         binding.run {
             val adapter = HomeViewPageAdapter(requireContext(), groupDetail.multiMediaEndPoints)
             imageViewItemDayCurrentDate.adapter = adapter
@@ -68,7 +88,7 @@ class GroupJoinFragment: Fragment(R.layout.fragment_group_join) {
             textViewGroupDetailPresent.text = " 현재 ${groupDetail.presentFitMateCount}명"
             textViewGroupDetailCycle.text = " ${groupDetail.frequency}회 / 1주"
             chipGroupDetailCategory.text = when(groupDetail.category) {
-                1 ->  "헬스" 2 ->  "축구" 3 ->  "농구" 4 ->  "야구" 5 ->  "배드민턴" 6 ->  "필라테스" 7 ->  "기타"
+                1 ->  "등산" 2 ->  "생활 체육" 3 ->  "웨이트" 4 ->  "수영" 5 ->  "축구" 6 ->  "농구" 7 ->  "야구" 8 -> "바이킹" 9 -> "클라이밍"
                 else -> null
             }
 
