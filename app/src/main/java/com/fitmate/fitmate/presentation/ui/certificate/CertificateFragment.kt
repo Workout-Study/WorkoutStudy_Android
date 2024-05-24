@@ -198,7 +198,7 @@ class CertificateFragment : Fragment() {
 
                             //그룹 선택하러 이동
                             loadingTaskSettingStart()
-                            viewModel.getMyFitGroup(111111)
+                            viewModel.getMyFitGroup(567843)
                         }
 
                     }
@@ -272,10 +272,10 @@ class CertificateFragment : Fragment() {
                 certificationReset()
             }
             //TODO 최종 통신 실패했을 때 처리 필요
-            /*else{
+            else{
                 loadingTaskSettingEnd()
-                certificationReset()
-            }*/
+                //certificationReset()
+            }
         }
     }
 
@@ -286,11 +286,11 @@ class CertificateFragment : Fragment() {
                 // 타겟 그룹으로 최종 통신 수행(아래 코드를 해당 통신 옵저버로 이동시켜야함.)
                 it.fitRecordId?.let { recordId ->
                     val resisterObj =
-                        ResisterCertificationRecord("111111", recordId, viewModel.selectedTarget)
+                        ResisterCertificationRecord("567843", recordId, viewModel.selectedTarget)
                     viewModel.postResisterCertificationRecord(resisterObj)
                 }
             }
-            //TODO 최종 통신 실패했을 때 처리 필요
+            //TODO record 통신 실패했을 때 처리 필요
             /*else{
                 loadingTaskSettingEnd()
                 certificationReset()

@@ -155,7 +155,7 @@ class CertificationViewModel @Inject constructor(
     fun insertCertificateInitInfo() {
         val obj = DbCertification(
             id = 1,
-            userId = "111111",
+            userId = "567843",
             recordStartDate = Instant.now(),
             startImages = mutableListOf<Uri>().apply {
                 _startImageList.value?.forEach { data ->
@@ -251,7 +251,7 @@ class CertificationViewModel @Inject constructor(
                 }
 
             } catch (e: Exception) {
-
+                //통신 에러 처리
             }
 
         }

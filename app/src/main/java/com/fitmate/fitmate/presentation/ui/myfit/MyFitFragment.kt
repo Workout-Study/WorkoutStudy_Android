@@ -125,7 +125,7 @@ class MyFitFragment : Fragment() {
 
     private fun observeFitProgress() {
         observeNetworkMyProgress()
-        viewModel.getMyFitProgress("111111")
+        viewModel.getMyFitProgress("567843")
     }
 
     private fun observeNetworkMyProgress() =
@@ -152,7 +152,7 @@ class MyFitFragment : Fragment() {
             if (tempMonth != month){
                 tempMonth = month
                 val (startDate, endDate) = getStartAndEndInstantsForYearMonth(year, month)
-                viewModel.getMyFitRecordHistory("111111", startDate, endDate)
+                viewModel.getMyFitRecordHistory("567843", startDate, endDate)
             }
         }
 
