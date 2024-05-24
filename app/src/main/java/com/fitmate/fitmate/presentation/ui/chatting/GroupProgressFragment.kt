@@ -14,13 +14,14 @@ import com.fitmate.fitmate.databinding.FragmentProgressBinding
 import com.fitmate.fitmate.domain.model.FitProgressItem
 import com.fitmate.fitmate.presentation.ui.chatting.list.adapter.GroupProgressAdapter
 import com.fitmate.fitmate.presentation.viewmodel.GroupViewModel
+import com.fitmate.fitmate.presentation.viewmodel.VoteViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class GroupProgressFragment : Fragment(R.layout.fragment_progress) {
 
     private lateinit var binding: FragmentProgressBinding
-    private val viewModel: GroupViewModel by viewModels()
+    private val viewModel: VoteViewModel by viewModels()
     private lateinit var adapter: GroupProgressAdapter
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

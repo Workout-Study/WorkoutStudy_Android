@@ -17,6 +17,7 @@ import com.fitmate.fitmate.domain.model.VoteItem
 import com.fitmate.fitmate.domain.usecase.GroupUseCase
 import com.fitmate.fitmate.presentation.ui.chatting.list.adapter.GroupVoteAdapter
 import com.fitmate.fitmate.presentation.viewmodel.GroupViewModel
+import com.fitmate.fitmate.presentation.viewmodel.VoteViewModel
 import com.fitmate.fitmate.util.ControlActivityInterface
 import dagger.hilt.android.AndroidEntryPoint
 import java.time.ZonedDateTime
@@ -26,7 +27,7 @@ import java.time.format.DateTimeFormatter
 class GroupVoteFragment: Fragment(R.layout.fragment_group_vote) {
 
     private lateinit var binding: FragmentGroupVoteBinding
-    private val viewModel: GroupViewModel by viewModels()
+    private val viewModel: VoteViewModel by viewModels()
     private var groupId = -1
 
 

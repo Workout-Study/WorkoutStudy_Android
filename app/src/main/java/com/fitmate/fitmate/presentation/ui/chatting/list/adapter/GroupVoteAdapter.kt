@@ -10,8 +10,9 @@ import com.fitmate.fitmate.domain.model.VoteItem
 import com.fitmate.fitmate.domain.usecase.GroupUseCase
 import com.fitmate.fitmate.presentation.ui.chatting.list.GroupVoteViewHolder
 import com.fitmate.fitmate.presentation.viewmodel.GroupViewModel
+import com.fitmate.fitmate.presentation.viewmodel.VoteViewModel
 
-class GroupVoteAdapter(private val fragment: Fragment, private val viewModel: GroupViewModel, private val onclick: (VoteItem) -> Unit):
+class GroupVoteAdapter(private val fragment: Fragment, private val viewModel: VoteViewModel, private val onclick: (VoteItem) -> Unit):
     ListAdapter<VoteItem, GroupVoteViewHolder>(VoteItemDiffCallback) {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): GroupVoteViewHolder {
         val binding = ItemVoteBinding.inflate(LayoutInflater.from(parent.context), parent, false)

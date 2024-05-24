@@ -1,5 +1,6 @@
 package com.fitmate.fitmate.di.networkModule
 
+import com.fitmate.fitmate.BuildConfig
 import com.fitmate.fitmate.data.repository.GroupRepositoryImpl
 import com.fitmate.fitmate.data.source.remote.GroupService
 import com.fitmate.fitmate.domain.repository.GroupRepository
@@ -16,14 +17,12 @@ object GroupModule {
     @Provides
     @Singleton
     fun provideGroupService(retrofit: Retrofit): GroupService {
-        // val fitGroupBaseUrl = "http://43.202.247.71:8080"
-        val fitGroupBaseUrl = "https://run.mocky.io/v3/"
+        val fitGroupBaseUrl = "http://${BuildConfig.CHAT_SERVER_ADDRESS}:8080"
         return retrofit.newBuilder()
             .baseUrl(fitGroupBaseUrl)
             .build()
             .create(GroupService::class.java)
     }
-
     @Provides
     @Singleton
     fun providesContentRepository(groupService: GroupService): GroupRepository = GroupRepositoryImpl(groupService)
