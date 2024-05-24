@@ -273,7 +273,6 @@ class CertificateFragment : Fragment() {
             }
             //TODO 최종 통신 실패했을 때 처리 필요
             /*else{
-                Log.d("wpqkf","오류 초기화 수행")
                 loadingTaskSettingEnd()
                 certificationReset()
             }*/
@@ -290,15 +289,17 @@ class CertificateFragment : Fragment() {
                         ResisterCertificationRecord("111111", recordId, viewModel.selectedTarget)
                     viewModel.postResisterCertificationRecord(resisterObj)
                 }
-
             }
+            //TODO 최종 통신 실패했을 때 처리 필요
+            /*else{
+                loadingTaskSettingEnd()
+                certificationReset()
+            }*/
         }
     }
 
     private fun observeUploadImageResult() {
         viewModel.urlMap.observe(viewLifecycleOwner) { urlMap ->
-            Log.d("testt", viewModel.selectedTarget.toString())
-            //TODO 해당 Url을 room에 저장하고 가져와서 백엔드에 전달한다.
             val startUrl = urlMap["startUrls"]
             val endUrl = urlMap["endUrls"]
 
@@ -497,7 +498,6 @@ class CertificateFragment : Fragment() {
     }
 
     private fun certificationReset() {
-        Log.d("recordNetworkTest","초기화 메서드 실행")
         viewModel.deleteCertificationInfo()
     }
 
@@ -595,8 +595,6 @@ class CertificateFragment : Fragment() {
                             ?.toMutableList(),
                         certificateTime = totalElapsedTime)
                 )
-                Toast.makeText(requireContext(), "${resultGroupIdList}에 기록합니다.", Toast.LENGTH_SHORT)
-                    .show()
             } else {
                 Toast.makeText(requireContext(), "그룹을 하나 이상 선택하셔야합니다!", Toast.LENGTH_SHORT).show()
             }
@@ -692,20 +690,22 @@ class CertificateFragment : Fragment() {
     }
 
     private fun loadingTaskSettingStart() {
-        binding.apply {
-            constraintLayoutRootContent.alpha = 0.5f
-            buttonCertificateConfirm.isEnabled = false
-            buttonCertificateReset.isEnabled = false
-            progressBarSubmitLoading.visibility = View.VISIBLE
+        binding.loadingLayoutView.apply {
+            visibility = View.VISIBLE
+            alpha = 0.5f
+            isClickable = true
         }
+
+        binding.progressBarSubmitLoading.visibility = View.VISIBLE
     }
 
     private fun loadingTaskSettingEnd() {
-        binding.apply {
-            constraintLayoutRootContent.alpha = 1f
-            buttonCertificateConfirm.isEnabled = true
-            buttonCertificateReset.isEnabled = true
-            progressBarSubmitLoading.visibility = View.GONE
+        binding.loadingLayoutView.apply {
+            visibility = View.GONE
+            alpha = 1f
+            isClickable = false
         }
+
+        binding.progressBarSubmitLoading.visibility = View.GONE
     }
 }
