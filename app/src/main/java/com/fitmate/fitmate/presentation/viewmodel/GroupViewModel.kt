@@ -1,109 +1,132 @@
 package com.fitmate.fitmate.presentation.viewmodel
 
+import android.util.Log
+import android.widget.Toast
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.fitmate.fitmate.data.model.dto.EachFitResponse
-import com.fitmate.fitmate.data.model.dto.FitGroupDetail
-import com.fitmate.fitmate.data.model.dto.FitGroupProgress
-import com.fitmate.fitmate.data.model.dto.GroupDetailResponse
-import com.fitmate.fitmate.data.model.dto.GroupResponse
-import com.fitmate.fitmate.data.model.dto.VoteRequest
-import com.fitmate.fitmate.data.model.dto.VoteResponse
+import com.fitmate.fitmate.data.model.dto.FitGroup
+import com.fitmate.fitmate.data.model.dto.FitGroupFilter
+import com.fitmate.fitmate.data.model.dto.GetFitGroupDetail
+import com.fitmate.fitmate.data.model.dto.GetFitMateList
+import com.fitmate.fitmate.data.model.dto.RegisterResponse
+import com.fitmate.fitmate.domain.model.CategoryItem
 import com.fitmate.fitmate.domain.usecase.DBChatUseCase
 import com.fitmate.fitmate.domain.usecase.GroupUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import retrofit2.Response
 import javax.inject.Inject
 
 @HiltViewModel
 class GroupViewModel @Inject constructor(
-    private val groupUseCase: GroupUseCase
+    private val groupUseCase: GroupUseCase,
 ) : ViewModel() {
-    private val _fitGroups = MutableLiveData<GroupResponse>()
-    val fitGroups: LiveData<GroupResponse> = _fitGroups
 
-    private val _groupDetail = MutableLiveData<GroupDetailResponse>()
-    val groupDetail: LiveData<GroupDetailResponse> = _groupDetail
+    private val TAG = "GroupViewModel"
 
-    private val _fitGroupVotes = MutableLiveData<EachFitResponse>()
-    val fitGroupVotes: LiveData<EachFitResponse> = _fitGroupVotes
+    private val _fitGroupFilter = MutableLiveData<FitGroupFilter>()
+    val fitGroupFilter: LiveData<FitGroupFilter> = _fitGroupFilter
 
-    private val _fitMateList = MutableLiveData<FitGroupDetail>()
-    val fitMateList: LiveData<FitGroupDetail> = _fitMateList
+    private val _categoryItems = MutableLiveData<List<CategoryItem>>()
+    val categoryItems: LiveData<List<CategoryItem>> = _categoryItems
 
-    private val _fitMateProgress = MutableLiveData<FitGroupProgress>()
-    val fitMateProgress: LiveData<FitGroupProgress> = _fitMateProgress
+    private val _groupDetail = MutableLiveData<GetFitGroupDetail>()
+    val groupDetail: LiveData<GetFitGroupDetail> = _groupDetail
 
-    private val _voteResponse = MutableLiveData<Response<VoteResponse>>()
-    val voteResponse: LiveData<Response<VoteResponse>> = _voteResponse
+    private val _getMate = MutableLiveData<GetFitMateList>()
+    val getMate: LiveData<GetFitMateList> = _getMate
 
+    private val _fitGroup = MutableStateFlow<List<FitGroup>>(emptyList())
+    val fitGroup: StateFlow<List<FitGroup>> = _fitGroup
+
+    private val _register = MutableLiveData<RegisterResponse>()
+    val register: LiveData<RegisterResponse> = _register
 
     private val _isLoading = MutableStateFlow(false)
     val isLoading: StateFlow<Boolean> = _isLoading
 
-    private var isDataLoadedOnce = false
+    private val _errorMessage = MutableLiveData<String?>()
+    val errorMessage: LiveData<String?> = _errorMessage
 
-    fun getFitGroups(withMaxGroup: Boolean, category: Int, pageNumber: Int, pageSize: Int) {
-        viewModelScope.launch {
-            val response = groupUseCase(withMaxGroup, category, pageNumber, pageSize)
-            _fitGroups.value = response
-        }
-    }
-
-    fun groupDetail(fitGroupId: Int) {
-        viewModelScope.launch{
-            val response = groupUseCase(fitGroupId)
-            _groupDetail.value = response
-        }
-    }
-    fun fetchFitGroupVotes() {
-        viewModelScope.launch {
-            val response = groupUseCase.eachFitGroupVotes()
-            _fitGroupVotes.value = response.body()
-        }
-    }
-
-    fun getFitMateList() {
+    fun getGroups(withMaxGroup: Boolean, category: Int? = null, pageNumber: Int? = null, pageSize: Int? = null) {
         viewModelScope.launch {
             _isLoading.value = true
             try {
-                val response = groupUseCase.getFitMateList()
-                if (response.isSuccessful) {
-                    _fitMateList.value = response.body()
+                val response = if (category != null && pageNumber != null && pageSize != null) {
+                    groupUseCase.fitGroupFilter(withMaxGroup, category, pageNumber, pageSize)
+                } else {
+                    groupUseCase.fitGroupAll(withMaxGroup)
                 }
+
+                val categoryItems = response.content.map {
+                    CategoryItem(
+                        title = it.fitGroupName,
+                        fitCount = "${it.frequency}회 / 1주",
+                        peopleCount = "${it.presentFitMateCount} / ${it.maxFitMate}",
+                        comment = it.introduction,
+                        fitGroupId = it.fitGroupId
+                    )
+                }
+                _categoryItems.value = categoryItems
                 _isLoading.value = false
             } catch (e: Exception) {
-                // 에러 처리
+                Log.d(TAG, "There is NO DATA in Server. $e")
+                _errorMessage.value = "서버에 데이터가 존재하지 않습니다. [ ${e} ]"
                 _isLoading.value = false
             }
         }
     }
 
-    fun getFitMateProgress() {
+    fun getFitGroupDetail(fitGroupId: Int){
         viewModelScope.launch {
             _isLoading.value = true
             try {
-                val response = groupUseCase.getFitMateProgress()
-                if(response.isSuccessful) {
-                    _fitMateProgress.value = response.body()
-                }
+                val response = groupUseCase.getFitGroupDetail(fitGroupId)
+                _groupDetail.value = response
+                _isLoading.value = false
             } catch (e: Exception) {
-                // 에러 처리
+                Log.d(TAG, "There is NO DATA in Server. $e")
+                _errorMessage.value = "해당 그룹은 데이터가 존재하지 않습니다. [ ${e} ]"
                 _isLoading.value = false
             }
         }
     }
 
-    fun registerVote(voteRequest: VoteRequest) {
+    fun getFitMateList(fitGroupId: Int) {
         viewModelScope.launch {
-            val response = groupUseCase.registerVote(voteRequest)
-            _voteResponse.postValue(response)
+            _isLoading.value = true
+            try {
+                val response = groupUseCase.getFitMateList(fitGroupId)
+                _getMate.value = response.body()
+                _isLoading.value = false
+            } catch (e: Exception) {
+                _isLoading.value = false
+            }
         }
     }
 
+    fun registerFitMate(requestUserId: Int, fitGroupId:Int) {
+        viewModelScope.launch {
+            _isLoading.value = true
+            try {
+                val response = groupUseCase.registerFitMate(requestUserId, fitGroupId)
+                _register.value = response
+                _isLoading.value = false
+            } catch (e: Exception) {
+                Log.d(TAG, "Request user already included in fit group. $e")
+                _errorMessage.value = "요청하신 사용자는 이미 해당 그룹에 가입되어 있습니다. [ ${e} ]"
+                _isLoading.value = false
+            }
+        }
+    }
+
+    fun clearErrorMessage() {
+        _errorMessage.value = null
+    }
 }
