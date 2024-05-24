@@ -54,6 +54,10 @@ class GroupViewModel @Inject constructor(
     private val _errorMessage = MutableLiveData<String?>()
     val errorMessage: LiveData<String?> = _errorMessage
 
+    private val _successMessage = MutableLiveData<String?>()
+    val successMessage: LiveData<String?> = _successMessage
+
+
     fun getGroups(withMaxGroup: Boolean, category: Int? = null, pageNumber: Int? = null, pageSize: Int? = null) {
         viewModelScope.launch {
             _isLoading.value = true
@@ -111,16 +115,19 @@ class GroupViewModel @Inject constructor(
         }
     }
 
-    fun registerFitMate(requestUserId: Int, fitGroupId:Int) {
+    fun registerFitMate(requestUserId: Int, fitGroupId: Int) {
         viewModelScope.launch {
             _isLoading.value = true
             try {
                 val response = groupUseCase.registerFitMate(requestUserId, fitGroupId)
                 _register.value = response
+                _errorMessage.value = null // 에러 메시지를 명시적으로 null로 설정
+                _successMessage.value = "그룹 가입 완료" // 성공 메시지 설정
                 _isLoading.value = false
             } catch (e: Exception) {
                 Log.d(TAG, "Request user already included in fit group. $e")
-                _errorMessage.value = "요청하신 사용자는 이미 해당 그룹에 가입되어 있습니다. [ ${e} ]"
+                _errorMessage.value = "이미 해당 그룹에 가입되어 있습니다."
+                _successMessage.value = null // 성공 메시지를 명시적으로 null로 설정
                 _isLoading.value = false
             }
         }
@@ -128,5 +135,9 @@ class GroupViewModel @Inject constructor(
 
     fun clearErrorMessage() {
         _errorMessage.value = null
+    }
+
+    fun clearSuccessMessage() {
+        _successMessage.value = null
     }
 }
