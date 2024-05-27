@@ -10,11 +10,11 @@ import javax.inject.Inject
 
 class VoteUseCase @Inject constructor(private val voteRepository: VoteRepository) {
 
-    suspend fun myFitGroupVotes(): Result<List<MyFitGroupVote>> = voteRepository.myFitGroupVotes()
+    suspend fun myFitGroupVotes(requestUserId: Int): Result<List<MyFitGroupVote>> = voteRepository.myFitGroupVotes(requestUserId)
 
-    suspend fun eachFitGroupVotes(): Response<EachFitResponse> = voteRepository.getEachGroupVotes()
+    suspend fun eachFitGroupVotes(fitGroupId: Int, userId: Int): Response<EachFitResponse> = voteRepository.getEachGroupVotes(fitGroupId, userId)
 
-    suspend fun getFitMateProgress(): Response<FitGroupProgress> = voteRepository.getFitMateProgress()
+    suspend fun getFitMateProgress(fitGroupId: Int): Response<FitGroupProgress> = voteRepository.getFitMateProgress(fitGroupId)
 
     suspend fun registerVote(voteRequest: VoteRequest) = voteRepository.registerVote(voteRequest)
 
