@@ -29,7 +29,7 @@ class HomeMainFragment : Fragment(R.layout.fragment_home_main) {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        viewModel.fetchMyFitGroupVotes()
+        viewModel.fetchMyFitGroupVotes(1)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

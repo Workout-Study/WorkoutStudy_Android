@@ -28,6 +28,7 @@ class VoteViewHolder(private val binding: ItemVoteBinding, private val fragment:
         Glide.with(binding.imageViewItemCategoryFitgroupThumbnail.context)
             .load(item.image)
             .transform(CenterCrop(), RoundedCorners(16))
+            .error(R.drawable.ic_launcher_logo)
             .into(binding.imageViewItemCategoryFitgroupThumbnail)
     }
 }
