@@ -28,7 +28,7 @@ class GroupProgressFragment : Fragment(R.layout.fragment_progress) {
         super.onViewCreated(view, savedInstanceState)
         binding = FragmentProgressBinding.bind(view)
 
-        viewModel.getFitMateProgress()
+        viewModel.getFitMateProgress(1) // TODO 임시, 채팅 프래그먼트에서 그룹아이디 값 가져와야 함.
         setupRecyclerView()
         setupObservers()
 
@@ -57,6 +57,6 @@ class GroupProgressFragment : Fragment(R.layout.fragment_progress) {
             adapter.submitList(newProgress)
         }
 
-        viewModel.getFitMateProgress()
+        viewModel.getFitMateProgress(1)
     }
 }

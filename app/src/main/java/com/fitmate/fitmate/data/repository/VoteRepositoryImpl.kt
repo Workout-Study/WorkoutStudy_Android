@@ -11,16 +11,16 @@ import retrofit2.Response
 
 class VoteRepositoryImpl(private val voteService: VoteService): VoteRepository {
 
-    override suspend fun myFitGroupVotes(): Result<List<MyFitGroupVote>> {
-        return Result.success(voteService.getMyFitGroupVotes().body()!!.fitGroupList)
+    override suspend fun myFitGroupVotes(requestUserId: Int): Result<List<MyFitGroupVote>> {
+        return Result.success(voteService.getMyFitGroupVotes(requestUserId).body()!!.fitGroupList)
     }
 
-    override suspend fun getEachGroupVotes(): Response<EachFitResponse> {
-        return voteService.getEachFitGroupVotes()
+    override suspend fun getEachGroupVotes(fitGroupId: Int, userId: Int): Response<EachFitResponse> {
+        return voteService.getEachFitGroupVotes(fitGroupId, userId)
     }
 
-    override suspend fun getFitMateProgress(): Response<FitGroupProgress> {
-        return voteService.getFitMateProgress()
+    override suspend fun getFitMateProgress(fitGroupId: Int): Response<FitGroupProgress> {
+        return voteService.getFitMateProgress(fitGroupId)
     }
 
     override suspend fun registerVote(voteRequest: VoteRequest): Response<VoteResponse> {

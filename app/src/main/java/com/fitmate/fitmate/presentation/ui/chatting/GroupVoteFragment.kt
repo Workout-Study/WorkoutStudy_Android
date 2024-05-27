@@ -40,7 +40,7 @@ class GroupVoteFragment: Fragment(R.layout.fragment_group_vote) {
             Log.d("woojugoing_group_id", groupId.toString())
             Toast.makeText(context, "Error: Group not found!", Toast.LENGTH_SHORT).show()
         }
-        viewModel.fetchFitGroupVotes()
+        viewModel.fetchFitGroupVotes(groupId, 1)
     }
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
