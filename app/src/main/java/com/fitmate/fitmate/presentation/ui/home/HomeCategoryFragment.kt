@@ -74,18 +74,18 @@ class HomeCategoryFragment: Fragment(R.layout.fragment_home_category) {
         binding.chipGroupCategory.setOnCheckedStateChangeListener { _, checkedIds ->
             if (checkedIds.isEmpty()) {
                 Log.d(TAG, "connect in 0")
-                viewModel.getGroups(true)
+                viewModel.getGroups(true, null, null, 1000)
             } else {
                 val categoryId = chipToCategoryMap[checkedIds[0]] ?: return@setOnCheckedStateChangeListener
                 Log.d(TAG, "connect in $categoryId")
-                viewModel.getGroups(false, categoryId, 0, 5)
+                viewModel.getGroups(true, categoryId, 0, 1000)
             }
         }
     }
 
     private fun getAllFitGroups() {
         binding.chipGroupCategory.clearCheck()
-        viewModel.getGroups(true)
+        viewModel.getGroups(true, null, null, 1000)
     }
 
     private fun startShimmer() {

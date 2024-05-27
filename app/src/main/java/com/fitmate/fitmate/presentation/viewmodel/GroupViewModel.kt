@@ -62,10 +62,10 @@ class GroupViewModel @Inject constructor(
         viewModelScope.launch {
             _isLoading.value = true
             try {
-                val response = if (category != null && pageNumber != null && pageSize != null) {
-                    groupUseCase.fitGroupFilter(withMaxGroup, category, pageNumber, pageSize)
+                val response = if (category != null && pageNumber != null) {
+                    groupUseCase.fitGroupFilter(withMaxGroup, category, pageNumber, pageSize!!)
                 } else {
-                    groupUseCase.fitGroupAll(withMaxGroup)
+                    groupUseCase.fitGroupAll(withMaxGroup, pageSize!!)
                 }
 
                 val categoryItems = response.content.map {
@@ -74,7 +74,12 @@ class GroupViewModel @Inject constructor(
                         fitCount = "${it.frequency}회 / 1주",
                         peopleCount = "${it.presentFitMateCount} / ${it.maxFitMate}",
                         comment = it.introduction,
-                        fitGroupId = it.fitGroupId
+                        fitGroupId = it.fitGroupId,
+                        thumbnail = try {
+                           it.multiMediaEndPoints[0]
+                        } catch (e: Exception) {
+                            "null"
+                        }
                     )
                 }
                 _categoryItems.value = categoryItems

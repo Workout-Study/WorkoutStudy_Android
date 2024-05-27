@@ -14,8 +14,8 @@ class GroupRepositoryImpl(private val groupService: GroupService) : GroupReposit
         return groupService.fitGroupFilter(withMaxGroup, category, pageNumber, pageSize)
     }
 
-    override suspend fun fitGroupAll(withMaxGroup: Boolean): FitGroupFilter {
-        return groupService.fitGroupAll(withMaxGroup)
+    override suspend fun fitGroupAll(withMaxGroup: Boolean, pageSize: Int): FitGroupFilter {
+        return groupService.fitGroupAll(withMaxGroup, pageSize)
     }
 
     override suspend fun getFitGroupDetail(fitGroupId: Int): GetFitGroupDetail {

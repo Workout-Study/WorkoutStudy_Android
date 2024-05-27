@@ -13,7 +13,7 @@ class GroupUseCase @Inject constructor(private val groupRepository: GroupReposit
     suspend fun fitGroupFilter(withMaxGroup: Boolean, category: Int, pageNumber: Int, pageSize: Int)
     : FitGroupFilter = groupRepository.fitGroupFilter(withMaxGroup, category, pageNumber, pageSize)
 
-    suspend fun fitGroupAll(withMaxGroup: Boolean): FitGroupFilter = groupRepository.fitGroupAll(withMaxGroup)
+    suspend fun fitGroupAll(withMaxGroup: Boolean, pageSize: Int): FitGroupFilter = groupRepository.fitGroupAll(withMaxGroup, pageSize)
 
     suspend fun getFitGroupDetail(fitGroupId: Int): GetFitGroupDetail = groupRepository.getFitGroupDetail(fitGroupId)
 

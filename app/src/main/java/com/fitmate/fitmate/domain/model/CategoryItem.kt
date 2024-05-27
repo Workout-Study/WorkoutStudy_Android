@@ -5,5 +5,6 @@ data class CategoryItem(
     val fitCount: String,
     val peopleCount: String,
     val comment: String,
-    val fitGroupId: Int
+    val fitGroupId: Int,
+    val thumbnail: String
 )

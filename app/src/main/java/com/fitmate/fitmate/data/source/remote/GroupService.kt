@@ -23,7 +23,8 @@ interface GroupService {
 
     @GET("/fit-group-service/groups/filters")
     suspend fun fitGroupAll(
-        @Query("withMaxGroup") withMaxGroup: Boolean
+        @Query("withMaxGroup") withMaxGroup: Boolean,
+        @Query("pageSize") pageSize: Int
     ): FitGroupFilter
 
     @GET("/fit-group-service/groups/{fit-group-id}")

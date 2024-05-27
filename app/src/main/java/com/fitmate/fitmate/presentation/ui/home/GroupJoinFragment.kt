@@ -65,7 +65,7 @@ class GroupJoinFragment: Fragment(R.layout.fragment_group_join) {
 
             // Handler를 사용하여 1초 후에 네비게이션 동작을 실행
             Handler(Looper.getMainLooper()).postDelayed({
-                findNavController().navigate(R.id.action_groupJoinFragment_to_homeFragment)
+                findNavController().popBackStack()
             }, 500)
         }
     }

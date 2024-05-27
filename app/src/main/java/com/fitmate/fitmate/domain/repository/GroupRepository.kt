@@ -9,7 +9,7 @@ import retrofit2.Response
 interface GroupRepository {
     suspend fun fitGroupFilter(withMaxGroup: Boolean, category: Int, pageNumber: Int, pageSize: Int): FitGroupFilter
 
-    suspend fun fitGroupAll(withMaxGroup: Boolean): FitGroupFilter
+    suspend fun fitGroupAll(withMaxGroup: Boolean, pageSize: Int): FitGroupFilter
 
     suspend fun getFitGroupDetail(fitGroupId: Int): GetFitGroupDetail
 
