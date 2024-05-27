@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <ImageView
+        android:id="@+id/imageViewItemProgressBackground"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.5"
+        app:srcCompat="@drawable/bg_rounded_group_4"
+        app:tint="@color/violet" />
+
+    <ImageView
+        android:id="@+id/imageViewItemProgressThumbnail"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_marginStart="20dp"
+        android:background="@drawable/ic_circle"
+        android:contentDescription="@null"
+        app:layout_constraintBottom_toBottomOf="@+id/imageViewItemProgressBackground"
+        app:layout_constraintStart_toStartOf="@+id/imageViewItemProgressBackground"
+        app:layout_constraintTop_toTopOf="@+id/imageViewItemProgressBackground" />
+
+    <TextView
+        android:id="@+id/textViewItemProgressName"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:maxLines="1"
+        android:ellipsize="end"
+        android:layout_marginStart="10dp"
+        android:textAppearance="@style/Font.semibold16"
+        android:textColor="@color/white"
+        app:layout_constraintStart_toEndOf="@+id/imageViewItemProgressThumbnail"
+        app:layout_constraintEnd_toEndOf="@+id/imageViewItemProgressBackground"
+        app:layout_constraintTop_toTopOf="@+id/imageViewItemProgressThumbnail" />
+
+    <ProgressBar
+        android:id="@+id/progressBarItemProgress"
+        style="?android:attr/progressBarStyleHorizontal"
+        android:layout_width="0dp"
+        android:layout_height="25dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="20dp"
+        android:progressDrawable="@drawable/drawable_progress"
+        app:layout_constraintBottom_toBottomOf="@+id/imageViewItemProgressThumbnail"
+        app:layout_constraintEnd_toEndOf="@+id/imageViewItemProgressBackground"
+        app:layout_constraintStart_toEndOf="@+id/imageViewItemProgressThumbnail"
+        app:layout_constraintTop_toBottomOf="@+id/textViewItemProgressName" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="@+id/progressBarItemProgress"
+        app:layout_constraintEnd_toEndOf="@+id/progressBarItemProgress"
+        app:layout_constraintTop_toTopOf="@+id/progressBarItemProgress"
+        app:layout_constraintBottom_toBottomOf="@+id/progressBarItemProgress"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

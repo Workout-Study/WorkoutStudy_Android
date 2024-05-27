@@ -1,0 +1,335 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+        <variable
+            name="fragment_make_group"
+            type="com.fitmate.fitmate.presentation.ui.mygroup.MakeGroupFragment" />
+        <variable
+            name="viewModel"
+            type="com.fitmate.fitmate.presentation.viewmodel.MakeGroupViewModel" />
+    </data>
+
+
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/zircon">
+
+        <LinearLayout
+            android:id="@+id/rootLayout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <com.google.android.material.appbar.MaterialToolbar
+                android:id="@+id/materialToolbar2"
+                style="@style/Theme.Fitmate.Toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:minHeight="?attr/actionBarSize"
+                android:theme="?attr/actionBarTheme"
+                app:title="@string/make_group_scr_toolbar" />
+
+            <ScrollView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="847dp"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginRight="20dp">
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:layout_marginTop="10dp"
+                        android:id="@+id/textInputLayoutSetGroupName"
+                        style="?attr/textInputFilledStyle"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="@string/make_group_scr_group_name_insert"
+                        app:hintTextAppearance="@style/Font.medium12"
+                        app:boxBackgroundColor="@color/gray"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/editTextSetGroupName"
+                            android:layout_width="match_parent"
+                            android:maxLines="1"
+                            android:inputType="text"
+                            android:nextFocusDown="@id/editTextSetBankAccount"
+                            android:text="@={viewModel.groupName}"
+                            android:textAppearance="@style/Font.medium20"
+                            android:layout_height="wrap_content" />
+
+                    </com.google.android.material.textfield.TextInputLayout>
+
+
+                    <TextView
+                        android:id="@+id/textViewMakeGroupAccount"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="20dp"
+                        android:text="@string/make_group_scr_account"
+                        android:textAppearance="@style/Font.medium16"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/textInputLayoutSetGroupName" />
+
+                    <Button
+                        style="@style/Widget.MaterialComponents.Button.Icon"
+                        android:id="@+id/buttonMakeGroupSelectBank"
+                        android:layout_width="wrap_content"
+                        android:layout_height="50dp"
+                        android:layout_marginTop="10dp"
+                        android:backgroundTint="@color/stateBlue"
+                        android:text="@{viewModel.bankInfo.key}"
+                        android:onClick="@{()-> fragment_make_group.collapseBottomSheet()}"
+                        android:textAppearance="@style/Font.medium12"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/textViewMakeGroupAccount" />
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/textInputLayoutSetBankAccount"
+                        style="?attr/textInputFilledStyle"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="10dp"
+                        android:hint="@string/make_group_scr_account_insert"
+                        app:hintTextAppearance="@style/Font.medium12"
+                        app:boxBackgroundColor="@color/gray"
+                        app:layout_constraintBottom_toBottomOf="@+id/buttonMakeGroupSelectBank"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toEndOf="@+id/buttonMakeGroupSelectBank"
+                        app:layout_constraintTop_toTopOf="@+id/buttonMakeGroupSelectBank">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/editTextSetBankAccount"
+                            android:layout_width="match_parent"
+                            android:text="@={viewModel.bankAccount}"
+                            android:textAppearance="@style/Font.medium20"
+                            android:layout_height="wrap_content"
+                            android:inputType="phone" />
+
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <TextView
+                        android:id="@+id/textViewMakeGroupCategory"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="20dp"
+                        android:text="@string/make_group_scr_category"
+                        android:textAppearance="@style/Font.medium16"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/buttonMakeGroupSelectBank" />
+
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
+                        android:id="@+id/spinnerMakeGroupCategory"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="10dp"
+                        app:layout_constraintEnd_toStartOf="@+id/seekBarMakeGroupFitNum"
+                        app:layout_constraintHorizontal_bias="0.0"
+                        android:backgroundTint="@color/white"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/textViewMakeGroupCategory">
+
+                        <AutoCompleteTextView
+                            android:id="@+id/editTextCategorySelect"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            android:backgroundTint="@color/white"
+                            android:hint="@string/make_group_scr_category"
+                            android:textAppearance="@style/Font.medium20"
+                            android:onClick="@{() -> fragment_make_group.hideKeyboard()}"
+                            android:focusable="false"
+                            android:inputType="none"
+                            app:simpleItems="@array/group_category" />
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <TextView
+                        android:id="@+id/textViewMakeGroupFitNum"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="100dp"
+                        tools:text="인증 주기 설정"
+                        android:text="@{@string/make_group_scr_fit_num(viewModel.groupFitCycle)}"
+                        android:textAppearance="@style/Font.medium16"
+                        app:layout_constraintBottom_toBottomOf="@+id/textViewMakeGroupCategory"
+                        app:layout_constraintStart_toEndOf="@+id/textViewMakeGroupCategory"
+                        app:layout_constraintTop_toTopOf="@+id/textViewMakeGroupCategory"
+                        app:layout_constraintVertical_bias="0.5" />
+
+                    <com.google.android.material.slider.Slider
+                        android:id="@+id/seekBarMakeGroupFitNum"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:valueFrom="0.0"
+                        android:valueTo="7.0"
+                        android:stepSize="1.0"
+                        app:layout_constraintBottom_toBottomOf="@+id/spinnerMakeGroupCategory"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toEndOf="@+id/spinnerMakeGroupCategory"
+                        app:layout_constraintTop_toTopOf="@+id/spinnerMakeGroupCategory" />
+
+                    <TextView
+                        android:id="@+id/textViewMakeGroupPeople"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="20dp"
+                        tools:text="최대 인원수 설정"
+                        android:text="@{@string/make_group_scr_people(viewModel.groupFitMateLimit)}"
+                        android:textAppearance="@style/Font.medium16"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/spinnerMakeGroupCategory" />
+
+                    <com.google.android.material.slider.Slider
+                        android:id="@+id/seekBarMakeGroupPeople"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:valueFrom="0.0"
+                        android:valueTo="20.0"
+                        android:stepSize="1.0"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintHorizontal_bias="0.0"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/textViewMakeGroupPeople" />
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/textInputLayoutSetGroupComment"
+                        android:layout_marginTop="10dp"
+                        style="?attr/textInputFilledStyle"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="@string/make_group_scr_comment_insert"
+                        app:hintTextAppearance="@style/Font.medium12"
+                        app:boxBackgroundColor="@color/gray"
+                        app:layout_constraintTop_toBottomOf="@+id/seekBarMakeGroupPeople">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/editTextSetGroupComment"
+                            android:layout_width="match_parent"
+                            android:text="@={viewModel.groupContent}"
+                            android:textAppearance="@style/Font.medium20"
+                            android:layout_height="wrap_content" />
+
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <TextView
+                        android:id="@+id/textViewMakeGroupPhoto"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="20dp"
+                        android:text="@string/make_group_scr_background"
+                        android:textAppearance="@style/Font.medium16"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/textInputLayoutSetGroupComment" />
+
+                    <LinearLayout
+                        android:id="@+id/imageViewCertificateContainerStart"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/bg_rounded_rectangle"
+                        android:backgroundTint="@color/gray"
+                        android:orientation="horizontal"
+                        android:padding="10dp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/textViewMakeGroupPhoto">
+
+
+                        <com.tans.horizontalnestedscrollview.HorizontalNestedScrollView
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:fillViewport="true">
+
+                            <LinearLayout
+                                android:layout_width="wrap_content"
+                                android:layout_height="match_parent"
+                                android:orientation="horizontal">
+
+                                <androidx.recyclerview.widget.RecyclerView
+                                    android:id="@+id/recyclerGroupImage"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_gravity="center_vertical"
+                                    android:nestedScrollingEnabled="true"
+                                    android:orientation="horizontal"
+                                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                                    tools:itemCount="2"
+                                    tools:listitem="@layout/item_make_group_image" />
+
+                                <androidx.cardview.widget.CardView
+                                    android:id="@+id/cardViewItemCertificateStart"
+                                    android:layout_width="70dp"
+                                    android:layout_height="70dp"
+                                    android:layout_gravity="center_vertical"
+                                    android:layout_marginStart="5dp"
+                                    android:elevation="0dp"
+                                    app:cardCornerRadius="10dp">
+
+                                    <ImageView
+                                        android:id="@+id/imageViewFitStartSelectImage"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="match_parent"
+                                        android:background="@color/dark_gray"
+                                        android:scaleType="centerInside"
+                                        android:onClick="@{() -> fragment_make_group.onClickAddImageButton()}"
+                                        android:src="@drawable/add_picture" />
+
+                                </androidx.cardview.widget.CardView>
+
+
+                            </LinearLayout>
+
+
+                        </com.tans.horizontalnestedscrollview.HorizontalNestedScrollView>
+
+                    </LinearLayout>
+
+                    <Button
+                        android:id="@+id/buttonMakeGroupConfirm"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="40dp"
+                        android:text="@string/make_group_scr_confirm"
+                        android:textAppearance="@style/Font.bold20"
+                        android:textColor="@color/turquoise"
+                        android:onClick="@{() -> fragment_make_group.onclickConfirmButton()}"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintHorizontal_bias="0.5"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/imageViewCertificateContainerStart" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+            </ScrollView>
+        </LinearLayout>
+
+        <include
+            android:id="@+id/bankBottomSheetLayout"
+            layout="@layout/bank_bottom_sheet"/>
+
+        <com.airbnb.lottie.LottieAnimationView
+            android:id="@+id/progressBarSubmitLoading"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            app:lottie_rawRes="@raw/loading_progress"
+            android:layout_gravity="center"
+            app:lottie_autoPlay="true"
+            app:lottie_loop="true"/>
+
+        <View
+            android:id="@+id/loadingLayoutView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="gone"
+            android:background="@color/white"/>
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
+</layout>

@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <data>
+        <variable
+            name="data"
+            type="com.fitmate.fitmate.domain.model.LicenseItem" />
+    </data>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/textViewLicenseItemTitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@{data.name}"
+            android:textAppearance="@style/Font.bold16" />
+
+        <TextView
+            android:id="@+id/textViewLicenseItemLink"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:clickable="true"
+            android:focusable="true"
+            android:text="@{data.url}"
+            android:textAppearance="@style/Font.regular12"
+            android:textColor="#0000FF" />
+
+        <TextView
+            android:id="@+id/textViewLicenseItemCopyright"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@{data.copyright}"
+            android:textAppearance="@style/Font.regular12" />
+
+        <TextView
+            android:id="@+id/textViewLicenseItemlicense"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@{data.license}"
+            android:textAppearance="@style/Font.regular12" />
+
+    </LinearLayout>
+</layout>

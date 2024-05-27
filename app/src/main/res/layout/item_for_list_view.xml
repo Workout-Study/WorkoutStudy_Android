@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+    </data>
+
+    <TextView
+        android:id="@+id/text1"
+        android:layout_width="150dp"
+        android:layout_height="wrap_content"
+        android:text="sadfjh"
+        android:maxLines="1"
+        android:ellipsize="end"
+        android:textAppearance="@style/Font.regular10"
+        android:textColor="@color/white"
+        android:textSize="14sp"
+        tools:text="강현구강현구강현구강현구" />
+</layout>

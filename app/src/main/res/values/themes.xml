@@ -1,0 +1,42 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+
+    <style name="Base.Theme.Fitmate" parent="Theme.Material3.DayNight.NoActionBar">
+        <item name="colorPrimary">@color/violet</item>
+        <item name="colorSecondary">@color/stateBlue</item>
+        <item name="colorAccent">@color/turquoise</item>
+        <item name="backgroundColor">@color/zircon</item>
+    </style>
+
+    <style name="Theme.Fitmate" parent="Base.Theme.Fitmate" />
+
+    <style name="Theme.Fitmate.Toolbar">
+        <item name="background">@color/zircon</item>
+        <item name="titleTextColor">@color/violet</item>
+        <item name="titleTextAppearance">@style/Font.bold20</item>
+        <item name="navigationIcon">@drawable/ic_baseline_back_24</item>
+        <item name="navigationIconTint">@color/violet</item>
+    </style>
+
+    <style name="Theme.Fitmate.Chip" parent="@style/Widget.Material3.Chip.Assist">
+        <item name="android:textAppearance">@style/Font.regular12</item>
+    </style>
+
+    <style name="Theme.Fitmate.Dialog" parent="ThemeOverlay.Material3.MaterialAlertDialog">
+        <item name="android:fontFamily">@font/pretendard_medium</item>
+        <item name="android:background">@color/zircon</item>
+    </style>
+
+    <style name="Theme.Fitmate.license" parent="ThemeOverlay.Material3.MaterialAlertDialog">
+        <item name="android:fontFamily">@font/pretendard_medium</item>
+        <item name="android:background">@color/zircon</item>
+        <item name="android:textSize">@dimen/text_XS</item>
+    </style>
+
+    <style name="Theme.Fitmate.Splash" parent="Theme.SplashScreen">
+        <item name="windowSplashScreenBackground">@color/violet</item>
+        <item name="windowSplashScreenAnimatedIcon">@drawable/ic_launcher_splash</item>
+        <item name="windowSplashScreenAnimationDuration">300</item>
+        <item name="postSplashScreenTheme">@style/Theme.Fitmate</item>
+    </style>
+
+</resources>

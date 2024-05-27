@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/homeFragment"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:icon="@drawable/ic_baseline_home_24"
+        android:title="@string/menu_home" />
+    <item
+        android:id="@+id/myFitFragment"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:icon="@drawable/ic_baseline_monitor_24"
+        android:title="@string/menu_myfit" />
+    <item
+        android:id="@+id/myGroupFragment"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:icon="@drawable/ic_baseline_chat_24"
+        android:title="@string/menu_chat" />
+    <item
+        android:id="@+id/userInfoFragment"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:icon="@drawable/ic_baseline_people_24"
+        android:title="@string/menu_my_page" />
+</menu>

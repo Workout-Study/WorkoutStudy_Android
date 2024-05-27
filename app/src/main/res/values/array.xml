@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="group_category">
+        <item>등산</item>
+        <item>생활 체육</item>
+        <item>웨이트</item>
+        <item>수영</item>
+        <item>축구</item>
+        <item>농구</item>
+        <item>야구</item>
+        <item>바이킹</item>
+        <item>클라이밍</item>
+    </string-array>
+</resources>

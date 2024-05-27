@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:toos="http://schemas.android.com/tools">
+
+    <data>
+        <variable
+            name="data"
+            type="com.fitmate.fitmate.domain.model.ChatItem" />
+    </data>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/containerItemChattingChatLeft"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <ImageView
+                android:id="@+id/imageViewItemChattingFitMateImageLeft"
+                android:layout_width="45dp"
+                android:layout_height="45dp"
+                android:src="@drawable/ic_launcher_logo"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/textViewItemChattingFitMateNameLeft"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="5dp"
+                android:textAppearance="@style/Font.bold16"
+                app:layout_constraintBottom_toTopOf="@+id/imageViewItemChattingFitMateImageLeft"
+                app:layout_constraintStart_toEndOf="@+id/imageViewItemChattingFitMateImageLeft"
+                toos:text="강현구" />
+
+            <TextView
+                android:id="@+id/textViewItemChattingFitMateSpeechContentLeft"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/ic_speech_bubble_left"
+                android:paddingLeft="20dp"
+                android:paddingTop="10dp"
+                android:paddingRight="20dp"
+                android:paddingBottom="10dp"
+                android:textAppearance="@style/Font.regular16"
+                android:textColor="@color/black"
+                app:layout_constraintStart_toEndOf="@+id/imageViewItemChattingFitMateImageLeft"
+                app:layout_constraintStart_toStartOf="@+id/textViewItemChattingFitMateNameLeft"
+                app:layout_constraintTop_toBottomOf="@+id/textViewItemChattingFitMateNameLeft"
+                toos:text="오늘 정말 힘드네요;;;" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/containerItemChattingChatRight"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end">
+
+            <TextView
+                android:id="@+id/textViewItemChattingMySpeechContentRight"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp"
+                android:background="@drawable/ic_speech_bubble_right"
+                android:paddingLeft="20dp"
+                android:paddingTop="10dp"
+                android:paddingRight="20dp"
+                android:paddingBottom="10dp"
+                android:textAppearance="@style/Font.regular16"
+                android:textColor="@color/black"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                toos:text="오늘 정말 힘드네요;;;" />
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+    </LinearLayout>
+</layout>

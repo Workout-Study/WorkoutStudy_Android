@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <color name="black">#FF000000</color>
+    <color name="white">#FFFFFFFF</color>
+    <color name="gray">#FFD9D9D9</color>
+    <color name="dark_gray">#919191</color>
+    <color name="yellow">#FEE500</color>
+    <color name="green">#02C75A</color>
+    <color name="red">#FF0000</color>
+
+    <color name="violet">#FF211951</color>
+    <color name="stateBlue">#FF836FFF</color>
+    <color name="turquoise">#FF15F5BA</color>
+    <color name="zircon">#FFF0F3FF</color>
+
+
+</resources>
