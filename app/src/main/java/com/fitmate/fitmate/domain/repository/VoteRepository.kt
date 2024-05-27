@@ -10,11 +10,11 @@ import retrofit2.Response
 
 interface VoteRepository {
 
-    suspend fun getEachGroupVotes(): Response<EachFitResponse>
+    suspend fun getEachGroupVotes(fitGroupId: Int, userId: Int): Response<EachFitResponse>
 
-    suspend fun myFitGroupVotes(): Result<List<MyFitGroupVote>>
+    suspend fun myFitGroupVotes(requestUserId: Int): Result<List<MyFitGroupVote>>
 
-    suspend fun getFitMateProgress(): Response<FitGroupProgress>
+    suspend fun getFitMateProgress(fitGroupId: Int): Response<FitGroupProgress>
 
     suspend fun registerVote(voteRequest: VoteRequest): Response<VoteResponse>
 }

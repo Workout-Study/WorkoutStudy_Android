@@ -44,25 +44,32 @@ class VoteViewModel @Inject constructor(
     val isLoading: StateFlow<Boolean> = _isLoading
 
     private var isDataLoadedOnce = false
-    fun fetchMyFitGroupVotes() {
+    fun fetchMyFitGroupVotes(requestUserId: Int) {
         viewModelScope.launch {
-            val result = voteUseCase.myFitGroupVotes()
+            val result = voteUseCase.myFitGroupVotes(requestUserId)
             _myGroupVotes.value = result
         }
     }
 
-    fun fetchFitGroupVotes() {
-        viewModelScope.launch {
-            val response = voteUseCase.eachFitGroupVotes()
-            _fitGroupVotes.value = response.body()
-        }
-    }
-
-    fun getFitMateProgress() {
+    fun fetchFitGroupVotes(fitGroupId: Int, userId: Int) {
         viewModelScope.launch {
             _isLoading.value = true
             try {
-                val response = voteUseCase.getFitMateProgress()
+                val response = voteUseCase.eachFitGroupVotes(fitGroupId, userId)
+                if(response.isSuccessful) {
+                    _fitGroupVotes.value = response.body()
+                }
+            } catch (e: Exception) {
+                _isLoading.value = false
+            }
+        }
+    }
+
+    fun getFitMateProgress(fitGroupId: Int) {
+        viewModelScope.launch {
+            _isLoading.value = true
+            try {
+                val response = voteUseCase.getFitMateProgress(fitGroupId)
                 if(response.isSuccessful) {
                     _fitMateProgress.value = response.body()
                 }
@@ -75,8 +82,16 @@ class VoteViewModel @Inject constructor(
 
     fun registerVote(voteRequest: VoteRequest) {
         viewModelScope.launch {
-            val response = voteUseCase.registerVote(voteRequest)
-            _voteResponse.postValue(response)
+            _isLoading.value = true
+            try {
+                val response = voteUseCase.registerVote(voteRequest)
+                if(response.isSuccessful) {
+                    _voteResponse.postValue(response)
+                }
+            } catch (e: Exception) {
+                // 에러 처리
+                _isLoading.value = false
+            }
         }
     }
 }

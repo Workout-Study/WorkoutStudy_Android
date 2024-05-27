@@ -1,5 +1,6 @@
 package com.fitmate.fitmate.di.networkModule
 
+import com.fitmate.fitmate.BuildConfig
 import com.fitmate.fitmate.data.repository.VoteRepositoryImpl
 import com.fitmate.fitmate.data.source.remote.VoteService
 import com.fitmate.fitmate.domain.repository.VoteRepository
@@ -17,8 +18,7 @@ object VoteModule {
     @Provides
     @Singleton
     fun provideVoteService(retrofit: Retrofit): VoteService {
-        //val voteBaseUrl = "http://${BuildConfig.SERVER_IP}:8081"
-        val voteBaseUrl = "https://run.mocky.io/v3/"
+        val voteBaseUrl = "http://${BuildConfig.CHAT_SERVER_ADDRESS}:8081"
         return retrofit.newBuilder()
             .baseUrl(voteBaseUrl)
             .build()
