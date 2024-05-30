@@ -1,0 +1,221 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/zircon"
+            android:minHeight="?attr/actionBarSize"
+            android:theme="?attr/actionBarTheme">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <TextView
+                    android:id="@+id/toolbar_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:text="##선택한 카테고리 명##"
+                    android:textAppearance="@style/Font.bold24" />
+            </RelativeLayout>
+        </androidx.appcompat.widget.Toolbar>
+
+        <androidx.core.widget.NestedScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:fillViewport="true">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/zircon"
+                android:gravity="center_horizontal|center_vertical"
+                android:orientation="vertical">
+
+                <com.google.android.material.chip.ChipGroup
+                    android:id="@+id/chipGroupCategory"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:visibility="gone"
+                    app:singleSelection="true">
+
+                    <com.google.android.material.chip.Chip
+                        android:id="@+id/chipCategory1"
+                        style="@style/Theme.Fitmate.Chip"
+                        android:layout_width="110dp"
+                        android:layout_height="wrap_content"
+                        android:checkable="true"
+                        android:text="@string/category_scr_1"
+                        android:textAlignment="center"
+                        android:textColor="@color/chip_text_selector"
+                        app:chipBackgroundColor="@color/chip_color_selector"
+                        app:chipIcon="@drawable/ic_baseline_mountain_24"
+                        app:chipIconTint="@color/chip_text_selector"
+                        app:chipMinTouchTargetSize="48dp" />
+
+                    <com.google.android.material.chip.Chip
+                        android:id="@+id/chipCategory2"
+                        style="@style/Theme.Fitmate.Chip"
+                        android:layout_width="110dp"
+                        android:layout_height="wrap_content"
+                        android:checkable="true"
+                        android:text="@string/category_scr_2"
+                        android:textAlignment="center"
+                        android:textColor="@color/chip_text_selector"
+                        app:chipBackgroundColor="@color/chip_color_selector"
+                        app:chipIcon="@drawable/ic_baseline_normal_24"
+                        app:chipIconTint="@color/chip_text_selector"
+                        app:chipMinTouchTargetSize="48dp" />
+
+                    <com.google.android.material.chip.Chip
+                        android:id="@+id/chipCategory3"
+                        style="@style/Theme.Fitmate.Chip"
+                        android:layout_width="110dp"
+                        android:layout_height="wrap_content"
+                        android:checkable="true"
+                        android:text="@string/category_scr_3"
+                        android:textAlignment="center"
+                        android:textColor="@color/chip_text_selector"
+                        app:chipBackgroundColor="@color/chip_color_selector"
+                        app:chipIcon="@drawable/ic_baseline_health_24"
+                        app:chipIconTint="@color/chip_text_selector"
+                        app:chipMinTouchTargetSize="48dp" />
+
+                    <com.google.android.material.chip.Chip
+                        android:id="@+id/chipCategory4"
+                        style="@style/Theme.Fitmate.Chip"
+                        android:layout_width="110dp"
+                        android:layout_height="wrap_content"
+                        android:checkable="true"
+                        android:text="@string/category_scr_4"
+                        android:textAlignment="center"
+                        android:textColor="@color/chip_text_selector"
+                        app:chipBackgroundColor="@color/chip_color_selector"
+                        app:chipIcon="@drawable/ic_baseline_swim_24"
+                        app:chipIconTint="@color/chip_text_selector"
+                        app:chipMinTouchTargetSize="48dp" />
+
+                    <com.google.android.material.chip.Chip
+                        android:id="@+id/chipCategory5"
+                        style="@style/Theme.Fitmate.Chip"
+                        android:layout_width="110dp"
+                        android:layout_height="wrap_content"
+                        android:checkable="true"
+                        android:text="@string/category_scr_5"
+                        android:textAlignment="center"
+                        android:textColor="@color/chip_text_selector"
+                        app:chipBackgroundColor="@color/chip_color_selector"
+                        app:chipIcon="@drawable/ic_baseline_soccer_24"
+                        app:chipIconTint="@color/chip_text_selector"
+                        app:chipMinTouchTargetSize="48dp" />
+
+                    <com.google.android.material.chip.Chip
+                        android:id="@+id/chipCategory6"
+                        style="@style/Theme.Fitmate.Chip"
+                        android:layout_width="110dp"
+                        android:layout_height="wrap_content"
+                        android:checkable="true"
+                        android:text="@string/category_scr_6"
+                        android:textAlignment="center"
+                        android:textColor="@color/chip_text_selector"
+                        app:chipBackgroundColor="@color/chip_color_selector"
+                        app:chipIcon="@drawable/ic_baseline_basketball_24"
+                        app:chipIconTint="@color/chip_text_selector"
+                        app:chipMinTouchTargetSize="48dp" />
+
+                    <com.google.android.material.chip.Chip
+                        android:id="@+id/chipCategory7"
+                        style="@style/Theme.Fitmate.Chip"
+                        android:layout_width="110dp"
+                        android:layout_height="wrap_content"
+                        android:checkable="true"
+                        android:text="@string/category_scr_7"
+                        android:textAlignment="center"
+                        android:textColor="@color/chip_text_selector"
+                        app:chipBackgroundColor="@color/chip_color_selector"
+                        app:chipIcon="@drawable/ic_baseline_baseball_24"
+                        app:chipIconTint="@color/chip_text_selector"
+                        app:chipMinTouchTargetSize="48dp" />
+
+                    <com.google.android.material.chip.Chip
+                        android:id="@+id/chipCategory8"
+                        style="@style/Theme.Fitmate.Chip"
+                        android:layout_width="110dp"
+                        android:layout_height="wrap_content"
+                        android:checkable="true"
+                        android:text="@string/category_scr_8"
+                        android:textAlignment="center"
+                        android:textColor="@color/chip_text_selector"
+                        app:chipBackgroundColor="@color/chip_color_selector"
+                        app:chipIcon="@drawable/ic_baseline_biking_24"
+                        app:chipIconTint="@color/chip_text_selector"
+                        app:chipMinTouchTargetSize="48dp" />
+
+                    <com.google.android.material.chip.Chip
+                        android:id="@+id/chipCategory9"
+                        style="@style/Theme.Fitmate.Chip"
+                        android:layout_width="110dp"
+                        android:layout_height="wrap_content"
+                        android:checkable="true"
+                        android:text="@string/category_scr_9"
+                        android:textAlignment="center"
+                        android:textColor="@color/chip_text_selector"
+                        app:chipBackgroundColor="@color/chip_color_selector"
+                        app:chipIcon="@drawable/ic_baseline_climbing_24"
+                        app:chipIconTint="@color/chip_text_selector"
+                        app:chipMinTouchTargetSize="48dp" />
+
+                </com.google.android.material.chip.ChipGroup>
+
+                <View
+                    android:id="@+id/divider"
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginBottom="10dp"
+                    android:background="?android:attr/listDivider"
+                    android:visibility="gone" />
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/recyclerView_category"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent" />
+
+                    <com.facebook.shimmer.ShimmerFrameLayout
+                        android:id="@+id/categoryShimmer"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:orientation="vertical">
+
+                            <!-- Shimmer item includes here -->
+
+                        </LinearLayout>
+                    </com.facebook.shimmer.ShimmerFrameLayout>
+                </androidx.constraintlayout.widget.ConstraintLayout>
+            </LinearLayout>
+        </androidx.core.widget.NestedScrollView>
+    </LinearLayout>
+
+</layout>
+
+
+
+

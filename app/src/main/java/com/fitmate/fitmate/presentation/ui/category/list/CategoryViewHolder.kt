@@ -1,4 +1,4 @@
-package com.fitmate.fitmate.presentation.ui.home.list
+package com.fitmate.fitmate.presentation.ui.category.list
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -20,7 +20,7 @@ class CategoryViewHolder(private val binding: ItemCategoryBinding, private val f
             onClick(item)
             val bundle = Bundle()
             bundle.putInt("groupId", item.fitGroupId)
-            fragment.findNavController().navigate(R.id.action_homeFragment_to_groupJoinFragment, bundle)
+            fragment.findNavController().navigate(R.id.action_homeMainFragment_to_groupJoinFragment, bundle)
         }
 
         Glide.with(binding.imageViewItemCategoryFitgroupThumbnail.context)

@@ -13,6 +13,7 @@ import androidx.activity.viewModels
 import androidx.annotation.RequiresApi
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.navigation.NavController
+import androidx.navigation.NavOptions
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
 import com.fitmate.fitmate.databinding.ActivityMainBinding
@@ -51,7 +52,40 @@ class MainActivity : AppCompatActivity(), ControlActivityInterface {
 
         if (intent.getStringExtra("navigateTo") == "certificateFragment") navController.navigate(R.id.certificateFragment)
 
+        binding.bottomNavigationViewMainActivity.setOnItemSelectedListener { item ->
+            when (item.itemId) {
+                R.id.homeFragment -> {
+                    navigateWithoutBackStack(R.id.homeFragment)
+                    true
+                }
+                R.id.myFitFragment -> {
+                    navigateWithoutBackStack(R.id.myFitFragment)
+                    true
+                }
+                R.id.categorySelectFragment -> {
+                    navigateWithoutBackStack(R.id.categorySelectFragment)
+                    true
+                }
+                R.id.myGroupFragment -> {
+                    navigateWithoutBackStack(R.id.myGroupFragment)
+                    true
+                }
+                R.id.userInfoFragment -> {
+                    navigateWithoutBackStack(R.id.userInfoFragment)
+                    true
+                }
+                else -> false
+            }
+        }
     }
+
+    private fun navigateWithoutBackStack(destinationId: Int) {
+        val navOptions = NavOptions.Builder()
+            .setPopUpTo(navController.graph.startDestinationId, false)
+            .build()
+        navController.navigate(destinationId, null, navOptions)
+    }
+
 
     private fun observeOnboardingState() {
         viewModel.onboardingInquiryStatus.observe(this) { isTrue ->
