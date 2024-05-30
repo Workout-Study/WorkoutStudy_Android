@@ -42,7 +42,7 @@ class OnBoardingPermissionFragment: Fragment() {
         super.onViewCreated(view, savedInstanceState)
         viewModel.onboardingInquiryStatus.observe(viewLifecycleOwner){
             if (it){
-                findNavController().navigate(R.id.action_onBoardingPermissionFragment_to_homeFragment)
+                findNavController().navigate(R.id.action_onBoardingPermissionFragment_to_homeMainFragment)
             }
         }
     }

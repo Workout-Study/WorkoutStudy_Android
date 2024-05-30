@@ -14,6 +14,12 @@
         android:icon="@drawable/ic_baseline_monitor_24"
         android:title="@string/menu_myfit" />
     <item
+        android:id="@+id/categorySelectFragment"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:icon="@drawable/ic_baseline_category_24"
+        android:title="@string/menu_category" />
+    <item
         android:id="@+id/myGroupFragment"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

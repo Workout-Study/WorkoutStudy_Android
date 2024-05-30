@@ -3,13 +3,12 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/nav_main_graph"
     app:startDestination="@id/homeFragment">
-
     <fragment
         android:id="@+id/homeFragment"
         android:name="com.fitmate.fitmate.presentation.ui.home.HomeFragment"
         android:label="HomeFragment">
         <action
-            android:id="@+id/action_homeFragment_to_groupJoinFragment"
+            android:id="@+id/action_homeMainFragment_to_groupJoinFragment"
             app:destination="@id/groupJoinFragment">
             <argument
                 android:name="groupId"
@@ -22,13 +21,23 @@
             app:popUpToInclusive="true" />
     </fragment>
     <fragment
-        android:id="@+id/homeMainFragment"
-        android:name="com.fitmate.fitmate.presentation.ui.home.HomeMainFragment"
-        android:label="HomeMainFragment" />
-    <fragment
-        android:id="@+id/homeCategoryFragment"
-        android:name="com.fitmate.fitmate.presentation.ui.home.HomeCategoryFragment"
-        android:label="HomeCategoryFragment" />
+        android:id="@+id/categoryFragment"
+        android:name="com.fitmate.fitmate.presentation.ui.category.CategoryFragment"
+        android:label="HomeCategoryFragment" >
+
+        <action
+            android:id="@+id/action_homeMainFragment_to_groupJoinFragment"
+            app:destination="@id/groupJoinFragment">
+        <argument
+            android:name="groupId"
+            app:argType="integer" />
+        </action>
+        <action
+            android:id="@+id/action_categoryFragment_to_categorySelectFragment"
+            app:destination="@id/categorySelectFragment" />
+
+    </fragment>
+
     <fragment
         android:id="@+id/onboardingContainerFragment"
         android:name="com.fitmate.fitmate.presentation.ui.onboarding.OnboardingContainerFragment"
@@ -54,7 +63,7 @@
         android:name="com.fitmate.fitmate.presentation.ui.onboarding.OnBoardingPermissionFragment"
         android:label="OnBoardingPermissionFragment">
         <action
-            android:id="@+id/action_onBoardingPermissionFragment_to_homeFragment"
+            android:id="@+id/action_onBoardingPermissionFragment_to_homeMainFragment"
             app:destination="@id/homeFragment"
             app:popUpTo="@id/onboardingContainerFragment"
             app:popUpToInclusive="true" />
@@ -64,7 +73,7 @@
         android:name="com.fitmate.fitmate.presentation.ui.login.LoginFragment"
         android:label="LoginFragment">
         <action
-            android:id="@+id/action_loginFragment_to_homeFragment"
+            android:id="@+id/action_loginFragment_to_homeMainFragment"
             app:destination="@id/homeFragment" />
         <action
             android:id="@+id/action_loginFragment_to_webViewFragment"
@@ -107,7 +116,7 @@
         android:name="com.fitmate.fitmate.presentation.ui.home.GroupJoinFragment"
         android:label="GroupJoinFragment">
         <action
-            android:id="@+id/action_groupJoinFragment_to_homeFragment"
+            android:id="@+id/action_groupJoinFragment_to_homeMainFragment"
             app:destination="@id/homeFragment" />
     </fragment>
     <fragment
@@ -119,7 +128,7 @@
         android:name="com.fitmate.fitmate.presentation.ui.certificate.CertificateFragment"
         android:label="@string/certificate_scr_toolbar">
         <action
-            android:id="@+id/action_certificateFragment_to_homeFragment"
+            android:id="@+id/action_certificateFragment_to_homeMainFragment"
             app:destination="@id/homeFragment"
             app:popUpTo="@id/homeFragment"
             app:popUpToInclusive="true">
@@ -164,11 +173,20 @@
             android:name="loginUrl"
             app:argType="string" />
         <action
-            android:id="@+id/action_loginWebViewFragment_to_homeFragment"
+            android:id="@+id/action_loginWebViewFragment_to_homeMainFragment"
             app:destination="@id/homeFragment" />
     </fragment>
     <fragment
         android:id="@+id/nicknameFragment"
         android:name="com.fitmate.fitmate.presentation.ui.login.NicknameFragment"
         android:label="NicknameFragment" />
+    <fragment
+        android:id="@+id/categorySelectFragment"
+        android:name="com.fitmate.fitmate.presentation.ui.category.CategorySelectFragment"
+        android:label="CategorySelectFragment" >
+        <action
+            android:id="@+id/action_categorySelectFragment_to_categoryFragment"
+            app:destination="@id/categoryFragment"
+            app:popUpToInclusive="true" />
+    </fragment>
 </navigation>

@@ -1,4 +1,4 @@
-package com.fitmate.fitmate.presentation.ui.home.list.adapter
+package com.fitmate.fitmate.presentation.ui.category.list.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -7,7 +7,7 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import com.fitmate.fitmate.databinding.ItemCategoryBinding
 import com.fitmate.fitmate.domain.model.CategoryItem
-import com.fitmate.fitmate.presentation.ui.home.list.CategoryViewHolder
+import com.fitmate.fitmate.presentation.ui.category.list.CategoryViewHolder
 
 class CategoryAdapter(private val fragment: Fragment, private val onClick: (CategoryItem) -> Unit): ListAdapter<CategoryItem, CategoryViewHolder>(
     CategoryItemDiffCallback

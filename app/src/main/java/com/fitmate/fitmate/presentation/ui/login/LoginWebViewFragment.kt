@@ -47,13 +47,13 @@ class LoginWebViewFragment : Fragment(R.layout.fragment_login_webview) {
                     return when(code.length) {
                         86 -> {
                             Toast.makeText(context, "카카오를 통하여 로그인이 성공하였습니다.", Toast.LENGTH_SHORT).show()
-                            findNavController().navigate(R.id.action_loginWebViewFragment_to_homeFragment)
+                            findNavController().navigate(R.id.action_loginWebViewFragment_to_homeMainFragment)
                             true
                         }
 
                         18 -> {
                             Toast.makeText(context, "네이버를 통하여 로그인이 성공하였습니다.", Toast.LENGTH_SHORT).show()
-                            findNavController().navigate(R.id.action_loginWebViewFragment_to_homeFragment)
+                            findNavController().navigate(R.id.action_loginWebViewFragment_to_homeMainFragment)
                             true
                         }
 

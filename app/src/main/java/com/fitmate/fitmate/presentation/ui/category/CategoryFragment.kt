@@ -1,4 +1,4 @@
-package com.fitmate.fitmate.presentation.ui.home
+package com.fitmate.fitmate.presentation.ui.category
 
 import android.os.Bundle
 import android.util.Log
@@ -9,22 +9,22 @@ import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.fitmate.fitmate.MainActivity
 import com.fitmate.fitmate.R
-import com.fitmate.fitmate.databinding.FragmentHomeCategoryBinding
-import com.fitmate.fitmate.domain.model.CategoryItem
-import com.fitmate.fitmate.presentation.ui.home.list.adapter.CategoryAdapter
+import com.fitmate.fitmate.databinding.FragmentCategoryBinding
+import com.fitmate.fitmate.presentation.ui.category.list.adapter.CategoryAdapter
 import com.fitmate.fitmate.presentation.viewmodel.GroupViewModel
 import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
-class HomeCategoryFragment: Fragment(R.layout.fragment_home_category) {
+class CategoryFragment: Fragment(R.layout.fragment_category) {
 
-    private lateinit var binding: FragmentHomeCategoryBinding
+    private lateinit var binding: FragmentCategoryBinding
     private val viewModel: GroupViewModel by viewModels()
-    private val TAG = "HomeCategoryFragment"
+    private val TAG = "CategoryFragment"
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        (activity as MainActivity).viewNavigationBar()
         initView(view)
         observeModel()
         getChipFitGroups()
@@ -42,7 +42,7 @@ class HomeCategoryFragment: Fragment(R.layout.fragment_home_category) {
     }
 
     private fun initView(view: View) {
-        binding = FragmentHomeCategoryBinding.bind(view)
+        binding = FragmentCategoryBinding.bind(view)
         binding.recyclerViewCategory.layoutManager = LinearLayoutManager(context)
         binding.recyclerViewCategory.adapter = CategoryAdapter(this) {}
     }

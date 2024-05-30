@@ -358,7 +358,7 @@ class CertificateFragment : Fragment() {
                         val bundle = Bundle()
                         bundle.putInt("viewPagerPosition", 1)
                         findNavController().navigate(
-                            R.id.action_certificateFragment_to_homeFragment,
+                            R.id.action_certificateFragment_to_homeMainFragment,
                             bundle
                         )
 
