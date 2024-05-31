@@ -9,15 +9,20 @@ import android.webkit.WebView
 import android.webkit.WebViewClient
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.fitmate.fitmate.R
 import com.fitmate.fitmate.databinding.FragmentLoginWebviewBinding
+import com.fitmate.fitmate.presentation.viewmodel.LoginViewModel
 import com.fitmate.fitmate.util.ControlActivityInterface
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class LoginWebViewFragment : Fragment(R.layout.fragment_login_webview) {
 
     private lateinit var binding: FragmentLoginWebviewBinding
     private var loginUrl: String? = null
+    private val viewModel: LoginViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -31,6 +36,7 @@ class LoginWebViewFragment : Fragment(R.layout.fragment_login_webview) {
         binding = FragmentLoginWebviewBinding.bind(view)
         (activity as? ControlActivityInterface)?.goneNavigationBar()
         getAuthorization()
+        observeViewModel()
     }
 
     @Suppress("SetJavaScriptEnabled")
@@ -43,22 +49,11 @@ class LoginWebViewFragment : Fragment(R.layout.fragment_login_webview) {
                     val code = uri.getQueryParameter("code") ?: ""
                     val returnedState = uri.getQueryParameter("state") ?: ""
                     Log.d("auth_code", "Authorization Code: $code")
-                    // activity?.supportFragmentManager?.popBackStack()
-                    return when(code.length) {
-                        86 -> {
-                            Toast.makeText(context, "카카오를 통하여 로그인이 성공하였습니다.", Toast.LENGTH_SHORT).show()
-                            findNavController().navigate(R.id.action_loginWebViewFragment_to_homeMainFragment)
-                            true
-                        }
-
-                        18 -> {
-                            Toast.makeText(context, "네이버를 통하여 로그인이 성공하였습니다.", Toast.LENGTH_SHORT).show()
-                            findNavController().navigate(R.id.action_loginWebViewFragment_to_homeMainFragment)
-                            true
-                        }
-
-                        else -> false
+                    when(code.length) {
+                        86 -> viewModel.login(code, "kakao")
+                        18 -> viewModel.login(code,"naver")
                     }
+                    return true
                 }
                 return false
             }
@@ -66,5 +61,21 @@ class LoginWebViewFragment : Fragment(R.layout.fragment_login_webview) {
 
         binding.webView.settings.javaScriptEnabled = true
         loginUrl?.let { binding.webView.loadUrl(it) }
+    }
+
+    private fun observeViewModel() {
+        viewModel.user.observe(viewLifecycleOwner) { loginResponse ->
+            if (loginResponse != null) {
+                findNavController().navigate(R.id.action_loginWebViewFragment_to_homeMainFragment)
+                Toast.makeText(context, "로그인이 성공하였습니다.", Toast.LENGTH_SHORT).show()
+            }
+        }
+
+        viewModel.errorMessage.observe(viewLifecycleOwner) { errorMessage ->
+            if (errorMessage != null) {
+                Toast.makeText(context, errorMessage, Toast.LENGTH_SHORT).show()
+                findNavController().popBackStack()
+            }
+        }
     }
 }

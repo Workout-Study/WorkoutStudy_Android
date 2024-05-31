@@ -20,19 +20,24 @@ import androidx.core.content.ContextCompat
 import androidx.core.content.PermissionChecker.PERMISSION_DENIED
 import androidx.core.content.PermissionChecker.PERMISSION_GRANTED
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.fitmate.fitmate.R
 import com.fitmate.fitmate.databinding.FragmentUserInfoBinding
+import com.fitmate.fitmate.presentation.viewmodel.LoginViewModel
 import com.fitmate.fitmate.util.ControlActivityInterface
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.ktx.storage
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class UserInfoFragment : Fragment(R.layout.fragment_user_info) {
 
     private lateinit var binding: FragmentUserInfoBinding
+    private val viewModel: LoginViewModel by viewModels()
 
     private val multiplePermissionsLauncher = registerForActivityResult(
         ActivityResultContracts.RequestMultiplePermissions()) { permissions ->
@@ -167,6 +172,11 @@ class UserInfoFragment : Fragment(R.layout.fragment_user_info) {
     }
 
     private fun logout() {
+        val platform = ""
+        when(platform) {
+            "kakao" -> viewModel.logout("accessToken", "kakao")
+            "naver" -> viewModel.logout("accessToken", "naver")
+        }
         //navigateTo(R.id.action_userInfoFragment_to_loginFragment)
         findNavController().navigate(R.id.nicknameFragment)
     }
@@ -201,6 +211,7 @@ class UserInfoFragment : Fragment(R.layout.fragment_user_info) {
 
     private fun sendServerToNickname(newNickname: String) {
         // TODO 서버에 닉네임 변경 사항을 올려보내는 과정 완료 시 변경되게 if문 추가
+        viewModel.updateNickname(1, newNickname)
         binding.textViewUserInfoName.text = newNickname
     }
 
