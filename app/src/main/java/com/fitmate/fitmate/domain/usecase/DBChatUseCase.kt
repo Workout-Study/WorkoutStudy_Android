@@ -2,6 +2,7 @@ package com.fitmate.fitmate.domain.usecase
 
 import com.fitmate.fitmate.data.model.dto.ChatResponse
 import com.fitmate.fitmate.data.model.dto.FitGroup
+import com.fitmate.fitmate.data.model.dto.RetrieveFitGroup
 import com.fitmate.fitmate.domain.model.ChatItem
 import com.fitmate.fitmate.domain.repository.ChatRepository
 import retrofit2.Response
@@ -21,7 +22,7 @@ class DBChatUseCase @Inject constructor(
 
     suspend fun getChatItemsByFitGroupId(fitGroupId: Int) = chatRepository.getChatItemsByFitGroupId(fitGroupId)
 
-    suspend fun retrieveFitGroup(fitMateId: Int): Response<List<FitGroup>> = chatRepository.retrieveFitGroup(fitMateId)
+    suspend fun retrieveFitGroup(userId: String): Response<List<RetrieveFitGroup>> = chatRepository.retrieveFitGroup(userId)
 
     suspend fun retrieveMessage(
         messageId: String,
