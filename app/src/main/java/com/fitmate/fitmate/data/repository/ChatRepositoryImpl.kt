@@ -5,6 +5,7 @@ import com.fitmate.fitmate.data.model.ChatMapper.toDBChat
 import com.fitmate.fitmate.data.model.ChatMapper.toEntity
 import com.fitmate.fitmate.data.model.dto.ChatResponse
 import com.fitmate.fitmate.data.model.dto.FitGroup
+import com.fitmate.fitmate.data.model.dto.RetrieveFitGroup
 import com.fitmate.fitmate.data.model.entity.ChatEntity
 import com.fitmate.fitmate.data.source.ChatDatabase
 import com.fitmate.fitmate.data.source.dao.ChatDao
@@ -61,7 +62,7 @@ class ChatRepositoryImpl @Inject constructor(
 
     override suspend fun getChatItemsByFitGroupId(fitGroupId: Int): List<ChatItem> = chatDao.getChatItemsByFitGroupId(fitGroupId).map { it.toDBChat() }
 
-    override suspend fun retrieveFitGroup(fitMateId: Int): Response<List<FitGroup>> = chatService.retrieveFitGroup(fitMateId)
+    override suspend fun retrieveFitGroup(userId: String): Response<List<RetrieveFitGroup>> = chatService.retrieveFitGroup(userId)
 
     override suspend fun retrieveMessage(
         messageId: String,

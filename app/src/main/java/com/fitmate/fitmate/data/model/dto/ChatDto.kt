@@ -24,3 +24,19 @@ data class Message (
     val messageTime: String,
     val messageType: String
 )
+
+data class RetrieveFitGroup(
+    @SerializedName("category") val category: Int,
+    @SerializedName("createdAt") val createdAt: String,
+    @SerializedName("createdBy") val createdBy: String,
+    @SerializedName("cycle") val cycle: Int,
+    @SerializedName("fitGroupName") val fitGroupName: String,
+    @SerializedName("fitLeaderUserID") val fitLeaderUserID: Int,
+    @SerializedName("frequency") val frequency: Int,
+    @SerializedName("id") val id: Int,
+    @SerializedName("maxFitMate") val maxFitMate: Int,
+    @SerializedName("presentFitMateCount") val presentFitMateCount: Int,
+    @SerializedName("state") val state: Boolean,
+    @SerializedName("updatedAt") val updatedAt: String,
+    @SerializedName("updatedBy") val updatedBy: String
+)

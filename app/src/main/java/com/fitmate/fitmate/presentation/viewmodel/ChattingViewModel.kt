@@ -9,6 +9,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import androidx.lifecycle.viewModelScope
 import com.fitmate.fitmate.data.model.dto.FitGroup
+import com.fitmate.fitmate.data.model.dto.RetrieveFitGroup
 import com.fitmate.fitmate.data.model.entity.ChatEntity
 import com.fitmate.fitmate.domain.usecase.DBChatUseCase
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -21,12 +22,12 @@ import javax.inject.Inject
 class ChattingViewModel @Inject constructor(private val dbChatUseCase: DBChatUseCase): ViewModel() {
 
     private val TAG = "ChattingViewModel"
-    private val _fitGroup = MutableStateFlow<List<FitGroup>>(emptyList())
+    private val _fitGroup = MutableStateFlow<List<RetrieveFitGroup>>(emptyList())
     private val _chatResponse = MutableStateFlow<ChatResponse?>(null)
     private val _lastChatItem = MutableLiveData<ChatEntity?>()
     private val _isLoading = MutableStateFlow(false)
 
-    val fitGroup: StateFlow<List<FitGroup>> = _fitGroup
+    val fitGroup: StateFlow<List<RetrieveFitGroup>> = _fitGroup
     val chatResponse: StateFlow<ChatResponse?> = _chatResponse
     val lastChatItem: LiveData<ChatEntity?> = _lastChatItem
     val isLoading: StateFlow<Boolean> = _isLoading
@@ -61,11 +62,11 @@ class ChattingViewModel @Inject constructor(private val dbChatUseCase: DBChatUse
         }
     }
 
-    fun retrieveFitGroup(fitMateId: Int) {
+    fun retrieveFitGroup(userId: String) {
         if (isDataLoadedOnce) return
         viewModelScope.launch {
             _isLoading.value = true
-            val response = dbChatUseCase.retrieveFitGroup(fitMateId)
+            val response = dbChatUseCase.retrieveFitGroup(userId)
 
             withContext(Dispatchers.Main) {
                 val result = response.body()

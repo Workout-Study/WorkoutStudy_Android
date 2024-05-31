@@ -31,7 +31,7 @@ class MyGroupFragment: Fragment(R.layout.fragment_my_group) {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        viewModel.retrieveFitGroup(1)
+        viewModel.retrieveFitGroup("1")
     }
 
     override fun onCreateView(
@@ -83,7 +83,7 @@ class MyGroupFragment: Fragment(R.layout.fragment_my_group) {
         binding.recyclerViewMyFitGroupList.adapter = adapter
     }
 
-    private fun mapNetworkDataToUiModel(networkFitGroups: List<com.fitmate.fitmate.data.model.dto.FitGroup>): List<FitGroup> {
+    private fun mapNetworkDataToUiModel(networkFitGroups: List<com.fitmate.fitmate.data.model.dto.RetrieveFitGroup>): List<FitGroup> {
         return networkFitGroups.map { networkGroup ->
             FitGroup(
                 networkGroup.fitGroupName,
