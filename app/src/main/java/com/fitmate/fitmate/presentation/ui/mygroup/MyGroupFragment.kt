@@ -17,6 +17,7 @@ import com.fitmate.fitmate.util.ControlActivityInterface
 import com.fitmate.fitmate.domain.model.FitGroup
 import com.fitmate.fitmate.presentation.ui.mygroup.list.adapter.MyFitGroupAdapter
 import com.fitmate.fitmate.presentation.viewmodel.ChattingViewModel
+import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
@@ -64,6 +65,13 @@ class MyGroupFragment: Fragment(R.layout.fragment_my_group) {
                 val uiModelList = mapNetworkDataToUiModel(networkFitGroups)
                 updateListAdapter(uiModelList)
                 updateEmptyViewVisibility(uiModelList)
+            }
+
+            viewModel.errorMessage.observe(viewLifecycleOwner) { errorMessage ->
+                if(!errorMessage.isNullOrEmpty()) {
+                    Snackbar.make(binding.root, errorMessage, Snackbar.LENGTH_SHORT).show()
+                    viewModel.clearErrorMessage()
+                }
             }
         }
     }
