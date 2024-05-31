@@ -26,11 +26,13 @@ class ChattingViewModel @Inject constructor(private val dbChatUseCase: DBChatUse
     private val _chatResponse = MutableStateFlow<ChatResponse?>(null)
     private val _lastChatItem = MutableLiveData<ChatEntity?>()
     private val _isLoading = MutableStateFlow(false)
+    private val _errorMessage = MutableLiveData<String?>()
 
     val fitGroup: StateFlow<List<RetrieveFitGroup>> = _fitGroup
     val chatResponse: StateFlow<ChatResponse?> = _chatResponse
     val lastChatItem: LiveData<ChatEntity?> = _lastChatItem
     val isLoading: StateFlow<Boolean> = _isLoading
+    val errorMessage: LiveData<String?> = _errorMessage
 
     private var isDataLoadedOnce = false
 
@@ -66,15 +68,27 @@ class ChattingViewModel @Inject constructor(private val dbChatUseCase: DBChatUse
         if (isDataLoadedOnce) return
         viewModelScope.launch {
             _isLoading.value = true
-            val response = dbChatUseCase.retrieveFitGroup(userId)
+            try {
+                val response = dbChatUseCase.retrieveFitGroup(userId)
 
-            withContext(Dispatchers.Main) {
-                val result = response.body()
-                _fitGroup.value = result!!
+                withContext(Dispatchers.Main) {
+                    val result = response.body()
+                    _fitGroup.value = result!!
+                    _isLoading.value = false
+                    _errorMessage.value = null
+                    isDataLoadedOnce = true
+                }
+            } catch (e: Exception) {
+                Log.d(TAG, "Retrieve Group Error... $e")
+                _errorMessage.value = "User Id가 존재하지 않거나, 그룹이 서버에 존재하지 않습니다. \n $e"
                 _isLoading.value = false
-                isDataLoadedOnce = true
             }
+
         }
+    }
+
+    fun clearErrorMessage() {
+        _errorMessage.value = null
     }
 
     private fun formatCustomDateTime(isoDateTime: String): String = isoDateTime.replace("T", " ")
