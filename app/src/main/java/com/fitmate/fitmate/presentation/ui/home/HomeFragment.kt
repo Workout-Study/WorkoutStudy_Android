@@ -79,7 +79,7 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
                 val voteItems = groups.map { group ->
                     group.certificationList.map { cert ->
                         VoteItem(
-                            title = group.groupName, fitMate = cert.requestUserId,
+                            title = group.groupName, fitMate = cert.requestUserId.toString(),
                             percent = formatPercent(cert), time = formatDate(cert),
                             image = cert.multiMediaEndPoints.firstOrNull() ?: "",
                             groupId = group.groupId, startTime = null, endTime = null

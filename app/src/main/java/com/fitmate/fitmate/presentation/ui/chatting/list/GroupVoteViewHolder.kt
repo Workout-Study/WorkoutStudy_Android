@@ -7,6 +7,9 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.widget.ViewPager2
+import com.bumptech.glide.Glide
+import com.bumptech.glide.load.resource.bitmap.CenterCrop
+import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.fitmate.fitmate.R
 import com.fitmate.fitmate.data.model.dto.VoteRequest
 import com.fitmate.fitmate.databinding.ItemVoteBinding
@@ -36,6 +39,12 @@ class GroupVoteViewHolder(
 
     fun bind(item: VoteItem) {
         binding.voteItem = item
+
+        Glide.with(binding.imageViewItemCategoryFitgroupThumbnail)
+            .load(item.image)
+            .transform(CenterCrop(), RoundedCorners(16))
+            .error(R.drawable.ic_launcher_logo)
+            .into(binding.imageViewItemCategoryFitgroupThumbnail)
     }
 
     private fun setupListeners() {
@@ -72,12 +81,12 @@ class GroupVoteViewHolder(
         setNeutralButton("보류") { dialog, which -> }
         setNegativeButton("반대") { dialog, which ->
             fragment.lifecycleScope.launch {
-                viewModel.registerVote(VoteRequest(item.fitMate, false, 1, item.groupId))
+                viewModel.registerVote(VoteRequest(item.fitMate.toInt(), false, 1, item.groupId))
             }
         }
         setPositiveButton("찬성") { dialog, which ->
             fragment.lifecycleScope.launch {
-                viewModel.registerVote(VoteRequest(item.fitMate, true, 1, item.groupId))
+                viewModel.registerVote(VoteRequest(item.fitMate.toInt(), true, 1, item.groupId))
             }
         }
     }

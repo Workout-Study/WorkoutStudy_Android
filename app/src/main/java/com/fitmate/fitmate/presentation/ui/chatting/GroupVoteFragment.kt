@@ -59,10 +59,10 @@ class GroupVoteFragment: Fragment(R.layout.fragment_group_vote) {
             val voteItems = eachFitResponse.fitCertificationDetails.map { detail ->
                 VoteItem(
                     title = detail.recordId.toString(),
-                    fitMate = detail.certificationRequestUserId,
+                    fitMate = detail.certificationRequestUserId.toString(),
                     percent = formatPercent(detail),  // 투표율 계산
                     time = formatDate(detail),
-                    image = "이미지 URL",  // 필요한 경우 이미지 URL 설정
+                    image = detail.thumbnailEndPoint,
                     groupId = groupId,
                     startTime = detail.fitRecordStartDate,  // 기록 시작일
                     endTime = detail.fitRecordEndDate       // 기록 종료일

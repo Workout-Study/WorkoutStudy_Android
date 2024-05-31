@@ -9,12 +9,14 @@ data class EachFitResponse(
 data class GroupCertificationDetail(
     val certificationId: Int,
     val recordId: Int,
-    val certificationRequestUserId: String,
+    val certificationRequestUserId: Int,
+    val certificationRequestUserNickname: String,
     val isUserVoteDone: Boolean,
     val isUserAgree: Boolean,
     val agreeCount: Int,
     val disagreeCount: Int,
     val maxAgreeCount: Int,
+    val thumbnailEndPoint: String,
     val fitRecordStartDate: String,
     val fitRecordEndDate: String,
     val voteEndDate: String
@@ -29,7 +31,7 @@ data class FitGroupProgressList(
 )
 
 data class VoteRequest(
-    val requestUserId: String,
+    val requestUserId: Int,
     val agree: Boolean,
     val targetCategory: Int,
     val targetId: Int
@@ -58,7 +60,7 @@ data class MyFitGroupVote(
 data class VoteCertification(
     @SerializedName("certificationId") val certificationId: Int,
     @SerializedName("recordId") val recordId: Int,
-    @SerializedName("certificationRequestUserId") val requestUserId: String,
+    @SerializedName("certificationRequestUserId") val requestUserId: Int,
     @SerializedName("agreeCount") val agreeCount: Int,
     @SerializedName("disagreeCount") val disagreeCount: Int,
     @SerializedName("maxAgreeCount") val maxAgreeCount: Int,
