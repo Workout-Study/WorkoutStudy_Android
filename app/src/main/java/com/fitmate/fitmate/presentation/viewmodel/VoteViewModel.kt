@@ -46,8 +46,13 @@ class VoteViewModel @Inject constructor(
     private var isDataLoadedOnce = false
     fun fetchMyFitGroupVotes(requestUserId: Int) {
         viewModelScope.launch {
-            val result = voteUseCase.myFitGroupVotes(requestUserId)
-            _myGroupVotes.value = result
+            _isLoading.value = true
+            try {
+                val result = voteUseCase.myFitGroupVotes(requestUserId)
+                _isLoading.value = false
+            } catch (e: Exception) {
+                _isLoading.value = false
+            }
         }
     }
 

@@ -25,6 +25,8 @@ class CategoryFragment: Fragment(R.layout.fragment_category) {
     private val TAG = "CategoryFragment"
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        val categoryNumber = arguments?.getInt("categoryNumber") ?: -1
+        Log.d(TAG, categoryNumber.toString())
         (activity as MainActivity).viewNavigationBar()
         initView(view)
         observeModel()

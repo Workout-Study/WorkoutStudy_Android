@@ -199,19 +199,19 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="80dp"
-            android:background="@color/violet">
+            android:background="@color/navyBlue">
 
             <ImageView
                 android:id="@+id/imageView2"
                 android:layout_width="22dp"
                 android:layout_height="22dp"
                 android:layout_marginStart="20dp"
+                android:contentDescription="@null"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 app:srcCompat="@drawable/ic_baseline_people_24"
-                app:tint="@color/zircon"
-                android:contentDescription="@null" />
+                app:tint="@color/zircon" />
 
             <TextView
                 android:id="@+id/textViewGroupDetailBottomNow"
@@ -229,12 +229,12 @@
                 android:layout_width="22dp"
                 android:layout_height="22dp"
                 android:layout_marginStart="20dp"
+                android:contentDescription="@null"
                 app:layout_constraintBottom_toBottomOf="@+id/textViewGroupDetailBottomNow"
                 app:layout_constraintStart_toEndOf="@+id/textViewGroupDetailBottomNow"
                 app:layout_constraintTop_toTopOf="@+id/textViewGroupDetailBottomNow"
                 app:srcCompat="@drawable/ic_baseline_calendar_24"
-                app:tint="@color/zircon"
-                android:contentDescription="@null" />
+                app:tint="@color/zircon" />
 
             <TextView
                 android:id="@+id/textViewGroupDetailBottomCycle"
@@ -248,12 +248,11 @@
                 app:layout_constraintTop_toTopOf="@+id/imageView3" />
 
             <Button
-
                 android:id="@+id/buttonJoinGroupConfirm"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="20dp"
-                android:backgroundTint="@color/stateBlue"
+                android:backgroundTint="@color/mediumStateBlue"
                 android:text="@string/group_join_scr_confirm"
                 android:textAppearance="@style/Font.bold16"
                 app:layout_constraintBottom_toBottomOf="parent"
