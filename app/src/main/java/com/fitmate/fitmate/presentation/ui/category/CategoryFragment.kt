@@ -79,7 +79,7 @@ class CategoryFragment: Fragment(R.layout.fragment_category) {
         binding.chipGroupCategory.setOnCheckedStateChangeListener { _, checkedIds ->
             if (checkedIds.isEmpty()) {
                 Log.d(TAG, "connect in 0")
-                viewModel.getGroups(true, 0)
+                viewModel.getGroups(true, 0, 0)
             } else {
                 val categoryId = chipToCategoryMap[checkedIds[0]] ?: return@setOnCheckedStateChangeListener
                 Log.d(TAG, "connect in $categoryId")

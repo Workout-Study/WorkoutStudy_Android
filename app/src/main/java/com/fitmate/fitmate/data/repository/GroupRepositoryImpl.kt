@@ -23,9 +23,15 @@ class GroupRepositoryImpl(private val groupService: GroupService) : GroupReposit
         }
     ).flow
 
-    override suspend fun fitGroupAll(withMaxGroup: Boolean, pageSize: Int): FitGroupFilter {
-        return groupService.fitGroupAll(withMaxGroup, pageSize)
-    }
+    override suspend fun fitGroupAll(withMaxGroup: Boolean, pageNumber: Int ,pageSize: Int) = Pager(
+        config = PagingConfig(
+            pageSize,
+            enablePlaceholders = false
+        ),
+        pagingSourceFactory = {
+            CategoryPagingSource(groupService, 0, pageSize)
+        }
+    ).flow
 
     override suspend fun getFitGroupDetail(fitGroupId: Int): GetFitGroupDetail {
         return groupService.getFitGroupDetail(fitGroupId)
