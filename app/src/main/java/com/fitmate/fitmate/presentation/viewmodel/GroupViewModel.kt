@@ -75,24 +75,23 @@ class GroupViewModel @Inject constructor(
         viewModelScope.launch {
             _isLoading.value = true
             try {
-                groupUseCase.fitGroupFilter(withMaxGroup, category, pageNumber, pageSize).cachedIn(this).collectLatest { list ->
-                        _pagingData.value = list.map {
-                            CategoryItem(
-                                title = it.fitGroupName,
-                                fitCount = "${it.frequency}회 / 1주",
-                                peopleCount = "${it.presentFitMateCount} / ${it.maxFitMate}",
-                                comment = it.introduction,
-                                fitGroupId = it.fitGroupId,
-                                thumbnail = try {
-                                    it.multiMediaEndPoints[0]
-                                } catch (e: Exception) {
-                                    "null"
-                                }
-                            )
-                        }
+                groupUseCase.fitGroupFilter(withMaxGroup, category, pageNumber, pageSize)
+                    .cachedIn(this).collectLatest { list ->
+                    _pagingData.value = list.map {
+                        CategoryItem(
+                            title = it.fitGroupName,
+                            fitCount = "${it.frequency}회 / 1주",
+                            peopleCount = "${it.presentFitMateCount} / ${it.maxFitMate}",
+                            comment = it.introduction,
+                            fitGroupId = it.fitGroupId,
+                            thumbnail = try {
+                                it.multiMediaEndPoints[0]
+                            } catch (e: Exception) {
+                                "null"
+                            }
+                        )
                     }
-
-
+                }
                 _isLoading.value = false
             } catch (e: Exception) {
                 Log.d(TAG, "There is NO DATA in Server. $e")
@@ -102,7 +101,7 @@ class GroupViewModel @Inject constructor(
         }
     }
 
-    fun getFitGroupDetail(fitGroupId: Int){
+    fun getFitGroupDetail(fitGroupId: Int) {
         viewModelScope.launch {
             _isLoading.value = true
             try {

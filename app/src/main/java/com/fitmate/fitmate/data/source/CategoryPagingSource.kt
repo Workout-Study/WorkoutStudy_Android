@@ -13,7 +13,11 @@ class CategoryPagingSource(
     override suspend fun load(params: LoadParams<Int>): LoadResult<Int, FitGroupDetail> {
         return try {
             val page = params.key ?: 0
-            val response = groupService.fitGroupFilter(true, categoryNum, page, pageSize)
+            val response = if (categoryNum == 0){
+                groupService.fitGroupAll(false, page ,pageSize)
+            }else{
+                groupService.fitGroupFilter(true, categoryNum, page, pageSize)
+            }
             val prevKey = if (response.first) null else page - 1
             val nextKey = if (response.last) null else page + 1
 
