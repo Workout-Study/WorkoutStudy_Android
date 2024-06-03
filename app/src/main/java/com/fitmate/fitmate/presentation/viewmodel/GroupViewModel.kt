@@ -6,11 +6,18 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.paging.Pager
+import androidx.paging.PagingConfig
+import androidx.paging.PagingData
+import androidx.paging.cachedIn
+import androidx.paging.map
 import com.fitmate.fitmate.data.model.dto.FitGroup
+import com.fitmate.fitmate.data.model.dto.FitGroupDetail
 import com.fitmate.fitmate.data.model.dto.FitGroupFilter
 import com.fitmate.fitmate.data.model.dto.GetFitGroupDetail
 import com.fitmate.fitmate.data.model.dto.GetFitMateList
 import com.fitmate.fitmate.data.model.dto.RegisterResponse
+import com.fitmate.fitmate.data.source.CategoryPagingSource
 import com.fitmate.fitmate.domain.model.CategoryItem
 import com.fitmate.fitmate.domain.usecase.DBChatUseCase
 import com.fitmate.fitmate.domain.usecase.GroupUseCase
@@ -18,6 +25,9 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import retrofit2.Response
@@ -57,32 +67,32 @@ class GroupViewModel @Inject constructor(
     private val _successMessage = MutableLiveData<String?>()
     val successMessage: LiveData<String?> = _successMessage
 
+    private val _pagingData = MutableStateFlow<PagingData<CategoryItem>?>(null)
+    val pagingData: StateFlow<PagingData<CategoryItem>?> = _pagingData
 
-    fun getGroups(withMaxGroup: Boolean, category: Int? = null, pageNumber: Int? = null, pageSize: Int? = null) {
+
+    fun getGroups(withMaxGroup: Boolean, category: Int, pageNumber: Int = 0, pageSize: Int = 20) {
         viewModelScope.launch {
             _isLoading.value = true
             try {
-                val response = if (category != null && pageNumber != null) {
-                    groupUseCase.fitGroupFilter(withMaxGroup, category, pageNumber, pageSize!!)
-                } else {
-                    groupUseCase.fitGroupAll(withMaxGroup, pageSize!!)
-                }
-
-                val categoryItems = response.content.map {
-                    CategoryItem(
-                        title = it.fitGroupName,
-                        fitCount = "${it.frequency}회 / 1주",
-                        peopleCount = "${it.presentFitMateCount} / ${it.maxFitMate}",
-                        comment = it.introduction,
-                        fitGroupId = it.fitGroupId,
-                        thumbnail = try {
-                           it.multiMediaEndPoints[0]
-                        } catch (e: Exception) {
-                            "null"
+                groupUseCase.fitGroupFilter(withMaxGroup, category, pageNumber, pageSize).cachedIn(this).collectLatest { list ->
+                        _pagingData.value = list.map {
+                            CategoryItem(
+                                title = it.fitGroupName,
+                                fitCount = "${it.frequency}회 / 1주",
+                                peopleCount = "${it.presentFitMateCount} / ${it.maxFitMate}",
+                                comment = it.introduction,
+                                fitGroupId = it.fitGroupId,
+                                thumbnail = try {
+                                    it.multiMediaEndPoints[0]
+                                } catch (e: Exception) {
+                                    "null"
+                                }
+                            )
                         }
-                    )
-                }
-                _categoryItems.value = categoryItems
+                    }
+
+
                 _isLoading.value = false
             } catch (e: Exception) {
                 Log.d(TAG, "There is NO DATA in Server. $e")

@@ -6,6 +6,7 @@ import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.viewModelScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.fitmate.fitmate.MainActivity
 import com.fitmate.fitmate.R
@@ -14,6 +15,7 @@ import com.fitmate.fitmate.presentation.ui.category.list.adapter.CategoryAdapter
 import com.fitmate.fitmate.presentation.viewmodel.GroupViewModel
 import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
@@ -38,7 +40,7 @@ class CategoryFragment: Fragment(R.layout.fragment_category) {
     override fun onResume() {
         super.onResume()
         Log.d(TAG, "onResume() activated")
-        getAllFitGroups()
+        //getAllFitGroups()
     }
 
     private fun initView(view: View) {
@@ -50,12 +52,15 @@ class CategoryFragment: Fragment(R.layout.fragment_category) {
     private fun observeModel() {
         startShimmer()
         viewModel.run {
-            categoryItems.observe(viewLifecycleOwner) { categoryItems ->
-                lifecycleScope.launch {
-                    stopShimmer()
-                    (binding.recyclerViewCategory.adapter as CategoryAdapter).submitList(categoryItems.toList())
+            viewModelScope.launch {
+                pagingData.collectLatest {
+                    if (it != null){
+                        stopShimmer()
+                        (binding.recyclerViewCategory.adapter as CategoryAdapter).submitData(it)
+                    }
                 }
             }
+
 
             errorMessage.observe(viewLifecycleOwner) { errorMessage ->
                 if(errorMessage != null) {
@@ -74,18 +79,19 @@ class CategoryFragment: Fragment(R.layout.fragment_category) {
         binding.chipGroupCategory.setOnCheckedStateChangeListener { _, checkedIds ->
             if (checkedIds.isEmpty()) {
                 Log.d(TAG, "connect in 0")
-                viewModel.getGroups(true, null, null, 1000)
+                viewModel.getGroups(true, 0)
             } else {
                 val categoryId = chipToCategoryMap[checkedIds[0]] ?: return@setOnCheckedStateChangeListener
                 Log.d(TAG, "connect in $categoryId")
-                viewModel.getGroups(true, categoryId, 0, 1000)
+                viewModel.getGroups(true, categoryId, 0)
             }
         }
     }
 
+
     private fun getAllFitGroups() {
         binding.chipGroupCategory.clearCheck()
-        viewModel.getGroups(true, null, null, 1000)
+        viewModel.getGroups(true,  0, 1000)
     }
 
     private fun startShimmer() {

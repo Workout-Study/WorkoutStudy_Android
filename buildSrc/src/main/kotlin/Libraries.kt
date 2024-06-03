@@ -77,4 +77,8 @@ object Libraries {
         const val SPLASH_SCREEN = "androidx.core:core-splashscreen:${Versions.SPLASH}"
     }
 
+    object Paging {
+        const val PAGING3 = "androidx.paging:paging-runtime:${Versions.PAGING}"
+    }
+
 }
