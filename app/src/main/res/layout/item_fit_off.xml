@@ -15,15 +15,15 @@
 
         <ImageView
             android:id="@+id/imageViewFitOffItemBackground"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:contentDescription="@null"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="1.0"
-            app:srcCompat="@drawable/bg_rounded_fit_off"
-            android:contentDescription="@null" />
+            app:srcCompat="@drawable/bg_rounded_rectangle" />
 
         <TextView
             android:id="@+id/textViewFitOffItemName"

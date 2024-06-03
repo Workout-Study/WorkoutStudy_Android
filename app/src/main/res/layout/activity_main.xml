@@ -28,10 +28,13 @@
         <com.google.android.material.bottomnavigation.BottomNavigationView
             android:id="@+id/bottomNavigationViewMainActivity"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="64dp"
             android:background="@color/zircon"
+            app:itemBackground="@android:color/transparent"
+            app:itemRippleColor="@android:color/transparent"
             app:itemTextAppearanceActive="@style/Font.regular12"
             app:layout_constraintBottom_toBottomOf="parent"
+            app:labelVisibilityMode="unlabeled"
             app:menu="@menu/menu_main_bottom_navigation" />
 
 

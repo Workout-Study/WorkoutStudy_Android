@@ -5,6 +5,4 @@
         android:startColor="@color/mediumStateBlue"
         android:endColor="@color/blueGem"
         android:angle="0" />
-    <corners
-        android:radius="20dp" />
 </shape>

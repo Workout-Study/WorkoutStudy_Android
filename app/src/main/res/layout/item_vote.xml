@@ -38,7 +38,7 @@
             app:layout_constraintBottom_toBottomOf="@+id/imageViewItemCategoryFitgroupBackground"
             app:layout_constraintStart_toStartOf="@+id/imageViewItemCategoryFitgroupBackground"
             app:layout_constraintTop_toTopOf="@+id/imageViewItemCategoryFitgroupBackground"
-            app:srcCompat="@drawable/add_picture" />
+            app:srcCompat="@drawable/ic_launcher_logo" />
 
         <TextView
             android:id="@+id/textViewItemVoteFitgroupTitle"
