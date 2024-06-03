@@ -69,6 +69,7 @@ dependencies {
     implementation(Libraries.Compressor.ZELORY_COMPRESSOR)
     implementation(Libraries.Shimmer.SHIMMER)
     implementation(Libraries.Splash.SPLASH_SCREEN)
+    implementation(Libraries.Paging.PAGING3)
 
     implementation(platform(Libraries.Firebase.FIREBASE))
     implementation(Libraries.Firebase.ANALYTICS)

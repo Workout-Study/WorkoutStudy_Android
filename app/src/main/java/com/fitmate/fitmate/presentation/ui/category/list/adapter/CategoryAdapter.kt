@@ -3,13 +3,14 @@ package com.fitmate.fitmate.presentation.ui.category.list.adapter
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import com.fitmate.fitmate.databinding.ItemCategoryBinding
 import com.fitmate.fitmate.domain.model.CategoryItem
 import com.fitmate.fitmate.presentation.ui.category.list.CategoryViewHolder
 
-class CategoryAdapter(private val fragment: Fragment, private val onClick: (CategoryItem) -> Unit): ListAdapter<CategoryItem, CategoryViewHolder>(
+class CategoryAdapter(private val fragment: Fragment, private val onClick: (CategoryItem) -> Unit): PagingDataAdapter<CategoryItem, CategoryViewHolder>(
     CategoryItemDiffCallback
 ) {
 
@@ -20,7 +21,7 @@ class CategoryAdapter(private val fragment: Fragment, private val onClick: (Cate
 
     override fun onBindViewHolder(holder: CategoryViewHolder, position: Int) {
         val item = getItem(position)
-        holder.bind(item)
+        if (item != null) holder.bind(item)
     }
 
     companion object {
