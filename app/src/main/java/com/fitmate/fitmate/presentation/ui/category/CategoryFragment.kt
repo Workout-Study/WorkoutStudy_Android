@@ -23,9 +23,11 @@ class CategoryFragment: Fragment(R.layout.fragment_category) {
     private lateinit var binding: FragmentCategoryBinding
     private val viewModel: GroupViewModel by viewModels()
     private val TAG = "CategoryFragment"
+    private var categoryNumber = 0
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val categoryNumber = arguments?.getInt("categoryNumber") ?: -1
+        categoryNumber = arguments?.getInt("categoryNumber") ?: 0
+        if(categoryNumber == 1) categoryNumber = 0
         Log.d(TAG, categoryNumber.toString())
         (activity as MainActivity).viewNavigationBar()
         initView(view)
@@ -42,13 +44,22 @@ class CategoryFragment: Fragment(R.layout.fragment_category) {
         super.onResume()
         Log.d(TAG, "onResume() activated")
         //getAllFitGroups()
-        viewModel.getGroups(true, 0, 0)
+        viewModel.getGroups(true, categoryNumber, 0)
     }
 
     private fun initView(view: View) {
         binding = FragmentCategoryBinding.bind(view)
         binding.recyclerViewCategory.layoutManager = LinearLayoutManager(context)
         binding.recyclerViewCategory.adapter = CategoryAdapter(this) {}
+
+
+        binding.toolbarTitle.text = when(categoryNumber) {
+            0 -> "전체"   2 -> "생활체육"    3 -> "웨이트"
+            4 -> "수영"   5 -> "축구"       6 -> "농구"
+            7 -> "야구"   8 -> "바이크"      9 -> "클라이밍"
+            10 -> "헬스"  11 -> "골프"      12 -> "등산"
+            else -> ""
+        }
 
         startShimmer()
     }

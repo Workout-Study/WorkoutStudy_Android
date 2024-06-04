@@ -20,7 +20,7 @@ class CategorySelectFragment: Fragment(R.layout.fragment_category_select){
         (activity as MainActivity).viewNavigationBar()
 
         initView(view)
-        setColorFilter(Color.BLACK)
+        setColorFilter(Color.WHITE)
         setCategoryClickListeners()
     }
 
