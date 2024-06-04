@@ -72,7 +72,7 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
     }
 
     private fun observeViewModel() {
-        startShimmer()
+        //startShimmer()
         viewModel.myGroupVotes.observe(viewLifecycleOwner) { result ->
             stopShimmer()
             result.onSuccess { groups ->
