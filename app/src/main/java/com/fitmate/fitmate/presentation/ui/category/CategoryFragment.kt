@@ -5,7 +5,6 @@ import android.util.Log
 import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.viewModelScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.fitmate.fitmate.MainActivity
@@ -41,22 +40,24 @@ class CategoryFragment: Fragment(R.layout.fragment_category) {
         super.onResume()
         Log.d(TAG, "onResume() activated")
         //getAllFitGroups()
+        viewModel.getGroups(true, 0, 0)
     }
 
     private fun initView(view: View) {
         binding = FragmentCategoryBinding.bind(view)
         binding.recyclerViewCategory.layoutManager = LinearLayoutManager(context)
         binding.recyclerViewCategory.adapter = CategoryAdapter(this) {}
+
+        startShimmer()
     }
 
     private fun observeModel() {
-        startShimmer()
         viewModel.run {
             viewModelScope.launch {
                 pagingData.collectLatest {
                     if (it != null){
                         stopShimmer()
-                        (binding.recyclerViewCategory.adapter as CategoryAdapter).submitData(it)
+                        (binding.recyclerViewCategory.adapter as CategoryAdapter).submitData(lifecycle, it)
                     }
                 }
             }
