@@ -25,7 +25,7 @@ class CategoryViewHolder(private val binding: ItemCategoryBinding, private val f
 
         Glide.with(binding.imageViewItemCategoryFitgroupThumbnail.context)
             .load(item.thumbnail)
-            .transform(CenterCrop(), RoundedCorners(16))
+            .transform(CenterCrop(), RoundedCorners(12))
             .error(R.drawable.ic_launcher_logo)
             .into(binding.imageViewItemCategoryFitgroupThumbnail)
     }
