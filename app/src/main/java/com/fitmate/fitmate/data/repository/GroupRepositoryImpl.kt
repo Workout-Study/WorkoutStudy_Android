@@ -2,7 +2,6 @@ package com.fitmate.fitmate.data.repository
 
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
-import com.fitmate.fitmate.data.model.dto.FitGroupFilter
 import com.fitmate.fitmate.data.model.dto.FitMateRequest
 import com.fitmate.fitmate.data.model.dto.GetFitGroupDetail
 import com.fitmate.fitmate.data.model.dto.GetFitMateList
@@ -16,7 +15,7 @@ class GroupRepositoryImpl(private val groupService: GroupService) : GroupReposit
     override suspend fun fitGroupFilter(withMaxGroup: Boolean, category: Int, pageNumber: Int, pageSize: Int) = Pager(
         config = PagingConfig(
             pageSize,
-            enablePlaceholders = false
+            enablePlaceholders = true
         ),
         pagingSourceFactory = {
             CategoryPagingSource(groupService,category,pageSize)
@@ -26,7 +25,7 @@ class GroupRepositoryImpl(private val groupService: GroupService) : GroupReposit
     override suspend fun fitGroupAll(withMaxGroup: Boolean, pageNumber: Int ,pageSize: Int) = Pager(
         config = PagingConfig(
             pageSize,
-            enablePlaceholders = false
+            enablePlaceholders = true
         ),
         pagingSourceFactory = {
             CategoryPagingSource(groupService, 0, pageSize)
