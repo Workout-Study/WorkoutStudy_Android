@@ -4,6 +4,7 @@ import android.animation.Animator
 import android.animation.AnimatorListenerAdapter
 import android.animation.ObjectAnimator
 import android.content.Context
+import android.content.SharedPreferences
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -17,7 +18,10 @@ import androidx.navigation.NavOptions
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
+import androidx.security.crypto.EncryptedSharedPreferences
+import androidx.security.crypto.MasterKey
 import com.fitmate.fitmate.databinding.ActivityMainBinding
+import com.fitmate.fitmate.presentation.ui.login.LoginWebViewFragment
 import com.fitmate.fitmate.presentation.viewmodel.MainActivityViewModel
 import com.fitmate.fitmate.util.ControlActivityInterface
 import dagger.hilt.android.AndroidEntryPoint
@@ -27,6 +31,20 @@ class MainActivity : AppCompatActivity(), ControlActivityInterface {
     private lateinit var binding: ActivityMainBinding
     private lateinit var navController: NavController
     private val viewModel: MainActivityViewModel by viewModels()
+    private val sharedPreferences: SharedPreferences by lazy {
+        val masterKeyAlies = MasterKey
+            .Builder(applicationContext, MasterKey.DEFAULT_MASTER_KEY_ALIAS)
+            .setKeyScheme(MasterKey.KeyScheme.AES256_GCM)
+            .build()
+
+        EncryptedSharedPreferences.create(
+            applicationContext,
+            FILE_NAME,
+            masterKeyAlies,
+            EncryptedSharedPreferences.PrefKeyEncryptionScheme.AES256_SIV,
+            EncryptedSharedPreferences.PrefValueEncryptionScheme.AES256_GCM
+        )
+    }
 
     //1. 온보딩 조회 여부
     //무조건 로그인 창으로(null이면)
@@ -141,5 +159,43 @@ class MainActivity : AppCompatActivity(), ControlActivityInterface {
     override fun showKeyboard(view: View) {
         val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as? InputMethodManager
         imm?.showSoftInput(view, 0)
+    }
+
+    override fun saveUserPreference(accessToken: String, refreshToken: String, userId: Int, platform: String) {
+        val editor = sharedPreferences.edit()
+        editor.run {
+            putString(KEY_ACCESS, accessToken)
+            putString(KEY_REFRESH, refreshToken)
+            putInt(KEY_USER_ID, userId)
+            putString(KEY_PLATFORM, platform)
+            apply()
+        }
+    }
+
+    override fun loadUserPreference(): List<Any> {
+        val userPreferences = mutableListOf<Any>()
+        if (sharedPreferences.contains(KEY_ACCESS)) {
+            val accessToken = sharedPreferences.getString(KEY_ACCESS, "")
+            val refreshToken = sharedPreferences.getString(KEY_REFRESH, "")
+            val userId = sharedPreferences.getInt(KEY_USER_ID, -1)
+            val platform = sharedPreferences.getString(KEY_PLATFORM, "")
+
+            userPreferences.run {
+                add(accessToken!!)
+                add(refreshToken!!)
+                add(userId)
+                add(platform!!)
+            }
+        }
+
+        return userPreferences
+    }
+
+    companion object {
+        private const val FILE_NAME= "user_preference"
+        private const val KEY_ACCESS = "access_token"
+        private const val KEY_REFRESH = "refresh_token"
+        private const val KEY_USER_ID = "user_id"
+        private const val KEY_PLATFORM = "platform"
     }
 }

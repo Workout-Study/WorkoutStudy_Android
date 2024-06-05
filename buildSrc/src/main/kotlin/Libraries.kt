@@ -81,4 +81,7 @@ object Libraries {
         const val PAGING3 = "androidx.paging:paging-runtime:${Versions.PAGING}"
     }
 
+    object Encrypt {
+        const val SECURITY_CRTPYO = "androidx.security:security-crypto-ktx:${Versions.ENCRYPT}"
+    }
 }

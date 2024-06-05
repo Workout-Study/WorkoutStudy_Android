@@ -1,6 +1,7 @@
 package com.fitmate.fitmate.presentation.ui.home
 
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -15,6 +16,7 @@ import com.fitmate.fitmate.domain.model.VoteItem
 import com.fitmate.fitmate.presentation.ui.home.list.adapter.CarouselAdapter
 import com.fitmate.fitmate.presentation.ui.home.list.adapter.VoteAdapter
 import com.fitmate.fitmate.presentation.viewmodel.VoteViewModel
+import com.fitmate.fitmate.util.ControlActivityInterface
 import com.google.android.material.carousel.CarouselLayoutManager
 import com.google.android.material.carousel.MultiBrowseCarouselStrategy
 import dagger.hilt.android.AndroidEntryPoint

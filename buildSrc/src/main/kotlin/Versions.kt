@@ -23,4 +23,5 @@ object Versions {
     const val OKHTTP = "4.12.0"
     const val SPLASH = "1.0.1"
     const val PAGING = "3.1.0"
+    const val ENCRYPT = "1.1.0-alpha06"
 }
