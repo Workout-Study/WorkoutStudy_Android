@@ -21,10 +21,10 @@ interface LoginService {
     @GET("auth/login/kakao")
     suspend fun loginKakao(@Query("code") code: String): LoginResponse
 
-    @GET("auth/logout/Naver")
+    @GET("auth/logout/naver")
     suspend fun logoutNaver(@Query("accessToken") accessToken: String): LoginSuccessResponse
 
-    @GET("auth/logout/Kakao")
+    @GET("auth/logout/kakao")
     suspend fun logoutKakao(@Query("accessToken") accessToken: String): LoginSuccessResponse
 
     @GET("user/user-info")

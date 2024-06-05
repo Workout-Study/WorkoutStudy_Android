@@ -20,6 +20,7 @@ import androidx.navigation.ui.setupWithNavController
 import androidx.security.crypto.EncryptedSharedPreferences
 import androidx.security.crypto.MasterKey
 import com.fitmate.fitmate.databinding.ActivityMainBinding
+import com.fitmate.fitmate.presentation.ui.login.LoginWebViewFragment
 import com.fitmate.fitmate.presentation.viewmodel.MainActivityViewModel
 import com.fitmate.fitmate.util.ControlActivityInterface
 import dagger.hilt.android.AndroidEntryPoint
