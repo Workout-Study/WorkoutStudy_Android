@@ -37,6 +37,11 @@ class LoginViewModel @Inject constructor(
     private val _errorMessage = MutableLiveData<String?>()
     val errorMessage: LiveData<String?> = _errorMessage
 
+    private val _logoutComplete = MutableLiveData<Boolean>()
+    val logoutComplete: LiveData<Boolean> = _logoutComplete
+
+    var platform: String? = null
+
     fun tokenValid(accessToken: String) {
         viewModelScope.launch {
             _isLoading.value = true
@@ -52,6 +57,7 @@ class LoginViewModel @Inject constructor(
     }
 
     fun login(code: String, platform: String) {
+        this.platform = platform
         viewModelScope.launch {
             _isLoading.value = true
             try {
@@ -73,14 +79,17 @@ class LoginViewModel @Inject constructor(
         viewModelScope.launch {
             _isLoading.value = true
             try {
-                _success.value = when(platform) {
+                val response = when(platform) {
                     "naver" -> loginUseCase.logoutNaver(accessToken)
                     "kakao" -> loginUseCase.logoutKakao(accessToken)
-                    else -> null
+                    else -> throw IllegalArgumentException("Unknown platform: $platform")
                 }
-                _isLoading.value = false
+                _success.value = response
+                _logoutComplete.value = true // 로그아웃 완료 상태 업데이트
             } catch (e: Exception) {
-                Log.d(TAG, "logout Error... $e")
+                Log.d(TAG, "logout Error: ${e.message}")
+                _errorMessage.value = "로그아웃을 할 수 없습니다. 다시 시도해주세요."
+            } finally {
                 _isLoading.value = false
             }
         }
