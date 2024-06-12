@@ -3,16 +3,19 @@ package com.fitmate.fitmate.presentation.ui.onboarding
 
 import android.content.Context
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
+import androidx.viewpager2.widget.ViewPager2
 import com.fitmate.fitmate.MainActivity
 import com.fitmate.fitmate.R
 import com.fitmate.fitmate.databinding.FragmentOnboardingContainerBinding
 import com.fitmate.fitmate.presentation.ui.onboarding.adapter.ViewPagerAdapter
 import com.fitmate.fitmate.util.ControlActivityInterface
+import okhttp3.internal.ignoreIoExceptions
 
 class OnboardingContainerFragment : Fragment() {
     private lateinit var binding: FragmentOnboardingContainerBinding
@@ -41,7 +44,9 @@ class OnboardingContainerFragment : Fragment() {
         val fragmentList = arrayListOf(
             OnBoardingFirstFragment(),
             OnBoardingSecondFragment(),
-            OnBoardingThirdFragment()
+            OnBoardingThirdFragment(),
+            OnBoardingFourthFragment(),
+            OnBoardingFifthFragment(),
         )
 
         //뷰패이저 어댑터 설정
@@ -54,6 +59,30 @@ class OnboardingContainerFragment : Fragment() {
         //뷰페이저 어댑터 및 인디케이터 연결
         binding.viewPagerOnboardingContainer.adapter = adapter
         binding.dotsIndicator.attachTo(binding.viewPagerOnboardingContainer)
+        binding.viewPagerOnboardingContainer.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback(){
+            override fun onPageSelected(position: Int) {
+                super.onPageSelected(position)
+                if (position == 4){
+                    binding.dotsIndicator.visibility = View.GONE
+                }else{
+                    binding.dotsIndicator.visibility = View.VISIBLE
+                }
+            }
+
+            override fun onPageScrolled(
+                position: Int,
+                positionOffset: Float,
+                positionOffsetPixels: Int
+            ) {
+                super.onPageScrolled(position, positionOffset, positionOffsetPixels)
+                Log.d("testt","onPageScrolled: $position")
+            }
+
+            override fun onPageScrollStateChanged(state: Int) {
+                super.onPageScrollStateChanged(state)
+                Log.d("testt","onPageScrollStateChanged:${state}")
+            }
+        })
     }
 
 }

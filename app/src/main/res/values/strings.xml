@@ -19,12 +19,26 @@
     <string name="license_scr_item_license">License version in here</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="onboarding_first_scr_title">함께하는 힘, 변화를 부르다</string>
-    <string name="onboarding_second_scr_title">투표를 통한 상호증진</string>
-    <string name="onboarding_third_scr_title">근손실 vs 금전손실</string>
-    <string name="onboarding_first_scr_content">당신의 건강 여정을 위한\n동료를 만나보세요.\n\n여기서 운동은 단순한 선택이 \n우리 모두의 약속입니다.</string>
-    <string name="onboarding_second_scr_content">FITMATE 의 투표는\n더 큰 목표를 위한 약속입니다.\n\n벌금을 통한 패널티는 \n운동 성과 향상을 위한 감시의 끈입니다..</string>
-    <string name="onboarding_third_scr_content">운동을 하지 않으면,\n지갑이 가벼워집니다.\n\n선택은 당신의 몸무게가 아니라\n당신의 결정입니다! 준비되셨나요?</string>
+    <string name="onboarding_first_scr_title">환영합니다! 실시간 피트그룹 탐색</string>
+    <string name="onboarding_second_scr_title">원하는 피트그룹을 검색하고 가입하세요</string>
+    <string name="onboarding_third_scr_title">나의 피트그룹 일정을 확인하세요.</string>
+    <string name="onboarding_fourth_scr_title">피트그룹 멤버와 소통하세요.</string>
+    <string name="onboarding_fifth_scr_title">지금 바로 피트메이트와 함께 \n 운동을 시작해보세요.</string>
+    <string name="onboarding_first_scr_content">"""피트메이트 홈에서는 다양한 운동
+피트그룹을 실시간으로 확인하고,
+당신이 가입한 피트그룹의 활동을 한눈에 볼 수 있습니다."""</string>
+    <string name="onboarding_second_scr_content">"""여러분의 관심사와 목표에 맞는 피트그룹을 찾아보세요.
+카테고리별로 구분되어 쉽게 검색할 수 있으며,
+원하는 그룹을 바로 가입할 수 있습니다."""</string>
+    <string name="onboarding_third_scr_content">"""당신이 속한 피트그룹의 활동 일정을 확인할 수 있습니다.
+운동 일정을 미리 알고 준비하여
+건강한 라이프스타일을 유지하세요."""</string>
+    <string name="onboarding_fourth_scr_content">"""피트그룹의 다른 멤버들과 대화를 나누고,
+활동에 관한 투표에 참여해보세요. 여러분의 의견이
+그룹 활동에 직접적인 영향을 미칠 수 있습니다."""</string>
+    <string name="onboarding_fifth_scr_content">"""피트메이트를 통하여 새로운 운동 친구들을 만나고,
+건강한 삶을 위한 첫걸음을 내딛어보세요."""</string>
+
 
     <string name="item_vote_scr_title">[ FITGROUP NAME ]</string>
     <string name="item_vote_scr_context">[***]님이 운동 기록을 시작하였습니다.</string>
@@ -49,7 +63,6 @@
     <string name="home_main_scr_title_1">HOT FITGROUP</string>
     <string name="home_main_scr_title_2">나의 FITGROUP 소식</string>
     <string name="home_main_scr_mine">내 것만 보기</string>
-
 
 
     <string name="login_scr_kakao">카카오로 시작하기</string>
