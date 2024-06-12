@@ -21,4 +21,5 @@ class ViewPagerAdapter(
         // Returns the relevant Fragment for a specific position
         return fragmentList[position]
     }
+
 }

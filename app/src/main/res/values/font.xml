@@ -16,8 +16,8 @@
     </style>
 
     <style name="OnboardTitle">
-        <item name="android:fontFamily">@font/giants_bold</item>
-        <item name="android:textSize">@dimen/text_XXL</item>
+        <item name="android:fontFamily">@font/pretendard_black</item>
+        <item name="android:textSize">@dimen/text_XL</item>
     </style>
 
     <style name="Font.bold24">
