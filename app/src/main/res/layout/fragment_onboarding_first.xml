@@ -11,19 +11,19 @@
             android:id="@+id/indicatorMockView"
             android:layout_width="match_parent"
             android:layout_height="1dp"
-            app:layout_constraintStart_toStartOf="parent"
+            android:layout_marginTop="176dp"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            android:layout_marginTop="176dp"/>
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
             android:id="@+id/textViewFragmentOnboardingFirstTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginTop="56dp"
             android:gravity="center"
             android:text="@string/onboarding_first_scr_title"
             android:textAppearance="@style/OnboardTitle"
-            android:layout_marginTop="56dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -32,11 +32,11 @@
             android:id="@+id/textViewFragmentOnboardingFirstContent"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
             android:gravity="center"
             android:text="@string/onboarding_first_scr_content"
             android:textAlignment="center"
             android:textAppearance="@style/Font.regular16"
-            android:layout_marginTop="12dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textViewFragmentOnboardingFirstTitle" />
@@ -45,25 +45,28 @@
             android:layout_width="262dp"
             android:layout_height="483dp"
             android:layout_marginTop="232dp"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:cardCornerRadius="16dp"
             android:backgroundTint="@color/black"
-            app:layout_constraintEnd_toEndOf="parent"/>
-
-
-
-        <TextView
-            android:id="@+id/buttonNextFragment"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:layout_constraintBottom_toBottomOf="parent"
-            android:layout_marginEnd="50dp"
-            android:textSize="24sp"
-            android:textAppearance="@style/Font.bold20"
+            app:cardCornerRadius="16dp"
             app:layout_constraintEnd_toEndOf="parent"
-            android:layout_marginBottom="95dp"
-            android:text="Next"/>
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+                <LinearLayout
+                    android:id="@+id/buttonNextFragment"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    android:layout_width="match_parent"
+                    android:layout_height="60dp"
+                    android:gravity="center"
+                    android:clickable="true"
+                    android:background="@drawable/linear_button_gradient">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/onboarding_next_step_button"
+                        android:textColor="@color/white"
+                        android:textAppearance="@style/Font.bold20"/>
+                </LinearLayout>
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>
