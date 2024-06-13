@@ -30,7 +30,7 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        viewModel.fetchMyFitGroupVotes(1)
+
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -40,6 +40,11 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
         initView(view)
         setCarousel()
         observeViewModel()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        viewModel.fetchMyFitGroupVotes(1)
     }
 
 
