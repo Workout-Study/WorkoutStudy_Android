@@ -34,6 +34,7 @@ import com.kizitonwose.calendar.view.MonthHeaderFooterBinder
 import com.kizitonwose.calendar.view.ViewContainer
 import dagger.hilt.android.AndroidEntryPoint
 import java.time.DayOfWeek
+import java.time.Instant
 import java.time.LocalDate
 import java.time.Month
 import java.time.YearMonth
@@ -100,21 +101,27 @@ class MyFitFragment : Fragment() {
         findNavController().navigate(R.id.action_myFitFragment_to_homeFragment, bundle)
     }
 
+
     private fun observeMyfitHistoryInCalendar() {
         viewModel.myFitRecordHistory.observe(viewLifecycleOwner) {
-            calendarAdapter.calendarHandler.fitRecordHistoryDataResult = it
-            calendarAdapter.notifyDataSetChanged()
+            it?.let{
+                val fitDateList =  it.map { fitHistoryData ->
+                    Instant.parse(fitHistoryData.recordStartDate).atZone(ZoneId.systemDefault()).toLocalDate()
+                }
+                fitDateList.forEach {
+                    binding.calendarView.notifyDayChanged(CalendarDay(it, DayPosition.MonthDate))
+                }
+            }
+
         }
+
     }
 
     private fun initCalendar() {
-
         //캘린더 그리는 작업 수행
         binding.calendarView.dayBinder = object : MonthDayBinder<DayViewContainer> {
-            // Called only when a new container is needed.
             override fun create(view: View) = DayViewContainer(view)
 
-            // Called every time we need to reuse a container.
             override fun bind(container: DayViewContainer, data: CalendarDay) {
                 container.day = data
                 container.textView.text = data.date.dayOfMonth.toString()
@@ -124,7 +131,6 @@ class MyFitFragment : Fragment() {
                 //만약 해당 월에 존재하는 day이면
                 if (data.position == DayPosition.MonthDate) {
                     container.textView.visibility = View.VISIBLE
-
                     when {
                         container.day.date == currentDate -> {
                             container.view.setBackgroundResource(R.drawable.bg_border_selected) // 원하는 배경 설정
@@ -176,6 +182,16 @@ class MyFitFragment : Fragment() {
                 } else {
                     container.textView.setTextColor(Color.WHITE)
                     container.textView.visibility = View.INVISIBLE
+                }
+
+                viewModel.myFitRecordHistory.value?.let{
+                    val fitDateList =  it.map { fitHistoryData ->
+                        Instant.parse(fitHistoryData.recordStartDate).atZone(ZoneId.systemDefault()).toLocalDate()
+                    }
+                    if (fitDateList.contains(container.day.date)){
+                        //TODO dot보이도록 변경
+                        container.dot.visibility = View.VISIBLE
+                    }
                 }
             }
         }
@@ -254,8 +270,31 @@ class MyFitFragment : Fragment() {
 
     private fun updateTitle() {
         val month = binding.calendarView.findFirstVisibleMonth()?.yearMonth ?: return
+
+        val (startDate, endDate) = getStartAndEndInstantsForYearMonth(month.year, extractNumbers(month.month.displayText(false)))
+        viewModel.getMyFitRecordHistory("567843", startDate, endDate)//해당 년,월의 운동 기록 통신 시작
+
         binding.exOneYearText.text = month.year.toString()
         binding.exOneMonthText.text = month.month.displayText(short = false)
+    }
+
+    fun extractNumbers(input: String): Int {
+        return input.replace(Regex("[^0-9]"), "").toInt()
+    }
+
+    fun getStartAndEndInstantsForYearMonth(year: Int, month: Int): Pair<String, String> {
+        // 입력된 년도와 월로 LocalDate 객체 생성
+        val firstDayOfMonth = LocalDate.of(year, month, 1)
+        val lastDayOfMonth = firstDayOfMonth.plusMonths(1).minusDays(1)
+
+        // 해당 월의 첫 번째 날의 00:00:00과 마지막 날의 23:59:59의 Instant 구하기
+        val startInstant =
+            firstDayOfMonth.atStartOfDay(ZoneId.systemDefault()).toInstant().toString()
+        val endInstant =
+            lastDayOfMonth.atStartOfDay(ZoneId.systemDefault()).plusDays(1).minusSeconds(1)
+                .toInstant().toString()
+
+        return Pair(startInstant, endInstant)
     }
 
     inner class CalendarHandler() {
@@ -272,25 +311,14 @@ class MyFitFragment : Fragment() {
             }
         }
 
-        fun getStartAndEndInstantsForYearMonth(year: Int, month: Int): Pair<String, String> {
-            // 입력된 년도와 월로 LocalDate 객체 생성
-            val firstDayOfMonth = LocalDate.of(year, month, 1)
-            val lastDayOfMonth = firstDayOfMonth.plusMonths(1).minusDays(1)
 
-            // 해당 월의 첫 번째 날의 00:00:00과 마지막 날의 23:59:59의 Instant 구하기
-            val startInstant =
-                firstDayOfMonth.atStartOfDay(ZoneId.systemDefault()).toInstant().toString()
-            val endInstant =
-                lastDayOfMonth.atStartOfDay(ZoneId.systemDefault()).plusDays(1).minusSeconds(1)
-                    .toInstant().toString()
-
-            return Pair(startInstant, endInstant)
-        }
     }
 
     inner class DayViewContainer(view: View) : ViewContainer(view) {
         // With ViewBinding
-        val textView = CalendarDayLayoutBinding.bind(view).calendarDayText
+        val bindView = CalendarDayLayoutBinding.bind(view)
+        val textView = bindView.calendarDayText
+        val dot = bindView.CircleImageViewFitDayDot
 
         lateinit var day: CalendarDay
 
