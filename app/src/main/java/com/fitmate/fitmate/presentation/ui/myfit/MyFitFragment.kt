@@ -33,6 +33,7 @@ import com.kizitonwose.calendar.view.MonthDayBinder
 import com.kizitonwose.calendar.view.MonthHeaderFooterBinder
 import com.kizitonwose.calendar.view.ViewContainer
 import dagger.hilt.android.AndroidEntryPoint
+import java.time.DayOfWeek
 import java.time.LocalDate
 import java.time.Month
 import java.time.YearMonth
@@ -118,29 +119,64 @@ class MyFitFragment : Fragment() {
                 container.day = data
                 container.textView.text = data.date.dayOfMonth.toString()
                 val currentDate = LocalDate.now()  // 현재 날짜 가져오기
+                val dayOfWeek = container.day.date.dayOfWeek  // 요일 가져오기
+
+                //만약 해당 월에 존재하는 day이면
                 if (data.position == DayPosition.MonthDate) {
                     container.textView.visibility = View.VISIBLE
-                    if (container.day.date == currentDate) {
-                        container.textView.setTextColor(Color.RED)  // 원하는 색상으로 변경
-                        container.textView.setBackgroundResource(R.drawable.bg_border_selected)  // 원하는 배경 설정
-                    }else{
+
+/*                    // Set color for Sundays and Saturdays
+                    if (dayOfWeek == DayOfWeek.SATURDAY || dayOfWeek == DayOfWeek.SUNDAY) {
+                        container.textView.setTextColor(Color.RED)
+                    } else {
                         container.textView.setTextColor(Color.BLACK)
+                    }*/
+                    //만약 오늘에 해당하는 날이라면
+                    if (container.day.date == currentDate) {
+                        container.view.setBackgroundResource(R.drawable.bg_border_selected) // 원하는 배경 설정
+                        if (dayOfWeek == DayOfWeek.SATURDAY){
+                            container.textView.setTextColor(requireContext().getColor(R.color.blueGem))
+                        }else if (dayOfWeek == DayOfWeek.SUNDAY){
+                            container.textView.setTextColor(requireContext().getColor(R.color.red))
+                        }else{
+                            container.textView.setTextColor(requireContext().getColor(R.color.blueGem))
+                        }
+                    }else{
+                        if (dayOfWeek == DayOfWeek.SATURDAY){
+                            container.textView.setTextColor(requireContext().getColor(R.color.blueGem))
+                        }else if (dayOfWeek == DayOfWeek.SUNDAY){
+                            container.textView.setTextColor(requireContext().getColor(R.color.red))
+                        }else{
+                            container.textView.setTextColor(requireContext().getColor(R.color.blueGem))
+                        }
                     }
 
                     if (container.day.date == selectedDate) {
                         // If this is the selected date, show a round background and change the text color.
                         container.textView.setTextColor(Color.WHITE)
-                        container.textView.setBackgroundResource(R.drawable.linear_button_gradient)
+                        container.view.setBackgroundResource(R.drawable.linear_button_gradient)
                     } else {
                         // If this is NOT the selected date, remove the background and reset the text color.
                         if (container.day.date == currentDate) {
-                            container.textView.setTextColor(Color.RED)  // 원하는 색상으로 변경
-                            container.textView.setBackgroundResource(R.drawable.bg_border_selected)  // 원하는 배경 설정
+                            if (dayOfWeek == DayOfWeek.SATURDAY){
+                                container.textView.setTextColor(requireContext().getColor(R.color.blueGem))
+                            }else if (dayOfWeek == DayOfWeek.SUNDAY){
+                                container.textView.setTextColor(requireContext().getColor(R.color.red))
+                            }else{
+                                container.textView.setTextColor(requireContext().getColor(R.color.blueGem))
+                            } // 원하는 색상으로 변경
+                            container.view.setBackgroundResource(R.drawable.bg_border_selected)  // 원하는 배경 설정
                         }else{
-                            container.textView.setTextColor(Color.BLACK)
-                            container.textView.background = null
-                        }
+                            if (dayOfWeek == DayOfWeek.SATURDAY){
+                                container.textView.setTextColor(requireContext().getColor(R.color.blueGem))
+                            }else if (dayOfWeek == DayOfWeek.SUNDAY){
+                                container.textView.setTextColor(requireContext().getColor(R.color.red))
+                            }else{
+                                container.textView.setTextColor(Color.BLACK)
+                            }
 
+                            container.view.background = null
+                        }
                     }
 
                 } else {
