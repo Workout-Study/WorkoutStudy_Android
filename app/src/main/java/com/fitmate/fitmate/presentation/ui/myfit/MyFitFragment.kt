@@ -1,19 +1,21 @@
 package com.fitmate.fitmate.presentation.ui.myfit
 
+import android.graphics.Color
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ScrollView
+import android.widget.TextView
 import android.widget.Toast
+import androidx.core.view.children
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.PagerSnapHelper
 import com.fitmate.fitmate.MainActivity
 import com.fitmate.fitmate.R
+import com.fitmate.fitmate.databinding.CalendarDayLayoutBinding
 import com.fitmate.fitmate.databinding.FragmentMyfitBinding
 import com.fitmate.fitmate.domain.model.MyFitRecordHistoryDetail
 import com.fitmate.fitmate.presentation.ui.myfit.list.adapter.DayListAdapter
@@ -22,9 +24,22 @@ import com.fitmate.fitmate.presentation.viewmodel.MyFitViewModel
 import com.fitmate.fitmate.ui.myfit.list.adapter.MyFitGroupProgressAdapter
 import com.fitmate.fitmate.ui.myfit.list.adapter.MyFitHistoryAdapter
 import com.fitmate.fitmate.util.ControlActivityInterface
+import com.kizitonwose.calendar.core.CalendarDay
+import com.kizitonwose.calendar.core.CalendarMonth
+import com.kizitonwose.calendar.core.DayPosition
+import com.kizitonwose.calendar.core.daysOfWeek
+import com.kizitonwose.calendar.core.firstDayOfWeekFromLocale
+import com.kizitonwose.calendar.view.MonthDayBinder
+import com.kizitonwose.calendar.view.MonthHeaderFooterBinder
+import com.kizitonwose.calendar.view.ViewContainer
 import dagger.hilt.android.AndroidEntryPoint
 import java.time.LocalDate
+import java.time.Month
+import java.time.YearMonth
 import java.time.ZoneId
+import java.time.format.TextStyle
+import java.util.Locale
+import kotlin.time.Duration.Companion.days
 
 @AndroidEntryPoint
 class MyFitFragment : Fragment() {
@@ -39,6 +54,7 @@ class MyFitFragment : Fragment() {
 
     private lateinit var calendarAdapter: MonthListAdapter
     private lateinit var fitHistoryAdapter: MyFitHistoryAdapter
+    private var selectedDate: LocalDate? = null
 
     private val viewModel: MyFitViewModel by viewModels()
 
@@ -80,7 +96,7 @@ class MyFitFragment : Fragment() {
     fun onClickGuideEnterGroup() {
         val bundle = Bundle()
         bundle.putInt("viewPagerPosition", 1)
-         findNavController().navigate(R.id.action_myFitFragment_to_homeFragment, bundle)
+        findNavController().navigate(R.id.action_myFitFragment_to_homeFragment, bundle)
     }
 
     private fun observeMyfitHistoryInCalendar() {
@@ -91,17 +107,77 @@ class MyFitFragment : Fragment() {
     }
 
     private fun initCalendar() {
-        calendarAdapter = MonthListAdapter(CalendarHandler()) { fitHistoryList ->
-            fitHistoryAdapter.submitList(fitHistoryList.toMutableList())
+
+        //캘린더 그리는 작업 수행
+        binding.calendarView.dayBinder = object : MonthDayBinder<DayViewContainer> {
+            // Called only when a new container is needed.
+            override fun create(view: View) = DayViewContainer(view)
+
+            // Called every time we need to reuse a container.
+            override fun bind(container: DayViewContainer, data: CalendarDay) {
+                container.day = data
+                container.textView.text = data.date.dayOfMonth.toString()
+                val currentDate = LocalDate.now()  // 현재 날짜 가져오기
+                if (data.position == DayPosition.MonthDate) {
+                    container.textView.visibility = View.VISIBLE
+                    if (container.day.date == currentDate) {
+                        container.textView.setTextColor(Color.RED)  // 원하는 색상으로 변경
+                        container.textView.setBackgroundResource(R.drawable.bg_border_selected)  // 원하는 배경 설정
+                    }else{
+                        container.textView.setTextColor(Color.BLACK)
+                    }
+
+                    if (container.day.date == selectedDate) {
+                        // If this is the selected date, show a round background and change the text color.
+                        container.textView.setTextColor(Color.WHITE)
+                        container.textView.setBackgroundResource(R.drawable.linear_button_gradient)
+                    } else {
+                        // If this is NOT the selected date, remove the background and reset the text color.
+                        if (container.day.date == currentDate) {
+                            container.textView.setTextColor(Color.RED)  // 원하는 색상으로 변경
+                            container.textView.setBackgroundResource(R.drawable.bg_border_selected)  // 원하는 배경 설정
+                        }else{
+                            container.textView.setTextColor(Color.BLACK)
+                            container.textView.background = null
+                        }
+
+                    }
+
+                } else {
+                    container.textView.setTextColor(Color.WHITE)
+                    container.textView.visibility = View.INVISIBLE
+                }
+
+            }
         }
-        binding.recyclerViewCalendar.run {
-            layoutManager =
-                LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
-            adapter = calendarAdapter
-            scrollToPosition(Int.MAX_VALUE / 2)
-            PagerSnapHelper().attachToRecyclerView(this)
+
+        val currentMonth = YearMonth.now()
+        val startMonth = currentMonth.minusMonths(100)
+        val endMonth = currentMonth.plusMonths(100)
+        val firstDayOfWeek = firstDayOfWeekFromLocale()
+
+
+        binding.calendarView.setup(startMonth, endMonth, firstDayOfWeek)//캘린더 세부 설정
+        binding.calendarView.scrollToMonth(currentMonth)//캘린더 오늘 날짜로 스크롤 수행
+        binding.calendarView.monthScrollListener = { updateTitle() }//캘린더 스크롤시 수행할 작업 설정
+        val daysOfWeek = daysOfWeek()
+
+        //캘린더 상단 년도와 월 표시하는 작업 설정
+        binding.calendarView.monthHeaderBinder = object :
+            MonthHeaderFooterBinder<MonthViewContainer> {
+            override fun create(view: View) = MonthViewContainer(view)
+            override fun bind(container: MonthViewContainer, data: CalendarMonth) {
+                if (container.titlesContainer.tag != null) {
+                    container.titlesContainer.tag = data.yearMonth
+                    container.titlesContainer.children.map { it as TextView }
+                        .forEachIndexed { index, textView ->
+                            val dayOfWeek = daysOfWeek[index]
+                            val title = dayOfWeek.getDisplayName(TextStyle.SHORT, Locale.KOREAN)
+                            textView.text = title
+                        }
+                }
+            }
         }
-        calendarAdapter.calendarHandler.myFitHistoryAdapter = fitHistoryAdapter
     }
 
     private fun initMyFitHistoryRecyclerView() {
@@ -142,6 +218,17 @@ class MyFitFragment : Fragment() {
         }
     }
 
+    fun Month.displayText(short: Boolean = true): String {
+        val style = if (short) TextStyle.SHORT else TextStyle.FULL
+        return getDisplayName(style, Locale.KOREAN)
+    }
+
+    private fun updateTitle() {
+        val month = binding.calendarView.findFirstVisibleMonth()?.yearMonth ?: return
+        binding.exOneYearText.text = month.year.toString()
+        binding.exOneMonthText.text = month.month.displayText(short = false)
+    }
+
     inner class CalendarHandler() {
         var innerAdapter: DayListAdapter? = null
         val vM = viewModel
@@ -149,7 +236,7 @@ class MyFitFragment : Fragment() {
         var myFitHistoryAdapter: MyFitHistoryAdapter? = null
         var tempMonth: Int? = null
         fun networkMyFitRecordHistory(year: Int, month: Int) {
-            if (tempMonth != month){
+            if (tempMonth != month) {
                 tempMonth = month
                 val (startDate, endDate) = getStartAndEndInstantsForYearMonth(year, month)
                 viewModel.getMyFitRecordHistory("567843", startDate, endDate)
@@ -172,4 +259,43 @@ class MyFitFragment : Fragment() {
         }
     }
 
+    inner class DayViewContainer(view: View) : ViewContainer(view) {
+        // With ViewBinding
+        val textView = CalendarDayLayoutBinding.bind(view).calendarDayText
+
+        lateinit var day: CalendarDay
+
+        init {
+            view.setOnClickListener {
+                // Check the day position as we do not want to select in or out dates.
+                if (day.position == DayPosition.MonthDate) {
+                    // Keep a reference to any previous selection
+                    // in case we overwrite it and need to reload it.
+                    val currentSelection = selectedDate
+                    if (currentSelection == day.date) {
+                        // If the user clicks the same date, clear selection.
+                        selectedDate = null
+                        // Reload this date so the dayBinder is called
+                        // and we can REMOVE the selection background.
+                        binding.calendarView.notifyDateChanged(currentSelection)
+                    } else {
+                        selectedDate = day.date
+                        // Reload the newly selected date so the dayBinder is
+                        // called and we can ADD the selection background.
+                        binding.calendarView.notifyDateChanged(day.date)
+                        if (currentSelection != null) {
+                            // We need to also reload the previously selected
+                            // date so we can REMOVE the selection background.
+                            binding.calendarView.notifyDateChanged(currentSelection)
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    inner class MonthViewContainer(view: View) : ViewContainer(view) {
+        // Alternatively, you can add an ID to the container layout and use findViewById()
+        val titlesContainer = view as ViewGroup
+    }
 }

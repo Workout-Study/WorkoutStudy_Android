@@ -29,15 +29,41 @@
                 android:layout_height="match_parent"
                 android:orientation="vertical">
 
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/recycler_view_calendar"
+
+                <LinearLayout
+                    android:id="@+id/calendarInfo"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:background="@color/zircon"
-                    android:overScrollMode="never"
-                    app:fastScrollEnabled="false"
-                    android:backgroundTint="@color/zircon"
-                    android:nestedScrollingEnabled="false" />
+                    android:orientation="vertical"
+                    android:padding="14dp">
+
+                    <TextView
+                        android:id="@+id/exOneYearText"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="24sp"
+                        tools:text="2019" />
+
+                    <TextView
+                        android:id="@+id/exOneMonthText"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:singleLine="true"
+                        android:fontFamily="sans-serif-light"
+                        android:textSize="32sp"
+                        android:ellipsize="marquee"
+                        tools:text="April" />
+
+                </LinearLayout>
+
+                <com.kizitonwose.calendar.view.CalendarView
+                    android:id="@+id/calendarView"
+                    android:nestedScrollingEnabled="false"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:cv_dayViewResource="@layout/calendar_day_layout"
+                    app:cv_monthHeaderResource="@layout/calendar_day_titles_container"
+                    />
 
 
                 <androidx.recyclerview.widget.RecyclerView

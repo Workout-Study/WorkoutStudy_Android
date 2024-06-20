@@ -34,6 +34,7 @@ android {
         }
     }
     compileOptions {
+        isCoreLibraryDesugaringEnabled = true
         sourceCompatibility = JavaVersion.VERSION_1_8
         targetCompatibility = JavaVersion.VERSION_1_8
     }
@@ -52,12 +53,15 @@ fun getApiKey(propertyKey: String): String {
 
 dependencies {
 
+
     implementation(Libraries.AndroidX.CORE_KTX)
     implementation(Libraries.AndroidX.APP_COMPAT)
     implementation(Libraries.Material.MATERIAL)
     implementation(Libraries.AndroidX.CONSTRAINT_LAYOUT)
     implementation(Libraries.AndroidX.ACTIVITY)
     implementation(Libraries.AndroidX.LEGACY)
+    coreLibraryDesugaring("com.android.tools:desugar_jdk_libs:2.0.4")
+    implementation("com.kizitonwose.calendar:view:2.5.2")
 
     implementation(Libraries.Indicator.INDICATOR)
     implementation(Libraries.Lottie.LOTTIE)
