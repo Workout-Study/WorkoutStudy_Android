@@ -62,6 +62,7 @@ dependencies {
     implementation(Libraries.AndroidX.LEGACY)
     coreLibraryDesugaring("com.android.tools:desugar_jdk_libs:2.0.4")
     implementation("com.kizitonwose.calendar:view:2.5.2")
+    implementation("de.hdodenhof:circleimageview:3.1.0")
 
     implementation(Libraries.Indicator.INDICATOR)
     implementation(Libraries.Lottie.LOTTIE)
