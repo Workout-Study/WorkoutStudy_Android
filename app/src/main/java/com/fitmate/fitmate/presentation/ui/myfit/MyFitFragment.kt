@@ -125,29 +125,25 @@ class MyFitFragment : Fragment() {
                 if (data.position == DayPosition.MonthDate) {
                     container.textView.visibility = View.VISIBLE
 
-/*                    // Set color for Sundays and Saturdays
-                    if (dayOfWeek == DayOfWeek.SATURDAY || dayOfWeek == DayOfWeek.SUNDAY) {
-                        container.textView.setTextColor(Color.RED)
-                    } else {
-                        container.textView.setTextColor(Color.BLACK)
-                    }*/
-                    //만약 오늘에 해당하는 날이라면
-                    if (container.day.date == currentDate) {
-                        container.view.setBackgroundResource(R.drawable.bg_border_selected) // 원하는 배경 설정
-                        if (dayOfWeek == DayOfWeek.SATURDAY){
-                            container.textView.setTextColor(requireContext().getColor(R.color.blueGem))
-                        }else if (dayOfWeek == DayOfWeek.SUNDAY){
-                            container.textView.setTextColor(requireContext().getColor(R.color.red))
-                        }else{
-                            container.textView.setTextColor(requireContext().getColor(R.color.blueGem))
+                    when {
+                        container.day.date == currentDate -> {
+                            container.view.setBackgroundResource(R.drawable.bg_border_selected) // 원하는 배경 설정
+                            container.textView.setTextColor(
+                                when (dayOfWeek) {
+                                    DayOfWeek.SATURDAY -> requireContext().getColor(R.color.blueGem)
+                                    DayOfWeek.SUNDAY -> requireContext().getColor(R.color.red)
+                                    else -> requireContext().getColor(R.color.blueGem)
+                                }
+                            )
                         }
-                    }else{
-                        if (dayOfWeek == DayOfWeek.SATURDAY){
-                            container.textView.setTextColor(requireContext().getColor(R.color.blueGem))
-                        }else if (dayOfWeek == DayOfWeek.SUNDAY){
-                            container.textView.setTextColor(requireContext().getColor(R.color.red))
-                        }else{
-                            container.textView.setTextColor(requireContext().getColor(R.color.blueGem))
+                        else -> {
+                            container.textView.setTextColor(
+                                when (dayOfWeek) {
+                                    DayOfWeek.SATURDAY -> requireContext().getColor(R.color.blueGem)
+                                    DayOfWeek.SUNDAY -> requireContext().getColor(R.color.red)
+                                    else -> requireContext().getColor(R.color.blueGem)
+                                }
+                            )
                         }
                     }
 
@@ -158,32 +154,29 @@ class MyFitFragment : Fragment() {
                     } else {
                         // If this is NOT the selected date, remove the background and reset the text color.
                         if (container.day.date == currentDate) {
-                            if (dayOfWeek == DayOfWeek.SATURDAY){
-                                container.textView.setTextColor(requireContext().getColor(R.color.blueGem))
-                            }else if (dayOfWeek == DayOfWeek.SUNDAY){
-                                container.textView.setTextColor(requireContext().getColor(R.color.red))
-                            }else{
-                                container.textView.setTextColor(requireContext().getColor(R.color.blueGem))
-                            } // 원하는 색상으로 변경
-                            container.view.setBackgroundResource(R.drawable.bg_border_selected)  // 원하는 배경 설정
-                        }else{
-                            if (dayOfWeek == DayOfWeek.SATURDAY){
-                                container.textView.setTextColor(requireContext().getColor(R.color.blueGem))
-                            }else if (dayOfWeek == DayOfWeek.SUNDAY){
-                                container.textView.setTextColor(requireContext().getColor(R.color.red))
-                            }else{
-                                container.textView.setTextColor(Color.BLACK)
-                            }
-
+                            container.textView.setTextColor(
+                                when (dayOfWeek) {
+                                    DayOfWeek.SATURDAY -> requireContext().getColor(R.color.blueGem)
+                                    DayOfWeek.SUNDAY -> requireContext().getColor(R.color.red)
+                                    else -> requireContext().getColor(R.color.blueGem)
+                                }
+                            )
+                            container.view.setBackgroundResource(R.drawable.bg_border_selected) // 원하는 배경 설정
+                        } else {
+                            container.textView.setTextColor(
+                                when (dayOfWeek) {
+                                    DayOfWeek.SATURDAY -> requireContext().getColor(R.color.blueGem)
+                                    DayOfWeek.SUNDAY -> requireContext().getColor(R.color.red)
+                                    else -> Color.BLACK
+                                }
+                            )
                             container.view.background = null
                         }
                     }
-
                 } else {
                     container.textView.setTextColor(Color.WHITE)
                     container.textView.visibility = View.INVISIBLE
                 }
-
             }
         }
 
