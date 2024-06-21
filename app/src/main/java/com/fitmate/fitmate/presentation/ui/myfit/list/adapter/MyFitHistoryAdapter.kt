@@ -16,7 +16,6 @@ import com.fitmate.fitmate.ui.myfit.list.MyFitHistoryViewHolder
 
 class MyFitHistoryAdapter(private val context:Context): ListAdapter<MyFitRecordHistoryDetail, MyFitHistoryViewHolder>(diffUtil) {
 
-
     override fun onCreateViewHolder(
         parent: ViewGroup,
         viewType: Int,
@@ -45,5 +44,4 @@ class MyFitHistoryAdapter(private val context:Context): ListAdapter<MyFitRecordH
             }
         }
     }
-
 }
