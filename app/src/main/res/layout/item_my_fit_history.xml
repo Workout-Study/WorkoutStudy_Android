@@ -39,7 +39,7 @@
             app:layout_constraintStart_toStartOf="@+id/textViewItemMyFitHistoryRecord"
             app:layout_constraintTop_toBottomOf="@+id/textViewItemMyFitHistoryRecord" />
 
-        <LinearLayout
+       <!-- <LinearLayout
             android:id="@+id/listViewMyFitItemInnerForGroupName"
             android:layout_width="0dp"
             android:gravity="start"
@@ -50,7 +50,17 @@
             app:layout_constraintStart_toStartOf="@+id/textViewGroupName"
             app:layout_constraintTop_toBottomOf="@+id/textViewGroupName"
             app:layout_constraintBottom_toBottomOf="parent">
-        </LinearLayout>
+        </LinearLayout>-->
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerViewMyFitItemInnerForGroupName"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            android:layout_marginTop="5dp"
+            app:layout_constraintEnd_toStartOf="@+id/imageViewMyItemFitFirstCertification"
+            app:layout_constraintStart_toStartOf="@+id/textViewGroupName"
+            app:layout_constraintTop_toBottomOf="@+id/textViewGroupName"
+            app:layout_constraintBottom_toBottomOf="parent"/>
 
         <ImageView
             android:id="@+id/imageViewMyFitItemSecondCertification"

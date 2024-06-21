@@ -31,11 +31,11 @@ class MyFitHistoryViewHolder(
     fun binding(item: MyFitRecordHistoryDetail) {
         binding.data = item
         //내부 뷰
-        item.registeredFitCertifications.forEach { text ->
-            val textView = ItemForListViewBinding.inflate(LayoutInflater.from(context))
-            textView.text1.text = text.fitGroupName
-            binding.listViewMyFitItemInnerForGroupName.addView(textView.text1)
+        binding.recyclerViewMyFitItemInnerForGroupName.adapter = FitHistoryGroupNameInnerAdapter(context)
+        val groupNameList = item.registeredFitCertifications.map {
+            it.fitGroupName
         }
+        (binding.recyclerViewMyFitItemInnerForGroupName.adapter as FitHistoryGroupNameInnerAdapter).submitList(groupNameList)
     }
 }
 
