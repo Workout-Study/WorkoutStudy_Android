@@ -284,4 +284,3 @@ class UserInfoFragment : Fragment(R.layout.fragment_user_info) {
         }
     }
 }
-

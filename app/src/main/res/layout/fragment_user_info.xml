@@ -12,17 +12,35 @@
         android:layout_height="match_parent"
         android:orientation="vertical">
 
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbar2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="?attr/colorPrimary"
+            android:minHeight="?attr/actionBarSize"
+            android:theme="?attr/actionBarTheme">
+
+            <TextView
+                android:id="@+id/toolbar_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="MyPage"
+                android:textAppearance="@style/Font.bold16"
+                android:textColor="@android:color/white" />
+
+        </androidx.appcompat.widget.Toolbar>
+
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_weight="4"
+            android:layout_height="100dp"
             android:background="@color/violet">
 
             <ImageView
                 android:id="@+id/imageViewUserInfoIcon"
-                android:layout_width="96dp"
-                android:layout_height="96dp"
-                android:layout_marginStart="30dp"
+                android:layout_width="64dp"
+                android:layout_height="64dp"
+                android:layout_marginStart="16dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
@@ -33,39 +51,37 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="10dp"
+                android:layout_marginTop="10dp"
                 android:text="[ User Name ]"
-                android:textAppearance="@style/Font.bold20"
+                android:textAppearance="@style/Font.bold16"
                 android:textColor="@color/zircon"
-                app:layout_constraintBottom_toBottomOf="@+id/imageViewUserInfoIcon"
                 app:layout_constraintStart_toEndOf="@+id/imageViewUserInfoIcon"
-                app:layout_constraintTop_toTopOf="@+id/imageViewUserInfoIcon"
-                app:layout_constraintVertical_bias="0.3" />
+                app:layout_constraintTop_toTopOf="@+id/imageViewUserInfoIcon" />
 
             <TextView
                 android:id="@+id/textViewUserInfoDate"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:text="Since 2024.04.21"
-                android:textAppearance="@style/Font.regular16"
+                android:layout_marginBottom="10dp"
+                android:text="가입일 2024-06-24"
+                android:textAppearance="@style/Font.regular12"
                 android:textColor="@color/zircon"
                 app:layout_constraintBottom_toBottomOf="@+id/imageViewUserInfoIcon"
                 app:layout_constraintStart_toStartOf="@+id/textViewUserInfoName"
                 app:layout_constraintTop_toTopOf="@+id/imageViewUserInfoIcon"
-                app:layout_constraintVertical_bias="0.662" />
+                app:layout_constraintVertical_bias="1.0" />
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_weight="2"
             android:background="@color/zircon">
 
             <TextView
                 android:id="@+id/textViewUserInfoTitle1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="20dp"
+                android:layout_marginStart="16dp"
                 android:layout_marginTop="30dp"
                 android:text="회원정보"
                 android:textAppearance="@style/Font.regular12"
@@ -76,89 +92,228 @@
                 android:id="@+id/textViewUserInfoTitle2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="150dp"
+                android:layout_marginTop="175dp"
                 android:text="고객센터"
                 android:textAppearance="@style/Font.regular12"
                 app:layout_constraintStart_toStartOf="@+id/textViewUserInfoTitle1"
                 app:layout_constraintTop_toBottomOf="@+id/textViewUserInfoTitle1" />
 
-            <TextView
-                android:id="@+id/textViewUserInfoProfile"
-                android:layout_width="wrap_content"
+            <LinearLayout
+                android:id="@+id/layoutUserInfoProfile"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="30dp"
-                android:layout_marginTop="20dp"
-                android:text="프로필 사진 변경"
-                android:textAppearance="@style/Font.medium16"
-                android:textColor="@color/violet"
-                app:layout_constraintStart_toStartOf="@+id/textViewUserInfoTitle1"
-                app:layout_constraintTop_toBottomOf="@+id/textViewUserInfoTitle1" />
+                android:clickable="true"
+                android:focusable="true"
+                android:orientation="horizontal"
+                android:padding="10dp"
+                android:paddingStart="16dp"
+                android:paddingEnd="16dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textViewUserInfoTitle1">
 
-            <TextView
-                android:id="@+id/textViewUserInfoNickname"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
-                android:text="회원 닉네임 변경"
-                android:textAppearance="@style/Font.medium16"
-                android:textColor="@color/violet"
-                app:layout_constraintStart_toStartOf="@+id/textViewUserInfoProfile"
-                app:layout_constraintTop_toBottomOf="@+id/textViewUserInfoProfile" />
+                <TextView
+                    android:id="@+id/textViewUserInfoProfile"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="프로필 사진 변경"
+                    android:textAppearance="@style/Font.medium16"
+                    android:textColor="@color/violet" />
 
-            <TextView
-                android:id="@+id/textViewUserInfoFitOff"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
-                android:text="나의 피트오프 열람"
-                android:textAppearance="@style/Font.medium16"
-                android:textColor="@color/violet"
-                app:layout_constraintStart_toStartOf="@+id/textViewUserInfoProfile"
-                app:layout_constraintTop_toBottomOf="@+id/textViewUserInfoNickname" />
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/ic_baseline_arrow_forward_24"
+                    app:tint="@color/violet" />
+            </LinearLayout>
 
-            <TextView
-                android:id="@+id/textViewUserInfoNotice"
-                android:layout_width="wrap_content"
+            <LinearLayout
+                android:id="@+id/layoutUserInfoNickname"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
-                android:text="공지사항"
-                android:textAppearance="@style/Font.medium16"
-                android:textColor="@color/violet"
-                app:layout_constraintStart_toStartOf="@+id/textViewUserInfoProfile"
-                app:layout_constraintTop_toBottomOf="@+id/textViewUserInfoTitle2" />
+                android:background="?attr/selectableItemBackground"
+                android:clickable="true"
+                android:focusable="true"
+                android:orientation="horizontal"
+                android:padding="10dp"
+                android:paddingStart="16dp"
+                android:paddingEnd="16dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/layoutUserInfoProfile">
 
-            <TextView
-                android:id="@+id/textViewUserInfoOSS"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
-                android:text="Open Source License"
-                android:textAppearance="@style/Font.medium16"
-                android:textColor="@color/violet"
-                app:layout_constraintStart_toStartOf="@+id/textViewUserInfoProfile"
-                app:layout_constraintTop_toBottomOf="@+id/textViewUserInfoNotice" />
+                <TextView
+                    android:id="@+id/textViewUserInfoNickname"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="회원 닉네임 변경"
+                    android:textAppearance="@style/Font.medium16"
+                    android:textColor="@color/violet" />
 
-            <TextView
-                android:id="@+id/textViewUserInfoLogout"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
-                android:text="로그아웃"
-                android:textAppearance="@style/Font.medium16"
-                android:textColor="@color/violet"
-                app:layout_constraintStart_toStartOf="@+id/textViewUserInfoProfile"
-                app:layout_constraintTop_toBottomOf="@+id/textViewUserInfoOSS" />
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/ic_baseline_arrow_forward_24"
+                    app:tint="@color/violet" />
+            </LinearLayout>
 
-            <TextView
-                android:id="@+id/textViewUserInfoWithDraw"
-                android:layout_width="wrap_content"
+            <LinearLayout
+                android:id="@+id/layoutUserInfoFitOff"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
-                android:text="회원 탈퇴"
-                android:textAppearance="@style/Font.medium16"
-                android:textColor="@color/violet"
-                app:layout_constraintStart_toStartOf="@+id/textViewUserInfoProfile"
-                app:layout_constraintTop_toBottomOf="@+id/textViewUserInfoLogout" />
+                android:background="?attr/selectableItemBackground"
+                android:clickable="true"
+                android:focusable="true"
+                android:orientation="horizontal"
+                android:padding="10dp"
+                android:paddingStart="16dp"
+                android:paddingEnd="16dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/layoutUserInfoNickname">
+
+                <TextView
+                    android:id="@+id/textViewUserInfoFitOff"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="나의 피트오프 열람"
+                    android:textAppearance="@style/Font.medium16"
+                    android:textColor="@color/violet" />
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/ic_baseline_arrow_forward_24"
+                    app:tint="@color/violet" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/layoutUserInfoNotice"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="60dp"
+                android:background="?attr/selectableItemBackground"
+                android:clickable="true"
+                android:focusable="true"
+                android:orientation="horizontal"
+                android:padding="10dp"
+                android:paddingStart="16dp"
+                android:paddingEnd="16dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/layoutUserInfoFitOff">
+
+                <TextView
+                    android:id="@+id/textViewUserInfoNotice"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="공지사항"
+                    android:textAppearance="@style/Font.medium16"
+                    android:textColor="@color/violet" />
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/ic_baseline_arrow_forward_24"
+                    app:tint="@color/violet" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/layoutUserInfoOSS"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:background="?attr/selectableItemBackground"
+                android:clickable="true"
+                android:focusable="true"
+                android:orientation="horizontal"
+                android:padding="10dp"
+                android:paddingStart="16dp"
+                android:paddingEnd="16dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/layoutUserInfoNotice">
+
+                <TextView
+                    android:id="@+id/textViewUserInfoOSS"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="오픈소스 라이브러리"
+                    android:textAppearance="@style/Font.medium16"
+                    android:textColor="@color/violet" />
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/ic_baseline_arrow_forward_24"
+                    app:tint="@color/violet" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/layoutUserInfoLogout"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:background="?attr/selectableItemBackground"
+                android:clickable="true"
+                android:focusable="true"
+                android:orientation="horizontal"
+                android:padding="10dp"
+                android:paddingStart="16dp"
+                android:paddingEnd="16dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/layoutUserInfoOSS">
+
+                <TextView
+                    android:id="@+id/textViewUserInfoLogout"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="로그아웃"
+                    android:textAppearance="@style/Font.medium16"
+                    android:textColor="@color/violet" />
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/ic_baseline_arrow_forward_24"
+                    app:tint="@color/violet" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/layoutUserInfoWithDraw"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:background="?attr/selectableItemBackground"
+                android:clickable="true"
+                android:focusable="true"
+                android:orientation="horizontal"
+                android:padding="10dp"
+                android:paddingStart="16dp"
+                android:paddingEnd="16dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/layoutUserInfoLogout">
+
+                <TextView
+                    android:id="@+id/textViewUserInfoWithDraw"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="회원 탈퇴"
+                    android:textAppearance="@style/Font.medium16"
+                    android:textColor="@color/violet" />
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/ic_baseline_arrow_forward_24"
+                    app:tint="@color/violet" />
+            </LinearLayout>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </LinearLayout>
