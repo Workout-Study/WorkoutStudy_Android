@@ -18,8 +18,6 @@ import com.fitmate.fitmate.R
 import com.fitmate.fitmate.databinding.CalendarDayLayoutBinding
 import com.fitmate.fitmate.databinding.FragmentMyfitBinding
 import com.fitmate.fitmate.domain.model.MyFitRecordHistoryDetail
-import com.fitmate.fitmate.presentation.ui.myfit.list.adapter.DayListAdapter
-import com.fitmate.fitmate.presentation.ui.myfit.list.adapter.MonthListAdapter
 import com.fitmate.fitmate.presentation.viewmodel.MyFitViewModel
 import com.fitmate.fitmate.ui.myfit.list.adapter.MyFitGroupProgressAdapter
 import com.fitmate.fitmate.ui.myfit.list.adapter.MyFitHistoryAdapter
@@ -54,7 +52,6 @@ class MyFitFragment : Fragment() {
         )
     }
 
-    private lateinit var calendarAdapter: MonthListAdapter
     private lateinit var fitHistoryAdapter: MyFitHistoryAdapter
     private var selectedDate: LocalDate? = null
 
@@ -82,14 +79,14 @@ class MyFitFragment : Fragment() {
         //그룹 fitProgress 리사이클러뷰 데이터 연결
         observeFitProgress()
 
-        //운동 기록 리사이클러뷰 mock 데이터 연결
+        //운동 기록 리사이클러뷰 데이터 연결
         initMyFitHistoryRecyclerView()
 
         // 캘린더 연결
         initCalendar()
 
         //캘린더에서 통신한 운동 기록 데이터를 감시
-        observeMyfitHistoryInCalendar()
+        observeMyFitHistoryInCalendar()
 
         //플로팅 버튼
         setToggleAppBar()
@@ -102,7 +99,7 @@ class MyFitFragment : Fragment() {
     }
 
 
-    private fun observeMyfitHistoryInCalendar() {
+    private fun observeMyFitHistoryInCalendar() {
         viewModel.myFitRecordHistory.observe(viewLifecycleOwner) {
             it?.let{
                 val fitDateList =  it.map { fitHistoryData ->
@@ -154,11 +151,11 @@ class MyFitFragment : Fragment() {
                     }
 
                     if (container.day.date == selectedDate) {
-                        // If this is the selected date, show a round background and change the text color.
+                        //선택된 날짜의 상태 변경
                         container.textView.setTextColor(Color.WHITE)
                         container.view.setBackgroundResource(R.drawable.linear_button_gradient)
                     } else {
-                        // If this is NOT the selected date, remove the background and reset the text color.
+                        //선택되지 않은 경우
                         if (container.day.date == currentDate) {
                             container.textView.setTextColor(
                                 when (dayOfWeek) {
@@ -189,7 +186,6 @@ class MyFitFragment : Fragment() {
                         Instant.parse(fitHistoryData.recordStartDate).atZone(ZoneId.systemDefault()).toLocalDate()
                     }
                     if (fitDateList.contains(container.day.date)){
-                        //TODO dot보이도록 변경
                         container.dot.visibility = View.VISIBLE
                     }
                 }
@@ -234,7 +230,6 @@ class MyFitFragment : Fragment() {
     }
 
     private fun initButtonClickListener() {
-
         binding.buttonFragmentMyFitFitOff.setOnClickListener {
             //findNavController().navigate(R.id.action_myFitFragment_to_myFitOffFragment)
             Toast.makeText(requireContext(), "추후 업데이트 예정입니다", Toast.LENGTH_SHORT).show()
@@ -297,22 +292,6 @@ class MyFitFragment : Fragment() {
         return Pair(startInstant, endInstant)
     }
 
-    inner class CalendarHandler() {
-        var innerAdapter: DayListAdapter? = null
-        val vM = viewModel
-        var fitRecordHistoryDataResult: List<MyFitRecordHistoryDetail> = emptyList()
-        var myFitHistoryAdapter: MyFitHistoryAdapter? = null
-        var tempMonth: Int? = null
-        fun networkMyFitRecordHistory(year: Int, month: Int) {
-            if (tempMonth != month) {
-                tempMonth = month
-                val (startDate, endDate) = getStartAndEndInstantsForYearMonth(year, month)
-                viewModel.getMyFitRecordHistory("567843", startDate, endDate)
-            }
-        }
-
-
-    }
 
     inner class DayViewContainer(view: View) : ViewContainer(view) {
         // With ViewBinding
@@ -324,25 +303,25 @@ class MyFitFragment : Fragment() {
 
         init {
             view.setOnClickListener {
-                // Check the day position as we do not want to select in or out dates.
+                // 해당 월에 유효한 day라면
                 if (day.position == DayPosition.MonthDate) {
-                    // Keep a reference to any previous selection
-                    // in case we overwrite it and need to reload it.
                     val currentSelection = selectedDate
+                    //클릭했던 낳짜를 또 클릭했을 경우
                     if (currentSelection == day.date) {
-                        // If the user clicks the same date, clear selection.
+                        //TODO 해당 낳짜의 운동 기록 리사이클러뷰 업데이트(빈 리스트를 던지면 됨.)
+                        fitHistoryAdapter.submitList(emptyList())
+                        //선택된 날짜 삭제 후 캘린더에 변경사항 알리기
                         selectedDate = null
-                        // Reload this date so the dayBinder is called
-                        // and we can REMOVE the selection background.
                         binding.calendarView.notifyDateChanged(currentSelection)
-                    } else {
+                    } else { //처음 클릭하는 경우라면
+                        //TODO 해당 낳짜에 해당하는 운동 기록 리사이클러뷰 업데이트
+                        val thatDayFitHistory = viewModel.myFitRecordHistory.value?.filter {
+                            it.recordStartDate.contains(day.date.toString())
+                        }
+                        fitHistoryAdapter.submitList(thatDayFitHistory)
                         selectedDate = day.date
-                        // Reload the newly selected date so the dayBinder is
-                        // called and we can ADD the selection background.
                         binding.calendarView.notifyDateChanged(day.date)
-                        if (currentSelection != null) {
-                            // We need to also reload the previously selected
-                            // date so we can REMOVE the selection background.
+                        if (currentSelection != null) { //이전에 선택됐던 날짜 표시 삭제
                             binding.calendarView.notifyDateChanged(currentSelection)
                         }
                     }
@@ -352,7 +331,6 @@ class MyFitFragment : Fragment() {
     }
 
     inner class MonthViewContainer(view: View) : ViewContainer(view) {
-        // Alternatively, you can add an ID to the container layout and use findViewById()
         val titlesContainer = view as ViewGroup
     }
 }
