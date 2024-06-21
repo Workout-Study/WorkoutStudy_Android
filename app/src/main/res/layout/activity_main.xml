@@ -27,16 +27,16 @@
 
         <com.google.android.material.bottomnavigation.BottomNavigationView
             android:id="@+id/bottomNavigationViewMainActivity"
+            style="@style/Theme.Fitmate.BottomNavigationView"
             android:layout_width="match_parent"
-            android:layout_height="64dp"
-            android:background="@color/zircon"
-            app:itemBackground="@android:color/transparent"
-            app:itemRippleColor="@android:color/transparent"
-            app:itemTextAppearanceActive="@style/Font.regular12"
-            app:layout_constraintBottom_toBottomOf="parent"
+            android:layout_height="70dp"
+            android:background="@drawable/bn_bottom_background"
+            app:itemBackground="@color/zircon"
+            app:itemIconSize="60dp"
+            app:itemIconTint="@color/selector_color"
             app:labelVisibilityMode="unlabeled"
-            app:menu="@menu/menu_main_bottom_navigation" />
-
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:menu="@menu/menu_bn" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

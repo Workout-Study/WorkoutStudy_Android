@@ -39,4 +39,8 @@
         <item name="postSplashScreenTheme">@style/Theme.Fitmate</item>
     </style>
 
+    <style name="Theme.Fitmate.BottomNavigationView" parent="Widget.MaterialComponents.BottomNavigationView.Colored">
+        <item name="itemBackground">@drawable/bn_bottom_background</item>
+    </style>
+
 </resources>

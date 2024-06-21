@@ -72,23 +72,23 @@ class MainActivity : AppCompatActivity(), ControlActivityInterface {
 
         binding.bottomNavigationViewMainActivity.setOnItemSelectedListener { item ->
             when (item.itemId) {
-                R.id.homeFragment -> {
+                R.id.main_bottom_home -> {
                     navigateWithoutBackStack(R.id.homeFragment)
                     true
                 }
-                R.id.myFitFragment -> {
+                R.id.main_bottom_myfit -> {
                     navigateWithoutBackStack(R.id.myFitFragment)
                     true
                 }
-                R.id.categorySelectFragment -> {
+                R.id.main_bottom_category -> {
                     navigateWithoutBackStack(R.id.categorySelectFragment)
                     true
                 }
-                R.id.myGroupFragment -> {
+                R.id.main_bottom_chat -> {
                     navigateWithoutBackStack(R.id.myGroupFragment)
                     true
                 }
-                R.id.userInfoFragment -> {
+                R.id.main_bottom_mypage -> {
                     navigateWithoutBackStack(R.id.userInfoFragment)
                     true
                 }
