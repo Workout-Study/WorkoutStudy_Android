@@ -1,7 +1,5 @@
 package com.fitmate.fitmate.presentation.ui.login
 
-import android.content.Context
-import android.content.SharedPreferences
 import android.net.Uri
 import android.os.Bundle
 import android.util.Log
@@ -13,15 +11,11 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
-import androidx.security.crypto.EncryptedSharedPreferences
-import androidx.security.crypto.MasterKey
 import com.fitmate.fitmate.MainActivity
 import com.fitmate.fitmate.R
 import com.fitmate.fitmate.databinding.FragmentLoginWebviewBinding
 import com.fitmate.fitmate.presentation.viewmodel.LoginViewModel
-import com.fitmate.fitmate.util.ControlActivityInterface
 import dagger.hilt.android.AndroidEntryPoint
-import kotlin.math.log
 
 @AndroidEntryPoint
 class LoginWebViewFragment : Fragment(R.layout.fragment_login_webview) {
@@ -60,7 +54,7 @@ class LoginWebViewFragment : Fragment(R.layout.fragment_login_webview) {
                         18 -> "naver"
                         else -> ""
                     }
-                    if (platform.isNotEmpty()) viewModel.login(code, platform)
+                    if (platform.isNotEmpty()) viewModel.login(code, "token is here", platform)
                     return true
                 }
                 return false
@@ -93,5 +87,4 @@ class LoginWebViewFragment : Fragment(R.layout.fragment_login_webview) {
             }
         }
     }
-
 }

@@ -85,6 +85,7 @@ dependencies {
 
     implementation(Libraries.Hilt.HILT)
     implementation("androidx.gridlayout:gridlayout:1.0.0")
+    implementation("androidx.security:security-crypto-ktx:1.0.0")
     kapt(Libraries.Hilt.HILT_COMPILER)
 
     implementation(Libraries.Room.ROOM)
