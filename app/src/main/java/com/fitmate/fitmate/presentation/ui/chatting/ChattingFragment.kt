@@ -53,12 +53,12 @@ class ChattingFragment : Fragment(R.layout.fragment_chatting) {
     private lateinit var binding: FragmentChattingBinding
     private lateinit var heightProvider: HeightProvider
     @Inject lateinit var dbChatUseCase: DBChatUseCase
+    private var userId: Int = -1
     private val TAG = "ChattingFragment"
     private val viewModel: ChattingViewModel by viewModels()
     private val group: GroupViewModel by viewModels()
     private var webSocket: WebSocket? = null
     private var penaltyAccountNumber: String? = null
-    private var userId = "fitLeaderUserId"      // TODO 실제로 userId를 로그인 후 디바이스에 Preference나 DataStore로 저장해야 함.
     private var fitGroupId: Int = -1
     private var fitMateId: Int = -1
 
@@ -73,6 +73,7 @@ class ChattingFragment : Fragment(R.layout.fragment_chatting) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initFragment(view)                          // 화면 바인딩
+        loadUserPreference()
         activeBackButton()                          // Back 버튼 커스텀
         setupClickListeners()                       // + 메뉴 클릭 리스너
         initHeightProvider()                        // 메뉴 높이 조절
@@ -83,6 +84,11 @@ class ChattingFragment : Fragment(R.layout.fragment_chatting) {
         scrollBottom()                              // 들어 왔을 때 최하단 으로 이동
         chatSend()                                  // 채팅 전송
 
+    }
+
+    private fun loadUserPreference() {
+        val userPreference = (activity as MainActivity).loadUserPreference()
+        userId = userPreference.getOrNull(2)?.toString()?.toInt() ?: -1
     }
 
     private fun initFragment(view: View) {
@@ -151,7 +157,7 @@ class ChattingFragment : Fragment(R.layout.fragment_chatting) {
         binding.recyclerViewFragmentChattingForFitMateList.layoutManager = LinearLayoutManager(context)
 
         group.getMate.observe(viewLifecycleOwner) { fitMateList ->
-            val isLeader = fitMateList.fitLeaderDetail.fitLeaderUserId == userId
+            val isLeader = fitMateList.fitLeaderDetail.fitLeaderUserId == userId.toString()
             Log.d("woojugoing_isLeader", isLeader.toString())
             fitMateList.fitMateDetails.firstOrNull { it.fitMateId == fitMateId }?.let { textView?.text = it.fitMateUserId }
             val filteredFitMates = fitMateList.fitMateDetails.filter { it.fitMateId != fitMateId }.map { FitMate(it.fitMateId, it.fitMateUserId,it.createdAt) }
@@ -198,7 +204,7 @@ class ChattingFragment : Fragment(R.layout.fragment_chatting) {
 
     private fun setupWebSocketConnection(fitGroupId: String) {
         val client = OkHttpClient()
-        val request = Request.Builder().url("ws://${chatServerAddress}:8888/chat?fitGroupId=${fitGroupId}&fitMateId=${fitMateId}").build()
+        val request = Request.Builder().url("ws://${chatServerAddress}:8888/chat?fitGroupId=${fitGroupId}&userId=${userId}").build()
 
         webSocket = client.newWebSocket(request, object : WebSocketListener() {
             override fun onOpen(webSocket: WebSocket, response: Response) {

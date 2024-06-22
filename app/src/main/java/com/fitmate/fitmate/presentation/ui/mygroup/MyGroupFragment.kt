@@ -29,10 +29,13 @@ class MyGroupFragment: Fragment(R.layout.fragment_my_group) {
     private lateinit var adapter: MyFitGroupAdapter
     private lateinit var controlActivityInterface: ControlActivityInterface
     private val viewModel: ChattingViewModel by viewModels()
+    private var userId: Int = -1
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        viewModel.retrieveFitGroup("1")
+        val userPreference = (activity as MainActivity).loadUserPreference()
+        userId = userPreference.getOrNull(2)?.toString()?.toInt() ?: -1
+        viewModel.retrieveFitGroup(userId.toString())
     }
 
     override fun onCreateView(

@@ -18,13 +18,13 @@ interface LoginService {
     @GET("auth/login/naver")
     suspend fun loginNaver(
         @Query("code") code: String,
-        @Query("token") token: String
+        @Query("fcmToken") token: String
     ): LoginResponse
 
     @GET("auth/login/kakao")
     suspend fun loginKakao(
         @Query("code") code: String,
-        @Query("token") token: String
+        @Query("fcmToken") token: String
     ): LoginResponse
 
     @GET("auth/logout/naver")
