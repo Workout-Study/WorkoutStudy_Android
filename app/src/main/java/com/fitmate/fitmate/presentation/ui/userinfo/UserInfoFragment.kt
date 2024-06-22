@@ -24,13 +24,11 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
-import com.fitmate.fitmate.MainActivity
 import com.fitmate.fitmate.R
 import com.fitmate.fitmate.databinding.FragmentUserInfoBinding
 import com.fitmate.fitmate.presentation.viewmodel.LoginViewModel
 import com.fitmate.fitmate.util.ControlActivityInterface
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
-import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.ktx.storage
 import dagger.hilt.android.AndroidEntryPoint
@@ -40,25 +38,33 @@ class UserInfoFragment : Fragment(R.layout.fragment_user_info) {
 
     private lateinit var binding: FragmentUserInfoBinding
     private val viewModel: LoginViewModel by viewModels()
-    private val TAG = "UserInfoFragment"
-    private var userId: Int = -1
-    private var accessToken: String = ""
-    private var platform: String = ""
+
     private val multiplePermissionsLauncher = registerForActivityResult(
         ActivityResultContracts.RequestMultiplePermissions()) { permissions ->
         permissions.entries.forEach { (permission, isGranted) ->
-            handlePermissionResult(permission, isGranted)
-        }
-    }
-
-    private fun handlePermissionResult(permission: String, isGranted: Boolean) {
-        if (isGranted) {
-            accessGallery()
-        } else {
-            if (!shouldShowRequestPermissionRationale(permission)) {
-                showPermissionSettingDialog()
-            } else {
-                showPermissionDialog()
+            when(permission){
+                READ_EXTERNAL_STORAGE ->{
+                    if (isGranted){
+                        accessGallery()
+                    }else{
+                        if (!shouldShowRequestPermissionRationale(READ_EXTERNAL_STORAGE)){
+                            showPermissionSettiongDialog()
+                        }else{
+                            showPermissionDialog()
+                        }
+                    }
+                }
+                READ_MEDIA_IMAGES -> {
+                    if (isGranted){
+                        accessGallery()
+                    }else{
+                        if (!shouldShowRequestPermissionRationale(READ_MEDIA_IMAGES)){
+                            showPermissionSettiongDialog()
+                        }else{
+                            showPermissionSettiongDialog()
+                        }
+                    }
+                }
             }
         }
     }
@@ -72,19 +78,8 @@ class UserInfoFragment : Fragment(R.layout.fragment_user_info) {
         binding = FragmentUserInfoBinding.bind(view)
 
         (activity as ControlActivityInterface).viewNavigationBar()
-        loadUserPreference()
-
         setClickListener()
         loadProfileImage()
-    }
-
-    private fun loadUserPreference() {
-        val userPreference = (activity as MainActivity).loadUserPreference()
-        userId = userPreference.getOrNull(2)?.toString()?.toInt() ?: -1
-        accessToken = userPreference.getOrNull(0)?.toString() ?: ""
-        platform = userPreference.getOrNull(3)?.toString() ?: ""
-        Log.d(TAG, "$userId, $platform")
-        Log.d(TAG, accessToken)
     }
 
     private fun setClickListener() {
@@ -103,7 +98,7 @@ class UserInfoFragment : Fragment(R.layout.fragment_user_info) {
 
     private fun handleOnClick(viewId: Int) {
         when (viewId) {
-            R.id.textViewUserInfoProfile -> requestPermission() // TODO 권한 체크로 변경하고 권한 체크하는 곳에서 이동하도록 변경
+            R.id.textViewUserInfoProfile -> requestPermission() //TODO 권한 체크로 변경하고 권한 체크하는 곳에서 이동하도록 변경
             R.id.textViewUserInfoNickname -> changeNickname()
             R.id.textViewUserInfoFitOff -> navigateFitOff()
             R.id.textViewUserInfoNotice -> notice()
@@ -128,14 +123,14 @@ class UserInfoFragment : Fragment(R.layout.fragment_user_info) {
                     .load(uri)
                     .apply(RequestOptions().circleCrop())
                     .into(binding.imageViewUserInfoIcon)
-                imageUpload(userId, uri)
+                imageUpload("test_user_id", uri)
             }
             .setNegativeButton(android.R.string.cancel) { dialog, _ -> dialog.dismiss() }
             .show()
 
     }
 
-    private fun imageUpload(userId: Int, uri: Uri) {
+    private fun imageUpload(userId: String, uri: Uri) {
         val activity = activity ?: return
         val storage = Firebase.storage
         val storageRef = storage.getReference("user_profile")
@@ -177,17 +172,13 @@ class UserInfoFragment : Fragment(R.layout.fragment_user_info) {
     }
 
     private fun logout() {
+        val platform = ""
         when(platform) {
-            "kakao" -> viewModel.logout(accessToken, "kakao")
-            "naver" -> viewModel.logout(accessToken, "naver")
+            "kakao" -> viewModel.logout("accessToken", "kakao")
+            "naver" -> viewModel.logout("accessToken", "naver")
         }
-
-        viewModel.logoutComplete.observe(viewLifecycleOwner) { isComplete ->
-            if (isComplete) {
-                navigateTo(R.id.action_userInfoFragment_to_loginFragment)
-                Snackbar.make(binding.root, "로그아웃을 성공했습니다.", Snackbar.LENGTH_SHORT).show()
-            }
-        }
+        //navigateTo(R.id.action_userInfoFragment_to_loginFragment)
+        findNavController().navigate(R.id.nicknameFragment)
     }
 
     private fun withdraw() {
@@ -240,7 +231,7 @@ class UserInfoFragment : Fragment(R.layout.fragment_user_info) {
     }
 
     //권한 설정 화면을 위한 다이얼로그 띄우는 메서드
-    private fun showPermissionSettingDialog() {
+    private fun showPermissionSettiongDialog() {
         MaterialAlertDialogBuilder(requireContext(), R.style.Theme_Fitmate_Dialog)
             .setMessage(getString(R.string.permission_dialog_scr_guide_setting))
             .setPositiveButton(getString(R.string.permission_dialog_scr_guide_setting_select)) { _, _ ->
@@ -284,4 +275,3 @@ class UserInfoFragment : Fragment(R.layout.fragment_user_info) {
         }
     }
 }
-
