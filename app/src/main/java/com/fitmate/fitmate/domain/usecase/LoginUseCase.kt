@@ -7,9 +7,9 @@ class LoginUseCase @Inject constructor(private val loginRepository: LoginReposit
 
     suspend fun tokenValid(accessToken: String) = loginRepository.tokenValid(accessToken)
 
-    suspend fun loginNaver(code: String, token: String) = loginRepository.loginNaver(code, token)
+    suspend fun loginNaver(code: String) = loginRepository.loginNaver(code)
 
-    suspend fun loginKakao(code: String, token: String) = loginRepository.loginKakao(code, token)
+    suspend fun loginKakao(code: String) = loginRepository.loginKakao(code)
 
     suspend fun logoutNaver(accessToken: String) = loginRepository.logoutNaver(accessToken)
 

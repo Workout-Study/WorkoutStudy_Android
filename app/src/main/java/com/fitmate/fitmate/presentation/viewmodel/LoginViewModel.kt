@@ -37,11 +37,6 @@ class LoginViewModel @Inject constructor(
     private val _errorMessage = MutableLiveData<String?>()
     val errorMessage: LiveData<String?> = _errorMessage
 
-    private val _logoutComplete = MutableLiveData<Boolean>()
-    val logoutComplete: LiveData<Boolean> = _logoutComplete
-
-    var platform: String? = null
-
     fun tokenValid(accessToken: String) {
         viewModelScope.launch {
             _isLoading.value = true
@@ -56,14 +51,13 @@ class LoginViewModel @Inject constructor(
         }
     }
 
-    fun login(code: String, token: String, platform: String) {
-        this.platform = platform
+    fun login(code: String, platform: String) {
         viewModelScope.launch {
             _isLoading.value = true
             try {
                 _user.value = when(platform) {
-                    "naver" -> loginUseCase.loginNaver(code, token)
-                    "kakao" -> loginUseCase.loginKakao(code, token)
+                    "naver" -> loginUseCase.loginNaver(code)
+                    "kakao" -> loginUseCase.loginKakao(code)
                     else -> null
                 }
                 _isLoading.value = false
@@ -79,17 +73,14 @@ class LoginViewModel @Inject constructor(
         viewModelScope.launch {
             _isLoading.value = true
             try {
-                val response = when(platform) {
+                _success.value = when(platform) {
                     "naver" -> loginUseCase.logoutNaver(accessToken)
                     "kakao" -> loginUseCase.logoutKakao(accessToken)
-                    else -> throw IllegalArgumentException("Unknown platform: $platform")
+                    else -> null
                 }
-                _success.value = response
-                _logoutComplete.value = true // 로그아웃 완료 상태 업데이트
+                _isLoading.value = false
             } catch (e: Exception) {
-                Log.d(TAG, "logout Error: ${e.message}")
-                _errorMessage.value = "로그아웃을 할 수 없습니다. 다시 시도해주세요."
-            } finally {
+                Log.d(TAG, "logout Error... $e")
                 _isLoading.value = false
             }
         }

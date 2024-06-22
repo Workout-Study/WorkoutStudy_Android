@@ -10,9 +10,9 @@ import com.fitmate.fitmate.domain.repository.LoginRepository
 class LoginRepositoryImpl(private val loginService: LoginService): LoginRepository {
     override suspend fun tokenValid(accessToken: String): LoginSuccessResponse = loginService.tokenValid(accessToken)
 
-    override suspend fun loginNaver(code: String, token: String): LoginResponse = loginService.loginNaver(code, token)
+    override suspend fun loginNaver(code: String): LoginResponse = loginService.loginNaver(code)
 
-    override suspend fun loginKakao(code: String, token: String): LoginResponse = loginService.loginKakao(code, token)
+    override suspend fun loginKakao(code: String): LoginResponse = loginService.loginKakao(code)
 
     override suspend fun logoutNaver(accessToken: String): LoginSuccessResponse = loginService.logoutNaver(accessToken)
 
