@@ -2,6 +2,8 @@
 
     <string name="app_name">FITMATE</string>
 
+    <string name="default_notification_channel_id">알림 채널</string>
+
     <string name="license_scr_toolbar">FITMATE Open Source</string>
     <string name="license_scr_title">|\tOSS Notice\t|\tFITMATE for Android\t|</string>
     <string name="license_scr_openSourceScript">

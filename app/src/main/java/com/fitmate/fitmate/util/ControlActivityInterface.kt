@@ -11,4 +11,6 @@ interface ControlActivityInterface {
     fun saveUserPreference(accessToken: String, refreshToken: String, userId: Int, platform: String)
 
     fun loadUserPreference(): List<Any>
+
+
 }

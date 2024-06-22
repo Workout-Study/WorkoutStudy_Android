@@ -63,6 +63,7 @@ dependencies {
     coreLibraryDesugaring("com.android.tools:desugar_jdk_libs:2.0.4")
     implementation("com.kizitonwose.calendar:view:2.5.2")
     implementation("de.hdodenhof:circleimageview:3.1.0")
+    implementation("com.google.gms:google-services:4.3.15")
 
     implementation(Libraries.Indicator.INDICATOR)
     implementation(Libraries.Lottie.LOTTIE)
@@ -78,6 +79,8 @@ dependencies {
     implementation(Libraries.Encrypt.SECURITY_CRTPYO)
 
     implementation(platform(Libraries.Firebase.FIREBASE))
+    implementation("com.google.firebase:firebase-messaging-ktx")
+    implementation("com.google.firebase:firebase-analytics-ktx")
     implementation(Libraries.Firebase.ANALYTICS)
     implementation(Libraries.Firebase.STORAGE)
     implementation(Libraries.RETROFIT.RETROFIT_CONVERTER_GSON)
