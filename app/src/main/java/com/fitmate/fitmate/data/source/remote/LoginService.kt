@@ -16,10 +16,16 @@ interface LoginService {
     suspend fun tokenValid(@Query("accessToken") accessToken: String): LoginSuccessResponse
 
     @GET("auth/login/naver")
-    suspend fun loginNaver(@Query("code") code: String): LoginResponse
+    suspend fun loginNaver(
+        @Query("code") code: String,
+        @Query("token") token: String
+    ): LoginResponse
 
     @GET("auth/login/kakao")
-    suspend fun loginKakao(@Query("code") code: String): LoginResponse
+    suspend fun loginKakao(
+        @Query("code") code: String,
+        @Query("token") token: String
+    ): LoginResponse
 
     @GET("auth/logout/naver")
     suspend fun logoutNaver(@Query("accessToken") accessToken: String): LoginSuccessResponse
