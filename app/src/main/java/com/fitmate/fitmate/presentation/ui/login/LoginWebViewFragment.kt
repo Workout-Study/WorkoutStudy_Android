@@ -60,7 +60,7 @@ class LoginWebViewFragment : Fragment(R.layout.fragment_login_webview) {
                         18 -> "naver"
                         else -> ""
                     }
-                    if (platform.isNotEmpty()) viewModel.login(code, platform)
+                    if (platform.isNotEmpty()) viewModel.login(code, "token_is_here", platform)
                     return true
                 }
                 return false
