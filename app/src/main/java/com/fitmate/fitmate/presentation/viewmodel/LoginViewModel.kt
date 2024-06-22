@@ -56,14 +56,14 @@ class LoginViewModel @Inject constructor(
         }
     }
 
-    fun login(code: String, platform: String) {
+    fun login(code: String, token: String, platform: String) {
         this.platform = platform
         viewModelScope.launch {
             _isLoading.value = true
             try {
                 _user.value = when(platform) {
-                    "naver" -> loginUseCase.loginNaver(code)
-                    "kakao" -> loginUseCase.loginKakao(code)
+                    "naver" -> loginUseCase.loginNaver(code, token)
+                    "kakao" -> loginUseCase.loginKakao(code, token)
                     else -> null
                 }
                 _isLoading.value = false

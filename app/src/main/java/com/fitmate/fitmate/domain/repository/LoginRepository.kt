@@ -7,9 +7,9 @@ import com.fitmate.fitmate.data.model.dto.UserResponse
 interface LoginRepository {
     suspend fun tokenValid(accessToken: String): LoginSuccessResponse
 
-    suspend fun loginNaver(code: String): LoginResponse
+    suspend fun loginNaver(code: String, token: String): LoginResponse
 
-    suspend fun loginKakao(code: String): LoginResponse
+    suspend fun loginKakao(code: String, token: String): LoginResponse
 
     suspend fun logoutNaver(accessToken: String): LoginSuccessResponse
 
