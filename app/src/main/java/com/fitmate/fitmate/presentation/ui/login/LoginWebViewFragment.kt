@@ -20,6 +20,8 @@ import com.fitmate.fitmate.R
 import com.fitmate.fitmate.databinding.FragmentLoginWebviewBinding
 import com.fitmate.fitmate.presentation.viewmodel.LoginViewModel
 import com.fitmate.fitmate.util.ControlActivityInterface
+import com.google.android.gms.tasks.OnCompleteListener
+import com.google.firebase.messaging.FirebaseMessaging
 import dagger.hilt.android.AndroidEntryPoint
 import kotlin.math.log
 
@@ -49,18 +51,34 @@ class LoginWebViewFragment : Fragment(R.layout.fragment_login_webview) {
     @Suppress("SetJavaScriptEnabled")
     private fun getAuthorization() {
         binding.webView.webViewClient = object : WebViewClient() {
-            override fun shouldOverrideUrlLoading(view: WebView, request: WebResourceRequest): Boolean {
+            override fun shouldOverrideUrlLoading(
+                view: WebView,
+                request: WebResourceRequest,
+            ): Boolean {
                 val url = request.url.toString()
                 val uri = Uri.parse(url)
                 var platform = ""
                 if (uri.getQueryParameter("code") != null) {
                     val code = uri.getQueryParameter("code") ?: ""
-                    platform = when(code.length) {
+                    platform = when (code.length) {
                         86 -> "kakao"
                         18 -> "naver"
                         else -> ""
                     }
-                    if (platform.isNotEmpty()) viewModel.login(code, "token_is_here", platform)
+                    if (platform.isNotEmpty()) {
+                        FirebaseMessaging.getInstance().token.addOnCompleteListener(
+                            OnCompleteListener { task ->
+                                if (!task.isSuccessful) {
+                                    Log.w(TAG, "Fetching FCM registration token failed", task.exception)
+                                    return@OnCompleteListener
+                                }
+
+                                // Get new FCM registration token
+                                val token = task.result
+                                Log.d("tlqkf",token)
+                                viewModel.login(code, token, platform)
+                            })
+                    }
                     return true
                 }
                 return false
@@ -79,8 +97,16 @@ class LoginWebViewFragment : Fragment(R.layout.fragment_login_webview) {
                 val refreshToken = loginResponse.refreshToken
                 val userId = loginResponse.userId
                 val platform = viewModel.platform // ViewModel에 저장된 플랫폼 정보 가져오기
-                Log.d(TAG, "[access]$accessToken \n[refresh]$refreshToken \n[userId]$userId \n[platform]$platform")
-                (activity as MainActivity).saveUserPreference(accessToken, refreshToken, userId, platform!!)
+                Log.d(
+                    TAG,
+                    "[access]$accessToken \n[refresh]$refreshToken \n[userId]$userId \n[platform]$platform"
+                )
+                (activity as MainActivity).saveUserPreference(
+                    accessToken,
+                    refreshToken,
+                    userId,
+                    platform!!
+                )
                 findNavController().navigate(R.id.action_loginWebViewFragment_to_homeMainFragment)
                 Toast.makeText(context, "로그인이 성공하였습니다.", Toast.LENGTH_SHORT).show()
             }
