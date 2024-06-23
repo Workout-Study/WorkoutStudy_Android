@@ -185,7 +185,7 @@ class UserInfoFragment : Fragment(R.layout.fragment_user_info) {
         viewModel.logoutComplete.observe(viewLifecycleOwner) { isComplete ->
             if (isComplete) {
                 navigateTo(R.id.action_userInfoFragment_to_loginFragment)
-                Snackbar.make(binding.root, "로그아웃을 성공했습니다.", Snackbar.LENGTH_SHORT).show()
+                Snackbar.make(binding.root, "로그아웃을 성공했습니다. [USERID ${userId}]", Snackbar.LENGTH_SHORT).show()
             }
         }
     }

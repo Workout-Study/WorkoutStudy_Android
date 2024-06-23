@@ -57,6 +57,7 @@ class MakeGroupFragment : Fragment() {
     private val bottomSheetBehavior by lazy { BottomSheetBehavior.from(binding.bankBottomSheetLayout.root) }
     private var pickMultipleMedia = activityResultLauncher()
     private lateinit var imageListAdapter: MakeGroupImageAdapter
+    private var userId: Int = -1
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -71,6 +72,9 @@ class MakeGroupFragment : Fragment() {
         controlActivityInterface.goneNavigationBar()
 
         bottomSheetBehavior.state = BottomSheetBehavior.STATE_HIDDEN
+        val userPreference = (activity as MainActivity).loadUserPreference()
+        userId = userPreference.getOrNull(2)?.toString()?.toInt() ?: -1
+
         return binding.root
     }
 
@@ -251,7 +255,7 @@ class MakeGroupFragment : Fragment() {
         viewModel.groupImageUrlList.observe(viewLifecycleOwner){urls ->
             //TODO post 작업 수행
             val postData = RequestRegisterFitGroupBody(
-                requestUserId = "567843",
+                requestUserId = "$userId",
                 fitGroupName = viewModel.groupName.value.toString(),
                 penaltyAmount = 5000L,
                 penaltyAccountBankCode = viewModel.bankInfo.value!!.value!!,

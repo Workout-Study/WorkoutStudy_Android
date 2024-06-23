@@ -54,7 +54,7 @@ class MyFitFragment : Fragment() {
 
     private lateinit var fitHistoryAdapter: MyFitHistoryAdapter
     private var selectedDate: LocalDate? = null
-
+    private var userId: Int = -1
     private val viewModel: MyFitViewModel by viewModels()
 
 
@@ -69,6 +69,10 @@ class MyFitFragment : Fragment() {
         binding.myFitFragment = this
         controlActivityInterface = activity as MainActivity
         controlActivityInterface.viewNavigationBar()
+
+        val userPreference = (activity as MainActivity).loadUserPreference()
+        userId = userPreference.getOrNull(2)?.toString()?.toInt() ?: -1
+
         return binding.root
     }
 
@@ -241,7 +245,7 @@ class MyFitFragment : Fragment() {
 
     private fun observeFitProgress() {
         observeNetworkMyProgress()
-        viewModel.getMyFitProgress("567843")
+        viewModel.getMyFitProgress(userId.toString())
     }
 
     private fun observeNetworkMyProgress() =
@@ -267,7 +271,7 @@ class MyFitFragment : Fragment() {
         val month = binding.calendarView.findFirstVisibleMonth()?.yearMonth ?: return
 
         val (startDate, endDate) = getStartAndEndInstantsForYearMonth(month.year, extractNumbers(month.month.displayText(false)))
-        viewModel.getMyFitRecordHistory("567843", startDate, endDate)//해당 년,월의 운동 기록 통신 시작
+        viewModel.getMyFitRecordHistory("$userId", startDate, endDate)//해당 년,월의 운동 기록 통신 시작
 
         binding.exOneYearText.text = month.year.toString()
         binding.exOneMonthText.text = month.month.displayText(short = false)

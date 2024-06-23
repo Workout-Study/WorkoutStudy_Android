@@ -12,6 +12,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.viewpager2.widget.ViewPager2
+import com.fitmate.fitmate.MainActivity
 import com.fitmate.fitmate.R
 import com.fitmate.fitmate.data.model.dto.GetFitGroupDetail
 import com.fitmate.fitmate.databinding.FragmentGroupJoinBinding
@@ -28,6 +29,7 @@ class GroupJoinFragment: Fragment(R.layout.fragment_group_join) {
     private val TAG = "GroupJoinFragment"
     private val viewModel: GroupViewModel by viewModels()
     private var groupId = -1
+    private var userId: Int = -1
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -50,6 +52,9 @@ class GroupJoinFragment: Fragment(R.layout.fragment_group_join) {
         binding.toolbarGroupJoin.setNavigationOnClickListener { findNavController().popBackStack() }
         joinGroupConfirm()
 
+        val userPreference = (activity as MainActivity).loadUserPreference()
+        userId = userPreference.getOrNull(2)?.toString()?.toInt() ?: -1
+
         viewModel.getFitGroupDetail(groupId)
         viewModel.groupDetail.observe(viewLifecycleOwner) { groupDetail ->
             updateUI(groupDetail)
@@ -61,7 +66,7 @@ class GroupJoinFragment: Fragment(R.layout.fragment_group_join) {
 
     private fun joinGroupConfirm() {
         binding.buttonJoinGroupConfirm.setOnClickListener {
-            viewModel.registerFitMate(1, groupId) // requestUserId, fitGroupId
+            viewModel.registerFitMate(userId, groupId) // requestUserId, fitGroupId
 
             // Handler를 사용하여 1초 후에 네비게이션 동작을 실행
             Handler(Looper.getMainLooper()).postDelayed({

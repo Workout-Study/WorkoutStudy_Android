@@ -59,6 +59,7 @@ class CertificateFragment : Fragment() {
     private var pickMultipleMedia = activityResultLauncher()
     private var totalElapsedTime: Long = 0L
     private var networkState: NetworkState = NetworkState.STATE_NON
+    private var userId: Int = -1
 
     //서비스의 스톱워치 시간대를 가져오는 브로드캐스트 리시버
     private var broadcastReceiver = object : BroadcastReceiver() {
@@ -83,12 +84,12 @@ class CertificateFragment : Fragment() {
         ActivityResultContracts.RequestPermission()
     ) { isGranted: Boolean ->
         if (isGranted) {
-            viewModel.insertCertificateInitInfo()
+            viewModel.insertCertificateInitInfo(userId)
         } else {
             if (!shouldShowRequestPermissionRationale(Manifest.permission.POST_NOTIFICATIONS)) {
                 showNotificationPermissionDialog()
             } else {
-                viewModel.insertCertificateInitInfo()
+                viewModel.insertCertificateInitInfo(userId)
             }
         }
     }
@@ -103,6 +104,9 @@ class CertificateFragment : Fragment() {
         binding.lifecycleOwner = viewLifecycleOwner
         binding.viewModel = viewModel
         binding.materialToolbarCertificate.setupWithNavController(findNavController())
+
+        val userPreference = (activity as MainActivity).loadUserPreference()
+        userId = userPreference.getOrNull(2)?.toString()?.toInt() ?: -1
 
         //바텀 네비 삭제.
         removeBottomNavi()
@@ -198,7 +202,7 @@ class CertificateFragment : Fragment() {
 
                             //그룹 선택하러 이동
                             loadingTaskSettingStart()
-                            viewModel.getMyFitGroup(567843)
+                            viewModel.getMyFitGroup(userId)
                         }
 
                     }
@@ -218,7 +222,7 @@ class CertificateFragment : Fragment() {
                                 Manifest.permission.POST_NOTIFICATIONS
                             )
                         } else {
-                            viewModel.insertCertificateInitInfo()
+                            viewModel.insertCertificateInitInfo(userId)
                         }
                     }
                 }
@@ -295,7 +299,7 @@ class CertificateFragment : Fragment() {
                 // 타겟 그룹으로 최종 통신 수행(아래 코드를 해당 통신 옵저버로 이동시켜야함.)
                 it.fitRecordId?.let { recordId ->
                     val resisterObj =
-                        ResisterCertificationRecord("567843", recordId, viewModel.selectedTarget)
+                        ResisterCertificationRecord(userId.toString(), recordId, viewModel.selectedTarget)
                     viewModel.postResisterCertificationRecord(resisterObj)
                 }
             }
@@ -531,7 +535,7 @@ class CertificateFragment : Fragment() {
                 navigateToAppSetting()
             }
             .setNegativeButton(getString(R.string.certificate_scr_dialog_negative_button)) { dialogInterface: DialogInterface, i: Int ->
-                viewModel.insertCertificateInitInfo()
+                viewModel.insertCertificateInitInfo(userId)
             }.show()
     }
 

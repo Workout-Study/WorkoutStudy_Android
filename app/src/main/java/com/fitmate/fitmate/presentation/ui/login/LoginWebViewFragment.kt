@@ -1,7 +1,5 @@
 package com.fitmate.fitmate.presentation.ui.login
 
-import android.content.Context
-import android.content.SharedPreferences
 import android.net.Uri
 import android.os.Bundle
 import android.util.Log
@@ -13,17 +11,14 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
-import androidx.security.crypto.EncryptedSharedPreferences
-import androidx.security.crypto.MasterKey
 import com.fitmate.fitmate.MainActivity
 import com.fitmate.fitmate.R
 import com.fitmate.fitmate.databinding.FragmentLoginWebviewBinding
 import com.fitmate.fitmate.presentation.viewmodel.LoginViewModel
-import com.fitmate.fitmate.util.ControlActivityInterface
 import com.google.android.gms.tasks.OnCompleteListener
+import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.messaging.FirebaseMessaging
 import dagger.hilt.android.AndroidEntryPoint
-import kotlin.math.log
 
 @AndroidEntryPoint
 class LoginWebViewFragment : Fragment(R.layout.fragment_login_webview) {
@@ -108,7 +103,7 @@ class LoginWebViewFragment : Fragment(R.layout.fragment_login_webview) {
                     platform!!
                 )
                 findNavController().navigate(R.id.action_loginWebViewFragment_to_homeMainFragment)
-                Toast.makeText(context, "로그인이 성공하였습니다.", Toast.LENGTH_SHORT).show()
+                Snackbar.make(binding.root, "로그아웃을 성공했습니다. [USERID ${userId}]", Snackbar.LENGTH_SHORT).show()
             }
         }
 
@@ -119,5 +114,4 @@ class LoginWebViewFragment : Fragment(R.layout.fragment_login_webview) {
             }
         }
     }
-
 }
