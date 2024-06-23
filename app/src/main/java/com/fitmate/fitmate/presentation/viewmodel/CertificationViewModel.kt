@@ -152,10 +152,10 @@ class CertificationViewModel @Inject constructor(
 
 
     //Room에 시작 데이터 삽입(인증 시작을 눌렀을 경우)
-    fun insertCertificateInitInfo() {
+    fun insertCertificateInitInfo(userId: Int) {
         val obj = DbCertification(
             id = 1,
-            userId = "567843",
+            userId = userId.toString(),
             recordStartDate = Instant.now(),
             startImages = mutableListOf<Uri>().apply {
                 _startImageList.value?.forEach { data ->

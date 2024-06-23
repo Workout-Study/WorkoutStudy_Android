@@ -1,7 +1,6 @@
 package com.fitmate.fitmate.presentation.ui.home
 
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -16,7 +15,6 @@ import com.fitmate.fitmate.domain.model.VoteItem
 import com.fitmate.fitmate.presentation.ui.home.list.adapter.CarouselAdapter
 import com.fitmate.fitmate.presentation.ui.home.list.adapter.VoteAdapter
 import com.fitmate.fitmate.presentation.viewmodel.VoteViewModel
-import com.fitmate.fitmate.util.ControlActivityInterface
 import com.google.android.material.carousel.CarouselLayoutManager
 import com.google.android.material.carousel.MultiBrowseCarouselStrategy
 import dagger.hilt.android.AndroidEntryPoint
@@ -29,10 +27,12 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
     private lateinit var binding: FragmentHomeBinding
     private lateinit var recyclerView: RecyclerView
     private val viewModel: VoteViewModel by viewModels()
+    private var userId: Int = -1
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
+        val userPreference = (activity as MainActivity).loadUserPreference()
+        userId = userPreference.getOrNull(2)?.toString()?.toInt() ?: -1
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -46,7 +46,7 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
 
     override fun onResume() {
         super.onResume()
-        viewModel.fetchMyFitGroupVotes(1)
+        viewModel.fetchMyFitGroupVotes(userId)
     }
 
 
