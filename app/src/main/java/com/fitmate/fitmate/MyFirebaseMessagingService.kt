@@ -23,7 +23,7 @@ class MyFirebaseMessagingService: FirebaseMessagingService() {
         message.notification?.let {
            val notificationBuilder =  NotificationCompat.Builder(applicationContext, getString(R.string.default_notification_channel_id))
                 .setSmallIcon(R.drawable.baseline_notifications_24)
-                .setContentTitle("알림 발생 제목")
+                .setContentTitle(it.title)
                 .setContentText(it.body)
 
             notificationManager.notify(0, notificationBuilder.build())
