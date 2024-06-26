@@ -1,27 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
-        android:id="@+id/main_bottom_home"
+        android:id="@+id/homeFragment"
         android:icon="@drawable/bn_home_selector"
         android:title="Home" />
 
     <item
-        android:id="@+id/main_bottom_myfit"
+        android:id="@+id/myFitMainFragment"
         android:icon="@drawable/bn_myfit_selector"
         android:title="MyFit"/>
 
     <item
-        android:id="@+id/main_bottom_category"
+        android:id="@+id/categorySelectFragment"
         android:icon="@drawable/bn_category_selector"
         android:title="Category"/>
 
     <item
-        android:id="@+id/main_bottom_chat"
+        android:id="@+id/myGroupFragment"
         android:icon="@drawable/bn_chat_selector"
         android:title="Chat"/>
 
     <item
-        android:id="@+id/main_bottom_mypage"
+        android:id="@+id/userInfoFragment"
         android:icon="@drawable/bn_mypage_selector"
         android:title="MyPage"/>
 
