@@ -19,9 +19,6 @@
             app:destination="@id/onboardingContainerFragment"
             app:popUpTo="@id/homeFragment"
             app:popUpToInclusive="true" />
-        <action
-            android:id="@+id/action_homeFragment_to_myFitMainFragment"
-            app:destination="@id/myFitMainFragment" />
     </fragment>
     <fragment
         android:id="@+id/categoryFragment"
@@ -89,9 +86,6 @@
         <action
             android:id="@+id/action_myFitFragment_to_myFitOffFragment"
             app:destination="@id/myFitOffFragment" />
-        <action
-            android:id="@+id/action_myFitFragment_to_certificateFragment"
-            app:destination="@id/certificateFragment" />
         <action
             android:id="@+id/action_myFitFragment_self"
             app:destination="@id/myFitFragment" />
@@ -195,5 +189,12 @@
     <fragment
         android:id="@+id/myFitMainFragment"
         android:name="com.fitmate.fitmate.presentation.ui.myfit.MyFitMainFragment"
-        android:label="MyFitMainFragment" />
+        android:label="MyFitMainFragment" >
+        <action
+            android:id="@+id/action_myFitMainFragment_to_myFitFragment"
+            app:destination="@id/myFitFragment" />
+        <action
+            android:id="@+id/action_myFitMainFragment_to_certificateFragment"
+            app:destination="@id/certificateFragment" />
+    </fragment>
 </navigation>

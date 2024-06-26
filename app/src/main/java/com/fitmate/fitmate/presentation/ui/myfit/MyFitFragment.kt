@@ -2,24 +2,20 @@ package com.fitmate.fitmate.presentation.ui.myfit
 
 import android.graphics.Color
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ScrollView
 import android.widget.TextView
-import android.widget.Toast
 import androidx.core.view.children
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
+import androidx.navigation.ui.setupWithNavController
 import com.fitmate.fitmate.MainActivity
 import com.fitmate.fitmate.R
 import com.fitmate.fitmate.databinding.CalendarDayLayoutBinding
 import com.fitmate.fitmate.databinding.FragmentMyfitBinding
-import com.fitmate.fitmate.domain.model.MyFitRecordHistoryDetail
 import com.fitmate.fitmate.presentation.viewmodel.MyFitViewModel
-import com.fitmate.fitmate.ui.myfit.list.adapter.MyFitGroupProgressAdapter
 import com.fitmate.fitmate.ui.myfit.list.adapter.MyFitHistoryAdapter
 import com.fitmate.fitmate.util.ControlActivityInterface
 import com.kizitonwose.calendar.core.CalendarDay
@@ -39,7 +35,6 @@ import java.time.YearMonth
 import java.time.ZoneId
 import java.time.format.TextStyle
 import java.util.Locale
-import kotlin.time.Duration.Companion.days
 
 @AndroidEntryPoint
 class MyFitFragment : Fragment() {
@@ -65,7 +60,15 @@ class MyFitFragment : Fragment() {
         return binding.root
     }
 
+    private fun toolbarSetting() {
+        binding.toolbar.setupWithNavController(findNavController())
+        binding.toolbar.title = getString(R.string.my_fit_scr_title)
+    }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        //툴바 설정
+        toolbarSetting()
+
         //운동 기록 리사이클러뷰 데이터 연결
         initMyFitHistoryRecyclerView()
 
