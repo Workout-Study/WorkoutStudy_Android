@@ -5,6 +5,13 @@
 
     <data>
 
+        <variable
+            name="viewModel"
+            type="com.fitmate.fitmate.presentation.viewmodel.MyFitViewModel" />
+
+        <variable
+            name="my_fit_main_fragment"
+            type="com.fitmate.fitmate.presentation.ui.myfit.MyFitMainFragment" />
     </data>
 
     <LinearLayout
@@ -16,17 +23,20 @@
             android:id="@+id/toolBarMyFitMainFragment"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            app:title="@string/my_fit_off_scr_toolbar"
             tools:title="My Fit" />
 
         <LinearLayout
+            android:layout_marginHorizontal="15dp"
             android:id="@+id/emptyGroupViewContainer"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_marginHorizontal="10dp"
+            android:layout_weight="0.7"
+            android:visibility="visible"
             android:background="@drawable/dot_line_myfit_main"
             android:orientation="vertical"
             android:gravity="center"
-            android:layout_weight="0.8">
+            app:myfit_group_data_is_empty="@{viewModel.fitProgressItem}">
 
             <Button
                 style="?attr/materialIconButtonOutlinedStyle"
@@ -42,10 +52,49 @@
                 android:layout_marginTop="20dp"
                 android:textAlignment="center"
                 android:textAppearance="@style/Font.regular16"
-                android:text="아직 FitGroup 가입이 되어있지 않으시네요.\n
-더 많은 그룹에 가입해보세요!"/>
+                android:text="@string/my_fit_main_empty_group_guide_text" />
 
         </LinearLayout>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/containerFitGroupItem"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="0.7">
+
+            <androidx.viewpager2.widget.ViewPager2
+                android:id="@+id/recyclerviewMyFitFragmentMyFitProgress"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginHorizontal="15dp"
+                android:orientation="vertical" />
+
+            <Button
+                android:id="@+id/buttonCardViewScrollLeft"
+                style="?attr/materialIconButtonFilledTonalStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:backgroundTint="@color/white"
+                android:onClick="@{() -> my_fit_main_fragment.clickButtonViewPagerScrollLeft()}"
+                app:icon="@drawable/left_scroll_btn_icon"
+                app:layout_constraintBottom_toBottomOf="@+id/recyclerviewMyFitFragmentMyFitProgress"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/recyclerviewMyFitFragmentMyFitProgress" />
+
+            <Button
+                android:id="@+id/buttonCardViewScrollRight"
+                style="?attr/materialIconButtonFilledTonalStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:backgroundTint="@color/white"
+                app:icon="@drawable/right_scroll_btn_icon"
+                android:onClick="@{() -> my_fit_main_fragment.clickButtonViewPagerScrollRight()}"
+                app:layout_constraintBottom_toBottomOf="@+id/recyclerviewMyFitFragmentMyFitProgress"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/recyclerviewMyFitFragmentMyFitProgress" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
 
         <LinearLayout
             android:id="@+id/containerFitOffAndFirHistory"
@@ -53,18 +102,18 @@
             android:layout_height="0dp"
             android:layout_weight="0.2"
             android:orientation="horizontal"
-            android:layout_marginTop="25dp"
-            app:layout_constraintEnd_toEndOf="@+id/emptyGroupViewContainer"
-            app:layout_constraintStart_toStartOf="@+id/emptyGroupViewContainer"
-            app:layout_constraintBottom_toTopOf="@+id/buttonFitCertificate">
+            android:layout_marginTop="25dp">
 
             <androidx.cardview.widget.CardView
                 android:layout_width="0dp"
-                android:layout_marginStart="10dp"
+                android:layout_marginStart="15dp"
                 android:layout_marginEnd="5dp"
                 android:layout_height="wrap_content"
+                android:layout_marginBottom="20dp"
                 android:elevation="10dp"
                 app:cardCornerRadius="8dp"
+                android:clickable="true"
+                android:foreground="?attr/selectableItemBackground"
                 android:layout_weight="1">
 
                 <LinearLayout
@@ -91,11 +140,14 @@
 
             <androidx.cardview.widget.CardView
                 android:layout_width="0dp"
-                android:layout_marginEnd="10dp"
+                android:layout_marginEnd="15dp"
                 android:layout_marginStart="5dp"
                 android:layout_height="wrap_content"
                 android:elevation="10dp"
+                android:layout_marginBottom="20dp"
                 app:cardCornerRadius="8dp"
+                android:clickable="true"
+                android:foreground="?attr/selectableItemBackground"
                 android:layout_weight="1">
 
                 <LinearLayout
@@ -115,18 +167,11 @@
                         android:layout_height="wrap_content"
                         android:textAppearance="@style/Font.regular16"
                         android:layout_marginTop="10dp"
-                        android:text="내 피트오프"/>
+                        android:text="내 운동기록" />
 
                 </LinearLayout>
 
             </androidx.cardview.widget.CardView>
-
-            <androidx.cardview.widget.CardView
-                android:layout_width="0dp"
-                android:layout_height="wrap_content">
-
-            </androidx.cardview.widget.CardView>
-
 
         </LinearLayout>
 
@@ -137,16 +182,10 @@
             android:text="운동 기록하기"
             android:clickable="true"
             android:layout_marginBottom="24dp"
+            android:foreground="?attr/selectableItemBackground"
             android:layout_marginHorizontal="15dp"
             style="@style/button_textView"
             app:layout_constraintBottom_toBottomOf="parent" />
-
-        <androidx.constraintlayout.widget.Group
-            android:id="@+id/group"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:constraint_referenced_ids="emptyGroupViewContainer" />
-
 
     </LinearLayout>
 </layout>
