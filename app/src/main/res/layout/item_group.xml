@@ -11,8 +11,7 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="100dp"
-        android:background="@color/zircon">
+        android:layout_height="100dp">
 
         <ImageView
             android:id="@+id/imageViewItemGroupThumbnail"

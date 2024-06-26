@@ -10,8 +10,7 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/constraintCategorySelect"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@color/zircon">
+        android:layout_height="match_parent">
 
         <androidx.appcompat.widget.Toolbar
             android:id="@+id/toolbar_category_select"

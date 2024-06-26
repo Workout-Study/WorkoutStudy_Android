@@ -45,7 +45,6 @@
             android:layout_marginTop="20dp"
             android:text="@string/item_fit_off_scr_date"
             android:textAppearance="@style/Font.medium16"
-            android:textColor="@color/zircon"
             app:layout_constraintStart_toStartOf="@+id/textViewFitOffItemName"
             app:layout_constraintTop_toBottomOf="@+id/textViewFitOffItemName" />
 

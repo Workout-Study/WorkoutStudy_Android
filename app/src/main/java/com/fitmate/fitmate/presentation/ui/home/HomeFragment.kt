@@ -1,6 +1,7 @@
 package com.fitmate.fitmate.presentation.ui.home
 
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -46,6 +47,8 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
 
     override fun onResume() {
         super.onResume()
+        //메인 액티비티의 바텀 네비 아이디를 수동으로 설정
+        (activity as MainActivity).selecedMenuId = R.id.homeFragment
         viewModel.fetchMyFitGroupVotes(userId)
     }
 

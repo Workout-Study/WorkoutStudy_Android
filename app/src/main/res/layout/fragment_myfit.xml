@@ -23,7 +23,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="bottom"
-            android:background="@color/zircon"
             app:title="@string/my_fit_scr_title"/>
 
         <androidx.core.widget.NestedScrollView

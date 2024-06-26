@@ -5,7 +5,7 @@
         android:height="60dp"
         android:width="60dp" />
     <solid
-        android:color="@color/zircon" />
+        android:color="@color/white" />
     <corners
         android:radius="10dp" />
 </shape>

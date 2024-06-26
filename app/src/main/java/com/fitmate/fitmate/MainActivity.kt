@@ -30,6 +30,7 @@ import dagger.hilt.android.AndroidEntryPoint
 class MainActivity : AppCompatActivity(), ControlActivityInterface {
     private lateinit var binding: ActivityMainBinding
     private lateinit var navController: NavController
+    var selecedMenuId: Int = -1
     private val viewModel: MainActivityViewModel by viewModels()
     private val sharedPreferences: SharedPreferences by lazy {
         val masterKeyAlies = MasterKey
@@ -55,6 +56,7 @@ class MainActivity : AppCompatActivity(), ControlActivityInterface {
     //유효하지 않으면 로그인 창으로
     @RequiresApi(Build.VERSION_CODES.S)
     override fun onCreate(savedInstanceState: Bundle?) {
+        selecedMenuId = R.id.homeFragment
         super.onCreate(savedInstanceState)
         val splashScreen = installSplashScreen()
         splash(splashScreen)
@@ -73,29 +75,35 @@ class MainActivity : AppCompatActivity(), ControlActivityInterface {
 
         binding.bottomNavigationViewMainActivity.setOnItemSelectedListener { item ->
             val positionId = item.itemId
-            Log.d("testt", positionId.toString())
+            Log.d("testtt","item.itemId: $positionId // selecedMenuId: $selecedMenuId")
+            if (positionId == selecedMenuId) return@setOnItemSelectedListener false
             when (positionId) {
                 R.id.homeFragment -> {
+                    selecedMenuId = R.id.homeFragment
                     navigateWithoutBackStack(R.id.homeFragment, true)
                     true
                 }
 
                 R.id.myFitMainFragment -> {
+                    selecedMenuId = R.id.myFitMainFragment
                     navigateWithoutBackStack(R.id.myFitMainFragment, false)
                     true
                 }
 
                 R.id.categorySelectFragment -> {
+                    selecedMenuId = R.id.categorySelectFragment
                     navigateWithoutBackStack(R.id.categorySelectFragment, false)
                     true
                 }
 
                 R.id.myGroupFragment -> {
+                    selecedMenuId = R.id.myGroupFragment
                     navigateWithoutBackStack(R.id.myGroupFragment, false)
                     true
                 }
 
                 R.id.userInfoFragment -> {
+                    selecedMenuId = R.id.userInfoFragment
                     navigateWithoutBackStack(R.id.userInfoFragment, false)
                     true
                 }

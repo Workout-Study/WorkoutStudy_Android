@@ -54,7 +54,6 @@
                 android:layout_marginTop="10dp"
                 android:text="[ User Name ]"
                 android:textAppearance="@style/Font.bold16"
-                android:textColor="@color/zircon"
                 app:layout_constraintStart_toEndOf="@+id/imageViewUserInfoIcon"
                 app:layout_constraintTop_toTopOf="@+id/imageViewUserInfoIcon" />
 
@@ -74,8 +73,7 @@
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="@color/zircon">
+            android:layout_height="match_parent">
 
             <TextView
                 android:id="@+id/textViewUserInfoTitle1"
