@@ -8,8 +8,10 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
+import androidx.navigation.ui.setupWithNavController
 import androidx.viewpager2.widget.ViewPager2
 import com.fitmate.fitmate.MainActivity
+import com.fitmate.fitmate.R
 import com.fitmate.fitmate.databinding.FragmentMyFitMainBinding
 import com.fitmate.fitmate.databinding.FragmentMyfitBinding
 import com.fitmate.fitmate.presentation.viewmodel.MyFitViewModel
@@ -47,6 +49,7 @@ class MyFitMainFragment: Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         //내 그룹 통신 시작 및 데이터 감시
         observeFitProgress()
+
     }
 
     private fun observeFitProgress() {
@@ -114,7 +117,11 @@ class MyFitMainFragment: Fragment() {
 
     //내 운동 기록 화면(캘린더 화면)으로 화면 이돟
     fun clickEnterMyFitHistoryFragment() {
-        
+        findNavController().navigate(R.id.action_myFitMainFragment_to_myFitFragment)
+    }
+
+    fun clickEnterCertificationFragment() {
+        findNavController().navigate(R.id.action_myFitMainFragment_to_certificateFragment)
     }
 
 }
