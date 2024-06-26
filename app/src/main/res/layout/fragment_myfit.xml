@@ -12,16 +12,27 @@
             type="com.fitmate.fitmate.presentation.ui.myfit.MyFitFragment" />
     </data>
 
-    <androidx.coordinatorlayout.widget.CoordinatorLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
+
+        <com.google.android.material.appbar.MaterialToolbar
+            android:id="@+id/toolbar"
+            app:layout_constraintTop_toTopOf="parent"
+            style="@style/Theme.Fitmate.Toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
+            android:background="@color/zircon"
+            app:navigationIcon="@null"
+            app:title="@string/my_fit_scr_title"/>
 
         <androidx.core.widget.NestedScrollView
             android:id="@+id/contentsNestedSScrollView"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:fillViewport="true"
-            app:layout_behavior="@string/appbar_scrolling_view_behavior">
+            app:layout_constraintTop_toBottomOf="@+id/toolbar">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -80,162 +91,5 @@
             </LinearLayout>
         </androidx.core.widget.NestedScrollView>
 
-        <com.google.android.material.appbar.AppBarLayout
-            android:id="@+id/toolbarLayout"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <com.google.android.material.appbar.CollapsingToolbarLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:layout_scrollFlags="scroll|exitUntilCollapsed">
-
-                <androidx.constraintlayout.widget.ConstraintLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:background="@color/violet"
-                    android:padding="10dp">
-
-                    <TextView
-                        android:id="@+id/textViewMyFitPercent"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="10dp"
-                        android:layout_marginTop="10dp"
-                        android:text="진척도"
-                        android:textAppearance="@style/Font.semibold20"
-                        android:textColor="@color/white"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
-
-
-                    <LinearLayout
-                        android:id="@+id/containerFragmentMyFitNotHasFitGroup"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:orientation="vertical"
-                        app:myfit_group_data_is_empty="@{viewModel.fitProgressItem}"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/textViewMyFitPercent">
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="15dp"
-                            android:layout_marginBottom="10dp"
-                            android:text="@string/my_fit_scr_guide_enter_group"
-                            android:textAppearance="@style/Font.semibold16"
-                            android:textColor="@color/white" />
-
-                        <TextView
-                            android:id="@+id/textViewFragmentMyFitGuideEnterGroup"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center"
-                            android:text="@string/my_fit_scr_guide_enter_group2"
-                            android:onClick="@{() -> my_fit_fragment.onClickGuideEnterGroup()}"
-                            android:textAppearance="@style/Font.semibold16"
-                            android:textColor="@color/turquoise" />
-                    </LinearLayout>
-
-
-                    <com.facebook.shimmer.ShimmerFrameLayout
-                        android:id="@+id/progressShimmer"
-                        app:layout_constraintTop_toBottomOf="@+id/containerFragmentMyFitNotHasFitGroup"
-                        android:layout_width="match_parent"
-                        app:myfit_group_data_shimmer="@{viewModel.fitProgressItem}"
-                        android:layout_height="match_parent">
-
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:orientation="vertical">
-
-                            <include layout="@layout/item_fit_grogress_shimmer"/>
-                        </LinearLayout>
-
-                    </com.facebook.shimmer.ShimmerFrameLayout>
-
-
-                    <androidx.core.widget.NestedScrollView
-                        android:id="@+id/nestedScrollViewForRecyclerView"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:padding="5dp"
-                        app:layout_constraintTop_toBottomOf="@+id/containerFragmentMyFitNotHasFitGroup">
-
-                        <androidx.recyclerview.widget.RecyclerView
-                            android:id="@+id/recyclerviewMyFitFragmentMyFitProgress"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:minHeight="40dp"
-                            android:nestedScrollingEnabled="false"
-                            android:orientation="vertical"
-                            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                            tools:itemCount="1"
-                            tools:listitem="@layout/item_progress" />
-
-                    </androidx.core.widget.NestedScrollView>
-
-                </androidx.constraintlayout.widget.ConstraintLayout>
-
-            </com.google.android.material.appbar.CollapsingToolbarLayout>
-
-            <com.google.android.material.appbar.MaterialToolbar
-                style="@style/Theme.Fitmate.Toolbar"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="bottom"
-                android:background="@color/zircon"
-                app:navigationIcon="@null"
-                app:title="@string/my_fit_scr_title">
-
-                <androidx.constraintlayout.widget.ConstraintLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="end">
-
-                    <Button
-                        android:id="@+id/buttonFragmentMyFitFitOff"
-                        style="?attr/materialIconButtonFilledStyle"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/my_fit_scr_fit_off_spacebar"
-                        android:textAppearance="@style/Font.regular16"
-                        app:icon="@drawable/ic_baseline_rest_24"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
-
-                    <Button
-                        android:id="@+id/buttonFragmentMyFitRecord"
-                        style="?attr/materialIconButtonFilledStyle"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="12dp"
-                        android:text="@string/my_fit_scr_fit_record_spacebar"
-                        android:textAppearance="@style/Font.regular16"
-                        app:icon="@drawable/ic_baseline_timer_24"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintStart_toEndOf="@+id/buttonFragmentMyFitFitOff"
-                        app:layout_constraintTop_toTopOf="parent"
-                        app:layout_constraintVertical_bias="0.0" />
-
-                </androidx.constraintlayout.widget.ConstraintLayout>
-
-            </com.google.android.material.appbar.MaterialToolbar>
-
-        </com.google.android.material.appbar.AppBarLayout>
-
-        <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:id="@+id/floatingButtonScrollTop"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="bottom|end"
-            android:layout_margin="16dp"
-            android:backgroundTint="@color/turquoise"
-            android:src="@drawable/baseline_vertical_align_top_24"/>
-
-    </androidx.coordinatorlayout.widget.CoordinatorLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

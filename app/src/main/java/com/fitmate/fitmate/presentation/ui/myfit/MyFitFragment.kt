@@ -46,17 +46,10 @@ class MyFitFragment : Fragment() {
     private lateinit var binding: FragmentMyfitBinding
     private lateinit var controlActivityInterface: ControlActivityInterface
 
-    private val fitGroupProgressAdapter: MyFitGroupProgressAdapter by lazy {
-        MyFitGroupProgressAdapter(
-            requireContext()
-        )
-    }
-
     private lateinit var fitHistoryAdapter: MyFitHistoryAdapter
     private var selectedDate: LocalDate? = null
 
     private val viewModel: MyFitViewModel by viewModels()
-
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -73,12 +66,6 @@ class MyFitFragment : Fragment() {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        //툴바 버튼 클릭 리스너 초기화
-        initButtonClickListener()
-
-        //그룹 fitProgress 리사이클러뷰 데이터 연결
-        observeFitProgress()
-
         //운동 기록 리사이클러뷰 데이터 연결
         initMyFitHistoryRecyclerView()
 
@@ -87,9 +74,6 @@ class MyFitFragment : Fragment() {
 
         //캘린더에서 통신한 운동 기록 데이터를 감시
         observeMyFitHistoryInCalendar()
-
-        //플로팅 버튼
-        setToggleAppBar()
     }
 
     fun onClickGuideEnterGroup() {
@@ -97,7 +81,6 @@ class MyFitFragment : Fragment() {
         bundle.putInt("viewPagerPosition", 1)
         findNavController().navigate(R.id.action_myFitFragment_to_homeFragment, bundle)
     }
-
 
     private fun observeMyFitHistoryInCalendar() {
         viewModel.myFitRecordHistory.observe(viewLifecycleOwner) {
@@ -109,9 +92,7 @@ class MyFitFragment : Fragment() {
                     binding.calendarView.notifyDayChanged(CalendarDay(it, DayPosition.MonthDate))
                 }
             }
-
         }
-
     }
 
     private fun initCalendar() {
@@ -229,34 +210,6 @@ class MyFitFragment : Fragment() {
         }
     }
 
-    private fun initButtonClickListener() {
-        binding.buttonFragmentMyFitFitOff.setOnClickListener {
-            //findNavController().navigate(R.id.action_myFitFragment_to_myFitOffFragment)
-            Toast.makeText(requireContext(), "추후 업데이트 예정입니다", Toast.LENGTH_SHORT).show()
-        }
-        binding.buttonFragmentMyFitRecord.setOnClickListener {
-            findNavController().navigate(R.id.action_myFitFragment_to_certificateFragment)
-        }
-    }
-
-    private fun observeFitProgress() {
-        observeNetworkMyProgress()
-        viewModel.getMyFitProgress("567843")
-    }
-
-    private fun observeNetworkMyProgress() =
-        viewModel.fitProgressItem.observe(viewLifecycleOwner) { fitProgressList ->
-            fitGroupProgressAdapter.submitList(fitProgressList) {
-                binding.recyclerviewMyFitFragmentMyFitProgress.adapter = fitGroupProgressAdapter
-            }
-        }
-
-    private fun setToggleAppBar() {
-        binding.floatingButtonScrollTop.setOnClickListener {
-            binding.contentsNestedSScrollView.fullScroll(ScrollView.FOCUS_UP)
-            binding.toolbarLayout.setExpanded(true, true)
-        }
-    }
 
     fun Month.displayText(short: Boolean = true): String {
         val style = if (short) TextStyle.SHORT else TextStyle.FULL
@@ -308,13 +261,14 @@ class MyFitFragment : Fragment() {
                     val currentSelection = selectedDate
                     //클릭했던 낳짜를 또 클릭했을 경우
                     if (currentSelection == day.date) {
-                        //TODO 해당 낳짜의 운동 기록 리사이클러뷰 업데이트(빈 리스트를 던지면 됨.)
+                        //해당 낳짜의 운동 기록 리사이클러뷰 업데이트(빈 리스트)
                         fitHistoryAdapter.submitList(emptyList())
                         //선택된 날짜 삭제 후 캘린더에 변경사항 알리기
                         selectedDate = null
                         binding.calendarView.notifyDateChanged(currentSelection)
                     } else { //처음 클릭하는 경우라면
-                        //TODO 해당 낳짜에 해당하는 운동 기록 리사이클러뷰 업데이트
+
+                        //해당 낳짜에 해당하는 운동 기록 리사이클러뷰 업데이트
                         val thatDayFitHistory = viewModel.myFitRecordHistory.value?.filter {
                             it.recordStartDate.contains(day.date.toString())
                         }
