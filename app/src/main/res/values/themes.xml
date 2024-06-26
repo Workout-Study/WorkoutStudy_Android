@@ -43,4 +43,11 @@
         <item name="itemBackground">@drawable/bn_bottom_background</item>
     </style>
 
+    <style name="button_textView">
+        <item name="android:clickable">true</item>
+        <item name="android:gravity">center</item>
+        <item name="android:textColor">@color/white</item>
+        <item name="android:background">@drawable/button_linear</item>
+    </style>
+
 </resources>
