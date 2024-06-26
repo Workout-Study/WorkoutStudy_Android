@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import androidx.viewpager2.widget.ViewPager2
 import com.fitmate.fitmate.MainActivity
 import com.fitmate.fitmate.databinding.FragmentMyFitMainBinding
@@ -44,9 +45,8 @@ class MyFitMainFragment: Fragment() {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        //내 그룹 통신 시작
+        //내 그룹 통신 시작 및 데이터 감시
         observeFitProgress()
-
     }
 
     private fun observeFitProgress() {
@@ -54,6 +54,7 @@ class MyFitMainFragment: Fragment() {
         viewModel.getMyFitProgress("567843")
     }
 
+    //통신 데이터 구독
     private fun observeNetworkMyProgress() =
         viewModel.fitProgressItem.observe(viewLifecycleOwner) { fitProgressList ->
             if (fitProgressList.isEmpty()){
@@ -66,6 +67,7 @@ class MyFitMainFragment: Fragment() {
             viewPagerScrollButtonVisible()
         }
 
+    //뷰페이저 스크롤 버튼 visible 설정
     fun viewPagerScrollButtonVisible() {
         viewModel.fitProgressItem.value?.let { myFitGroupList ->
             binding.recyclerviewMyFitFragmentMyFitProgress.registerOnPageChangeCallback(object :ViewPager2.OnPageChangeCallback(){
@@ -89,7 +91,7 @@ class MyFitMainFragment: Fragment() {
             })
         }
     }
-
+    //뷰 페이저 좌측 스크롤 버튼 설정
     fun clickButtonViewPagerScrollLeft(){
         viewModel.fitProgressItem.value?.let{ myFitGroupList->
             val viewPagerCurrentPosition = binding.recyclerviewMyFitFragmentMyFitProgress.currentItem
@@ -100,7 +102,7 @@ class MyFitMainFragment: Fragment() {
 
 
     }
-
+    //뷰 페이저 우측 스크롤 버튼 설정
     fun clickButtonViewPagerScrollRight(){
         viewModel.fitProgressItem.value?.let{ myFitGroupList ->
             val viewPagerCurrentPosition = binding.recyclerviewMyFitFragmentMyFitProgress.currentItem
@@ -108,7 +110,11 @@ class MyFitMainFragment: Fragment() {
                 binding.recyclerviewMyFitFragmentMyFitProgress.currentItem = viewPagerCurrentPosition + 1
             }
         }
+    }
 
+    //내 운동 기록 화면(캘린더 화면)으로 화면 이돟
+    fun clickEnterMyFitHistoryFragment() {
+        
     }
 
 }
