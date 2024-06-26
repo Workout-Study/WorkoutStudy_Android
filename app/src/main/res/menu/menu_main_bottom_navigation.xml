@@ -8,7 +8,7 @@
         android:icon="@drawable/ic_baseline_home_24"
         android:title="@string/menu_home" />
     <item
-        android:id="@+id/myFitFragment"
+        android:id="@+id/myFitMainFragment"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:icon="@drawable/ic_baseline_monitor_24"

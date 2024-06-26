@@ -19,6 +19,9 @@
             app:destination="@id/onboardingContainerFragment"
             app:popUpTo="@id/homeFragment"
             app:popUpToInclusive="true" />
+        <action
+            android:id="@+id/action_homeFragment_to_myFitMainFragment"
+            app:destination="@id/myFitMainFragment" />
     </fragment>
     <fragment
         android:id="@+id/categoryFragment"
@@ -189,4 +192,8 @@
             app:destination="@id/categoryFragment"
             app:popUpToInclusive="true" />
     </fragment>
+    <fragment
+        android:id="@+id/myFitMainFragment"
+        android:name="com.fitmate.fitmate.presentation.ui.myfit.MyFitMainFragment"
+        android:label="MyFitMainFragment" />
 </navigation>

@@ -189,7 +189,7 @@
     <string name="permission_dialog_scr_guide_message">저장소 권한을 허용하지 않으면 사진 첨부를 할 수 없습니다!</string>
     <string name="permission_dialog_scr_guide_select">권한 허용하러가기</string>
     <string name="permission_dialog_scr_guide_cancel">취소</string>
-
+    <string name="my_fit_main_empty_group_guide_text">아직 FitGroup 가입이 되어있지 않으시네요.\n 더 많은 그룹에 가입해보세요!</string>
 
 
 </resources>
