@@ -8,6 +8,7 @@ import android.content.SharedPreferences
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 import androidx.activity.viewModels
@@ -71,39 +72,47 @@ class MainActivity : AppCompatActivity(), ControlActivityInterface {
         if (intent.getStringExtra("navigateTo") == "certificateFragment") navController.navigate(R.id.certificateFragment)
 
         binding.bottomNavigationViewMainActivity.setOnItemSelectedListener { item ->
-            when (item.itemId) {
-                R.id.main_bottom_home -> {
-                    navigateWithoutBackStack(R.id.homeFragment)
+            val positionId = item.itemId
+            Log.d("testt", positionId.toString())
+            when (positionId) {
+                R.id.homeFragment -> {
+                    navigateWithoutBackStack(R.id.homeFragment, true)
                     true
                 }
-                R.id.main_bottom_myfit -> {
-                    navigateWithoutBackStack(R.id.myFitMainFragment)
+
+                R.id.myFitMainFragment -> {
+                    navigateWithoutBackStack(R.id.myFitMainFragment, false)
                     true
                 }
-                R.id.main_bottom_category -> {
-                    navigateWithoutBackStack(R.id.categorySelectFragment)
+
+                R.id.categorySelectFragment -> {
+                    navigateWithoutBackStack(R.id.categorySelectFragment, false)
                     true
                 }
-                R.id.main_bottom_chat -> {
-                    navigateWithoutBackStack(R.id.myGroupFragment)
+
+                R.id.myGroupFragment -> {
+                    navigateWithoutBackStack(R.id.myGroupFragment, false)
                     true
                 }
-                R.id.main_bottom_mypage -> {
-                    navigateWithoutBackStack(R.id.userInfoFragment)
+
+                R.id.userInfoFragment -> {
+                    navigateWithoutBackStack(R.id.userInfoFragment, false)
                     true
                 }
+
                 else -> false
             }
         }
     }
 
-    private fun navigateWithoutBackStack(destinationId: Int) {
-        val navOptions = NavOptions.Builder()
-            .setPopUpTo(navController.graph.startDestinationId, false)
-            .build()
+    private fun navigateWithoutBackStack(destinationId: Int, clearBackStack: Boolean) {
+        val navOptionsBuilder = NavOptions.Builder()
+
+        navOptionsBuilder.setPopUpTo(navController.graph.startDestinationId, clearBackStack)
+
+        val navOptions = navOptionsBuilder.build()
         navController.navigate(destinationId, null, navOptions)
     }
-
 
     private fun observeOnboardingState() {
         viewModel.onboardingInquiryStatus.observe(this) { isTrue ->
