@@ -305,8 +305,7 @@
                     android:layout_marginStart="20dp"
                     android:layout_marginTop="20dp"
                     android:text="피트 메이트 목록"
-                    android:textAppearance="@style/Font.semibold20"
-                    android:textColor="@color/zircon" />
+                    android:textAppearance="@style/Font.semibold20" />
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/recyclerViewFragmentChattingForFitMateList"

@@ -31,7 +31,7 @@
             android:layout_width="match_parent"
             android:layout_height="70dp"
             android:background="@drawable/bn_bottom_background"
-            app:itemBackground="@color/zircon"
+            app:itemBackground="@color/white"
             app:itemIconSize="60dp"
             app:itemIconTint="@color/selector_color"
             app:labelVisibilityMode="unlabeled"
