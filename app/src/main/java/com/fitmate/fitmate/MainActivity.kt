@@ -76,7 +76,7 @@ class MainActivity : AppCompatActivity(), ControlActivityInterface {
                     navigateWithoutBackStack(R.id.homeFragment)
                     true
                 }
-                R.id.myFitMainFragment -> {
+                R.id.main_bottom_myfit -> {
                     navigateWithoutBackStack(R.id.myFitMainFragment)
                     true
                 }
