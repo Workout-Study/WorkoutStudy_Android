@@ -62,6 +62,8 @@ class GroupJoinFragment: Fragment(R.layout.fragment_group_join) {
         }
 
         observeMessages()
+
+        setMotionLayoutForBottomInfo()
     }
 
     private fun joinGroupConfirm() {
@@ -133,5 +135,19 @@ class GroupJoinFragment: Fragment(R.layout.fragment_group_join) {
 
     private fun updateImageNum(currentPosition: Int, total: Int) {
         binding.textViewGroupDetailImageNum.text = "${currentPosition + 1} / $total"
+    }
+
+    //모션 레이아웃 설정
+    private fun setMotionLayoutForBottomInfo (){
+        binding.scrollView.setOnScrollChangeListener { view, scrollX, scrollY, oldScrollX, oldScrollY ->
+            val textViewY = binding.textViewGroupDetailPresent.top
+            // textViewY까지 스크롤한 퍼센트를 계산
+            val percentage = (scrollY.toFloat() / textViewY)
+            val compareHeight = binding.rootView.height - binding.scrollView.height
+
+            if (compareHeight > textViewY) {
+                binding.motionLayout.progress = if (percentage < 1.0) percentage else 1.0f
+            }
+        }
     }
 }
