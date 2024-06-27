@@ -117,13 +117,14 @@
     <string name="make_group_scr_account">벌금을 받을 계좌 정보</string>
     <string name="make_group_scr_account_insert">계좌번호를 입력하세요.</string>
     <string name="make_group_scr_select_bank">은행 선택</string>
-    <string name="make_group_scr_category">카테고리 선택</string>
+    <string name="make_group_scr_category">카테고리 *</string>
+    <string name="make_group_scr_category_hint">선택해주세요</string>
     <string name="make_group_scr_category_default">카테고리</string>
-    <string name="make_group_scr_fit_num">주 운동 횟수 : %d</string>
-    <string name="make_group_scr_people">최대 인원 수 : %d</string>
-    <string name="make_group_scr_comment">그룹 코멘트</string>
-    <string name="make_group_scr_comment_insert">그룹에 대한 상세설명을 입력해주세요.</string>
-    <string name="make_group_scr_background">그룹 배경사진</string>
+    <string name="make_group_scr_fit_num">여행 빈도: 총 %d번</string>
+    <string name="make_group_scr_people">최대 인원 수: 총 %d명</string>
+    <string name="make_group_scr_comment">그룹 코멘트 *</string>
+    <string name="make_group_scr_comment_insert">내용을 입력하세요.</string>
+    <string name="make_group_scr_background">그룹 배경화면 *</string>
     <string name="make_group_scr_confirm">FITGROUP 만들기</string>
 
 
@@ -194,6 +195,7 @@
     <string name="fit_group_count_info">%d/%d</string>
     <string name="my_fit_calendar_year_info">%d년</string>
     <string name="my_fit_history_total_num">%d건</string>
+
 
 
 </resources>
