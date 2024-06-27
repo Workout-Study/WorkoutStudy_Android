@@ -10,39 +10,47 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="5dp">
+        android:layout_height="100dp"
+        android:layout_marginEnd="5dp">
 
         <androidx.cardview.widget.CardView
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
             android:id="@+id/cardViewItemCertificateStart"
-            android:layout_width="70dp"
-            android:layout_height="70dp"
+            android:layout_width="80dp"
+            android:elevation="0dp"
+            android:layout_height="80dp"
             android:layout_gravity="center_vertical"
             app:cardCornerRadius="10dp">
 
-            <ImageView
-                android:id="@+id/imageViewFitStartSelectImage"
+            <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                app:uri="@{data.imagesUri.toString()}"
-                android:background="@color/dark_gray"
-                android:scaleType="centerInside" />
+                android:layout_height="match_parent">
+                <ImageView
+                    android:id="@+id/imageViewFitStartSelectImage"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    app:uri="@{data.imagesUri.toString()}"
+                    android:scaleType="centerInside" />
 
-            <ImageView
-                android:id="@+id/imageViewRemoveItemMakeGroupImage"
-                android:layout_gravity="end"
-                android:layout_width="20dp"
-                android:layout_height="20dp"
-                android:src="@drawable/baseline_remove_24"
-                app:layout_constraintTop_toTopOf="@+id/imageViewItemCertificate"
-                app:layout_constraintEnd_toEndOf="@+id/imageViewItemCertificate"
-                android:background="@drawable/ic_circle"
-                app:tint="@color/red" />
+                <de.hdodenhof.circleimageview.CircleImageView
+                    android:id="@+id/imageViewRemoveItemMakeGroupImage"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    app:civ_circle_background_color="#383B40"
+                    android:src="@drawable/close_white_icon_24"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+
 
         </androidx.cardview.widget.CardView>
+
+
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

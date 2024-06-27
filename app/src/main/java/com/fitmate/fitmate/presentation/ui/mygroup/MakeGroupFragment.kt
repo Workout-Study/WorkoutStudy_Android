@@ -54,7 +54,6 @@ class MakeGroupFragment : Fragment() {
     private lateinit var binding: FragmentMakeGroupBinding
     private lateinit var controlActivityInterface: ControlActivityInterface
     private val viewModel: MakeGroupViewModel by viewModels()
-    private val bottomSheetBehavior by lazy { BottomSheetBehavior.from(binding.bankBottomSheetLayout.root) }
     private var pickMultipleMedia = activityResultLauncher()
     private lateinit var imageListAdapter: MakeGroupImageAdapter
     private var userId: Int = -1
@@ -71,7 +70,6 @@ class MakeGroupFragment : Fragment() {
         controlActivityInterface = activity as MainActivity
         controlActivityInterface.goneNavigationBar()
 
-        bottomSheetBehavior.state = BottomSheetBehavior.STATE_HIDDEN
         val userPreference = (activity as MainActivity).loadUserPreference()
         userId = userPreference.getOrNull(2)?.toString()?.toInt() ?: -1
 
@@ -90,8 +88,6 @@ class MakeGroupFragment : Fragment() {
         //post 작업 감시
         observePostMakeGroupRegister()
 
-        //바텀 시트 리사이클러뷰 설정(은행)
-        settingBottomSheetAdapter()
 
         //이미지 추가 리사이클러뷰 설정
         setImageListRecyclerView()
@@ -160,19 +156,7 @@ class MakeGroupFragment : Fragment() {
         })
     }
 
-    private fun settingBottomSheetAdapter() {
-        binding.bankBottomSheetLayout.recyclerViewBottomSheetBankList.apply {
-            val bankList = requireContext().readData("bank.json", BankList::class.java) ?: BankList(
-                emptyList()
-            )
-            setHasFixedSize(true)
-            layoutManager = GridLayoutManager(requireContext(), 3)
-            adapter = BankListAdapter(bankList.banks) {
-                viewModel.setBankInfo(it)
-                bottomSheetBehavior.state = BottomSheetBehavior.STATE_HIDDEN
-            }
-        }
-    }
+
 
     fun onClickAddImageButton() {
         if ((viewModel.groupImageList.value?.size ?: 0) >= IMAGE_PICK_MAX) {
@@ -182,10 +166,6 @@ class MakeGroupFragment : Fragment() {
         requestPermission()
     }
 
-    fun collapseBottomSheet() {
-        hideKeyboard()
-        bottomSheetBehavior.state = STATE_COLLAPSED
-    }
 
     //그룹 만들기 버튼 클릭 시 리스너 설정
     fun onclickConfirmButton() {
@@ -417,12 +397,11 @@ class MakeGroupFragment : Fragment() {
         startActivity(intent)
     }
 
-    //키보드 내리고 포커스까지 해제해주는 역할.
+    //키보드 내리고 포커스 해제
     fun hideKeyboard() {
         if (activity?.currentFocus != null){
             val imm = activity?.getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
             imm.hideSoftInputFromWindow(activity?.currentFocus!!.windowToken, 0)
-            activity?.currentFocus!!.clearFocus()
         }
     }
 }
