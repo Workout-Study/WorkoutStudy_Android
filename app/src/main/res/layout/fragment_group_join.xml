@@ -52,131 +52,119 @@
                     android:layout_marginEnd="10dp"
                     android:layout_marginBottom="10dp"
                     android:text="@string/group_join_scr_image_num"
-                    android:textAppearance="@style/Font.bold24"
+                    android:textAppearance="@style/Font.semibold24"
                     android:textColor="@color/white"
                     app:layout_constraintBottom_toBottomOf="@+id/imageViewItemDayCurrentDate"
                     app:layout_constraintEnd_toEndOf="parent" />
+
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/chipGroupDetailCategory"
+                    style="@style/Theme.Fitmate.Chip"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="20dp"
+                    android:layout_marginTop="25dp"
+                    android:text="@string/group_join_scr_category"
+                    android:textAppearance="@style/Font.bold10"
+                    android:textColor="@color/white"
+                    android:textSize="16sp"
+                    app:chipBackgroundColor="@color/fitmate_blue"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/imageViewItemDayCurrentDate" />
 
                 <TextView
                     android:id="@+id/textViewGroupDetailName"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="20dp"
-                    android:layout_marginTop="20dp"
                     android:text="@string/group_join_scr_default_name"
-                    android:textAppearance="@style/Font.bold20"
-                    android:textColor="@color/violet"
-                    app:layout_constraintEnd_toStartOf="@+id/chipGroupDetailCategory"
-                    app:layout_constraintHorizontal_bias="0.0"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/imageViewItemDayCurrentDate"
-                    app:layout_constraintHorizontal_chainStyle="packed" />
-
-                <com.google.android.material.chip.Chip
-                    android:id="@+id/chipGroupDetailCategory"
-                    style="@style/Theme.Fitmate.Chip"
-                    android:layout_width="100dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginEnd="20dp"
-                    android:text="@string/group_join_scr_category"
-                    android:textAlignment="center"
+                    android:textAppearance="@style/Font.bold24"
+                    android:textSize="28sp"
                     android:textColor="@color/black"
-                    android:textSize="16sp"
-                    app:chipBackgroundColor="@color/gray"
-                    app:chipIcon="@null"
-                    app:chipMinTouchTargetSize="48dp"
-                    app:layout_constraintBottom_toBottomOf="@+id/textViewGroupDetailName"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="@+id/textViewGroupDetailName"
-                    app:layout_constraintVertical_bias="0.421" />
+                    app:layout_constraintStart_toStartOf="@+id/chipGroupDetailCategory"
+                    app:layout_constraintTop_toBottomOf="@+id/chipGroupDetailCategory" />
 
-                <ImageView
-                    android:id="@+id/imageView4"
-                    android:layout_width="22dp"
-                    android:layout_height="22dp"
-                    android:layout_marginTop="10dp"
-                    android:contentDescription="@null"
-                    app:tint="@color/violet"
+                <LinearLayout
+                    android:id="@+id/containerTopFitGroupInfo"
                     app:layout_constraintStart_toStartOf="@+id/textViewGroupDetailName"
                     app:layout_constraintTop_toBottomOf="@+id/textViewGroupDetailName"
-                    app:srcCompat="@drawable/ic_baseline_people_24" />
-
-                <TextView
-                    android:id="@+id/textViewGroupDetailPresent"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/group_join_scr_now_people"
-                    android:textAppearance="@style/Font.bold16"
-                    android:textColor="@color/violet"
-                    app:layout_constraintBottom_toBottomOf="@+id/imageView4"
-                    app:layout_constraintStart_toEndOf="@+id/imageView4"
-                    app:layout_constraintTop_toTopOf="@+id/imageView4" />
-
-                <ImageView
-                    android:id="@+id/imageView5"
-                    android:layout_width="22dp"
-                    android:layout_height="22dp"
-                    android:layout_marginStart="20dp"
-                    android:contentDescription="@null"
-                    app:tint="@color/violet"
-                    app:layout_constraintBottom_toBottomOf="@+id/textViewGroupDetailPresent"
-                    app:layout_constraintStart_toEndOf="@+id/textViewGroupDetailPresent"
-                    app:layout_constraintTop_toTopOf="@+id/textViewGroupDetailPresent"
-                    app:srcCompat="@drawable/ic_baseline_calendar_24" />
-
-                <TextView
-                    android:id="@+id/textViewGroupDetailCycle"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/group_join_scr_now_people_term"
-                    android:textAppearance="@style/Font.bold16"
-                    android:textColor="@color/violet"
-                    app:layout_constraintBottom_toBottomOf="@+id/imageView5"
-                    app:layout_constraintStart_toEndOf="@+id/imageView5"
-                    app:layout_constraintTop_toTopOf="@+id/imageView5" />
-
-                <TextView
-                    android:id="@+id/textView6"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="20dp"
-                    android:text="@string/group_join_scr_script"
-                    android:textAppearance="@style/Font.semibold20"
-                    android:textColor="@color/violet"
-                    app:layout_constraintBottom_toTopOf="@+id/divider2"
-                    app:layout_constraintStart_toStartOf="@+id/textViewGroupDetailName" />
-
-                <TextView
-                    android:id="@+id/textViewGroupDetailNow"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/group_join_scr_now_people_now"
-                    android:textAppearance="@style/Font.semibold20"
-                    android:textColor="@color/violet"
-                    app:layout_constraintBottom_toBottomOf="@+id/textView6"
-                    app:layout_constraintEnd_toStartOf="@+id/textViewGroupDetailMax"
-                    app:layout_constraintTop_toTopOf="@+id/textView6"
-                    app:layout_constraintVertical_bias="1.0" />
-
-                <TextView
-                    android:id="@+id/textViewGroupDetailMax"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginEnd="20dp"
-                    android:text="@string/group_join_scr_now_people_total"
-                    android:textAppearance="@style/Font.semibold20"
-                    android:textColor="@color/violet"
-                    app:layout_constraintBottom_toBottomOf="@+id/textView6"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="@+id/textView6" />
+                    android:layout_marginTop="15dp"
+                    android:layout_width="0dp"
+                    android:gravity="center_vertical"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:id="@+id/imageView4"
+                        android:layout_width="22dp"
+                        android:layout_height="22dp"
+                        android:contentDescription="@null"
+                        app:srcCompat="@drawable/calendar_blue_icon" />
+
+                    <TextView
+                        android:id="@+id/textViewGroupDetailCycle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="3dp"
+                        android:text="@string/group_join_scr_now_people_term"
+                        android:textAppearance="@style/Font.regular16"
+                        android:textColor="@color/black" />
+
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginHorizontal="5dp"
+                        android:text="▪"/>
+
+                    <ImageView
+                        android:id="@+id/imageView5"
+                        android:layout_width="22dp"
+                        android:layout_height="22dp"
+                        android:contentDescription="@null"
+                        app:srcCompat="@drawable/person_blue_icon" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="3dp"
+                        android:textAppearance="@style/Font.regular16"
+                        android:textColor="@color/black"
+                        android:text="현재 "/>
+                    <TextView
+                        android:id="@+id/textViewGroupDetailPresent"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/group_join_scr_now_people"
+                        android:textAppearance="@style/Font.bold16"
+                        android:textColor="@color/fitmate_heavy_blue"
+                        app:layout_constraintBottom_toBottomOf="@+id/imageView4"
+                        app:layout_constraintStart_toEndOf="@+id/imageView4"
+                        app:layout_constraintTop_toTopOf="@+id/imageView4" />
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="/"
+                        android:textAppearance="@style/Font.regular16"/>
+
+                    <TextView
+                        android:id="@+id/textViewGroupDetailPresentMax"
+                        android:text="@string/group_join_scr_now_people"
+                        android:layout_width="wrap_content"
+                        android:textAppearance="@style/Font.regular16"
+                        android:layout_height="wrap_content"/>
+
+                </LinearLayout>
+
 
                 <View
                     android:id="@+id/divider2"
                     android:layout_width="match_parent"
-                    android:layout_height="1500dp"
-                    android:layout_marginTop="150dp"
+                    android:layout_height="8dp"
+                    android:layout_marginTop="30dp"
                     android:background="?android:attr/listDivider"
-                    app:layout_constraintTop_toBottomOf="@+id/imageViewItemDayCurrentDate"
+                    app:layout_constraintTop_toBottomOf="@+id/containerTopFitGroupInfo"
                     tools:layout_editor_absoluteX="-16dp" />
 
                 <TextView

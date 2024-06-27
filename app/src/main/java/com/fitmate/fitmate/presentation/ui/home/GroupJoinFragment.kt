@@ -100,15 +100,14 @@ class GroupJoinFragment: Fragment(R.layout.fragment_group_join) {
 
             toolbarGroupJoin.title = groupDetail.fitGroupName
             textViewGroupDetailName.text = groupDetail.fitGroupName
-            textViewGroupDetailBottomNow.text = " 현재 ${groupDetail.presentFitMateCount}명"
+            textViewGroupDetailBottomNow.text = " 현재 ${groupDetail.presentFitMateCount}/${groupDetail.maxFitMate}명"
             textViewGroupDetailBottomCycle.text = " ${groupDetail.frequency}회 / 1주"
             textViewGroupDetailIntroduction.text = groupDetail.introduction
-            textViewGroupDetailNow.text = "${groupDetail.presentFitMateCount}명"
-            textViewGroupDetailMax.text = " / ${groupDetail.maxFitMate}명"
-            textViewGroupDetailPresent.text = " 현재 ${groupDetail.presentFitMateCount}명"
-            textViewGroupDetailCycle.text = " ${groupDetail.frequency}회 / 1주"
+            textViewGroupDetailPresent.text = "${groupDetail.presentFitMateCount}"
+            textViewGroupDetailPresentMax.text = "${groupDetail.maxFitMate}"
+            textViewGroupDetailCycle.text = " ${groupDetail.frequency}회/1주"
             chipGroupDetailCategory.text = when(groupDetail.category) {
-                1 ->  "등산" 2 ->  "생활 체육" 3 ->  "웨이트" 4 ->  "수영" 5 ->  "축구" 6 ->  "농구" 7 ->  "야구" 8 -> "바이킹" 9 -> "클라이밍"
+                1 ->  "#등산" 2 ->  "#생활 체육" 3 ->  "#웨이트" 4 ->  "#수영" 5 ->  "#축구" 6 ->  "#농구" 7 ->  "#야구" 8 -> "#바이킹" 9 -> "#클라이밍"
                 else -> null
             }
 
@@ -118,7 +117,6 @@ class GroupJoinFragment: Fragment(R.layout.fragment_group_join) {
                 rate >= 0.4 -> R.color.turquoise
                 else ->  R.color.dark_gray
             }
-            textViewGroupDetailNow.setTextColor(ContextCompat.getColor(requireContext(), color))
         }
     }
 
