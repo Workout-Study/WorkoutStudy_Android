@@ -36,7 +36,6 @@ fun ImageView.setImageByUri(image: String) {
 fun ImageView.setImageByUrl(imageUrl: String) {
     Glide.with(this)
         .load(imageUrl)
-        .circleCrop()
         .into(this)
 }
 //마이피트 운동 기록 시작 사진 설정하는 메서드

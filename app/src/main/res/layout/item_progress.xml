@@ -17,11 +17,13 @@
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_marginHorizontal="15dp"
         app:cardCornerRadius="16dp">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+
             android:background="@drawable/cardview_linear">
 
             <de.hdodenhof.circleimageview.CircleImageView
@@ -29,6 +31,7 @@
                 android:layout_width="100dp"
                 android:layout_height="100dp"
                 android:src="@color/dark_gray"
+                app:url="@{data.thumbnailEndPoint}"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
