@@ -192,6 +192,8 @@
     <string name="my_fit_main_empty_group_guide_text">아직 FitGroup 가입이 되어있지 않으시네요.\n 더 많은 그룹에 가입해보세요!</string>
     <string name="fit_cycle_info">%d주/%d회</string>
     <string name="fit_group_count_info">%d/%d</string>
+    <string name="my_fit_calendar_year_info">%d년</string>
+    <string name="my_fit_history_total_num">%d건</string>
 
 
 </resources>

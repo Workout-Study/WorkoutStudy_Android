@@ -28,9 +28,10 @@
         <androidx.core.widget.NestedScrollView
             android:id="@+id/contentsNestedSScrollView"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="0dp"
             android:fillViewport="true"
-            app:layout_constraintTop_toBottomOf="@+id/toolbar">
+            app:layout_constraintTop_toBottomOf="@+id/toolbar"
+            app:layout_constraintBottom_toBottomOf="parent">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -42,25 +43,39 @@
                     android:id="@+id/calendarInfo"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical"
+                    android:gravity="center"
+                    android:orientation="horizontal"
                     android:padding="14dp">
 
+                    <ImageView
+                        android:id="@+id/exFivePreviousMonthImage"
+                        android:layout_width="25dp"
+                        android:layout_height="25dp"
+                        android:layout_marginEnd="10dp"
+                        android:src="@drawable/left_scroll_btn_icon"/>
                     <TextView
                         android:id="@+id/exOneYearText"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:textSize="24sp"
+                        android:textAppearance="@style/Font.bold24"
                         tools:text="2019" />
 
                     <TextView
                         android:id="@+id/exOneMonthText"
+                        android:layout_marginStart="5dp"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:singleLine="true"
-                        android:fontFamily="sans-serif-light"
-                        android:textSize="32sp"
+                        android:textAppearance="@style/Font.bold24"
                         android:ellipsize="marquee"
                         tools:text="April" />
+
+                    <ImageView
+                        android:id="@+id/exFiveNextMonthImage"
+                        android:layout_marginStart="10dp"
+                        android:layout_width="25dp"
+                        android:layout_height="25dp"
+                        android:src="@drawable/right_scroll_btn_icon"/>
 
                 </LinearLayout>
 
@@ -72,6 +87,38 @@
                     app:cv_dayViewResource="@layout/calendar_day_layout"
                     app:cv_monthHeaderResource="@layout/calendar_day_titles_container"
                     />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="10dp"
+                    android:background="@color/gray"/>
+
+                <LinearLayout
+                    android:layout_marginTop="20dp"
+                    android:layout_marginHorizontal="15dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textAppearance="@style/Font.bold20"
+                        android:text="총"/>
+
+                    <TextView
+                        android:id="@+id/textViewTotalFitHistoryNum"
+                        android:layout_marginStart="5dp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textAppearance="@style/Font.bold20"
+                        android:textColor="@color/fitmate_blue"
+                        android:text="@{@string/my_fit_history_total_num(0)}"/>
+
+
+
+
+                </LinearLayout>
 
 
                 <androidx.recyclerview.widget.RecyclerView

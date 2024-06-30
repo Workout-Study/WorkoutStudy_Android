@@ -23,6 +23,8 @@ import com.kizitonwose.calendar.core.CalendarMonth
 import com.kizitonwose.calendar.core.DayPosition
 import com.kizitonwose.calendar.core.daysOfWeek
 import com.kizitonwose.calendar.core.firstDayOfWeekFromLocale
+import com.kizitonwose.calendar.core.nextMonth
+import com.kizitonwose.calendar.core.previousMonth
 import com.kizitonwose.calendar.view.MonthDayBinder
 import com.kizitonwose.calendar.view.MonthHeaderFooterBinder
 import com.kizitonwose.calendar.view.ViewContainer
@@ -74,6 +76,7 @@ class MyFitFragment : Fragment() {
 
         // 캘린더 연결
         initCalendar()
+        controllCalendarMonth()
 
         //캘린더에서 통신한 운동 기록 데이터를 감시
         observeMyFitHistoryInCalendar()
@@ -88,6 +91,8 @@ class MyFitFragment : Fragment() {
     private fun observeMyFitHistoryInCalendar() {
         viewModel.myFitRecordHistory.observe(viewLifecycleOwner) {
             it?.let{
+                binding.textViewTotalFitHistoryNum.text = getString(R.string.my_fit_history_total_num, it.size)
+                fitHistoryAdapter.submitList(it)
                 val fitDateList =  it.map { fitHistoryData ->
                     Instant.parse(fitHistoryData.recordStartDate).atZone(ZoneId.systemDefault()).toLocalDate()
                 }
@@ -225,8 +230,21 @@ class MyFitFragment : Fragment() {
         val (startDate, endDate) = getStartAndEndInstantsForYearMonth(month.year, extractNumbers(month.month.displayText(false)))
         viewModel.getMyFitRecordHistory("567843", startDate, endDate)//해당 년,월의 운동 기록 통신 시작
 
-        binding.exOneYearText.text = month.year.toString()
+        binding.exOneYearText.text = getString(R.string.my_fit_calendar_year_info, month.year)
         binding.exOneMonthText.text = month.month.displayText(short = false)
+    }
+
+    fun controllCalendarMonth() {
+        binding.exFivePreviousMonthImage.setOnClickListener {
+            binding.calendarView.findFirstVisibleMonth()?.let{
+                binding.calendarView.smoothScrollToMonth(it.yearMonth.previousMonth)
+            }
+        }
+        binding.exFiveNextMonthImage.setOnClickListener {
+            binding.calendarView.findFirstVisibleMonth()?.let{
+                binding.calendarView.smoothScrollToMonth(it.yearMonth.nextMonth)
+            }
+        }
     }
 
     fun extractNumbers(input: String): Int {
@@ -265,17 +283,30 @@ class MyFitFragment : Fragment() {
                     //클릭했던 낳짜를 또 클릭했을 경우
                     if (currentSelection == day.date) {
                         //해당 낳짜의 운동 기록 리사이클러뷰 업데이트(빈 리스트)
-                        fitHistoryAdapter.submitList(emptyList())
+                        val fitHistory = viewModel.myFitRecordHistory.value.let {
+                            if (it.isNullOrEmpty()){
+                                fitHistoryAdapter.submitList(emptyList())
+                                binding.textViewTotalFitHistoryNum.text = getString(R.string.my_fit_history_total_num, 0)
+                            }else{
+                                fitHistoryAdapter.submitList(it)
+                                binding.textViewTotalFitHistoryNum.text = getString(R.string.my_fit_history_total_num, it.size)
+                            }
+                        }
+
+
+
                         //선택된 날짜 삭제 후 캘린더에 변경사항 알리기
                         selectedDate = null
                         binding.calendarView.notifyDateChanged(currentSelection)
                     } else { //처음 클릭하는 경우라면
-
                         //해당 낳짜에 해당하는 운동 기록 리사이클러뷰 업데이트
                         val thatDayFitHistory = viewModel.myFitRecordHistory.value?.filter {
                             it.recordStartDate.contains(day.date.toString())
                         }
                         fitHistoryAdapter.submitList(thatDayFitHistory)
+                        binding.textViewTotalFitHistoryNum.text = getString(R.string.my_fit_history_total_num, if(thatDayFitHistory.isNullOrEmpty()) 0 else thatDayFitHistory.size )
+
+
                         selectedDate = day.date
                         binding.calendarView.notifyDateChanged(day.date)
                         if (currentSelection != null) { //이전에 선택됐던 날짜 표시 삭제
