@@ -120,7 +120,7 @@
     <string name="make_group_scr_category">카테고리 *</string>
     <string name="make_group_scr_category_hint">선택해주세요</string>
     <string name="make_group_scr_category_default">카테고리</string>
-    <string name="make_group_scr_fit_num">여행 빈도: 총 %d번</string>
+    <string name="make_group_scr_fit_num">이행 빈도: 총 %d번</string>
     <string name="make_group_scr_people">최대 인원 수: 총 %d명</string>
     <string name="make_group_scr_comment">그룹 코멘트 *</string>
     <string name="make_group_scr_comment_insert">내용을 입력하세요.</string>
