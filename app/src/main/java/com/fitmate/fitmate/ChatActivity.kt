@@ -28,8 +28,8 @@ class ChatActivity : AppCompatActivity() {
 
         // Create a bundle with the retrieved extras
         val bundle = Bundle().apply {
-            putInt("fitGroupId", fitGroupId)
-            putInt("fitMateId", fitMateId)
+            putInt("fitMateId", 1/*fitMateId*/)
+            putInt("fitGroupId", 1/*fitGroupId*/)
         }
 
         navController.navigate(R.id.chattingFragment, bundle)
