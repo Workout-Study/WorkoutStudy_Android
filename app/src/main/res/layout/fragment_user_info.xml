@@ -83,6 +83,7 @@
                 android:layout_marginTop="30dp"
                 android:text="회원정보"
                 android:textAppearance="@style/Font.regular12"
+                android:textColor="@color/dark_gray"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
@@ -93,6 +94,7 @@
                 android:layout_marginTop="175dp"
                 android:text="고객센터"
                 android:textAppearance="@style/Font.regular12"
+                android:textColor="@color/dark_gray"
                 app:layout_constraintStart_toStartOf="@+id/textViewUserInfoTitle1"
                 app:layout_constraintTop_toBottomOf="@+id/textViewUserInfoTitle1" />
 
@@ -115,38 +117,7 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="프로필 사진 변경"
-                    android:textAppearance="@style/Font.medium16"
-                    android:textColor="@color/violet" />
-
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:src="@drawable/ic_baseline_arrow_forward_24"
-                    app:tint="@color/violet" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/layoutUserInfoNickname"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:background="?attr/selectableItemBackground"
-                android:clickable="true"
-                android:focusable="true"
-                android:orientation="horizontal"
-                android:padding="10dp"
-                android:paddingStart="16dp"
-                android:paddingEnd="16dp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/layoutUserInfoProfile">
-
-                <TextView
-                    android:id="@+id/textViewUserInfoNickname"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="회원 닉네임 변경"
+                    android:text="프로필 정보 변경"
                     android:textAppearance="@style/Font.medium16"
                     android:textColor="@color/violet" />
 
@@ -170,7 +141,7 @@
                 android:paddingEnd="16dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/layoutUserInfoNickname">
+                app:layout_constraintTop_toBottomOf="@+id/layoutUserInfoProfile">
 
                 <TextView
                     android:id="@+id/textViewUserInfoFitOff"
@@ -178,6 +149,37 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:text="나의 피트오프 열람"
+                    android:textAppearance="@style/Font.medium16"
+                    android:textColor="@color/violet" />
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/ic_baseline_arrow_forward_24"
+                    app:tint="@color/violet" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/layoutUserInfoPoint"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:background="?attr/selectableItemBackground"
+                android:clickable="true"
+                android:focusable="true"
+                android:orientation="horizontal"
+                android:padding="10dp"
+                android:paddingStart="16dp"
+                android:paddingEnd="16dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/layoutUserInfoFitOff">
+
+                <TextView
+                    android:id="@+id/textViewUserInfoPoint"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="포인트 내역 일람"
                     android:textAppearance="@style/Font.medium16"
                     android:textColor="@color/violet" />
 
@@ -202,7 +204,7 @@
                 android:paddingEnd="16dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/layoutUserInfoFitOff">
+                app:layout_constraintTop_toBottomOf="@+id/layoutUserInfoPoint">
 
                 <TextView
                     android:id="@+id/textViewUserInfoNotice"
@@ -221,6 +223,37 @@
             </LinearLayout>
 
             <LinearLayout
+            android:id="@+id/layoutUserInfoFAQ"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:background="?attr/selectableItemBackground"
+            android:clickable="true"
+            android:focusable="true"
+            android:orientation="horizontal"
+            android:padding="10dp"
+            android:paddingStart="16dp"
+            android:paddingEnd="16dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/layoutUserInfoNotice">
+
+            <TextView
+                android:id="@+id/textViewUserInfoFAQ"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="FAQ"
+                android:textAppearance="@style/Font.medium16"
+                android:textColor="@color/violet" />
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_baseline_arrow_forward_24"
+                app:tint="@color/violet" />
+            </LinearLayout>
+
+            <LinearLayout
                 android:id="@+id/layoutUserInfoOSS"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
@@ -233,14 +266,14 @@
                 android:paddingEnd="16dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/layoutUserInfoNotice">
+                app:layout_constraintTop_toBottomOf="@+id/layoutUserInfoFAQ">
 
                 <TextView
                     android:id="@+id/textViewUserInfoOSS"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="오픈소스 라이브러리"
+                    android:text="오픈소스"
                     android:textAppearance="@style/Font.medium16"
                     android:textColor="@color/violet" />
 

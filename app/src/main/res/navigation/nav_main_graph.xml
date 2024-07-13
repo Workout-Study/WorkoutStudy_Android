@@ -149,6 +149,9 @@
             app:destination="@id/loginFragment"
             app:popUpTo="@id/homeFragment"
             app:popUpToInclusive="true" />
+        <action
+            android:id="@+id/action_userInfoFragment_to_profileFragment"
+            app:destination="@id/profileFragment" />
     </fragment>
     <fragment
         android:id="@+id/licenseFragment"
@@ -197,4 +200,8 @@
             android:id="@+id/action_myFitMainFragment_to_certificateFragment"
             app:destination="@id/certificateFragment" />
     </fragment>
+    <fragment
+        android:id="@+id/profileFragment"
+        android:name="com.fitmate.fitmate.presentation.ui.userinfo.ProfileFragment"
+        android:label="ProfileFragment" />
 </navigation>
