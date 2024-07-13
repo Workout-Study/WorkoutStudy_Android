@@ -30,7 +30,7 @@ interface LoginService {
     @GET("user/user-info")
     suspend fun getUserInfo(@Query("userId") userId: Int): UserResponse
 
-    @PUT("uer/update/nickname")
+    @PUT("user/update/nickname")
     suspend fun updateNickname(@Body nicknameRequest: NicknameRequest): LoginSuccessResponse
 
     @DELETE("user/delete")
