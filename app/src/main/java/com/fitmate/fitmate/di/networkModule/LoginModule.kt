@@ -18,7 +18,7 @@ object LoginModule {
     @Provides
     @Singleton
     fun provideLoginService(retrofit: Retrofit): LoginService {
-        val loginBaseUrl = "http://${BuildConfig.CHAT_SERVER_ADDRESS}:8084"
+        val loginBaseUrl = "http://${BuildConfig.SERVER_ADDRESS}:8084"
         return retrofit.newBuilder()
             .baseUrl(loginBaseUrl)
             .build()

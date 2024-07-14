@@ -1,6 +1,7 @@
 package com.fitmate.fitmate.di.networkModule
 
 import android.content.Context
+import com.fitmate.fitmate.BuildConfig
 import com.fitmate.fitmate.data.repository.MakeFitGroupRepositoryImpl
 import com.fitmate.fitmate.data.source.remote.RegisterFitGroupService
 import com.fitmate.fitmate.domain.repository.MakeFitGroupRepository
@@ -20,7 +21,7 @@ object MakeFitGroupNetworkModule {
     @Singleton
     @Provides
     fun provideRegisterFitGroupService(retrofit:Retrofit): RegisterFitGroupService {
-        val makeGroupBaseUrl = "http://43.200.62.156:8080/"
+        val makeGroupBaseUrl = "http://${BuildConfig.SERVER_ADDRESS}:8080/"
         return retrofit.newBuilder()
             .baseUrl(makeGroupBaseUrl)
             .build()

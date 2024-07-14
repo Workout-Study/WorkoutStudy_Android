@@ -18,7 +18,7 @@ object VoteModule {
     @Provides
     @Singleton
     fun provideVoteService(retrofit: Retrofit): VoteService {
-        val voteBaseUrl = "http://${BuildConfig.CHAT_SERVER_ADDRESS}:8081"
+        val voteBaseUrl = "http://${BuildConfig.SERVER_ADDRESS}:8081"
         return retrofit.newBuilder()
             .baseUrl(voteBaseUrl)
             .build()
