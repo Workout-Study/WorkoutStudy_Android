@@ -19,6 +19,9 @@
             app:destination="@id/onboardingContainerFragment"
             app:popUpTo="@id/homeFragment"
             app:popUpToInclusive="true" />
+        <action
+            android:id="@+id/action_homeFragment_to_loginFragment"
+            app:destination="@id/loginFragment" />
     </fragment>
     <fragment
         android:id="@+id/categoryFragment"
@@ -67,6 +70,9 @@
             app:destination="@id/homeFragment"
             app:popUpTo="@id/onboardingContainerFragment"
             app:popUpToInclusive="true" />
+        <action
+            android:id="@+id/action_onBoardingPermissionFragment_to_loginFragment"
+            app:destination="@id/loginFragment" />
     </fragment>
     <fragment
         android:id="@+id/loginFragment"
@@ -175,6 +181,9 @@
         <action
             android:id="@+id/action_loginWebViewFragment_to_homeMainFragment"
             app:destination="@id/homeFragment" />
+        <action
+            android:id="@+id/action_loginWebViewFragment_to_nicknameFragment"
+            app:destination="@id/nicknameFragment" />
     </fragment>
     <fragment
         android:id="@+id/nicknameFragment"

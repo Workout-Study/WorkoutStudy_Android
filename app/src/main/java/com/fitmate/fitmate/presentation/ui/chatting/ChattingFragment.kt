@@ -48,7 +48,7 @@ import javax.inject.Inject
 @AndroidEntryPoint
 class ChattingFragment : Fragment(R.layout.fragment_chatting) {
 
-    companion object { const val chatServerAddress = BuildConfig.CHAT_SERVER_ADDRESS }
+    companion object { const val chatServerAddress = BuildConfig.SERVER_ADDRESS }
     private lateinit var binding: FragmentChattingBinding
     private lateinit var heightProvider: HeightProvider
     @Inject lateinit var dbChatUseCase: DBChatUseCase
