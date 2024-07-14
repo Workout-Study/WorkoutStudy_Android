@@ -54,7 +54,9 @@ class MyFitMainFragment: Fragment() {
 
     private fun observeFitProgress() {
         observeNetworkMyProgress()
-        viewModel.getMyFitProgress("567843")
+        val userPreference = (activity as MainActivity).loadUserPreference()
+        val userId = userPreference.getOrNull(2)?.toString()?.toInt() ?: -1
+        viewModel.getMyFitProgress(userId.toString())
     }
 
     //통신 데이터 구독

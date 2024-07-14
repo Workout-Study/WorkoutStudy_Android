@@ -228,7 +228,11 @@ class MyFitFragment : Fragment() {
         val month = binding.calendarView.findFirstVisibleMonth()?.yearMonth ?: return
 
         val (startDate, endDate) = getStartAndEndInstantsForYearMonth(month.year, extractNumbers(month.month.displayText(false)))
-        viewModel.getMyFitRecordHistory("567843", startDate, endDate)//해당 년,월의 운동 기록 통신 시작
+
+        //유저 아이디 읽어서 통신
+        val userPreference = (activity as MainActivity).loadUserPreference()
+        val userId = userPreference.getOrNull(2)?.toString()?.toInt() ?: -1
+        viewModel.getMyFitRecordHistory(userId.toString(), startDate, endDate)//해당 년,월의 운동 기록 통신 시작
 
         binding.exOneYearText.text = getString(R.string.my_fit_calendar_year_info, month.year)
         binding.exOneMonthText.text = month.month.displayText(short = false)

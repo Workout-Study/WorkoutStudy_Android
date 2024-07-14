@@ -30,29 +30,39 @@ class MyFitViewModel @Inject constructor(
     //내 fit 진척도 가져오는 메서드
     fun getMyFitProgress(userId: String) {
         viewModelScope.launch(Dispatchers.IO) {
-            val response = myFitUseCase.getMyFitProgress(userId)
-            if (response.isSuccessful){
-                withContext(Dispatchers.Main){
-                    val result = response.body()?.toMyFitProgressResponse()
-                    result?.let {
-                        _fitProgressItem.value = it
+            try {
+                val response = myFitUseCase.getMyFitProgress(userId)
+                if (response.isSuccessful){
+                    withContext(Dispatchers.Main){
+                        val result = response.body()?.toMyFitProgressResponse()
+                        result?.let {
+                            _fitProgressItem.value = it
+                        }
                     }
                 }
+            }catch (e:Exception){
+                //TODO 오류 핸들링
             }
+
         }
     }
 
     fun getMyFitRecordHistory(userId: String, startDate: String, endDate: String){
         viewModelScope.launch(Dispatchers.IO) {
-            val response = myFitUseCase.getMyFitRecordHistory(userId, startDate, endDate)
-            if (response.isSuccessful){
-                withContext(Dispatchers.Main){
-                    val result = response.body()?.mapToMyFitRecordHistory()?.fitRecordDetailResponseDtoList
-                    result?.let {
-                        _myFitRecordHistory.value = it
+            try {
+                val response = myFitUseCase.getMyFitRecordHistory(userId, startDate, endDate)
+                if (response.isSuccessful){
+                    withContext(Dispatchers.Main){
+                        val result = response.body()?.mapToMyFitRecordHistory()?.fitRecordDetailResponseDtoList
+                        result?.let {
+                            _myFitRecordHistory.value = it
+                        }
                     }
                 }
+            }catch (e:Exception){
+                //TODO 오류 핸들링
             }
+
         }
     }
 
