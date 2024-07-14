@@ -1,14 +1,12 @@
 package com.fitmate.fitmate.presentation.ui.onboarding
 
 import android.Manifest
-import android.content.Context
 import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.annotation.RequiresApi
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
@@ -42,7 +40,7 @@ class OnBoardingPermissionFragment: Fragment() {
         super.onViewCreated(view, savedInstanceState)
         viewModel.onboardingInquiryStatus.observe(viewLifecycleOwner){
             if (it){
-                findNavController().navigate(R.id.action_onBoardingPermissionFragment_to_homeMainFragment)
+                findNavController().navigate(R.id.action_onBoardingPermissionFragment_to_loginFragment)
             }
         }
     }

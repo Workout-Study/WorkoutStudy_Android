@@ -22,6 +22,7 @@ import androidx.security.crypto.EncryptedSharedPreferences
 import androidx.security.crypto.MasterKey
 import com.fitmate.fitmate.databinding.ActivityMainBinding
 import com.fitmate.fitmate.presentation.ui.login.LoginWebViewFragment
+import com.fitmate.fitmate.presentation.viewmodel.LoginViewModel
 import com.fitmate.fitmate.presentation.viewmodel.MainActivityViewModel
 import com.fitmate.fitmate.util.ControlActivityInterface
 import dagger.hilt.android.AndroidEntryPoint
@@ -32,6 +33,7 @@ class MainActivity : AppCompatActivity(), ControlActivityInterface {
     private lateinit var navController: NavController
     var selecedMenuId: Int = -1
     private val viewModel: MainActivityViewModel by viewModels()
+    private val loginModel: LoginViewModel by viewModels()
     private val sharedPreferences: SharedPreferences by lazy {
         val masterKeyAlies = MasterKey
             .Builder(applicationContext, MasterKey.DEFAULT_MASTER_KEY_ALIAS)
@@ -122,11 +124,12 @@ class MainActivity : AppCompatActivity(), ControlActivityInterface {
         navController.navigate(destinationId, null, navOptions)
     }
 
+    //TODO 엑세스 토큰 확인하는 작업 수행하고 이후 넘어오는 값에 따라 로그인처리핧지 로그인 화면으로 넘길지 결정
+    //지금 현재 homeFragment
     private fun observeOnboardingState() {
         viewModel.onboardingInquiryStatus.observe(this) { isTrue ->
             if (isTrue) {
-                //TODO 엑세스 토큰 확인하는 작업 수행하고 이후 넘어오는 값에 따라 로그인처리핧지 로그인 화면으로 넘길지 결정
-                //지금 현재 homeFragment
+                navController.navigate(R.id.action_homeFragment_to_loginFragment)
             } else {
                 navController.navigate(R.id.action_homeFragment_to_onboardingContainerFragment)
             }

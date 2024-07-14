@@ -91,19 +91,21 @@ class LoginWebViewFragment : Fragment(R.layout.fragment_login_webview) {
                 val accessToken = loginResponse.accessToken
                 val refreshToken = loginResponse.refreshToken
                 val userId = loginResponse.userId
+                val newUser = loginResponse.isNewUser
                 val platform = viewModel.platform // ViewModel에 저장된 플랫폼 정보 가져오기
                 Log.d(
                     TAG,
-                    "[access]$accessToken \n[refresh]$refreshToken \n[userId]$userId \n[platform]$platform"
+                    "[access]$accessToken \n[refresh]$refreshToken \n[userId]$userId \n[platform]$platform\n[newUser]$newUser"
                 )
-                (activity as MainActivity).saveUserPreference(
-                    accessToken,
-                    refreshToken,
-                    userId,
-                    platform!!
-                )
-                findNavController().navigate(R.id.action_loginWebViewFragment_to_homeMainFragment)
-                Snackbar.make(binding.root, "로그아웃을 성공했습니다. [USERID ${userId}]", Snackbar.LENGTH_SHORT).show()
+                (activity as MainActivity).saveUserPreference(accessToken, refreshToken, userId, platform!!)
+
+                if(newUser == 0) {
+                    findNavController().navigate(R.id.action_loginWebViewFragment_to_homeMainFragment)
+                    Snackbar.make(binding.root, "로그인을 성공했습니다. [USERID ${userId}]", Snackbar.LENGTH_SHORT).show()
+                } else if(newUser == 1) {
+                    findNavController().navigate(R.id.action_loginWebViewFragment_to_nicknameFragment)
+                    Snackbar.make(binding.root, "회원가입을 성공했습니다. [USERID ${userId}]", Snackbar.LENGTH_SHORT).show()
+                }
             }
         }
 

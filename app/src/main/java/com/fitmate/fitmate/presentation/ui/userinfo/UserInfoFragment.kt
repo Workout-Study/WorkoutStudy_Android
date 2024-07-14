@@ -62,7 +62,7 @@ class UserInfoFragment : Fragment(R.layout.fragment_user_info) {
         when (viewId) {
             R.id.textViewUserInfoProfile -> navigateProfile() // TODO 권한 체크로 변경하고 권한 체크하는 곳에서 이동하도록 변경
             R.id.textViewUserInfoFitOff -> navigateFitOff()
-            R.id.textViewUserInfoPoint -> null
+            R.id.textViewUserInfoPoint -> navigatePoint()
             R.id.textViewUserInfoNotice -> notice()
             R.id.textViewUserInfoFAQ -> null
             R.id.textViewUserInfoOSS -> navigateLicense()
@@ -96,7 +96,8 @@ class UserInfoFragment : Fragment(R.layout.fragment_user_info) {
     }
 
     private fun withdraw() {
-        navigateTo(R.id.action_userInfoFragment_to_loginFragment)
+        viewModel.deleteUser(userId)
+        Snackbar.make(binding.root, "회원틸퇴를 성공했습니다. [USERID ${userId}]", Snackbar.LENGTH_SHORT).show()
     }
 
     private fun navigateLicense() {
@@ -105,6 +106,11 @@ class UserInfoFragment : Fragment(R.layout.fragment_user_info) {
 
     private fun navigateFitOff() {
         Toast.makeText(context, "추후 업데이트 예정입니다.", Toast.LENGTH_SHORT).show()
+    }
+
+    private fun navigatePoint() {
+        Toast.makeText(context, "추후 업데이트 예정입니다.", Toast.LENGTH_SHORT).show()
+        navigateTo(R.id.action_userInfoFragment_to_loginFragment)
     }
 
 }
