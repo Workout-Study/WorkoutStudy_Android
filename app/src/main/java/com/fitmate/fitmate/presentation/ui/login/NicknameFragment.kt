@@ -12,7 +12,9 @@ import com.fitmate.fitmate.R
 import com.fitmate.fitmate.databinding.FragmentNicknameBinding
 import com.fitmate.fitmate.presentation.viewmodel.LoginViewModel
 import com.fitmate.fitmate.util.ControlActivityInterface
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class NicknameFragment: Fragment(R.layout.fragment_nickname) {
 
     lateinit var binding: FragmentNicknameBinding
@@ -34,7 +36,10 @@ class NicknameFragment: Fragment(R.layout.fragment_nickname) {
             // TODO 전송 성공 시 홈 화면으로 이동
             (activity as? ControlActivityInterface)?.hideKeyboard()
             val nickname = binding.editTextNickname.text.toString()
-            viewModel.updateNickname(userId, nickname)
+            val authorizationCode = arguments?.getString("authorizationCode")
+            authorizationCode?.let{
+                viewModel.updateNickname(it, nickname)
+            }
             findNavController().navigate(R.id.homeFragment)
             Toast.makeText(context, "${nickname}님 환영합니다!", Toast.LENGTH_SHORT).show()
         }

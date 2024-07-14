@@ -7,6 +7,7 @@ import com.fitmate.fitmate.data.model.dto.UserResponse
 import retrofit2.http.Body
 import retrofit2.http.DELETE
 import retrofit2.http.GET
+import retrofit2.http.Header
 import retrofit2.http.PUT
 import retrofit2.http.Query
 
@@ -31,7 +32,7 @@ interface LoginService {
     suspend fun getUserInfo(@Query("userId") userId: Int): UserResponse
 
     @PUT("user/update/nickname")
-    suspend fun updateNickname(@Body nicknameRequest: NicknameRequest): LoginSuccessResponse
+    suspend fun updateNickname(@Body nicknameRequest: NicknameRequest, @Header("Authorization") authorization: String): LoginSuccessResponse
 
     @DELETE("user/delete")
     suspend fun deleteUser(@Query("userId") userId: Int): LoginSuccessResponse

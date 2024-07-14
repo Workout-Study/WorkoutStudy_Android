@@ -109,7 +109,7 @@ class LoginViewModel @Inject constructor(
         }
     }
 
-    fun updateNickname(userId: Int, nickname: String) {
+    fun updateNickname(userId: String, nickname: String) {
         viewModelScope.launch {
             _isLoading.value = true
             try {

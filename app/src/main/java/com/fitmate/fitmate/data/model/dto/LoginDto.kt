@@ -16,7 +16,6 @@ data class LoginResponse(
 )
 
 data class NicknameRequest(
-    val userId: Int,
     val nickname: String
 )
 

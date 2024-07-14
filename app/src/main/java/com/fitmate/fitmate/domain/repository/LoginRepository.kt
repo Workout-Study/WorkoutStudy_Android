@@ -17,7 +17,7 @@ interface LoginRepository {
 
     suspend fun getUserInfo(userId: Int): UserResponse
 
-    suspend fun updateNickname(userId: Int, nickname: String): LoginSuccessResponse
+    suspend fun updateNickname(userId: String, nickname: String): LoginSuccessResponse
 
     suspend fun deleteUser(userId: Int): LoginSuccessResponse
 }

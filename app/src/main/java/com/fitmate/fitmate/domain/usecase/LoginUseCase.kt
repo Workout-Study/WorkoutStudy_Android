@@ -17,7 +17,7 @@ class LoginUseCase @Inject constructor(private val loginRepository: LoginReposit
 
     suspend fun getUserInfo(userId: Int) = loginRepository.getUserInfo(userId)
 
-    suspend fun updateNickname(userId: Int, nickname: String) = loginRepository.updateNickname(userId, nickname)
+    suspend fun updateNickname(userId: String, nickname: String) = loginRepository.updateNickname(userId, nickname)
 
     suspend fun deleteUser(userId: Int) = loginRepository.deleteUser(userId)
 }
