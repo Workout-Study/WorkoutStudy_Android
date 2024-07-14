@@ -198,6 +198,7 @@
             android:layout_width="match_parent"
             android:layout_height="55dp"
             android:text="운동 기록하기"
+            android:textAppearance="@style/Font.bold20"
             android:clickable="true"
             android:onClick="@{() -> my_fit_main_fragment.clickEnterCertificationFragment()}"
             android:layout_marginBottom="24dp"
