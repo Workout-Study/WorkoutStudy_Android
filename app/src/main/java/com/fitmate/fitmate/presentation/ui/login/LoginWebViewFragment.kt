@@ -99,11 +99,14 @@ class LoginWebViewFragment : Fragment(R.layout.fragment_login_webview) {
                 )
                 (activity as MainActivity).saveUserPreference(accessToken, refreshToken, userId, platform!!)
 
-                if(newUser == 0) {
+                if(false) {
                     findNavController().navigate(R.id.action_loginWebViewFragment_to_homeMainFragment)
                     Snackbar.make(binding.root, "로그인을 성공했습니다. [USERID ${userId}]", Snackbar.LENGTH_SHORT).show()
-                } else if(newUser == 1) {
-                    findNavController().navigate(R.id.action_loginWebViewFragment_to_nicknameFragment)
+                } else if(true) {
+                    val bundle = Bundle()
+                    bundle.putString("authorizationCode",loginResponse.accessToken)
+
+                    findNavController().navigate(R.id.action_loginWebViewFragment_to_nicknameFragment, bundle)
                     Snackbar.make(binding.root, "회원가입을 성공했습니다. [USERID ${userId}]", Snackbar.LENGTH_SHORT).show()
                 }
             }

@@ -20,7 +20,7 @@ class LoginRepositoryImpl(private val loginService: LoginService): LoginReposito
 
     override suspend fun getUserInfo(userId: Int): UserResponse = loginService.getUserInfo(userId)
 
-    override suspend fun updateNickname(userId: Int, nickname: String): LoginSuccessResponse = loginService.updateNickname(NicknameRequest(userId, nickname))
+    override suspend fun updateNickname(userId: String, nickname: String): LoginSuccessResponse = loginService.updateNickname(NicknameRequest(nickname), userId)
 
     override suspend fun deleteUser(userId: Int): LoginSuccessResponse = loginService.deleteUser(userId)
 }

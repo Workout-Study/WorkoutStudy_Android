@@ -67,7 +67,7 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
 
     private fun setListener() {
         binding.imageViewProfliePhoto.setOnClickListener { requestPermission() }
-        binding.buttonProfileConfirm.setOnClickListener { sendServerChangeProfile() }
+        //binding.buttonProfileConfirm.setOnClickListener { sendServerChangeProfile() }
         binding.toolbarProfile.setupWithNavController(findNavController())
         binding.editTextProfileName.setOnEditorActionListener(TextView.OnEditorActionListener { v, actionId, event ->
             if (actionId == EditorInfo.IME_ACTION_DONE || event?.keyCode == KeyEvent.KEYCODE_ENTER) {
@@ -203,7 +203,7 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
         }
     }
 
-    private fun sendServerChangeProfile() {
+/*    private fun sendServerChangeProfile() {
         imageUri?.let { imageUpload(userId, it) }
         if(binding.editTextProfileName.length() != 0) {
             val newNickName = binding.editTextProfileName.text.toString()
@@ -211,5 +211,5 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
         }
 
         findNavController().navigate(R.id.userInfoFragment)
-    }
+    }*/
 }
