@@ -66,6 +66,7 @@
             <com.facebook.shimmer.ShimmerFrameLayout
                 android:id="@+id/progressShimmer"
                 android:layout_width="match_parent"
+                android:layout_marginBottom="25dp"
                 app:myfit_group_data_shimmer="@{viewModel.fitProgressItem}"
                 android:layout_height="match_parent">
 
