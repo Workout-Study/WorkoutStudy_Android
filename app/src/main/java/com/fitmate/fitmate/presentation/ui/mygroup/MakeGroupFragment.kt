@@ -63,6 +63,8 @@ class MakeGroupFragment : Fragment() {
         savedInstanceState: Bundle?,
     ): View? {
         binding = FragmentMakeGroupBinding.inflate(layoutInflater)
+        binding.seekBarMakeGroupFitNum.setCustomThumbDrawable(R.drawable.slider_thunb)
+        binding.seekBarMakeGroupPeople.setCustomThumbDrawable(R.drawable.slider_thunb)
         binding.lifecycleOwner = viewLifecycleOwner
         binding.fragmentMakeGroup = this
         binding.viewModel = viewModel

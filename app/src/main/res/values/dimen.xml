@@ -10,5 +10,6 @@
     <dimen name="text_M">16sp</dimen>
     <dimen name="text_S">12sp</dimen>
     <dimen name="text_XS">10sp</dimen>
+    <dimen name="thumb_size">15dp</dimen>
 
 </resources>
