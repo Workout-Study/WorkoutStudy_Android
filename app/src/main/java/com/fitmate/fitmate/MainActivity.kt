@@ -21,11 +21,12 @@ import androidx.navigation.ui.setupWithNavController
 import androidx.security.crypto.EncryptedSharedPreferences
 import androidx.security.crypto.MasterKey
 import com.fitmate.fitmate.databinding.ActivityMainBinding
-import com.fitmate.fitmate.presentation.ui.login.LoginWebViewFragment
+import com.fitmate.fitmate.presentation.ui.login.LoginFragment
 import com.fitmate.fitmate.presentation.viewmodel.LoginViewModel
 import com.fitmate.fitmate.presentation.viewmodel.MainActivityViewModel
 import com.fitmate.fitmate.util.ControlActivityInterface
 import dagger.hilt.android.AndroidEntryPoint
+import java.util.UUID
 
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity(), ControlActivityInterface {
@@ -129,11 +130,26 @@ class MainActivity : AppCompatActivity(), ControlActivityInterface {
     private fun observeOnboardingState() {
         viewModel.onboardingInquiryStatus.observe(this) { isTrue ->
             if (isTrue) {
-                navController.navigate(R.id.action_homeFragment_to_loginFragment)
+                val userPreference = loadUserPreference()
+                val platform = userPreference[3]
+                var state = UUID.randomUUID().toString()
+                val redirectUrl = "https://fitmate.com/oauth"
+                if(platform == "naver") {
+                    showWebViewFragment("https://nid.naver.com/oauth2.0/authorize?response_type=code&client_id=${LoginFragment.naverClientId}&redirect_uri=$packageName&state=$state")
+                } else {
+                    showWebViewFragment("https://kauth.kakao.com/oauth/authorize?client_id=${LoginFragment.kakaoRestAPIKey}&redirect_uri=${redirectUrl}&response_type=code&state=$state")
+                }
             } else {
                 navController.navigate(R.id.action_homeFragment_to_onboardingContainerFragment)
             }
         }
+    }
+
+    private fun showWebViewFragment(loginUrl: String) {
+        val bundle = Bundle().apply {
+            putString("loginUrl", loginUrl)
+        }
+        navController.navigate(R.id.loginWebViewFragment, bundle)
     }
 
     private fun initSetting() {
