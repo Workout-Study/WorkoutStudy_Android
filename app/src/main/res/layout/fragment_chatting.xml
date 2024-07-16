@@ -6,6 +6,9 @@
 
     <data>
 
+        <variable
+            name="fragment"
+            type="com.fitmate.fitmate.presentation.ui.chatting.ChattingFragment" />
     </data>
 
     <androidx.drawerlayout.widget.DrawerLayout
@@ -133,147 +136,65 @@
                 app:layout_constraintStart_toStartOf="parent"
                 tools:layout_height="250dp">
 
-                <TextView
-                    android:id="@+id/textViewFragmentChattingFitMateProgress"
+                <include
+                    android:id="@+id/containerFitOffSituation"
+                    layout="@layout/chatting_extra_item_fit_off_situation"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="5dp"
-                    android:text="@string/chatting_scr_fit_mate_progress"
-                    android:textColor="@color/white"
-                    app:layout_constraintEnd_toEndOf="@+id/buttonFragmentChattingFitMateProgress"
-                    app:layout_constraintStart_toStartOf="@+id/buttonFragmentChattingFitMateProgress"
-                    app:layout_constraintTop_toBottomOf="@+id/buttonFragmentChattingFitMateProgress" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="5dp"
-                    android:text="@string/chatting_scr_fit_mate_vote"
-                    android:textColor="@color/white"
-                    app:layout_constraintEnd_toEndOf="@+id/buttonFragmentChattingVote"
-                    app:layout_constraintStart_toStartOf="@+id/buttonFragmentChattingVote"
-                    app:layout_constraintTop_toBottomOf="@+id/buttonFragmentChattingVote" />
-
-                <Button
-                    android:id="@+id/buttonFragmentChattingFitOff"
-                    style="?attr/materialIconButtonFilledStyle"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="50dp"
-                    android:backgroundTint="@color/stateBlue"
-                    app:icon="@drawable/ic_baseline_rest_24"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintHorizontal_bias="0.5"
-                    app:layout_constraintStart_toEndOf="@+id/buttonFragmentChattingFine"
-                    app:layout_constraintTop_toTopOf="parent" />
-
-                <Button
-                    android:id="@+id/buttonFragmentChattingFitMateProgress"
-                    style="?attr/materialIconButtonFilledStyle"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="50dp"
-                    android:backgroundTint="@color/stateBlue"
-                    app:icon="@drawable/ic_baseline_health_24"
-                    app:layout_constraintEnd_toStartOf="@+id/buttonFragmentChattingVote"
+                    android:layout_marginTop="20dp"
+                    app:layout_constraintEnd_toStartOf="@+id/containerFitOffApply"
                     app:layout_constraintHorizontal_bias="0.5"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:textViewString="@{@string/chatting_scr_fit_mate_fit_off}"
+                    />
 
-                <Button
-                    android:id="@+id/buttonFragmentChattingVote"
-                    style="?attr/materialIconButtonFilledStyle"
+                <include
+                    android:id="@+id/containerFitOffApply"
+                    layout="@layout/chatting_extra_item_apply_fit_off_"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="50dp"
-                    android:backgroundTint="@color/stateBlue"
-                    app:icon="@drawable/ic_baseline_vote"
-                    app:layout_constraintEnd_toStartOf="@+id/buttonFragmentChattingFine"
+                    android:layout_marginTop="20dp"
+                    app:layout_constraintEnd_toStartOf="@+id/containerFitVote"
                     app:layout_constraintHorizontal_bias="0.5"
-                    app:layout_constraintStart_toEndOf="@+id/buttonFragmentChattingFitMateProgress"
-                    app:layout_constraintTop_toTopOf="parent" />
+                    app:layout_constraintStart_toEndOf="@+id/containerFitOffSituation"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:textViewString="@{@string/chatting_scr_fit_mate_fit_off_apply}" />
 
-                <Button
-                    android:id="@+id/buttonFragmentChattingFine"
-                    style="?attr/materialIconButtonFilledStyle"
+                <include
+                    android:id="@+id/containerFitVote"
+                    layout="@layout/chatting_extra_item_fit_vote"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="50dp"
-                    android:backgroundTint="@color/stateBlue"
-                    app:icon="@drawable/ic_baseline_saving_24"
-                    app:layout_constraintEnd_toStartOf="@+id/buttonFragmentChattingFitOff"
+                    android:layout_marginTop="20dp"
+                    app:layout_constraintEnd_toStartOf="@+id/containerFitSituation"
                     app:layout_constraintHorizontal_bias="0.5"
-                    app:layout_constraintStart_toEndOf="@+id/buttonFragmentChattingVote"
-                    app:layout_constraintTop_toTopOf="parent" />
+                    app:layout_constraintStart_toEndOf="@+id/containerFitOffApply"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:textViewString="@{@string/chatting_scr_fit_mate_vote}" />
 
-                <TextView
+                <include
+                    android:id="@+id/containerFitSituation"
+                    layout="@layout/chatting_extra_item_fit_situation"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="5dp"
-                    android:text="@string/chatting_scr_fit_mate_fine"
-                    android:textColor="@color/white"
-                    app:layout_constraintEnd_toEndOf="@+id/buttonFragmentChattingFine"
-                    app:layout_constraintStart_toStartOf="@+id/buttonFragmentChattingFine"
-                    app:layout_constraintTop_toBottomOf="@+id/buttonFragmentChattingFine" />
+                    android:layout_marginTop="20dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.5"
+                    app:layout_constraintStart_toEndOf="@+id/containerFitVote"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:textViewString="@{@string/chatting_scr_fit_mate_progress}" />
 
-                <TextView
+                <include
+                    android:id="@+id/containerGroupPointSituation"
+                    layout="@layout/chatting_extra_item_group_point_situation"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="5dp"
-                    android:text="@string/chatting_scr_fit_mate_fit_off"
-                    android:textColor="@color/white"
-                    app:layout_constraintEnd_toEndOf="@+id/buttonFragmentChattingFitOff"
-                    app:layout_constraintStart_toStartOf="@+id/buttonFragmentChattingFitOff"
-                    app:layout_constraintTop_toBottomOf="@+id/buttonFragmentChattingFitOff" />
-
-                <Button
-                    android:id="@+id/buttonFragmentChattingTransfer"
-                    style="?attr/materialIconButtonFilledStyle"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
-                    android:backgroundTint="@color/stateBlue"
-                    app:icon="@drawable/ic_baseline_send_money_24"
-                    app:layout_constraintStart_toStartOf="@+id/buttonFragmentChattingFitMateProgress"
-                    app:layout_constraintTop_toBottomOf="@+id/textViewFragmentChattingFitMateProgress" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="5dp"
-                    android:layout_marginBottom="50dp"
-                    android:text="@string/chatting_scr_transfer"
-                    android:textColor="@color/white"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="@+id/buttonFragmentChattingTransfer"
-                    app:layout_constraintStart_toStartOf="@+id/buttonFragmentChattingTransfer"
-                    app:layout_constraintTop_toBottomOf="@+id/buttonFragmentChattingTransfer"
-                    app:layout_constraintVertical_bias="0.0" />
-
-
-                <Button
-                    android:id="@+id/buttonFragmentChattingCertification"
-                    style="?attr/materialIconButtonFilledStyle"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
-                    android:backgroundTint="@color/stateBlue"
-                    app:icon="@drawable/ic_baseline_timer_24"
-                    app:layout_constraintStart_toStartOf="@+id/buttonFragmentChattingVote"
-                    app:layout_constraintTop_toBottomOf="@+id/textViewFragmentChattingFitMateProgress" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="5dp"
-                    android:layout_marginBottom="50dp"
-                    android:text="@string/chatting_scr_fit_mate_certification"
-                    android:textColor="@color/white"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="@+id/buttonFragmentChattingCertification"
-                    app:layout_constraintStart_toStartOf="@+id/buttonFragmentChattingCertification"
-                    app:layout_constraintTop_toBottomOf="@+id/buttonFragmentChattingCertification"
-                    app:layout_constraintVertical_bias="0.0" />
+                    android:layout_marginTop="20dp"
+                    app:layout_constraintStart_toStartOf="@+id/containerFitOffSituation"
+                    app:layout_constraintTop_toBottomOf="@+id/containerFitOffSituation"
+                    app:layout_constraintEnd_toEndOf="@+id/containerFitOffSituation"
+                    app:textViewString="@{@string/chatting_scr_fit_group_point}" />
 
 
             </androidx.constraintlayout.widget.ConstraintLayout>
