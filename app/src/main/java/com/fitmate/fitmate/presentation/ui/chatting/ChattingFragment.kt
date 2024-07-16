@@ -136,6 +136,8 @@ class ChattingFragment : Fragment(R.layout.fragment_chatting) {
 
     private fun initFragment(view: View) {
         binding = FragmentChattingBinding.bind(view)
+        binding.fragment = this
+        binding.lifecycleOwner = viewLifecycleOwner
         binding.containerExtraFunction.layoutTransition = null
         binding.toolbarFragmentChatting.setupWithNavController(findNavController())
     }
@@ -148,15 +150,14 @@ class ChattingFragment : Fragment(R.layout.fragment_chatting) {
         })
     }
 
-    private fun setupClickListeners() {
+     fun setupClickListeners() {
         binding.run {
             val clickMappings = mapOf(
-                buttonFragmentChattingFitMateProgress to { navigate(R.id.groupProgressFragment, true) },
-                buttonFragmentChattingVote to { navigate(R.id.groupVoteFragment, true) },
-                buttonFragmentChattingFine to { navigate(R.id.groupFineFragment, true) },
-                buttonFragmentChattingFitOff to { navigate(R.id.groupFitOffFragment, false) },
-                buttonFragmentChattingTransfer to { copyAccountNum() },
-                buttonFragmentChattingCertification to { navigate() },
+                containerFitOffSituation.chattingExtraFunctionButton to { navigate(R.id.groupFitOffFragment, false) },
+                containerFitOffApply.chattingExtraFunctionButton to { navigate(R.id.groupFitOffFragment, false) },
+                containerFitVote.chattingExtraFunctionButton to { navigate(R.id.groupVoteFragment, true) },
+                containerFitSituation.chattingExtraFunctionButton to { navigate(R.id.groupProgressFragment, true) },
+                containerGroupPointSituation.chattingExtraFunctionButton to { navigate(R.id.groupFitOffFragment, false) },
                 imageViewChattingFragmentOpenContentList to { toggleExtraFunctionContainer() },
                 buttonFragmentChattingExit to { activity?.finish() },
                 imageViewChattingToolbarForDrawerLayout to { toggleDrawer() },
