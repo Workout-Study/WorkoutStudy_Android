@@ -11,7 +11,7 @@ interface PointRepository {
     suspend fun getPointInfo(pointOwnerId: Int, pointOwnerType: String): Response<PointDto>
 
     suspend fun getPointHistory(
-        withMaxGroup: Int,
+        pointOwnerId: Int,
         pointOwnerType: String,
         historyStartDate: String,
         historyEndDate: String,

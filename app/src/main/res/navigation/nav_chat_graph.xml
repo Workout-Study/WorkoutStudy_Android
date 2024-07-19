@@ -59,9 +59,5 @@
         android:id="@+id/myGroupFragment2"
         android:name="com.fitmate.fitmate.presentation.ui.mygroup.MyGroupFragment"
         android:label="MyGroupFragment" />
-    <fragment
-        android:id="@+id/pointFragment2"
-        android:name="com.fitmate.fitmate.presentation.ui.point.PointFragment"
-        android:label="PointFragment" />
 
 </navigation>

@@ -1,5 +1,7 @@
 package com.fitmate.fitmate.domain.model
 
+import java.io.Serializable
+
 data class Point(
     val pointId: Int,
     val pointOwnerId: Int,
@@ -24,7 +26,7 @@ data class PointHistoryContent(
     val createdAt: String,
 )
 
-enum class PointType(val value: String) {
+enum class PointType(val value: String):Serializable {
     GROUP("GROUP"), USER("USER")
 }
 

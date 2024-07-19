@@ -6,7 +6,7 @@
     <data>
         <variable
             name="data"
-            type="com.fitmate.fitmate.domain.model.FitGroup" />
+            type="com.fitmate.fitmate.domain.model.PointHistoryContent" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -19,7 +19,7 @@
             android:layout_width="60dp"
             android:layout_height="60dp"
             android:layout_marginStart="16dp"
-            tools:src="@drawable/ic_launcher_logo"
+            android:src="@drawable/ic_launcher_logo"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"/>
@@ -28,7 +28,7 @@
             android:id="@+id/textViewItemPointHistoryOwnerNickName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@{data.groupName}"
+            android:text="@{data.depositUserNickname}"
             android:layout_marginStart="12dp"
             android:layout_marginTop="5dp"
             tools:text="강현구"
@@ -40,7 +40,7 @@
             android:id="@+id/textViewItemPointHistoryValue"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@{data.currentMessage}"
+            android:text="일단 보류"
             android:textColor="@color/dark_gray"
             android:textAppearance="@style/Font.medium16"
             app:layout_constraintTop_toBottomOf="@+id/textViewItemPointHistoryOwnerNickName"
@@ -52,7 +52,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="20dp"
-            android:text="@{data.currentMessageTime}"
+            android:text="@{data.createdAt}"
             tools:text="2024-04-14"
             android:textAppearance="@style/Font.regular16"
             android:textColor="@color/dark_gray"

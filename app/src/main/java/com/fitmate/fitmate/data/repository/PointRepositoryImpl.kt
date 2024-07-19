@@ -17,7 +17,7 @@ class PointRepositoryImpl(private val pointService: PointService) : PointReposit
     }
 
     override suspend fun getPointHistory(
-        withMaxGroup: Int,
+        pointOwnerId: Int,
         pointOwnerType: String,
         historyStartDate: String,
         historyEndDate: String,
@@ -32,7 +32,7 @@ class PointRepositoryImpl(private val pointService: PointService) : PointReposit
         pagingSourceFactory = {
             PointHistoryPagingSource(
                 pointService,
-                withMaxGroup,
+                pointOwnerId,
                 pointOwnerType,
                 historyStartDate,
                 historyEndDate,
