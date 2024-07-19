@@ -197,4 +197,8 @@
             android:id="@+id/action_myFitMainFragment_to_certificateFragment"
             app:destination="@id/certificateFragment" />
     </fragment>
+    <fragment
+        android:id="@+id/pointFragment"
+        android:name="com.fitmate.fitmate.presentation.ui.point.PointFragment"
+        android:label="PointFragment" />
 </navigation>

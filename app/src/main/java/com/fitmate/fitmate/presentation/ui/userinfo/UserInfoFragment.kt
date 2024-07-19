@@ -95,7 +95,8 @@ class UserInfoFragment : Fragment(R.layout.fragment_user_info) {
             binding.textViewUserInfoNotice,
             binding.textViewUserInfoOSS,
             binding.textViewUserInfoLogout,
-            binding.textViewUserInfoWithDraw
+            binding.textViewUserInfoWithDraw,
+            binding.textViewUserInfoPoint
         ).forEach { textView ->
             textView.setOnClickListener { handleOnClick(textView.id) }
         }
@@ -110,6 +111,7 @@ class UserInfoFragment : Fragment(R.layout.fragment_user_info) {
             R.id.textViewUserInfoOSS -> navigateLicense()
             R.id.textViewUserInfoLogout -> logout()
             R.id.textViewUserInfoWithDraw -> withdraw()
+            R.id.textViewUserInfoPoint -> navigatePointFragment()
         }
     }
 
@@ -222,6 +224,10 @@ class UserInfoFragment : Fragment(R.layout.fragment_user_info) {
         // TODO 서버에 닉네임 변경 사항을 올려보내는 과정 완료 시 변경되게 if문 추가
         viewModel.updateNickname(1, newNickname)
         binding.textViewUserInfoName.text = newNickname
+    }
+
+    private fun navigatePointFragment() {
+        navigateTo(R.id.pointFragment)
     }
 
 
