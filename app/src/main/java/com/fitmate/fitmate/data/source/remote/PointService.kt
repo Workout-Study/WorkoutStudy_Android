@@ -16,7 +16,7 @@ interface PointService {
 
     @GET("/wallet-service/wallets/history")
     suspend fun getPointHistory(
-        @Query("walletOwnerId") withMaxGroup: Int,
+        @Query("walletOwnerId") pointOwnerId: Int,
         @Query("walletOwnerType") pointOwnerType: String,
         @Query("historyStartDate") historyStartDate: String,
         @Query("historyEndDate") historyEndDate: String,

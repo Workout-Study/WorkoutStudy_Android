@@ -11,7 +11,7 @@ import retrofit2.http.Query
 
 class PointHistoryPagingSource(
     private val pointService: PointService,
-    private val withMaxGroup: Int,
+    private val pointOwnerId: Int,
     private val pointOwnerType: String,
     private val historyStartDate: String,
     private val historyEndDate: String,
@@ -23,7 +23,7 @@ class PointHistoryPagingSource(
         return try {
             val page = params.key ?: 0
             val response = pointService.getPointHistory(
-                withMaxGroup,
+                pointOwnerId,
                 pointOwnerType,
                 historyStartDate,
                 historyEndDate,
