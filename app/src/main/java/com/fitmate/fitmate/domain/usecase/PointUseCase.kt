@@ -15,12 +15,12 @@ class PointUseCase @Inject constructor(private val pointRepository: PointReposit
         pointOwnerType: String, ): Response<PointDto> = pointRepository.getPointInfo(pointOwnerId,pointOwnerType)
 
     suspend fun getPointHistory(
-        withMaxGroup: Int,
+        pointOwnerId: Int,
         pointOwnerType: String,
         historyStartDate: String,
         historyEndDate: String,
         pageNumber: Int,
         pageSize: Int,
         tradeType: String,
-    ): Flow<PagingData<PointHistoryContentDto>> = pointRepository.getPointHistory(withMaxGroup, pointOwnerType, historyStartDate, historyEndDate, pageNumber, pageSize, tradeType)
+    ): Flow<PagingData<PointHistoryContentDto>> = pointRepository.getPointHistory(pointOwnerId, pointOwnerType, historyStartDate, historyEndDate, pageNumber, pageSize, tradeType)
 }
