@@ -213,4 +213,8 @@
         android:id="@+id/profileFragment"
         android:name="com.fitmate.fitmate.presentation.ui.userinfo.ProfileFragment"
         android:label="ProfileFragment" />
+    <fragment
+        android:id="@+id/pointFragment"
+        android:name="com.fitmate.fitmate.presentation.ui.point.PointFragment"
+        android:label="PointFragment" />
 </navigation>
