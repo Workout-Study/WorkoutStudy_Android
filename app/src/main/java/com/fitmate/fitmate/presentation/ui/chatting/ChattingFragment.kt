@@ -38,6 +38,7 @@ import okhttp3.Request
 import okhttp3.Response
 import okhttp3.WebSocket
 import okhttp3.WebSocketListener
+import okhttp3.internal.notify
 import org.json.JSONObject
 import java.time.Instant
 import java.time.LocalDateTime
@@ -53,6 +54,7 @@ class ChattingFragment : Fragment(R.layout.fragment_chatting) {
     private lateinit var binding: FragmentChattingBinding
     private lateinit var heightProvider: HeightProvider
     @Inject lateinit var dbChatUseCase: DBChatUseCase
+    private lateinit var chatAdapter: ChatAdapter
     private var userId: Int = -1
     private val TAG = "ChattingFragment"
     private val viewModel: ChattingViewModel by viewModels()
@@ -194,8 +196,10 @@ class ChattingFragment : Fragment(R.layout.fragment_chatting) {
     }
 
     private fun setUpRecyclerView() {
+        chatAdapter = ChatAdapter()
         with(binding.recyclerViewFragmentChatting) {
-            adapter = ChatAdapter().apply { setCurrentUserFitMateId(userId) }
+            chatAdapter.apply { setCurrentUserFitMateId(userId) }
+            adapter = chatAdapter
             layoutManager = LinearLayoutManager(context)
             itemAnimator = null
         }
@@ -233,11 +237,12 @@ class ChattingFragment : Fragment(R.layout.fragment_chatting) {
                     activity?.runOnUiThread {
                         lifecycleScope.launch {
                             dbChatUseCase.insert(chatItem)
-                            val adapter = binding.recyclerViewFragmentChatting.adapter as? ChatAdapter
-                            val currentList = adapter?.currentList?.toMutableList() ?: mutableListOf()
+                            val currentList = chatAdapter.currentList?.toMutableList() ?: mutableListOf()
                             currentList.add(chatItem)
-                            adapter?.submitList(currentList)
-                            binding.recyclerViewFragmentChatting.smoothScrollToPosition(adapter?.itemCount ?: (0 - 1))
+                            chatAdapter.submitList(currentList) {
+                                chatAdapter.notifyDataSetChanged()
+                            }
+                            binding.recyclerViewFragmentChatting.smoothScrollToPosition(chatAdapter.itemCount ?: (0 - 1))
                         }
                     }
                 }
@@ -258,12 +263,11 @@ class ChattingFragment : Fragment(R.layout.fragment_chatting) {
                 )
             }
 
-            val adapter = binding.recyclerViewFragmentChatting.adapter as? ChatAdapter ?: ChatAdapter().also { binding.recyclerViewFragmentChatting.adapter = it }
-            adapter.setCurrentUserFitMateId(userId)
-            adapter.submitList(chatItems) {
+            chatAdapter.setCurrentUserFitMateId(userId)
+            chatAdapter.submitList(chatItems) {
                 binding.recyclerViewFragmentChatting.post {
                     binding.recyclerViewFragmentChatting.scrollToPosition(
-                        adapter.itemCount - 1
+                        chatAdapter.itemCount - 1
                     )
                 }
             }
@@ -324,9 +328,9 @@ class ChattingFragment : Fragment(R.layout.fragment_chatting) {
             lifecycleScope.launch { dbChatUseCase.insert(newChatItem) }
 
             binding.editTextChattingMySpeech.setText("")
-            val testItems = (binding.recyclerViewFragmentChatting.adapter as? ChatAdapter)?.currentList?.toMutableList()
+            val testItems = chatAdapter.currentList.toMutableList()
             binding.recyclerViewFragmentChatting.post {
-                binding.recyclerViewFragmentChatting.smoothScrollToPosition(testItems?.size ?: (0 - 1))
+                binding.recyclerViewFragmentChatting.smoothScrollToPosition(testItems.size ?: (0 - 1))
             }
         } else {
             Toast.makeText(context, "Message failed to send.", Toast.LENGTH_SHORT).show()
