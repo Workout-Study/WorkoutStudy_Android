@@ -54,12 +54,12 @@ class PointFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding.recyclerViewPointHistory.adapter = adapter
-        viewModel.getPointInfo(63,"USER")
-        viewModel.getPagingPointHistory(723,"GROUP",null,null,0,5,null)
 
-        viewModel.pointInfo.observe(viewLifecycleOwner){
-            Log.d("testt",it.toString())
-        }
+        //통신 시작(포인트 정보 및 포인트 기록 데이터)
+        viewModel.getPointInfo(63, pointOwnerType.value)
+        viewModel.getPagingPointHistory(723, pointOwnerType.value,null,null,0,10,null)
+
+        //포인트 기록 데이터 통신 감시
         observePointHistory()
 
     }
@@ -81,8 +81,7 @@ class PointFragment : Fragment() {
             }
         }
     }
-
-
+    
     private fun observePointHistory(){
         viewModel.run {
             viewModelScope.launch {

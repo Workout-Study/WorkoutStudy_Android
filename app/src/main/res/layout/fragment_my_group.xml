@@ -69,21 +69,6 @@
                 app:pressedTranslationZ="6dp"
                 app:tint="@color/white" />
 
-            <com.google.android.material.floatingactionbutton.FloatingActionButton
-                android:id="@+id/chattingWarp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:backgroundTint="@color/violet"
-                android:layout_marginBottom="20dp"
-                android:foregroundGravity="bottom"
-                android:onClick="@{() -> fragment.clickWarpChatting()}"
-                android:src="@drawable/ic_baseline_chat_24"
-                app:layout_constraintStart_toStartOf="@+id/floatingButtonMakeFitGroup"
-                app:layout_constraintEnd_toEndOf="@+id/floatingButtonMakeFitGroup"
-                app:layout_constraintBottom_toTopOf="@+id/floatingButtonMakeFitGroup"
-                app:pressedTranslationZ="6dp"
-                app:tint="@color/white" />
-
             <ProgressBar
                 android:id="@+id/loadingIndicatorMyGroup"
                 android:layout_width="wrap_content"
