@@ -114,12 +114,4 @@ class MyGroupFragment: Fragment(R.layout.fragment_my_group) {
     private fun updateEmptyViewVisibility(fitGroups: List<FitGroup>) {
         binding.textViewMyFitGroupEmpty.visibility = if (fitGroups.isEmpty()) View.VISIBLE else View.GONE
     }
-
-    fun clickWarpChatting(){
-        val intent = Intent(requireContext(), ChatActivity::class.java).apply {
-            putExtra("fitGroupId", 1)
-            putExtra("fitMateId", 1)
-        }
-        startActivity(intent)
-    }
 }

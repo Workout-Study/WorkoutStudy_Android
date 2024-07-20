@@ -64,67 +64,23 @@ class ChattingFragment : Fragment(R.layout.fragment_chatting) {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        fitGroupId = 1//requireArguments().getInt("fitGroupId", -1)
-        fitMateId = 1//requireArguments().getInt("fitMateId", -1)
+        fitGroupId = requireArguments().getInt("fitGroupId", -1)
+        fitMateId = requireArguments().getInt("fitMateId", -1)
         Log.d(TAG, "fitGroupId = $fitGroupId, fitMateId = $fitMateId")
-        //group.getFitGroupDetail(fitGroupId)
+        group.getFitGroupDetail(fitGroupId)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initFragment(view)                          // 화면 바인딩
-        //loadUserPreference()
+        loadUserPreference()
         activeBackButton()                          // Back 버튼 커스텀
         setupClickListeners()                       // + 메뉴 클릭 리스너
         initHeightProvider()                        // 메뉴 높이 조절
         setUpRecyclerView()                         // 채팅 아이템 리스트 설정
-        (binding.recyclerViewFragmentChatting.adapter as ChatAdapter).submitList(
-            listOf(
-                ChatItem(
-                    messageId = "msg001",
-                    fitGroupId = 1,
-                    fitMateId = 1,
-                    message = "안녕하세요",
-                    messageTime = LocalDateTime.now().minusDays(1),
-                    messageType = "CHATTING"
-                ),
-                ChatItem(
-                    messageId = "msg002",
-                    fitGroupId = 1,
-                    fitMateId = 102,
-                    message = "ㅋㅋㅋㅋㅋㅋ",
-                    messageTime = LocalDateTime.now().minusHours(5),
-                    messageType = "CHATTING"
-                ),
-                ChatItem(
-                    messageId = "msg003",
-                    fitGroupId = 1,
-                    fitMateId = 201,
-                    message = "테스트 중",
-                    messageTime = LocalDateTime.now().minusMinutes(30),
-                    messageType = "CHATTING"
-                ),
-                ChatItem(
-                    messageId = "msg004",
-                    fitGroupId = 1,
-                    fitMateId = 202,
-                    message = "ㅎㅎ",
-                    messageTime = LocalDateTime.now().minusSeconds(10),
-                    messageType = "CHATTING"
-                ),
-                ChatItem(
-                    messageId = "msg005",
-                    fitGroupId = 1,
-                    fitMateId = 301,
-                    message = "ㅎㅇㅎㅇ",
-                    messageTime = LocalDateTime.now(),
-                    messageType = "CHATTING"
-                )
-            )
-        )
-        //setupWebSocketConnection("$fitGroupId")     // 해당 피트 그룹 웹소캣 연결(계속 들어오는 데이터 room에 저장하고 불러오기)
-        //loadChatMessage()                           // 채팅 아이템 실시간 load(room에 있는 데이터 가져오기)
-        //observeChatResponse()                       // 새로 들어온 채팅 내역 load & save(최초 한번 수행 됨)
+        setupWebSocketConnection("$fitGroupId")     // 해당 피트 그룹 웹소캣 연결(계속 들어오는 데이터 room에 저장하고 불러오기)
+        loadChatMessage()                           // 채팅 아이템 실시간 load(room에 있는 데이터 가져오기)
+        observeChatResponse()                       // 새로 들어온 채팅 내역 load & save(최초 한번 수행 됨)
         scrollBottom()                              // 들어 왔을 때 최하단 으로 이동
         chatSend()                                  // 채팅 전송
 
@@ -167,7 +123,7 @@ class ChattingFragment : Fragment(R.layout.fragment_chatting) {
         }
     }
 
-
+    //TODO 포인트 화면 클릭시 해당 메서드 호출해야함.
     private fun navigateWithCreatedAt(fragmentId: Int) {
         group.groupDetail.observe(viewLifecycleOwner) {groupDetail ->
             createdAt = groupDetail.createdAt
