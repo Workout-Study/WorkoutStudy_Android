@@ -60,6 +60,7 @@ class ChattingFragment : Fragment(R.layout.fragment_chatting) {
     private var penaltyAccountNumber: String? = null
     private var fitGroupId: Int = -1
     private var fitMateId: Int = -1
+    private lateinit var createdAt: String
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -164,6 +165,16 @@ class ChattingFragment : Fragment(R.layout.fragment_chatting) {
             )
             clickMappings.forEach { (button, action) -> button.setOnClickListener { action() } }
         }
+    }
+
+
+    private fun navigateWithCreatedAt(fragmentId: Int) {
+        group.groupDetail.observe(viewLifecycleOwner) {groupDetail ->
+            createdAt = groupDetail.createdAt
+        }
+        val bundle = Bundle()
+        bundle.putString("createdAt",createdAt)
+        findNavController().navigate(fragmentId, bundle)
     }
 
     private fun navigate(fragmentId: Int, isBundle: Boolean) {
