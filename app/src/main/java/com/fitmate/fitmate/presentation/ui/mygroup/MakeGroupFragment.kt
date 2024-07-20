@@ -178,7 +178,7 @@ class MakeGroupFragment : Fragment() {
         if (!checkInputValidation()) return
 
         //사진 업로드 및 url 다운로드
-        viewModel.uploadImageAndGetUrl("hyungoo")
+        viewModel.uploadImageAndGetUrl(userId.toString())
 
         //로딩 실행
         loadingViewVisible()
@@ -199,14 +199,6 @@ class MakeGroupFragment : Fragment() {
         when {
             viewModel.groupName.value.isNullOrBlank() -> {
                 Toast.makeText(requireContext(),"그룹 이름을 입력해주세요!",Toast.LENGTH_SHORT).show()
-                return false
-            }
-            viewModel.bankInfo.value?.value.isNullOrBlank() -> {
-                Toast.makeText(requireContext(),"계좌의 은행을 선택해주세요!",Toast.LENGTH_SHORT).show()
-                return false
-            }
-            viewModel.bankAccount.value.isNullOrBlank() -> {
-                Toast.makeText(requireContext(),"계좌 번호를 입력해주세요!",Toast.LENGTH_SHORT).show()
                 return false
             }
             viewModel.groupCategory.value.isNullOrBlank() -> {
@@ -240,8 +232,6 @@ class MakeGroupFragment : Fragment() {
                 requestUserId = "$userId",
                 fitGroupName = viewModel.groupName.value.toString(),
                 penaltyAmount = 5000L,
-                penaltyAccountBankCode = viewModel.bankInfo.value!!.value!!,
-                penaltyAccountNumber = viewModel.bankAccount.value!!,
                 category = getCategoryCode(),
                 introduction = viewModel.groupContent.value!!,
                 frequency = viewModel.groupFitCycle.value!!,

@@ -4,8 +4,6 @@ data class RequestRegisterFitGroupBody(
     val requestUserId: String,
     val fitGroupName: String,
     val penaltyAmount: Long,
-    val penaltyAccountBankCode: String,
-    val penaltyAccountNumber: String,
     val category: Int,
     val introduction: String,
     val cycle: Int? = null,

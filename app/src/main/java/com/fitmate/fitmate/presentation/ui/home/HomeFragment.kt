@@ -29,11 +29,14 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
     private lateinit var recyclerView: RecyclerView
     private val viewModel: VoteViewModel by viewModels()
     private var userId: Int = -1
+    private var accessToken: String = ""
+    private var refreshToken: String = ""
+    private var platform: String = ""
+    private var createdAt: String = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        val userPreference = (activity as MainActivity).loadUserPreference()
-        userId = userPreference.getOrNull(2)?.toString()?.toInt() ?: -1
+        loadUserPreference()
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -120,5 +123,17 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
         return ZonedDateTime.parse(cert.voteEndDate).format(
             DateTimeFormatter.ofPattern("(MM/dd) HH:mm 종료")
         )
+    }
+
+    private fun loadUserPreference() {
+        val userPreference = (activity as MainActivity).loadUserPreference()
+        accessToken = userPreference.getOrNull(0)?.toString() ?: ""
+        refreshToken = userPreference.getOrNull(1)?.toString() ?: ""
+        userId = userPreference.getOrNull(2)?.toString()?.toInt() ?: -1
+        platform = userPreference.getOrNull(3)?.toString() ?: ""
+        createdAt = userPreference.getOrNull(4)?.toString() ?: ""
+        Log.d("woojugoing", "$userId, $platform")
+        Log.d("woojugoing", accessToken)
+        Log.d("woojugoing", createdAt)
     }
 }

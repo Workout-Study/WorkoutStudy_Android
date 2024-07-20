@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:tools="http://schemas.android.com/tools"
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
@@ -11,14 +12,14 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
         android:orientation="vertical">
 
         <ImageView
             android:id="@+id/imageViewItemCategoryFitgroupBackground"
             android:layout_width="match_parent"
-            android:layout_height="120dp"
+            android:layout_height="156dp"
             android:layout_marginTop="10dp"
             android:contentDescription="@null"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -29,13 +30,11 @@
 
         <ImageView
             android:id="@+id/imageViewItemCategoryFitgroupThumbnail"
-            android:layout_width="80dp"
-            android:layout_height="80dp"
-            android:layout_marginStart="10dp"
-            android:layout_marginTop="20dp"
-            android:layout_marginBottom="20dp"
+            android:layout_width="72dp"
+            android:layout_height="72dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
             android:contentDescription="@null"
-            app:layout_constraintBottom_toBottomOf="@+id/imageViewItemCategoryFitgroupBackground"
             app:layout_constraintStart_toStartOf="@+id/imageViewItemCategoryFitgroupBackground"
             app:layout_constraintTop_toTopOf="@+id/imageViewItemCategoryFitgroupBackground"
             app:srcCompat="@drawable/ic_launcher_logo" />
@@ -44,11 +43,13 @@
             android:id="@+id/textViewItemVoteFitgroupTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="10dp"
-            android:layout_marginEnd="10dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="2dp"
+            android:layout_marginEnd="16dp"
+            android:fontFamily="@font/pretendard_bold"
             android:text="@{voteItem.title}"
-            android:textAppearance="@style/Font.bold16"
             android:textColor="@color/turquoise"
+            android:textSize="14sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toEndOf="@+id/imageViewItemCategoryFitgroupThumbnail"
@@ -60,9 +61,10 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="5dp"
             android:ellipsize="end"
+            android:fontFamily="@font/pretendard_regular"
             android:maxLines="1"
             android:text="@{voteItem.fitMate + ` 님이 운동 인증을 수행하였습니다.`}"
-            android:textAppearance="@style/Font.regular12"
+            android:textSize="12sp"
             app:layout_constraintEnd_toEndOf="@+id/imageViewItemCategoryFitgroupBackground"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="@+id/textViewItemVoteFitgroupTitle"
@@ -72,9 +74,10 @@
             android:id="@+id/textViewItemVoteFitgroupPerComment"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:fontFamily="@font/pretendard_regular"
             android:text="@string/item_vote_scr_per_comment"
-            android:textAppearance="@style/Font.bold12"
             android:textColor="@color/zircon"
+            android:textSize="12sp"
             app:layout_constraintBottom_toBottomOf="@+id/imageViewItemCategoryFitgroupThumbnail"
             app:layout_constraintStart_toStartOf="@+id/textViewItemVoteFitgroupTitle" />
 
@@ -82,18 +85,18 @@
             android:id="@+id/textViewItemVoteFitgroupPercent"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:fontFamily="@font/pretendard_bold"
             android:text="@{` ` + @string/item_vote_scr_per(voteItem.percent) + `%`}"
-            android:textAppearance="@style/Font.bold12"
-            android:textColor="#F4511E"
+            android:textSize="12sp"
             app:layout_constraintBottom_toBottomOf="@+id/textViewItemVoteFitgroupPerComment"
             app:layout_constraintStart_toEndOf="@+id/textViewItemVoteFitgroupPerComment"
             app:layout_constraintTop_toTopOf="@+id/textViewItemVoteFitgroupPerComment" />
 
         <TextView
             android:id="@+id/textViewItemVoteFitgroupTime"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="5dp"
+            android:layout_width="17dp"
+            android:layout_height="0dp"
+            android:layout_marginStart="10dp"
             android:ellipsize="start"
             android:maxLines="1"
             android:text="@{@string/item_vote_scr_time(voteItem.time)}"
@@ -102,20 +105,26 @@
             app:layout_constraintEnd_toStartOf="@+id/buttonItemVoteFitgroupVote"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toEndOf="@+id/textViewItemVoteFitgroupPercent"
-            app:layout_constraintTop_toTopOf="@+id/textViewItemVoteFitgroupPercent" />
+            app:layout_constraintTop_toTopOf="@+id/textViewItemVoteFitgroupPercent"
+            app:layout_constraintVertical_bias="1.0" />
 
         <Button
             android:id="@+id/buttonItemVoteFitgroupVote"
-            style="?attr/materialIconButtonFilledStyle"
-            android:layout_width="48dp"
-            android:layout_height="40dp"
-            android:layout_marginEnd="7.5dp"
-            android:backgroundTint="@color/stateBlue"
-            android:textAppearance="@style/Font.regular12"
-            app:icon="@drawable/ic_baseline_vote"
-            app:layout_constraintBottom_toBottomOf="@+id/textViewItemVoteFitgroupTime"
+            android:layout_width="match_parent"
+            android:layout_height="36dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginBottom="16dp"
+            android:backgroundTint="@color/white"
+            android:fontFamily="@font/pretendard_bold"
+            android:text="투표하기"
+            android:textColor="@color/mediumStateBlue"
+            android:textSize="13sp"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/textViewItemVoteFitgroupTime" />
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/imageViewItemCategoryFitgroupThumbnail" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

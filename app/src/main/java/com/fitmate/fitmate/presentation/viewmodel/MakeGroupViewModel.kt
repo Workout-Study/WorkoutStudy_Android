@@ -24,14 +24,6 @@ class MakeGroupViewModel @Inject constructor(
     //그룹 이름 라이브 데이터
     val groupName = MutableLiveData<String>("")
 
-    //그룹 계좌 은행 정보 라이브 데이터
-    private val _bankInfo = MutableLiveData<Bank>(Bank(null, "은행 선택"))
-    val bankInfo: LiveData<Bank>
-        get() = _bankInfo
-
-    //그룹 계좌 번호 라이브 데이터
-    val bankAccount = MutableLiveData<String>()
-
     //그룹 카테고리 라이브 데이터
     private val _groupCategory = MutableLiveData<String>()
     val groupCategory: LiveData<String>
@@ -66,11 +58,6 @@ class MakeGroupViewModel @Inject constructor(
     private val _postResult = MutableLiveData<ResponseRegisterFitGroup>()
     val postResult: LiveData<ResponseRegisterFitGroup>
         get() = _postResult
-
-    //은행 선택 메서드
-    fun setBankInfo(data:Bank) {
-        _bankInfo.value = data
-    }
 
     //카테고리 설정 메서드
     fun setCategorySelect(data:String) {

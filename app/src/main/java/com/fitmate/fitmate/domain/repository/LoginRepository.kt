@@ -7,9 +7,9 @@ import com.fitmate.fitmate.data.model.dto.UserResponse
 interface LoginRepository {
     suspend fun tokenValid(accessToken: String): LoginSuccessResponse
 
-    suspend fun loginNaver(code: String, token: String): LoginResponse
+    suspend fun loginNaver(code: String, token: String, imageUrl: String): LoginResponse
 
-    suspend fun loginKakao(code: String, token: String): LoginResponse
+    suspend fun loginKakao(code: String, token: String, imageUrl: String): LoginResponse
 
     suspend fun logoutNaver(accessToken: String): LoginSuccessResponse
 
@@ -17,7 +17,7 @@ interface LoginRepository {
 
     suspend fun getUserInfo(userId: Int): UserResponse
 
-    suspend fun updateNickname(userId: String, nickname: String): LoginSuccessResponse
+    suspend fun updateNickname(userId: String, nickname: String, imageUrl: String): LoginSuccessResponse
 
     suspend fun deleteUser(userId: Int): LoginSuccessResponse
 }

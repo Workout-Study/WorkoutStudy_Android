@@ -27,6 +27,7 @@ class LoginWebViewFragment : Fragment(R.layout.fragment_login_webview) {
     private var loginUrl: String? = null
     private val viewModel: LoginViewModel by viewModels()
     private val TAG = "LoginWebViewFragment"
+    private val defaultProfile = "https://firebasestorage.googleapis.com/v0/b/fitmate-e2b03.appspot.com/o/user_profile%2Fdefault_profile.png?alt=media&token=a4b124d6-0ba1-4585-a259-61d13c608b07"
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -70,8 +71,7 @@ class LoginWebViewFragment : Fragment(R.layout.fragment_login_webview) {
 
                                 // Get new FCM registration token
                                 val token = task.result
-                                Log.d("tlqkf",token)
-                                viewModel.login(code, token, platform)
+                                viewModel.login(code, token, defaultProfile, platform)
                             })
                     }
                     return true
@@ -92,20 +92,17 @@ class LoginWebViewFragment : Fragment(R.layout.fragment_login_webview) {
                 val refreshToken = loginResponse.refreshToken
                 val userId = loginResponse.userId
                 val newUser = loginResponse.isNewUser
-                val platform = viewModel.platform // ViewModel에 저장된 플랫폼 정보 가져오기
-                Log.d(
-                    TAG,
-                    "[access]$accessToken \n[refresh]$refreshToken \n[userId]$userId \n[platform]$platform\n[newUser]$newUser"
-                )
-                (activity as MainActivity).saveUserPreference(accessToken, refreshToken, userId, platform!!)
+                val createdAt = loginResponse.createdAt
+                val platform = viewModel.platform   // ViewModel에 저장된 플랫폼 정보 가져오기
+                Log.d(TAG, "[access]$accessToken \n[refresh]$refreshToken \n[userId]$userId \n[createdAt]$createdAt \n[platform]$platform\n[newUser]$newUser")
+                (activity as MainActivity).saveUserPreference(accessToken, refreshToken, userId, platform!!, createdAt)
 
-                if(false) {
+                if(newUser == 0) {
                     findNavController().navigate(R.id.action_loginWebViewFragment_to_homeMainFragment)
                     Snackbar.make(binding.root, "로그인을 성공했습니다. [USERID ${userId}]", Snackbar.LENGTH_SHORT).show()
-                } else if(true) {
+                } else if(newUser == 1) {
                     val bundle = Bundle()
                     bundle.putString("authorizationCode",loginResponse.accessToken)
-
                     findNavController().navigate(R.id.action_loginWebViewFragment_to_nicknameFragment, bundle)
                     Snackbar.make(binding.root, "회원가입을 성공했습니다. [USERID ${userId}]", Snackbar.LENGTH_SHORT).show()
                 }

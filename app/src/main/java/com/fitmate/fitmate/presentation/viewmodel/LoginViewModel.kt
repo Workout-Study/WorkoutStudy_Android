@@ -56,14 +56,14 @@ class LoginViewModel @Inject constructor(
         }
     }
 
-    fun login(code: String, token: String, platform: String) {
+    fun login(code: String, token: String, imageUrl: String, platform: String) {
         this.platform = platform
         viewModelScope.launch {
             _isLoading.value = true
             try {
                 _user.value = when(platform) {
-                    "naver" -> loginUseCase.loginNaver(code, token)
-                    "kakao" -> loginUseCase.loginKakao(code, token)
+                    "naver" -> loginUseCase.loginNaver(code, token, imageUrl)
+                    "kakao" -> loginUseCase.loginKakao(code, token, imageUrl)
                     else -> null
                 }
                 _isLoading.value = false
@@ -109,11 +109,11 @@ class LoginViewModel @Inject constructor(
         }
     }
 
-    fun updateNickname(userId: String, nickname: String) {
+    fun updateNickname(userId: String, nickname: String, imageUrl: String) {
         viewModelScope.launch {
             _isLoading.value = true
             try {
-                val response = loginUseCase.updateNickname(userId, nickname)
+                val response = loginUseCase.updateNickname(userId, nickname, imageUrl)
                 _success.value = response
                 _isLoading.value = false
             } catch (e: Exception) {

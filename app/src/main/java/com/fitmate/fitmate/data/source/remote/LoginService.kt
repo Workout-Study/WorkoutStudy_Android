@@ -17,10 +17,10 @@ interface LoginService {
     suspend fun tokenValid(@Query("accessToken") accessToken: String): LoginSuccessResponse
 
     @GET("auth/login/naver")
-    suspend fun loginNaver(@Query("code") code: String, @Query("fcmToken") token: String): LoginResponse
+    suspend fun loginNaver(@Query("code") code: String, @Query("fcmToken") token: String, @Query("imageUrl") imageUrl: String): LoginResponse
 
     @GET("auth/login/kakao")
-    suspend fun loginKakao(@Query("code") code: String, @Query("fcmToken") token: String): LoginResponse
+    suspend fun loginKakao(@Query("code") code: String, @Query("fcmToken") token: String, @Query("imageUrl") imageUrl: String): LoginResponse
 
     @GET("auth/logout/naver")
     suspend fun logoutNaver(@Query("accessToken") accessToken: String): LoginSuccessResponse
@@ -31,7 +31,7 @@ interface LoginService {
     @GET("user/user-info")
     suspend fun getUserInfo(@Query("userId") userId: Int): UserResponse
 
-    @PUT("user/update/nickname")
+    @PUT("user/update/info")
     suspend fun updateNickname(@Body nicknameRequest: NicknameRequest, @Header("Authorization") authorization: String): LoginSuccessResponse
 
     @DELETE("user/delete")
