@@ -196,13 +196,14 @@ class MainActivity : AppCompatActivity(), ControlActivityInterface {
         imm?.showSoftInput(view, 0)
     }
 
-    override fun saveUserPreference(accessToken: String, refreshToken: String, userId: Int, platform: String) {
+    override fun saveUserPreference(accessToken: String, refreshToken: String, userId: Int, platform: String, createdAt: String) {
         val editor = sharedPreferences.edit()
         editor.run {
             putString(KEY_ACCESS, accessToken)
             putString(KEY_REFRESH, refreshToken)
             putInt(KEY_USER_ID, userId)
             putString(KEY_PLATFORM, platform)
+            putString(KEY_CREATED_AT, createdAt)
             apply()
         }
     }
@@ -214,12 +215,14 @@ class MainActivity : AppCompatActivity(), ControlActivityInterface {
             val refreshToken = sharedPreferences.getString(KEY_REFRESH, "")
             val userId = sharedPreferences.getInt(KEY_USER_ID, -1)
             val platform = sharedPreferences.getString(KEY_PLATFORM, "")
+            val createdAt = sharedPreferences.getString(KEY_CREATED_AT, "")
 
             userPreferences.run {
                 add(accessToken!!)
                 add(refreshToken!!)
                 add(userId)
                 add(platform!!)
+                add(createdAt!!)
             }
         }
 
@@ -232,5 +235,6 @@ class MainActivity : AppCompatActivity(), ControlActivityInterface {
         private const val KEY_REFRESH = "refresh_token"
         private const val KEY_USER_ID = "user_id"
         private const val KEY_PLATFORM = "platform"
+        private const val KEY_CREATED_AT = "createdAt"
     }
 }

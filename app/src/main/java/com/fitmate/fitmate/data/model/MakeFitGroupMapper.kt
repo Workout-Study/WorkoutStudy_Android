@@ -13,8 +13,6 @@ object MakeFitGroupMapper {
             requestUserId = this.requestUserId,
             fitGroupName = this.fitGroupName,
             penaltyAmount = this.penaltyAmount,
-            penaltyAccountBankCode = this.penaltyAccountBankCode,
-            penaltyAccountNumber = this.penaltyAccountNumber,
             category = this.category,
             introduction = this.introduction,
             cycle = this.cycle,

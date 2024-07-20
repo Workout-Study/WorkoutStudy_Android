@@ -12,11 +12,15 @@ data class LoginResponse(
     @SerializedName("accessToken") val accessToken: String,
     @SerializedName("refreshToken") val refreshToken: String,
     @SerializedName("userId") val userId: Int,
-    @SerializedName("isNewUser") val isNewUser: Int
+    @SerializedName("isNewUser") val isNewUser: Int,
+    @SerializedName("fcmToken") val token: String,
+    @SerializedName("imageUrl") val imageUrl: String,
+    @SerializedName("createdAt") val createdAt: String
 )
 
 data class NicknameRequest(
-    val nickname: String
+    val nickname: String,
+    val imageUrl: String
 )
 
 data class UserResponse(

@@ -22,7 +22,11 @@ class NicknameFragment: Fragment(R.layout.fragment_nickname) {
     private val TAG = "NicknameFragment"
     private var userId: Int = -1
     private var accessToken: String = ""
+    private var refreshToken: String = ""
     private var platform: String = ""
+    private var createdAt: String = ""
+    private val defaultProfile = "https://firebasestorage.googleapis.com/v0/b/fitmate-e2b03.appspot.com/o/user_profile%2Fdefault_profile.png?alt=media&token=a4b124d6-0ba1-4585-a259-61d13c608b07"
+
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -38,7 +42,7 @@ class NicknameFragment: Fragment(R.layout.fragment_nickname) {
             val nickname = binding.editTextNickname.text.toString()
             val authorizationCode = arguments?.getString("authorizationCode")
             authorizationCode?.let{
-                viewModel.updateNickname(it, nickname)
+                viewModel.updateNickname(it, nickname, defaultProfile)
             }
             findNavController().navigate(R.id.homeFragment)
             Toast.makeText(context, "${nickname}님 환영합니다!", Toast.LENGTH_SHORT).show()
@@ -47,9 +51,11 @@ class NicknameFragment: Fragment(R.layout.fragment_nickname) {
 
     private fun loadUserPreference() {
         val userPreference = (activity as MainActivity).loadUserPreference()
-        userId = userPreference.getOrNull(2)?.toString()?.toInt() ?: -1
         accessToken = userPreference.getOrNull(0)?.toString() ?: ""
+        refreshToken = userPreference.getOrNull(1)?.toString() ?: ""
+        userId = userPreference.getOrNull(2)?.toString()?.toInt() ?: -1
         platform = userPreference.getOrNull(3)?.toString() ?: ""
+        createdAt = userPreference.getOrNull(4)?.toString() ?: ""
         Log.d(TAG, "$userId, $platform")
         Log.d(TAG, accessToken)
     }

@@ -6,8 +6,6 @@ data class RequestRegisterFitGroupBodyDto(
     @SerializedName("requestUserId") val requestUserId: String,
     @SerializedName("fitGroupName") val fitGroupName: String,
     @SerializedName("penaltyAmount") val penaltyAmount: Long,
-    @SerializedName("penaltyAccountBankCode") val penaltyAccountBankCode: String,
-    @SerializedName("penaltyAccountNumber") val penaltyAccountNumber: String,
     @SerializedName("category") val category: Int,
     @SerializedName("introduction") val introduction: String,
     @SerializedName("cycle") val cycle: Int? = null,
