@@ -19,11 +19,11 @@ class PointRepositoryImpl(private val pointService: PointService) : PointReposit
     override suspend fun getPointHistory(
         pointOwnerId: Int,
         pointOwnerType: String,
-        historyStartDate: String,
-        historyEndDate: String,
+        historyStartDate: String?,
+        historyEndDate: String?,
         pageNumber: Int,
         pageSize: Int,
-        tradeType: String,
+        tradeType: String?,
     ) = Pager(
         config = PagingConfig(
             pageSize,

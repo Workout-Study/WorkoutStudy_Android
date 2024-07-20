@@ -53,11 +53,11 @@ class PointViewModel @Inject constructor(
     fun getPagingPointHistory(
         pointOwnerId: Int,
         pointOwnerType: String,
-        historyStartDate: String,
-        historyEndDate: String,
+        historyStartDate: String?,
+        historyEndDate: String?,
         pageNumber: Int,
         pageSize: Int,
-        tradeType: String,
+        tradeType: String?,
     ) {
         viewModelScope.launch {
             try {

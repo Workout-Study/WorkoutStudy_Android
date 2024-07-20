@@ -30,15 +30,18 @@ class PointFragment : Fragment() {
     private lateinit var adapter: PointHistoryAdapter
     private val viewModel: PointViewModel by viewModels()
     private var userId: Int = -1
+    private lateinit var createAt: String
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        arguments?.customGetSerializable<PointType>("pointOwnerType")?.let {
-            pointOwnerType = it
-        }
-        adapter = PointHistoryAdapter()
         val userPreference = (activity as MainActivity).loadUserPreference()
         userId = userPreference.getOrNull(2)?.toString()?.toInt() ?: -1
+
+        //번들 값에 따라 pointOwnerType 및 createAt값 설정하는 메서드
+        getArgumentAndSettingCreateAt(userPreference)
+
+        adapter = PointHistoryAdapter()
     }
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?,
@@ -52,7 +55,7 @@ class PointFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         binding.recyclerViewPointHistory.adapter = adapter
         viewModel.getPointInfo(63,"USER")
-        viewModel.getPagingPointHistory(723,"GROUP","2024-07-01T00:00:00Z","2024-07-31T23:59:59Z",0,5,"DEPOSIT")
+        viewModel.getPagingPointHistory(723,"GROUP",null,null,0,5,null)
 
         viewModel.pointInfo.observe(viewLifecycleOwner){
             Log.d("testt",it.toString())
@@ -60,6 +63,25 @@ class PointFragment : Fragment() {
         observePointHistory()
 
     }
+    private fun getArgumentAndSettingCreateAt(userInfo:List<Any>) {
+        arguments?.let {
+            it.customGetSerializable<PointType>("pointOwnerType")?.let {
+                pointOwnerType = it
+            }
+            when (pointOwnerType) {
+                PointType.GROUP -> {
+                    it.getString("createAt")?.let { createString ->
+                        createAt = createString
+                    }
+                }
+
+                PointType.USER -> {
+                    createAt = userInfo[4].toString()
+                }
+            }
+        }
+    }
+
 
     private fun observePointHistory(){
         viewModel.run {
