@@ -40,25 +40,27 @@ class ChattingViewModel @Inject constructor(private val dbChatUseCase: DBChatUse
         viewModelScope.launch {
             val lastItem = dbChatUseCase.getLastChatItem()
             Log.d("ChattingViewModel", "Last Chat Item: $lastItem")
-            lastItem.let {
-                val messageId = it.messageId
-                val fitGroupId = it.fitGroupId
-                val fitMateId = it.fitMateId
-                val messageTime = formatCustomDateTime(it.messageTime.toString())
-                val messageType = it.messageType
+            if(lastItem != null) {
+                lastItem.let {
+                    val messageId = it.messageId
+                    val fitGroupId = it.fitGroupId
+                    val fitMateId = it.fitMateId
+                    val messageTime = formatCustomDateTime(it.messageTime.toString())
+                    val messageType = it.messageType
 
-                Log.d(TAG, "Requesting message with ID: $messageId, Group ID: $fitGroupId, Mate ID: $fitMateId, Time: $messageTime, Type: $messageType")
-                _isLoading.value = true
-                val response = dbChatUseCase.retrieveMessage(messageId, fitGroupId, fitMateId, messageTime, messageType)
+                    Log.d(TAG, "Requesting message with ID: $messageId, Group ID: $fitGroupId, Mate ID: $fitMateId, Time: $messageTime, Type: $messageType")
+                    _isLoading.value = true
+                    val response = dbChatUseCase.retrieveMessage(messageId, fitGroupId, fitMateId, messageTime, messageType)
 
-                withContext(Dispatchers.Main) {
-                    if (response.isSuccessful) {
-                        Log.d(TAG, "Response Success: ${response.body()}")
-                        _chatResponse.value = response.body()
-                    } else {
-                        Log.d(TAG, "Response Failure: ${response.errorBody()?.string()}")
+                    withContext(Dispatchers.Main) {
+                        if (response.isSuccessful) {
+                            Log.d(TAG, "Response Success: ${response.body()}")
+                            _chatResponse.value = response.body()
+                        } else {
+                            Log.d(TAG, "Response Failure: ${response.errorBody()?.string()}")
+                        }
+                        _isLoading.value = false
                     }
-                    _isLoading.value = false
                 }
             }
         }

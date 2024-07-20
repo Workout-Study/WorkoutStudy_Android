@@ -2,6 +2,7 @@ package com.fitmate.fitmate.presentation.ui.mygroup
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -49,7 +50,8 @@ class MyGroupFragment: Fragment(R.layout.fragment_my_group) {
         adapter = MyFitGroupAdapter { fitGroup ->
             val intent = Intent(requireContext(), ChatActivity::class.java).apply {
                 putExtra("fitGroupId", fitGroup.fitGroupId)
-                putExtra("fitMateId", fitGroup.fitMateId)
+                putExtra("userId", fitGroup.fitMateId)
+                Log.d("woojugoing", (fitGroup.fitGroupId).toString() + (fitGroup.fitMateId).toString())
             }
             startActivity(intent)
         }
@@ -80,7 +82,6 @@ class MyGroupFragment: Fragment(R.layout.fragment_my_group) {
         }
     }
 
-
     private fun observeLoadingState() {
         lifecycleScope.launch {
             viewModel.isLoading.collectLatest { isLoading ->
@@ -100,8 +101,8 @@ class MyGroupFragment: Fragment(R.layout.fragment_my_group) {
             FitGroup(
                 networkGroup.fitGroupName,
                 "${networkGroup.maxFitMate}명",
-                groupDateFormat(networkGroup.createdAt),
-                1,
+                networkGroup.createdAt,
+                userId,
                 networkGroup.id
             )
         }

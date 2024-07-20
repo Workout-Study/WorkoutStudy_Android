@@ -26,17 +26,17 @@ data class Message (
 )
 
 data class RetrieveFitGroup(
-    @SerializedName("category") val category: Int,
-    @SerializedName("createdAt") val createdAt: String,
-    @SerializedName("createdBy") val createdBy: String,
-    @SerializedName("cycle") val cycle: Int,
-    @SerializedName("fitGroupName") val fitGroupName: String,
-    @SerializedName("fitLeaderUserID") val fitLeaderUserID: Int,
-    @SerializedName("frequency") val frequency: Int,
-    @SerializedName("id") val id: Int,
-    @SerializedName("maxFitMate") val maxFitMate: Int,
-    @SerializedName("presentFitMateCount") val presentFitMateCount: Int,
-    @SerializedName("state") val state: Boolean,
-    @SerializedName("updatedAt") val updatedAt: String,
-    @SerializedName("updatedBy") val updatedBy: String
+    @SerializedName("ID") val id: Int,
+    @SerializedName("FitLeaderUserID") val fitLeaderUserID: Int,
+    @SerializedName("FitGroupName") val fitGroupName: String,
+    @SerializedName("Category") val category: Int,
+    @SerializedName("Cycle") val cycle: Int,
+    @SerializedName("Frequency") val frequency: Int,
+    @SerializedName("PresentFitMateCount") val presentFitMateCount: Int,
+    @SerializedName("MaxFitMate") val maxFitMate: Int,
+    @SerializedName("State") val state: Boolean,
+    @SerializedName("CreatedAt") val createdAt: String,
+    @SerializedName("CreatedBy") val createdBy: String,
+    @SerializedName("UpdatedAt") val updatedAt: String,
+    @SerializedName("UpdatedBy") val updatedBy: String
 )

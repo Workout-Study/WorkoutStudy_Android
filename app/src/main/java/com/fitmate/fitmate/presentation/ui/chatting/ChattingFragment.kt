@@ -19,6 +19,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.navigation.ui.setupWithNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.fitmate.fitmate.BuildConfig
+import com.fitmate.fitmate.ChatActivity
 import com.fitmate.fitmate.MainActivity
 import com.fitmate.fitmate.R
 import com.fitmate.fitmate.databinding.FragmentChattingBinding
@@ -52,21 +53,20 @@ class ChattingFragment : Fragment(R.layout.fragment_chatting) {
     private lateinit var binding: FragmentChattingBinding
     private lateinit var heightProvider: HeightProvider
     @Inject lateinit var dbChatUseCase: DBChatUseCase
-    private var userId = 1
+    private var userId: Int = -1
     private val TAG = "ChattingFragment"
     private val viewModel: ChattingViewModel by viewModels()
     private val group: GroupViewModel by viewModels()
     private var webSocket: WebSocket? = null
     private var penaltyAccountNumber: String? = null
     private var fitGroupId: Int = -1
-    private var fitMateId: Int = -1
     private lateinit var createdAt: String
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         fitGroupId = requireArguments().getInt("fitGroupId", -1)
-        fitMateId = requireArguments().getInt("fitMateId", -1)
-        Log.d(TAG, "fitGroupId = $fitGroupId, fitMateId = $fitMateId")
+        userId = requireArguments().getInt("userId", -1)
+        Log.d(TAG, "fitGroupId = $fitGroupId, userId = $userId")
         group.getFitGroupDetail(fitGroupId)
     }
 
@@ -87,7 +87,7 @@ class ChattingFragment : Fragment(R.layout.fragment_chatting) {
     }
 
     private fun loadUserPreference() {
-        val userPreference = (activity as MainActivity).loadUserPreference()
+        val userPreference = (activity as ChatActivity).loadUserPreference()
         userId = userPreference.getOrNull(2)?.toString()?.toInt() ?: -1
     }
 
@@ -107,7 +107,7 @@ class ChattingFragment : Fragment(R.layout.fragment_chatting) {
         })
     }
 
-     fun setupClickListeners() {
+    private fun setupClickListeners() {
         binding.run {
             val clickMappings = mapOf(
                 containerFitOffSituation.chattingExtraFunctionButton to { navigate(R.id.groupFitOffFragment, false) },
@@ -170,8 +170,8 @@ class ChattingFragment : Fragment(R.layout.fragment_chatting) {
         group.getMate.observe(viewLifecycleOwner) { fitMateList ->
             val isLeader = fitMateList.fitLeaderDetail.fitLeaderUserId == userId.toString()
             Log.d("woojugoing_isLeader", isLeader.toString())
-            fitMateList.fitMateDetails.firstOrNull { it.fitMateId == fitMateId }?.let { textView?.text = it.fitMateUserId }
-            val filteredFitMates = fitMateList.fitMateDetails.filter { it.fitMateId != fitMateId }.map { FitMate(it.fitMateId, it.fitMateUserId,it.createdAt) }
+            fitMateList.fitMateDetails.firstOrNull { it.fitMateId == userId }?.let { textView?.text = it.fitMateUserId }
+            val filteredFitMates = fitMateList.fitMateDetails.filter { it.fitMateId != userId }.map { FitMate(it.fitMateId, it.fitMateUserId,it.createdAt) }
             (binding.recyclerViewFragmentChattingForFitMateList.adapter as FitMateListAdapter).updateData(filteredFitMates, isLeader)
         }
 
@@ -207,7 +207,7 @@ class ChattingFragment : Fragment(R.layout.fragment_chatting) {
 
     private fun setUpRecyclerView() {
         with(binding.recyclerViewFragmentChatting) {
-            adapter = ChatAdapter().apply { setCurrentUserFitMateId(fitMateId) }
+            adapter = ChatAdapter().apply { setCurrentUserFitMateId(userId) }
             layoutManager = LinearLayoutManager(context)
             itemAnimator = null
         }
@@ -226,7 +226,7 @@ class ChattingFragment : Fragment(R.layout.fragment_chatting) {
                 Log.d("WebSocket", "Receiving : $text")
                 val messageObject = JSONObject(text)
                 val receivedFitGroupId = messageObject.getInt("fitGroupId")
-                if (receivedFitGroupId == this@ChattingFragment.fitGroupId) {
+                if (receivedFitGroupId == this@ChattingFragment.userId) {
                     val messageId = messageObject.getString("messageId")
                     val fitMateId = messageObject.getInt("fitMateId")
                     val message = messageObject.getString("message")
@@ -271,7 +271,7 @@ class ChattingFragment : Fragment(R.layout.fragment_chatting) {
             }
 
             val adapter = binding.recyclerViewFragmentChatting.adapter as? ChatAdapter ?: ChatAdapter().also { binding.recyclerViewFragmentChatting.adapter = it }
-            adapter.setCurrentUserFitMateId(fitMateId)
+            adapter.setCurrentUserFitMateId(userId)
             adapter.submitList(chatItems) {
                 binding.recyclerViewFragmentChatting.post {
                     binding.recyclerViewFragmentChatting.scrollToPosition(
@@ -328,9 +328,11 @@ class ChattingFragment : Fragment(R.layout.fragment_chatting) {
         val messageId = UUID.randomUUID().toString()
         val timeNow = Instant.now().atZone(ZoneId.systemDefault()).toLocalDateTime()
         val isMessageSent = sendMessage(messageId, message, timeNow)
+        Log.d("send_message", timeNow.toString())
 
         if (isMessageSent) {
-            val newChatItem = ChatItem(messageId, fitGroupId, fitMateId, message, timeNow, "CHATTING")
+            val newChatItem = ChatItem(messageId, fitGroupId, userId, message, timeNow, "CHATTING")
+            Log.d("sendChatMessage", userId.toString())
             lifecycleScope.launch { dbChatUseCase.insert(newChatItem) }
 
             binding.editTextChattingMySpeech.setText("")
@@ -347,7 +349,7 @@ class ChattingFragment : Fragment(R.layout.fragment_chatting) {
         val jsonObject = JSONObject().apply {
             put("messageId", messageId)
             put("fitGroupId", fitGroupId)
-            put("fitMateId", fitMateId)
+            put("fitMateId", userId)
             put("message", message)
             put("messageTime", timeNow)
             put("messageType", "CHATTING")
