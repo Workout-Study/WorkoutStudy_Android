@@ -60,7 +60,6 @@ class ChattingFragment : Fragment(R.layout.fragment_chatting) {
     private var webSocket: WebSocket? = null
     private var penaltyAccountNumber: String? = null
     private var fitGroupId: Int = -1
-    private lateinit var createdAt: String
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -75,12 +74,12 @@ class ChattingFragment : Fragment(R.layout.fragment_chatting) {
         initFragment(view)                          // 화면 바인딩
         loadUserPreference()
         activeBackButton()                          // Back 버튼 커스텀
-        setupClickListeners()                       // + 메뉴 클릭 리스너
+//        setupClickListeners()                       // + 메뉴 클릭 리스너
         initHeightProvider()                        // 메뉴 높이 조절
         setUpRecyclerView()                         // 채팅 아이템 리스트 설정
-        setupWebSocketConnection("$fitGroupId")     // 해당 피트 그룹 웹소캣 연결(계속 들어오는 데이터 room에 저장하고 불러오기)
-        loadChatMessage()                           // 채팅 아이템 실시간 load(room에 있는 데이터 가져오기)
-        observeChatResponse()                       // 새로 들어온 채팅 내역 load & save(최초 한번 수행 됨)
+        setupWebSocketConnection("$fitGroupId")     // 해당 피트 그룹 웹소캣 연결
+        loadChatMessage()                           // 채팅 아이템 실시간 load
+        observeChatResponse()                       // 새로 들어온 채팅 내역 load & save
         scrollBottom()                              // 들어 왔을 때 최하단 으로 이동
         chatSend()                                  // 채팅 전송
 
@@ -93,8 +92,6 @@ class ChattingFragment : Fragment(R.layout.fragment_chatting) {
 
     private fun initFragment(view: View) {
         binding = FragmentChattingBinding.bind(view)
-        binding.fragment = this
-        binding.lifecycleOwner = viewLifecycleOwner
         binding.containerExtraFunction.layoutTransition = null
         binding.toolbarFragmentChatting.setupWithNavController(findNavController())
     }
@@ -110,27 +107,18 @@ class ChattingFragment : Fragment(R.layout.fragment_chatting) {
     private fun setupClickListeners() {
         binding.run {
             val clickMappings = mapOf(
-                containerFitOffSituation.chattingExtraFunctionButton to { navigate(R.id.groupFitOffFragment, false) },
-                containerFitOffApply.chattingExtraFunctionButton to { navigate(R.id.groupFitOffFragment, false) },
-                containerFitVote.chattingExtraFunctionButton to { navigate(R.id.groupVoteFragment, true) },
-                containerFitSituation.chattingExtraFunctionButton to { navigate(R.id.groupProgressFragment, true) },
-                containerGroupPointSituation.chattingExtraFunctionButton to { navigate(R.id.groupFitOffFragment, false) },
+//                buttonFragmentChattingFitMateProgress to { navigate(R.id.groupProgressFragment, true) },
+//                buttonFragmentChattingVote to { navigate(R.id.groupVoteFragment, true) },
+//                buttonFragmentChattingFine to { navigate(R.id.groupFineFragment, true) },
+//                buttonFragmentChattingFitOff to { navigate(R.id.groupFitOffFragment, false) },
+//                buttonFragmentChattingTransfer to { copyAccountNum() },
+//                buttonFragmentChattingCertification to { navigate() },
                 imageViewChattingFragmentOpenContentList to { toggleExtraFunctionContainer() },
                 buttonFragmentChattingExit to { activity?.finish() },
                 imageViewChattingToolbarForDrawerLayout to { toggleDrawer() },
             )
             clickMappings.forEach { (button, action) -> button.setOnClickListener { action() } }
         }
-    }
-
-    //TODO 포인트 화면 클릭시 해당 메서드 호출해야함.
-    private fun navigateWithCreatedAt(fragmentId: Int) {
-        group.groupDetail.observe(viewLifecycleOwner) {groupDetail ->
-            createdAt = groupDetail.createdAt
-        }
-        val bundle = Bundle()
-        bundle.putString("createdAt",createdAt)
-        findNavController().navigate(fragmentId, bundle)
     }
 
     private fun navigate(fragmentId: Int, isBundle: Boolean) {
@@ -295,10 +283,10 @@ class ChattingFragment : Fragment(R.layout.fragment_chatting) {
                             message = message.message,
                             messageTime = LocalDateTime.parse(
                                 message.messageTime, DateTimeFormatterBuilder()
-                                .appendPattern("yyyy-MM-dd'T'HH:mm:ss")
-                                .appendPattern("[.SSSSSS][.SSSSS][.SSSS][.SSS][.SS][.S]")
-                                .appendPattern("'Z'")
-                                .toFormatter()),
+                                    .appendPattern("yyyy-MM-dd'T'HH:mm:ss")
+                                    .appendPattern("[.SSSSSS][.SSSSS][.SSSS][.SSS][.SS][.S]")
+                                    .appendPattern("'Z'")
+                                    .toFormatter()),
                             messageType = message.messageType )}.reversed()
 
                     newItems.forEach { newItem -> dbChatUseCase.insert(newItem) }
