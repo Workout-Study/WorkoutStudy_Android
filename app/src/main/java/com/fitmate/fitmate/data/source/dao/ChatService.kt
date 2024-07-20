@@ -15,7 +15,7 @@ interface ChatService {
     suspend fun retrieveMessage(
         @Query("messageId") messageId: String,
         @Query("fitGroupId") fitGroupId: Int,
-        @Query("fitMateId") fitMateId: Int,
+        @Query("userId") userId: Int,
         @Query("messageTime") messageTime: String,
         @Query("messageType") messageType: String
     ): Response<ChatResponse>
