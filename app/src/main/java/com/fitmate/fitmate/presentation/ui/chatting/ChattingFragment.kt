@@ -228,7 +228,7 @@ class ChattingFragment : Fragment(R.layout.fragment_chatting) {
                 val receivedFitGroupId = messageObject.getInt("fitGroupId")
                 if (receivedFitGroupId == this@ChattingFragment.userId) {
                     val messageId = messageObject.getString("messageId")
-                    val fitMateId = messageObject.getInt("fitMateId")
+                    val userId = messageObject.getInt("userd")
                     val message = messageObject.getString("message")
                     val messageTime = messageObject.getString("messageTime")
                     val messageType = messageObject.getString("messageType")
@@ -240,7 +240,7 @@ class ChattingFragment : Fragment(R.layout.fragment_chatting) {
                         .toFormatter()
                         .withZone(ZoneId.systemDefault()))
 
-                    val chatItem = ChatItem(messageId, receivedFitGroupId, fitMateId, message, parsedMessageTime, messageType)
+                    val chatItem = ChatItem(messageId, receivedFitGroupId, userId, message, parsedMessageTime, messageType)
 
                     activity?.runOnUiThread {
                         lifecycleScope.launch {
@@ -349,7 +349,7 @@ class ChattingFragment : Fragment(R.layout.fragment_chatting) {
         val jsonObject = JSONObject().apply {
             put("messageId", messageId)
             put("fitGroupId", fitGroupId)
-            put("fitMateId", userId)
+            put("userId", userId)
             put("message", message)
             put("messageTime", timeNow)
             put("messageType", "CHATTING")
