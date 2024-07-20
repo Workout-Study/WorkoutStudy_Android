@@ -13,7 +13,7 @@ data class ChatEntity (
     @ColumnInfo
     var fitGroupId: Int,
     @ColumnInfo
-    var fitMateId: Int,
+    var userId: Int,
     @ColumnInfo
     var message: String,
     @ColumnInfo
