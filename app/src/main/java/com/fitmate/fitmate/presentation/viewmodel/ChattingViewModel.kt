@@ -44,7 +44,7 @@ class ChattingViewModel @Inject constructor(private val dbChatUseCase: DBChatUse
                 lastItem.let {
                     val messageId = it.messageId
                     val fitGroupId = it.fitGroupId
-                    val fitMateId = it.fitMateId
+                    val fitMateId = it.userId
                     val messageTime = formatCustomDateTime(it.messageTime.toString())
                     val messageType = it.messageType
 

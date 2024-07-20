@@ -263,7 +263,7 @@ class ChattingFragment : Fragment(R.layout.fragment_chatting) {
                 ChatItem(
                     messageId = chatEntity.messageId,
                     fitGroupId = chatEntity.fitGroupId,
-                    fitMateId = chatEntity.fitMateId,
+                    userId = chatEntity.userId,
                     message = chatEntity.message,
                     messageTime = chatEntity.messageTime,
                     messageType = chatEntity.messageType
@@ -291,7 +291,7 @@ class ChattingFragment : Fragment(R.layout.fragment_chatting) {
                         ChatItem(
                             messageId = message.messageId,
                             fitGroupId = message.fitGroupId,
-                            fitMateId = message.fitMateId,
+                            userId = message.userId,
                             message = message.message,
                             messageTime = LocalDateTime.parse(
                                 message.messageTime, DateTimeFormatterBuilder()

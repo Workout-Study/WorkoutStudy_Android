@@ -19,7 +19,7 @@ class ChatAdapter: ListAdapter<ChatItem, ChatAdapter.ViewHolder>(ChatDiffCallbac
 
     inner class ViewHolder(private val binding: ItemChattingChatBinding): RecyclerView.ViewHolder(binding.root) {
         fun bind(item: ChatItem) {
-            val isCurrentUser = item.fitMateId == currentUserFitMateId
+            val isCurrentUser = item.userId == currentUserFitMateId
             binding.apply {
                 containerItemChattingChatLeft.visibility = if (isCurrentUser) View.GONE else View.VISIBLE
                 containerItemChattingChatRight.visibility = if (isCurrentUser) View.VISIBLE else View.GONE
@@ -28,7 +28,7 @@ class ChatAdapter: ListAdapter<ChatItem, ChatAdapter.ViewHolder>(ChatDiffCallbac
                 textViewToUse.text = item.message
 
                 if (!isCurrentUser) {
-                    textViewItemChattingFitMateNameLeft.text = item.fitMateId.toString()
+                    textViewItemChattingFitMateNameLeft.text = item.userId.toString()
                 }
             }
         }

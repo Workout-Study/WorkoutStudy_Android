@@ -19,7 +19,7 @@ data class ChatResponse (
 data class Message (
     val messageId: String,
     val fitGroupId: Int,
-    val fitMateId: Int,
+    val userId: Int,
     val message: String,
     val messageTime: String,
     val messageType: String
