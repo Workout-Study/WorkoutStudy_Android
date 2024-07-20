@@ -20,7 +20,7 @@ object PointModule {
     @Provides
     @Singleton
     fun providePointService(retrofit: Retrofit): PointService {
-        val pointBaseUrl = "http://${BuildConfig.CHAT_SERVER_ADDRESS}:8082"
+        val pointBaseUrl = "http://${BuildConfig.SERVER_ADDRESS}:8082"
         return retrofit.newBuilder()
             .baseUrl(pointBaseUrl)
             .build()
