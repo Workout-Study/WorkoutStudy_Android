@@ -18,10 +18,10 @@ interface PointService {
     suspend fun getPointHistory(
         @Query("walletOwnerId") pointOwnerId: Int,
         @Query("walletOwnerType") pointOwnerType: String,
-        @Query("historyStartDate") historyStartDate: String,
-        @Query("historyEndDate") historyEndDate: String,
+        @Query("historyStartDate") historyStartDate: String?,
+        @Query("historyEndDate") historyEndDate: String?,
         @Query("pageNumber") pageNumber: Int,
         @Query("pageSize") pageSize: Int,
-        @Query("tradeType") tradeType: String,
+        @Query("tradeType") tradeType: String?,
     ):PointHistoryDto
 }

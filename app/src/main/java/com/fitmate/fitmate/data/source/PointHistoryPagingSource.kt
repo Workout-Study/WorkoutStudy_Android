@@ -13,11 +13,11 @@ class PointHistoryPagingSource(
     private val pointService: PointService,
     private val pointOwnerId: Int,
     private val pointOwnerType: String,
-    private val historyStartDate: String,
-    private val historyEndDate: String,
+    private val historyStartDate: String?,
+    private val historyEndDate: String?,
     private val pageNumber: Int,
     private val pageSize: Int,
-    private val tradeType: String
+    private val tradeType: String?
 ): PagingSource<Int, PointHistoryContentDto>() {
     override suspend fun load(params: LoadParams<Int>): LoadResult<Int, PointHistoryContentDto> {
         return try {
