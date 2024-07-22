@@ -10,13 +10,11 @@ import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.widget.TextView
 import android.widget.Toast
-import androidx.activity.OnBackPressedCallback
 import androidx.core.view.GravityCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
-import androidx.navigation.ui.setupWithNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.fitmate.fitmate.BuildConfig
 import com.fitmate.fitmate.ChatActivity
@@ -32,13 +30,17 @@ import com.fitmate.fitmate.presentation.viewmodel.ChattingViewModel
 import com.fitmate.fitmate.presentation.viewmodel.GroupViewModel
 import com.fitmate.fitmate.util.HeightProvider
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
+import okhttp3.Interceptor
 import okhttp3.OkHttpClient
 import okhttp3.Request
 import okhttp3.Response
 import okhttp3.WebSocket
 import okhttp3.WebSocketListener
-import okhttp3.internal.notify
+import okhttp3.logging.HttpLoggingInterceptor
+import okio.ByteString
 import org.json.JSONObject
 import java.time.Instant
 import java.time.LocalDateTime
@@ -55,6 +57,7 @@ class ChattingFragment : Fragment(R.layout.fragment_chatting) {
     private lateinit var heightProvider: HeightProvider
     @Inject lateinit var dbChatUseCase: DBChatUseCase
     private lateinit var chatAdapter: ChatAdapter
+    private var isFirst = true
     private var userId: Int = -1
     private val TAG = "ChattingFragment"
     private val viewModel: ChattingViewModel by viewModels()
@@ -65,25 +68,23 @@ class ChattingFragment : Fragment(R.layout.fragment_chatting) {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        fitGroupId = requireArguments().getInt("fitGroupId", -1)
-        userId = requireArguments().getInt("userId", -1)
-        Log.d(TAG, "fitGroupId = $fitGroupId, userId = $userId")
-        group.getFitGroupDetail(fitGroupId)
+        arguments?.getInt("fitGroupId")?.let { groupId ->
+            fitGroupId = groupId
+        }
+        loadUserPreference() //유저 정보 가져오기
+        group.getFitGroupDetail(fitGroupId) //서버로부터 그룹 정보 가저오기
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initFragment(view)                          // 화면 바인딩
-        loadUserPreference()
-        activeBackButton()                          // Back 버튼 커스텀
-//        setupClickListeners()                       // + 메뉴 클릭 리스너
+        setupClickListeners()                       // + 메뉴 클릭 리스너
         initHeightProvider()                        // 메뉴 높이 조절
         setUpRecyclerView()                         // 채팅 아이템 리스트 설정
-        setupWebSocketConnection("$fitGroupId")     // 해당 피트 그룹 웹소캣 연결
         loadChatMessage()                           // 채팅 아이템 실시간 load
         observeChatResponse()                       // 새로 들어온 채팅 내역 load & save
-        scrollBottom()                              // 들어 왔을 때 최하단 으로 이동
-        chatSend()                                  // 채팅 전송
+        //scrollBottom()                              // 들어 왔을 때 최하단 으로 이동
+
 
     }
 
@@ -94,29 +95,48 @@ class ChattingFragment : Fragment(R.layout.fragment_chatting) {
 
     private fun initFragment(view: View) {
         binding = FragmentChattingBinding.bind(view)
+        binding.fragment = this
         binding.containerExtraFunction.layoutTransition = null
-        binding.toolbarFragmentChatting.setupWithNavController(findNavController())
-    }
-
-    private fun activeBackButton() {
-        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner, object : OnBackPressedCallback(true) {
-            override fun handleOnBackPressed() {
-                activity?.finish()
-            }
-        })
+        binding.toolbarFragmentChatting.setNavigationOnClickListener {
+            (activity as ChatActivity).finish()
+        }
     }
 
     private fun setupClickListeners() {
         binding.run {
             val clickMappings = mapOf(
-//                buttonFragmentChattingFitMateProgress to { navigate(R.id.groupProgressFragment, true) },
-//                buttonFragmentChattingVote to { navigate(R.id.groupVoteFragment, true) },
-//                buttonFragmentChattingFine to { navigate(R.id.groupFineFragment, true) },
-//                buttonFragmentChattingFitOff to { navigate(R.id.groupFitOffFragment, false) },
-//                buttonFragmentChattingTransfer to { copyAccountNum() },
-//                buttonFragmentChattingCertification to { navigate() },
+                containerFitSituation.chattingExtraFunctionButton to {
+                    navigate(
+                        R.id.groupProgressFragment,
+                        true
+                    )
+                },//운동 현황
+                containerFitVote.chattingExtraFunctionButton to {
+                    navigate(
+                        R.id.groupVoteFragment,
+                        false
+                    )
+                },//
+                containerGroupPointSituation.chattingExtraFunctionButton to {
+                    navigate(
+                        R.id.groupFineFragment,
+                        false
+                    )
+                },
+                containerFitOffSituation.chattingExtraFunctionButton to {
+                    navigate(
+                        R.id.groupFitOffFragment,
+                        true
+                    )
+                },
+                containerFitOffApply.chattingExtraFunctionButton to {
+                    navigate(
+                        R.id.groupFitOffFragment,
+                        false
+                    )
+                },
                 imageViewChattingFragmentOpenContentList to { toggleExtraFunctionContainer() },
-                buttonFragmentChattingExit to { activity?.finish() },
+                buttonFragmentChattingExit to { (activity as ChatActivity).finish() },
                 imageViewChattingToolbarForDrawerLayout to { toggleDrawer() },
             )
             clickMappings.forEach { (button, action) -> button.setOnClickListener { action() } }
@@ -136,7 +156,7 @@ class ChattingFragment : Fragment(R.layout.fragment_chatting) {
     private fun navigate() {
         val intent = Intent(activity, MainActivity::class.java).apply { putExtra("navigateTo", "certificateFragment") }
         startActivity(intent)
-        activity?.finish()
+        (activity as ChatActivity).finish()
     }
 
     private fun copyAccountNum() {
@@ -182,13 +202,17 @@ class ChattingFragment : Fragment(R.layout.fragment_chatting) {
     }
 
     private fun initHeightProvider() {
-        activity?.let {
+        (activity as ChatActivity).let {
             heightProvider = HeightProvider(it).init().setHeightListener { height ->
                 if (height > 0) {
                     binding.containerExtraFunction.visibility = View.GONE
                     binding.containerExtraFunction.layoutParams.height = height
                     binding.recyclerViewFragmentChatting.apply {
-                        post { if ((adapter?.itemCount ?: 0) > 0) smoothScrollToPosition(adapter!!.itemCount - 1) }
+                        post {
+                            if ((adapter?.itemCount
+                                    ?: 0) > 0
+                            ) smoothScrollToPosition(adapter!!.itemCount - 1)
+                        }
                     }
                 }
             }
@@ -197,30 +221,41 @@ class ChattingFragment : Fragment(R.layout.fragment_chatting) {
 
     private fun setUpRecyclerView() {
         chatAdapter = ChatAdapter()
+        val manager = LinearLayoutManager(requireContext())
+        manager.stackFromEnd = true
         with(binding.recyclerViewFragmentChatting) {
             chatAdapter.apply { setCurrentUserFitMateId(userId) }
             adapter = chatAdapter
-            layoutManager = LinearLayoutManager(context)
+            layoutManager = manager
             itemAnimator = null
         }
     }
 
-    private fun setupWebSocketConnection(fitGroupId: String) {
-        val client = OkHttpClient()
+    private fun setupWebSocketConnection() {
+        // LoggingInterceptor 설정
+        val loggingInterceptor = HttpLoggingInterceptor().apply {
+            level = HttpLoggingInterceptor.Level.BODY
+        }
+
+        // OkHttpClient 설정
+        val client = OkHttpClient.Builder()
+            .addInterceptor(loggingInterceptor)
+            .build()
+
         val request = Request.Builder().url("ws://${chatServerAddress}:8888/chat?fitGroupId=${fitGroupId}&userId=${userId}").build()
 
         webSocket = client.newWebSocket(request, object : WebSocketListener() {
             override fun onOpen(webSocket: WebSocket, response: Response) {
                 super.onOpen(webSocket, response)
-                Log.d("WebSocket", "Success")
+                Log.d("tlqkf", "소켓 연결 Success")
             }
+
             override fun onMessage(webSocket: WebSocket, text: String) {
-                Log.d("WebSocket", "Receiving : $text")
                 val messageObject = JSONObject(text)
                 val receivedFitGroupId = messageObject.getInt("fitGroupId")
-                if (receivedFitGroupId == this@ChattingFragment.userId) {
+                if (receivedFitGroupId == this@ChattingFragment.fitGroupId) {
                     val messageId = messageObject.getString("messageId")
-                    val userId = messageObject.getInt("userd")
+                    val userId = messageObject.getInt("userId")
                     val message = messageObject.getString("message")
                     val messageTime = messageObject.getString("messageTime")
                     val messageType = messageObject.getString("messageType")
@@ -233,22 +268,42 @@ class ChattingFragment : Fragment(R.layout.fragment_chatting) {
                         .withZone(ZoneId.systemDefault()))
 
                     val chatItem = ChatItem(messageId, receivedFitGroupId, userId, message, parsedMessageTime, messageType)
+                    Log.d("tlqkf","소켓에서 날아온 데이터 : "+chatItem.toString())
 
-                    activity?.runOnUiThread {
+                    (activity as ChatActivity).runOnUiThread {
                         lifecycleScope.launch {
-                            dbChatUseCase.insert(chatItem)
-                            val currentList = chatAdapter.currentList?.toMutableList() ?: mutableListOf()
-                            currentList.add(chatItem)
-                            chatAdapter.submitList(currentList) {
-                                chatAdapter.notifyDataSetChanged()
+                            withContext(Dispatchers.IO){
+                                dbChatUseCase.insert(chatItem)
                             }
-                            binding.recyclerViewFragmentChatting.smoothScrollToPosition(chatAdapter.itemCount ?: (0 - 1))
+                            val currentList = chatAdapter.currentList.toMutableList()
+                            currentList.add(chatItem)
+                            chatAdapter.submitList(currentList.toMutableList()){
+                                chatAdapter.notifyItemInserted(chatAdapter.currentList.lastIndex)
+                                binding.recyclerViewFragmentChatting.scrollToPosition(chatAdapter.currentList.lastIndex)
+                            }
                         }
                     }
                 }
             }
+
+            override fun onClosed(webSocket: WebSocket, code: Int, reason: String) {
+                super.onClosed(webSocket, code, reason)
+                Log.d("tlqkf","소켓 onClosed")
+            }
+
+            override fun onFailure(webSocket: WebSocket, t: Throwable, response: Response?) {
+                super.onFailure(webSocket, t, response)
+                Log.d("tlqkf","소켓 onFailure")
+            }
+
+            override fun onMessage(webSocket: WebSocket, bytes: ByteString) {
+                super.onMessage(webSocket, bytes)
+                Log.d("tlqkf","소켓 onMessage다른거")
+            }
         })
     }
+
+
 
     private fun loadChatMessage() {
         lifecycleScope.launch {
@@ -263,13 +318,13 @@ class ChattingFragment : Fragment(R.layout.fragment_chatting) {
                 )
             }
 
-            chatAdapter.setCurrentUserFitMateId(userId)
             chatAdapter.submitList(chatItems) {
-                binding.recyclerViewFragmentChatting.post {
-                    binding.recyclerViewFragmentChatting.scrollToPosition(
-                        chatAdapter.itemCount - 1
-                    )
+                chatAdapter.notifyItemInserted(chatAdapter.currentList.lastIndex)
+                binding.recyclerViewFragmentChatting.scrollToPosition(chatAdapter.currentList.lastIndex)
+                if (!isFirst){
+                    setupWebSocketConnection()
                 }
+                isFirst = !isFirst
             }
         }
     }
@@ -278,7 +333,8 @@ class ChattingFragment : Fragment(R.layout.fragment_chatting) {
         viewModel.retrieveMessage()
         lifecycleScope.launch {
             viewModel.chatResponse.collect { chatResponse ->
-                if (chatResponse?.messages != null && chatResponse.messages.isNotEmpty()) {
+                if (chatResponse != null) {
+                    Log.d("tlqkf","리트라이브 옵저버 시작됨")
                     val newItems = chatResponse.messages.filter { it.fitGroupId == fitGroupId }.map { message ->
                         ChatItem(
                             messageId = message.messageId,
@@ -290,11 +346,17 @@ class ChattingFragment : Fragment(R.layout.fragment_chatting) {
                                     .appendPattern("yyyy-MM-dd'T'HH:mm:ss")
                                     .appendPattern("[.SSSSSS][.SSSSS][.SSSS][.SSS][.SS][.S]")
                                     .appendPattern("'Z'")
-                                    .toFormatter()),
-                            messageType = message.messageType )}.reversed()
+                                    .toFormatter()
+                            ),
+                            messageType = message.messageType
+                        )
+                    }/*.reversed()*/
 
                     newItems.forEach { newItem -> dbChatUseCase.insert(newItem) }
                     loadChatMessage()
+                } else {
+                    Log.d("tlqkf","리트라이브 옵저버 시작 안된상태로 소벳 열기")
+                    setupWebSocketConnection()
                 }
             }
         }
@@ -309,10 +371,10 @@ class ChattingFragment : Fragment(R.layout.fragment_chatting) {
         }
     }
 
-    private fun chatSend() {
-        binding.ImageViewChattingSendMySpeech.setOnClickListener {
-            val message = binding.editTextChattingMySpeech.text.toString()
-            if (message.isNotEmpty()) sendChatMessage(message)
+    fun chatSend() {
+        val message = binding.editTextChattingMySpeech.text
+        if (message.isNotEmpty()){
+            sendChatMessage(message.toString())
         }
     }
 
@@ -320,20 +382,11 @@ class ChattingFragment : Fragment(R.layout.fragment_chatting) {
         val messageId = UUID.randomUUID().toString()
         val timeNow = Instant.now().atZone(ZoneId.systemDefault()).toLocalDateTime()
         val isMessageSent = sendMessage(messageId, message, timeNow)
-        Log.d("send_message", timeNow.toString())
 
         if (isMessageSent) {
-            val newChatItem = ChatItem(messageId, fitGroupId, userId, message, timeNow, "CHATTING")
-            Log.d("sendChatMessage", userId.toString())
-            lifecycleScope.launch { dbChatUseCase.insert(newChatItem) }
-
             binding.editTextChattingMySpeech.setText("")
-            val testItems = chatAdapter.currentList.toMutableList()
-            binding.recyclerViewFragmentChatting.post {
-                binding.recyclerViewFragmentChatting.smoothScrollToPosition(testItems.size ?: (0 - 1))
-            }
         } else {
-            Toast.makeText(context, "Message failed to send.", Toast.LENGTH_SHORT).show()
+            Toast.makeText(context, "채팅 전송 실패! 잠시 후 시도해 주새요", Toast.LENGTH_SHORT).show()
         }
     }
 
@@ -346,11 +399,13 @@ class ChattingFragment : Fragment(R.layout.fragment_chatting) {
             put("messageTime", timeNow)
             put("messageType", "CHATTING")
         }
+        Log.d("tlqkf", "전송된 채팅 데이터 : $jsonObject")
         return webSocket?.send(jsonObject.toString()) ?: false
     }
 
     override fun onPause() {
         super.onPause()
         webSocket?.close(1000, "Fragment Paused")
+        if(isFirst)  isFirst = false
     }
 }

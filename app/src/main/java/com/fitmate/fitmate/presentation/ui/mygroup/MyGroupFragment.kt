@@ -50,8 +50,6 @@ class MyGroupFragment: Fragment(R.layout.fragment_my_group) {
         adapter = MyFitGroupAdapter { fitGroup ->
             val intent = Intent(requireContext(), ChatActivity::class.java).apply {
                 putExtra("fitGroupId", fitGroup.fitGroupId)
-                putExtra("userId", fitGroup.fitMateId)
-                Log.d("woojugoing", (fitGroup.fitGroupId).toString() + (fitGroup.fitMateId).toString())
             }
             startActivity(intent)
         }

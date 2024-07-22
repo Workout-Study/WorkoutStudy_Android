@@ -11,10 +11,8 @@
         android:label="ChattingFragment" >
         <argument
             android:name="fitGroupId"
-            app:argType="integer" />
-        <argument
-            android:name="fitMateId"
-            app:argType="integer" />
+            app:argType="integer"
+            android:defaultValue="-1"/>
         <action
             android:id="@+id/action_chattingFragment_to_groupFineFragment"
             app:destination="@id/groupFineFragment" />

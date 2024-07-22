@@ -25,6 +25,7 @@
                 android:id="@+id/toolbarFragmentChatting"
                 style="@style/Theme.Fitmate.Toolbar"
                 android:layout_width="match_parent"
+                app:navigationIcon="@drawable/ic_baseline_back_24"
                 android:layout_height="wrap_content"
                 app:layout_constraintTop_toTopOf="parent">
 
@@ -112,6 +113,7 @@
                         android:background="@drawable/ic_circle_chatting_send"
                         android:src="@drawable/right_scroll_btn_icon"
                         app:tint="#2D13B6"
+                        android:onClick="@{() -> fragment.chatSend()}"
                         android:padding="5dp"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
