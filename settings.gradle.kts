@@ -12,7 +12,6 @@ dependencyResolutionManagement {
         mavenCentral()
         maven("https://www.jitpack.io")
     }
-
 }
 
 rootProject.name = "Fitmate"

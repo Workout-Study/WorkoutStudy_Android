@@ -3,11 +3,16 @@ package com.fitmate.fitmate
 import android.content.SharedPreferences
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
+import androidx.navigation.NavArgument
 import androidx.navigation.NavController
+import androidx.navigation.NavGraph
 import androidx.navigation.fragment.NavHostFragment
+import androidx.navigation.navArgs
 import androidx.security.crypto.EncryptedSharedPreferences
 import androidx.security.crypto.MasterKey
 import com.fitmate.fitmate.databinding.ActivityChatBinding
+import com.fitmate.fitmate.presentation.ui.chatting.ChattingFragment
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -35,21 +40,21 @@ class ChatActivity : AppCompatActivity() {
         binding = ActivityChatBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        val navHostFragment = supportFragmentManager
-            .findFragmentById(R.id.fragmentContainerViewChat) as NavHostFragment
-        navController = navHostFragment.navController
+
+
 
         // Retrieve intent extras
         val fitGroupId = intent.getIntExtra("fitGroupId", -1)
-        val fitMateId = intent.getIntExtra("fitMateId", -1)
-
         // Create a bundle with the retrieved extras
         val bundle = Bundle().apply {
             putInt("fitGroupId", fitGroupId)
-            putInt("fitMateId", fitMateId)
         }
 
-        navController.navigate(R.id.chattingFragment, bundle)
+        val navHostFragment = supportFragmentManager
+            .findFragmentById(R.id.fragmentContainerViewChat) as NavHostFragment
+
+        navController = navHostFragment.navController
+        navController.setGraph(R.navigation.nav_chat_graph,bundle)
     }
 
     fun loadUserPreference(): List<Any> {

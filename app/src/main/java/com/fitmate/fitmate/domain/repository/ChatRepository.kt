@@ -17,7 +17,7 @@ interface ChatRepository {
 
     suspend fun update(item: ChatItem): Boolean
 
-    suspend fun getLastChatItem(): ChatEntity
+    suspend fun getLastChatItem(): ChatEntity?
 
     suspend fun getChatItemsByFitGroupId(fitGroupId: Int): List<ChatItem>
 
