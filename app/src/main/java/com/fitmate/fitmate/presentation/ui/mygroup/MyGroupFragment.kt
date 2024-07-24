@@ -48,10 +48,14 @@ class MyGroupFragment: Fragment(R.layout.fragment_my_group) {
         controlActivityInterface.viewNavigationBar()
 
         adapter = MyFitGroupAdapter { fitGroup ->
-            val intent = Intent(requireContext(), ChatActivity::class.java).apply {
+            val bundle = Bundle().apply {
+                putInt("fitGroupId", fitGroup.fitGroupId)
+            }
+            findNavController().navigate(R.id.chatActivity,bundle)
+            /*val intent = Intent(requireContext(), ChatActivity::class.java).apply {
                 putExtra("fitGroupId", fitGroup.fitGroupId)
             }
-            startActivity(intent)
+            startActivity(intent)*/
         }
         return binding.root
     }

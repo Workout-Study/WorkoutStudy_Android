@@ -27,7 +27,7 @@
         <Button
             android:id="@+id/chattingExtraFunctionButton"
             style="?attr/materialIconButtonFilledStyle"
-            app:icon="@drawable/person_icon"
+            app:icon="@drawable/ic_baseline_timer_24"
             android:backgroundTint="#8771FA"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>

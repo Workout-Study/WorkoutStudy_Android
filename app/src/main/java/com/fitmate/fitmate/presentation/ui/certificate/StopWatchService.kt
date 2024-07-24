@@ -14,6 +14,7 @@ import androidx.navigation.NavDeepLinkBuilder
 import com.fitmate.fitmate.MainActivity
 import com.fitmate.fitmate.R
 import com.fitmate.fitmate.domain.usecase.DbCertificationUseCase
+import com.fitmate.fitmate.util.PendingTokenValue
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -61,16 +62,20 @@ class StopWatchService : Service() {
         super.onCreate()
         createNotificationChannel()
 
-        pendingIntent = NavDeepLinkBuilder(baseContext)
+        val intent = Intent(this,MainActivity::class.java)
+        intent.putExtra("pendingToken",PendingTokenValue.CERTIFICATION)
+        val test = PendingIntent.getActivity(this,1,intent,
+            PendingIntent.FLAG_CANCEL_CURRENT or PendingIntent.FLAG_IMMUTABLE)
+/*        pendingIntent = NavDeepLinkBuilder(baseContext)
             .setComponentName(MainActivity::class.java)
             .setGraph(R.navigation.nav_main_graph)
             .setDestination(R.id.certificateFragment)
-            .createPendingIntent()
+            .createPendingIntent()*/
 
         contentView = RemoteViews(packageName, R.layout.certificatiion_custom_notification)
         contentView.setTextViewText(R.id.textViewNotificationTitle, "피트메이트 인증 진행중")
         contentView.setTextViewText(R.id.textViewStopWatch, formatTime())
-        notificationBuilder = notificationBuilder(contentView).setContentIntent(pendingIntent)
+        notificationBuilder = notificationBuilder(contentView).setContentIntent(test)
 
         startForeground(NOTIFICATION_ID, notificationBuilder.build())
     }
