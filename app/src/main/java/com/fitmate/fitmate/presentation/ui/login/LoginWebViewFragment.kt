@@ -15,6 +15,8 @@ import com.fitmate.fitmate.MainActivity
 import com.fitmate.fitmate.R
 import com.fitmate.fitmate.databinding.FragmentLoginWebviewBinding
 import com.fitmate.fitmate.presentation.viewmodel.LoginViewModel
+import com.fitmate.fitmate.util.PendingTokenValue
+import com.fitmate.fitmate.util.customGetSerializable
 import com.google.android.gms.tasks.OnCompleteListener
 import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.messaging.FirebaseMessaging
@@ -25,6 +27,7 @@ class LoginWebViewFragment : Fragment(R.layout.fragment_login_webview) {
 
     private lateinit var binding: FragmentLoginWebviewBinding
     private var loginUrl: String? = null
+    private var pendingTokenValue: PendingTokenValue? = null
     private val viewModel: LoginViewModel by viewModels()
     private val TAG = "LoginWebViewFragment"
     private val defaultProfile = "https://firebasestorage.googleapis.com/v0/b/fitmate-e2b03.appspot.com/o/user_profile%2Fdefault_profile.png?alt=media&token=a4b124d6-0ba1-4585-a259-61d13c608b07"
@@ -33,7 +36,9 @@ class LoginWebViewFragment : Fragment(R.layout.fragment_login_webview) {
         super.onCreate(savedInstanceState)
         arguments?.let {
             loginUrl = it.getString("loginUrl")
+            pendingTokenValue = it.customGetSerializable<PendingTokenValue>("pendingToken")
         }
+
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -98,7 +103,10 @@ class LoginWebViewFragment : Fragment(R.layout.fragment_login_webview) {
                 (activity as MainActivity).saveUserPreference(accessToken, refreshToken, userId, platform!!, createdAt)
 
                 if(newUser == 0) {
-                    findNavController().navigate(R.id.action_loginWebViewFragment_to_homeMainFragment)
+                    val bundle = Bundle().apply {
+                        putSerializable("pendingToken", pendingTokenValue)
+                    }
+                    findNavController().navigate(R.id.action_loginWebViewFragment_to_homeMainFragment, bundle)
                     Snackbar.make(binding.root, "로그인을 성공했습니다. [USERID ${userId}]", Snackbar.LENGTH_SHORT).show()
                 } else if(newUser == 1) {
                     val bundle = Bundle()

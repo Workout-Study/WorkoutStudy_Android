@@ -6,13 +6,12 @@ import android.animation.ObjectAnimator
 import android.content.Context
 import android.content.SharedPreferences
 import android.os.Build
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 import androidx.activity.viewModels
 import androidx.annotation.RequiresApi
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.navigation.NavController
 import androidx.navigation.NavOptions
@@ -22,9 +21,10 @@ import androidx.security.crypto.EncryptedSharedPreferences
 import androidx.security.crypto.MasterKey
 import com.fitmate.fitmate.databinding.ActivityMainBinding
 import com.fitmate.fitmate.presentation.ui.login.LoginFragment
-import com.fitmate.fitmate.presentation.viewmodel.LoginViewModel
 import com.fitmate.fitmate.presentation.viewmodel.MainActivityViewModel
 import com.fitmate.fitmate.util.ControlActivityInterface
+import com.fitmate.fitmate.util.PendingTokenValue
+import com.fitmate.fitmate.util.customGetSerializable
 import dagger.hilt.android.AndroidEntryPoint
 import java.util.UUID
 
@@ -32,9 +32,9 @@ import java.util.UUID
 class MainActivity : AppCompatActivity(), ControlActivityInterface {
     private lateinit var binding: ActivityMainBinding
     private lateinit var navController: NavController
+    private var pendingToken: PendingTokenValue? = null
     var selecedMenuId: Int = -1
     private val viewModel: MainActivityViewModel by viewModels()
-    private val loginModel: LoginViewModel by viewModels()
     private val sharedPreferences: SharedPreferences by lazy {
         val masterKeyAlies = MasterKey
             .Builder(applicationContext, MasterKey.DEFAULT_MASTER_KEY_ALIAS)
@@ -72,11 +72,14 @@ class MainActivity : AppCompatActivity(), ControlActivityInterface {
         observeOnboardingState()
         //온보딩 조회 여부 확인
         viewModel.loadOnBoardingStateInPref()
+        //펜딩 인텐트로 날아오는 토킅 값 가져오기
+
+        pendingToken = intent.customGetSerializable("pendingToken", PendingTokenValue::class.java)
 
 
-        if (intent.getStringExtra("navigateTo") == "certificateFragment") navController.navigate(R.id.certificateFragment)
+        //if (intent.getStringExtra("navigateTo") == "certificateFragment") navController.navigate(R.id.certificateFragment)
 
-        binding.bottomNavigationViewMainActivity.setOnItemSelectedListener { item ->
+/*        binding.bottomNavigationViewMainActivity.setOnItemSelectedListener { item ->
             val positionId = item.itemId
             Log.d("testtt","item.itemId: $positionId // selecedMenuId: $selecedMenuId")
             if (positionId == selecedMenuId) return@setOnItemSelectedListener false
@@ -113,7 +116,7 @@ class MainActivity : AppCompatActivity(), ControlActivityInterface {
 
                 else -> false
             }
-        }
+        }*/
     }
 
     private fun navigateWithoutBackStack(destinationId: Int, clearBackStack: Boolean) {
@@ -135,9 +138,9 @@ class MainActivity : AppCompatActivity(), ControlActivityInterface {
                 var state = UUID.randomUUID().toString()
                 val redirectUrl = "https://fitmate.com/oauth"
                 if(platform == "naver") {
-                    showWebViewFragment("https://nid.naver.com/oauth2.0/authorize?response_type=code&client_id=${LoginFragment.naverClientId}&redirect_uri=$packageName&state=$state")
+                    showWebViewFragment("https://nid.naver.com/oauth2.0/authorize?response_type=code&client_id=${LoginFragment.naverClientId}&redirect_uri=$packageName&state=$state",pendingToken)
                 } else {
-                    showWebViewFragment("https://kauth.kakao.com/oauth/authorize?client_id=${LoginFragment.kakaoRestAPIKey}&redirect_uri=${redirectUrl}&response_type=code&state=$state")
+                    showWebViewFragment("https://kauth.kakao.com/oauth/authorize?client_id=${LoginFragment.kakaoRestAPIKey}&redirect_uri=${redirectUrl}&response_type=code&state=$state",pendingToken)
                 }
             } else {
                 navController.navigate(R.id.action_homeFragment_to_onboardingContainerFragment)
@@ -145,9 +148,10 @@ class MainActivity : AppCompatActivity(), ControlActivityInterface {
         }
     }
 
-    private fun showWebViewFragment(loginUrl: String) {
+    private fun showWebViewFragment(loginUrl: String, pendingToken:PendingTokenValue?) {
         val bundle = Bundle().apply {
             putString("loginUrl", loginUrl)
+            putSerializable("pendingToken", pendingToken)
         }
         navController.navigate(R.id.loginWebViewFragment, bundle)
     }

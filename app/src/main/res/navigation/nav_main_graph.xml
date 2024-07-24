@@ -22,6 +22,9 @@
         <action
             android:id="@+id/action_homeFragment_to_loginFragment"
             app:destination="@id/loginFragment" />
+        <action
+            android:id="@+id/action_homeFragment_to_certificateFragment"
+            app:destination="@id/certificateFragment" />
     </fragment>
     <fragment
         android:id="@+id/categoryFragment"
@@ -219,4 +222,13 @@
         android:id="@+id/pointFragment"
         android:name="com.fitmate.fitmate.presentation.ui.point.PointFragment"
         android:label="PointFragment" />
+    <activity
+        android:id="@+id/chatActivity"
+        android:name="com.fitmate.fitmate.ChatActivity"
+        android:label="ChatActivity" >
+        <argument
+            android:name="fitGroupId"
+            app:argType="integer" />
+    </activity>
+
 </navigation>

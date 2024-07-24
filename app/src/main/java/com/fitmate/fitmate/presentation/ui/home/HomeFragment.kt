@@ -16,6 +16,8 @@ import com.fitmate.fitmate.domain.model.VoteItem
 import com.fitmate.fitmate.presentation.ui.home.list.adapter.CarouselAdapter
 import com.fitmate.fitmate.presentation.ui.home.list.adapter.VoteAdapter
 import com.fitmate.fitmate.presentation.viewmodel.VoteViewModel
+import com.fitmate.fitmate.util.PendingTokenValue
+import com.fitmate.fitmate.util.customGetSerializable
 import com.google.android.material.carousel.CarouselLayoutManager
 import com.google.android.material.carousel.MultiBrowseCarouselStrategy
 import dagger.hilt.android.AndroidEntryPoint
@@ -27,6 +29,7 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
 
     private lateinit var binding: FragmentHomeBinding
     private lateinit var recyclerView: RecyclerView
+    private var pendingTokenValue: PendingTokenValue? = null
     private val viewModel: VoteViewModel by viewModels()
     private var userId: Int = -1
     private var accessToken: String = ""
@@ -36,6 +39,17 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        arguments?.let {
+            it.customGetSerializable<PendingTokenValue>("pendingToken")?.let {
+                pendingTokenValue = it
+            }
+        }
+        when(pendingTokenValue){
+            PendingTokenValue.CERTIFICATION -> {
+                findNavController().navigate(R.id.action_homeFragment_to_certificateFragment)
+            }
+            else -> {}
+        }
         loadUserPreference()
     }
 
@@ -46,6 +60,7 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
         initView(view)
         setCarousel()
         observeViewModel()
+
     }
 
     override fun onResume() {

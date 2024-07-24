@@ -7,6 +7,7 @@ import android.util.Log
 import androidx.navigation.NavArgument
 import androidx.navigation.NavController
 import androidx.navigation.NavGraph
+import androidx.navigation.findNavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.navArgs
 import androidx.security.crypto.EncryptedSharedPreferences
@@ -39,7 +40,6 @@ class ChatActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityChatBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
 
 
 

@@ -150,6 +150,7 @@
     <string name="chatting_scr_fit_mate_progress">운동 현황</string>
     <string name="chatting_scr_fit_mate_vote">투표</string>
     <string name="chatting_scr_fit_group_point">그룹포인트 현황</string>
+    <string name="chatting_scr_fit_certification">기록하러 가기</string>
     <string name="chatting_scr_transfer">즉시 송금</string>
     <string name="chatting_scr_fit_mate_fit_off">피트오프현황</string>
     <string name="chatting_scr_fit_mate_fit_off_apply">피트오프신청</string>

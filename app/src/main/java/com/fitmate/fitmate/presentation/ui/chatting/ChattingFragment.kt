@@ -149,7 +149,8 @@ class ChattingFragment : Fragment(R.layout.fragment_chatting) {
             bundle.putInt("groupId", fitGroupId)
             findNavController().navigate(fragmentId, bundle)
         } else {
-            Toast.makeText(context, "추후 업데이트 예정입니다.", Toast.LENGTH_SHORT).show()
+            findNavController().navigate(fragmentId)
+            //Toast.makeText(context, "추후 업데이트 예정입니다.", Toast.LENGTH_SHORT).show()
         }
     }
 
