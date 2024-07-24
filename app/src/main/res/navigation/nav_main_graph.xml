@@ -180,7 +180,9 @@
             app:argType="string" />
         <action
             android:id="@+id/action_loginWebViewFragment_to_homeMainFragment"
-            app:destination="@id/homeFragment" />
+            app:destination="@id/homeFragment"
+            app:popUpTo="@id/homeFragment"
+            app:popUpToInclusive="true"/>
         <action
             android:id="@+id/action_loginWebViewFragment_to_nicknameFragment"
             app:destination="@id/nicknameFragment" />
