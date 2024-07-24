@@ -229,9 +229,10 @@ class MakeGroupFragment : Fragment() {
         viewModel.groupImageUrlList.observe(viewLifecycleOwner){urls ->
             //TODO post 작업 수행
             val postData = RequestRegisterFitGroupBody(
-                requestUserId = "$userId",
+                requestUserId = userId,
                 fitGroupName = viewModel.groupName.value.toString(),
                 penaltyAmount = 5000L,
+                cycle = null,
                 category = getCategoryCode(),
                 introduction = viewModel.groupContent.value!!,
                 frequency = viewModel.groupFitCycle.value!!,

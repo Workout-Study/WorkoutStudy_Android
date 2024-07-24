@@ -3,7 +3,7 @@ package com.fitmate.fitmate.data.model.dto
 import com.google.gson.annotations.SerializedName
 
 data class RequestRegisterFitGroupBodyDto(
-    @SerializedName("requestUserId") val requestUserId: String,
+    @SerializedName("requestUserId") val requestUserId: Int,
     @SerializedName("fitGroupName") val fitGroupName: String,
     @SerializedName("penaltyAmount") val penaltyAmount: Long,
     @SerializedName("category") val category: Int,

@@ -52,18 +52,22 @@ class MakeFitGroupRepositoryImpl @Inject constructor(
     }
 
     private suspend fun uploadImage(uri: Uri, fileName: String): String {
-        val file = getPathFromURI(uri)
-        try {
+        return try {
+            val file = getPathFromURI(uri)
             val compressorFile = Compressor.compress(context, File(file)) {
                 quality(0)
             }
             storageRef.child("group_profile/").child(fileName).putFile(Uri.fromFile(compressorFile)).await()
             // 업로드가 성공적으로 완료되었다면 다운로드 URL을 가져옴
-            return storageRef.child("group_profile/").child(fileName).downloadUrl.await().toString()
+             storageRef.child("group_profile/").child(fileName).downloadUrl.await().toString()
         }catch (e:FileAlreadyExistsException){
             storageRef.child("group_profile/").child(fileName).putFile(uri).await()
             // 업로드가 성공적으로 완료되었다면 다운로드 URL을 가져옴
-            return storageRef.child("group_profile/").child(fileName).downloadUrl.await().toString()
+            storageRef.child("group_profile/").child(fileName).downloadUrl.await().toString()
+        }catch (e:NullPointerException){
+            storageRef.child("group_profile/").child(fileName).putFile(uri).await()
+            // 업로드가 성공적으로 완료되었다면 다운로드 URL을 가져옴
+            storageRef.child("group_profile/").child(fileName).downloadUrl.await().toString()
         }
     }
 
