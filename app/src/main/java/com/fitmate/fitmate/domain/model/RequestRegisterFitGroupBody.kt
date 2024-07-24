@@ -1,7 +1,7 @@
 package com.fitmate.fitmate.domain.model
 
 data class RequestRegisterFitGroupBody(
-    val requestUserId: String,
+    val requestUserId: Int,
     val fitGroupName: String,
     val penaltyAmount: Long,
     val category: Int,

@@ -222,7 +222,8 @@ class ChattingFragment : Fragment(R.layout.fragment_chatting) {
     private fun setUpRecyclerView() {
         chatAdapter = ChatAdapter()
         val manager = LinearLayoutManager(requireContext())
-        manager.stackFromEnd = true
+        //manager.stackFromEnd = true
+        //manager.reverseLayout = true
         with(binding.recyclerViewFragmentChatting) {
             chatAdapter.apply { setCurrentUserFitMateId(userId) }
             adapter = chatAdapter
@@ -320,7 +321,7 @@ class ChattingFragment : Fragment(R.layout.fragment_chatting) {
 
             chatAdapter.submitList(chatItems) {
                 chatAdapter.notifyItemInserted(chatAdapter.currentList.lastIndex)
-                binding.recyclerViewFragmentChatting.scrollToPosition(chatAdapter.currentList.lastIndex)
+                //binding.recyclerViewFragmentChatting.scrollToPosition(chatAdapter.currentList.lastIndex)
                 if (!isFirst){
                     setupWebSocketConnection()
                 }
@@ -385,6 +386,14 @@ class ChattingFragment : Fragment(R.layout.fragment_chatting) {
 
         if (isMessageSent) {
             binding.editTextChattingMySpeech.setText("")
+            val newChatting = ChatItem(messageId = messageId, fitGroupId = fitGroupId, userId = userId, message = message, messageTime = timeNow, messageType = "CHATTING")
+            lifecycleScope.launch { dbChatUseCase.insert(newChatting) }
+            val chatItems = chatAdapter.currentList.toMutableList()
+            chatItems.add(newChatting)
+            chatAdapter.submitList(chatItems){
+                chatAdapter.notifyItemInserted(chatAdapter.currentList.lastIndex)
+                binding.recyclerViewFragmentChatting.scrollToPosition(chatItems.lastIndex)
+            }
         } else {
             Toast.makeText(context, "채팅 전송 실패! 잠시 후 시도해 주새요", Toast.LENGTH_SHORT).show()
         }
