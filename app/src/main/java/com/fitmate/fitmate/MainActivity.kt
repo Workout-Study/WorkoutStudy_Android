@@ -83,7 +83,7 @@ class MainActivity : AppCompatActivity(), ControlActivityInterface {
             when (positionId) {
                 R.id.homeFragment -> {
                     selecedMenuId = R.id.homeFragment
-                    navigateWithoutBackStack(R.id.homeFragment, true)
+                    navigateWithoutBackStack(R.id.homeFragment, false)
                     true
                 }
 
