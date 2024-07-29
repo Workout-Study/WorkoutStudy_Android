@@ -198,4 +198,8 @@
     <string name="my_fit_history_total_num">%d건</string>
 
 
+    <string name="vote_item_nickname">%s님이 인증을 수행하셨습니다</string>
+    <string name="vote_item_end_time">%s뒤에 종료</string>
+
+
 </resources>

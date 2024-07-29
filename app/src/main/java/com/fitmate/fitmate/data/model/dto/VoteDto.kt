@@ -2,13 +2,14 @@ package com.fitmate.fitmate.data.model.dto
 
 import com.google.gson.annotations.SerializedName
 
-data class EachFitResponse(
-    val fitCertificationDetails: List<GroupCertificationDetail>
+data class EachVoteCertificationResponseDto(
+    val fitCertificationDetails: List<GroupVoteCertificationDetailDto>
 )
 
-data class GroupCertificationDetail(
+data class GroupVoteCertificationDetailDto(
     val certificationId: Int,
     val recordId: Int,
+    @SerializedName("fitGroupName")
     val certificationRequestUserId: Int,
     val certificationRequestUserNickname: String,
     val isUserVoteDone: Boolean,
@@ -16,7 +17,7 @@ data class GroupCertificationDetail(
     val agreeCount: Int,
     val disagreeCount: Int,
     val maxAgreeCount: Int,
-    val thumbnailEndPoint: String,
+    val thumbnailEndPoint: List<String>,
     val fitRecordStartDate: String,
     val fitRecordEndDate: String,
     val voteEndDate: String
@@ -30,14 +31,14 @@ data class FitGroupProgressList(
     val certificationCount: Int
 )
 
-data class VoteRequest(
+data class VoteRequestDto(
     val requestUserId: Int,
     val agree: Boolean,
     val targetCategory: Int,
     val targetId: Int
 )
 
-data class VoteResponse(
+data class VoteResponseDto(
     val isRegisterSuccess: Boolean
 )
 

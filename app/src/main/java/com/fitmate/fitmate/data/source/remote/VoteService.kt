@@ -1,10 +1,10 @@
 package com.fitmate.fitmate.data.source.remote
 
-import com.fitmate.fitmate.data.model.dto.EachFitResponse
+import com.fitmate.fitmate.data.model.dto.EachVoteCertificationResponseDto
 import com.fitmate.fitmate.data.model.dto.FitGroupProgress
 import com.fitmate.fitmate.data.model.dto.MyFitResponse
-import com.fitmate.fitmate.data.model.dto.VoteRequest
-import com.fitmate.fitmate.data.model.dto.VoteResponse
+import com.fitmate.fitmate.data.model.dto.VoteRequestDto
+import com.fitmate.fitmate.data.model.dto.VoteResponseDto
 import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.GET
@@ -21,8 +21,8 @@ interface VoteService {
 
     @POST("/my-fit-service/votes")
     suspend fun registerVote(   // Register Vote
-        @Body voteRequest: VoteRequest
-    ): Response<VoteResponse>
+        @Body voteRequestDto: VoteRequestDto
+    ): Response<VoteResponseDto>
     @GET("/my-fit-service/my-fits/certifications/need-votes")
     suspend fun getMyFitGroupVotes(   // Need Vote Fit Certification List
         @Query("requestUserId") requestUserId: Int
@@ -32,6 +32,6 @@ interface VoteService {
     suspend fun getEachFitGroupVotes(   // Proceeding Fit Certification List By fit group id
         @Path("fit-group-id") fitGroupId: Int,
         @Path("user-id") userId: Int
-    ): Response<EachFitResponse>
+    ): Response<EachVoteCertificationResponseDto>
 
 }
