@@ -1,26 +1,18 @@
 package com.fitmate.fitmate.presentation.ui.chatting.list
 
 import android.view.LayoutInflater
-import android.view.View
 import android.widget.Button
 import android.widget.TextView
-import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.widget.ViewPager2
-import com.bumptech.glide.Glide
-import com.bumptech.glide.load.resource.bitmap.CenterCrop
-import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.fitmate.fitmate.R
-import com.fitmate.fitmate.data.model.dto.VoteRequestDto
 import com.fitmate.fitmate.databinding.ItemVoteBinding
 import com.fitmate.fitmate.domain.model.GroupVoteCertificationDetail
 import com.fitmate.fitmate.domain.model.VoteItem
 import com.fitmate.fitmate.presentation.ui.chatting.list.adapter.VoteViewPageAdapter
 import com.fitmate.fitmate.presentation.viewmodel.VoteViewModel
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
-import kotlinx.coroutines.launch
 import java.time.Duration
 import java.time.Instant
 import java.time.OffsetDateTime
@@ -28,17 +20,16 @@ import java.time.ZoneId
 import java.time.ZonedDateTime
 import java.time.format.DateTimeFormatter
 
-class GroupVoteViewHolder(
+class GroupProcessingVoteViewHolder(
     private val binding: ItemVoteBinding,
     private val fragment: Fragment,
     private val viewModel: VoteViewModel,
     private val onClick: (VoteItem) -> Unit
-): RecyclerView.ViewHolder(binding.root) {
+): VoteBindingViewHolder<ItemVoteBinding>(binding) {
 
-    fun bind(item: GroupVoteCertificationDetail) {
+    override fun bind(item: GroupVoteCertificationDetail) {
         binding.viewHolder = this
         binding.data = item
-        binding.buttonItemVoteFitgroupVote
     }
 
     fun timeUntilEnd(timeString: String): String {
@@ -64,7 +55,6 @@ class GroupVoteViewHolder(
     }
 
 
-
     fun showVoteDialog(item: GroupVoteCertificationDetail) {
         MaterialAlertDialogBuilder(fragment.requireContext(), R.style.Theme_Fitmate_Dialog).apply {
             setVoteCustomDialog(item)
@@ -72,6 +62,7 @@ class GroupVoteViewHolder(
     }
 
     private fun MaterialAlertDialogBuilder.setVoteCustomDialog(item: GroupVoteCertificationDetail) {
+        //val binding = DialogGroupVoteChangeToOppositeBinding.inflate(LayoutInflater.from(this.context))
         val dialogView = LayoutInflater.from(fragment.context).inflate(R.layout.dialog_group_vote, null)
         val imageUrls = listOf(item.thumbnailEndPoint)
         val startTime = Instant.parse(item.fitRecordStartDate).atZone(ZoneId.of("Asia/Seoul"))
