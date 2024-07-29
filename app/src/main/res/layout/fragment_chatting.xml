@@ -5,7 +5,6 @@
     xmlns:toos="http://schemas.android.com/tools">
 
     <data>
-
         <variable
             name="fragment"
             type="com.fitmate.fitmate.presentation.ui.chatting.ChattingFragment" />

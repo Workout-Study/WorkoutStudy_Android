@@ -46,5 +46,12 @@
         <item name="android:background">@drawable/button_linear</item>
     </style>
 
+    <style name="button_textView2">
+        <item name="android:clickable">true</item>
+        <item name="android:gravity">center</item>
+        <item name="android:textColor">@color/white</item>
+        <item name="android:background">@drawable/button_linear_radius8</item>
+    </style>
+
 
 </resources>

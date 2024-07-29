@@ -13,8 +13,9 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.fitmate.fitmate.R
-import com.fitmate.fitmate.data.model.dto.VoteRequest
+import com.fitmate.fitmate.data.model.dto.VoteRequestDto
 import com.fitmate.fitmate.databinding.ItemVoteBinding
+import com.fitmate.fitmate.domain.model.GroupVoteCertificationDetail
 import com.fitmate.fitmate.domain.model.VoteItem
 import com.fitmate.fitmate.presentation.ui.chatting.list.adapter.VoteViewPageAdapter
 import com.fitmate.fitmate.presentation.viewmodel.VoteViewModel
@@ -22,6 +23,7 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import kotlinx.coroutines.launch
 import java.time.Duration
 import java.time.Instant
+import java.time.OffsetDateTime
 import java.time.ZoneId
 import java.time.ZonedDateTime
 import java.time.format.DateTimeFormatter
@@ -33,57 +35,47 @@ class GroupVoteViewHolder(
     private val onClick: (VoteItem) -> Unit
 ): RecyclerView.ViewHolder(binding.root) {
 
-    init {
-        setupListeners()
+    fun bind(item: GroupVoteCertificationDetail) {
+        binding.viewHolder = this
+        binding.data = item
+        binding.buttonItemVoteFitgroupVote
     }
 
-    fun bind(item: VoteItem) {
-        val currentTime = ZonedDateTime.now()
-        val endTime = ZonedDateTime.parse(item.endTime)
-        val isExpired = endTime.isBefore(currentTime)
+    fun timeUntilEnd(timeString: String): String {
+        // Parse the input time string
+        val formatter = DateTimeFormatter.ISO_OFFSET_DATE_TIME
+        val endTime = OffsetDateTime.parse(timeString, formatter)
 
-        binding.voteItem = item
+        // Get current time
+        val currentTime = OffsetDateTime.now()
 
-        if (isExpired) {
-            binding.root.alpha = 0.5f
-            binding.buttonItemVoteFitgroupVote.visibility = View.GONE
-            val params = binding.root.layoutParams as ConstraintLayout.LayoutParams
-            val scale = binding.root.context.resources.displayMetrics.density
-            params.height = (105 * scale + 0.5f).toInt()
-            binding.root.layoutParams = params
-        } else {
-            binding.root.alpha = 1.0f
-            binding.buttonItemVoteFitgroupVote.visibility = View.VISIBLE
-            val params = binding.root.layoutParams as ConstraintLayout.LayoutParams
-            params.height = ConstraintLayout.LayoutParams.WRAP_CONTENT
-            binding.root.layoutParams = params
-        }
+        // Calculate duration between current time and end time
+        val duration = Duration.between(currentTime, endTime)
 
-        Glide.with(binding.imageViewItemCategoryFitgroupThumbnail)
-            .load(item.image)
-            .transform(CenterCrop(), RoundedCorners(16))
-            .error(R.drawable.ic_launcher_logo)
-            .into(binding.imageViewItemCategoryFitgroupThumbnail)
-    }
+        // Calculate hours and minutes until end time
+        val hours = duration.toHours()
+        val minutes = duration.toMinutes() % 60
 
-
-    private fun setupListeners() {
-        binding.buttonItemVoteFitgroupVote.setOnClickListener {
-            showVoteDialog(binding.voteItem!!)
+        // Return formatted string based on remaining time
+        return when {
+            hours > 0 -> "${hours}시간"
+            else -> "${minutes}분"
         }
     }
 
-    private fun showVoteDialog(item: VoteItem) {
+
+
+    fun showVoteDialog(item: GroupVoteCertificationDetail) {
         MaterialAlertDialogBuilder(fragment.requireContext(), R.style.Theme_Fitmate_Dialog).apply {
             setVoteCustomDialog(item)
         }.show()
     }
 
-    private fun MaterialAlertDialogBuilder.setVoteCustomDialog(item: VoteItem) {
+    private fun MaterialAlertDialogBuilder.setVoteCustomDialog(item: GroupVoteCertificationDetail) {
         val dialogView = LayoutInflater.from(fragment.context).inflate(R.layout.dialog_group_vote, null)
-        val imageUrls = listOf(item.image, item.image, item.image)
-        val startTime = Instant.parse(item.startTime).atZone(ZoneId.of("Asia/Seoul"))
-        val endTime = Instant.parse(item.endTime).atZone(ZoneId.of("Asia/Seoul"))
+        val imageUrls = listOf(item.thumbnailEndPoint)
+        val startTime = Instant.parse(item.fitRecordStartDate).atZone(ZoneId.of("Asia/Seoul"))
+        val endTime = Instant.parse(item.fitRecordEndDate).atZone(ZoneId.of("Asia/Seoul"))
         val duration = Duration.between(startTime, endTime)
         val hours = duration.toHours()
         val minutes = duration.toMinutes() % 60
@@ -97,22 +89,22 @@ class GroupVoteViewHolder(
         val viewPager = dialogView.findViewById<ViewPager2>(R.id.viewPagerGroupVote)
 
         val dialog = this.setView(dialogView).create().apply {
-            title.text = "${item.fitMate} 님의 운동기록에 투표하세요!"
+            title.text = "${item.certificationRequestUserNickname} 님의 운동기록에 투표하세요!"
             textDuration.text = formatDate(startTime) + " ~ " + formatDate(endTime)
             category.text = "${hours}시간 ${minutes}분"
-            viewPager.adapter = VoteViewPageAdapter(imageUrls)
+            viewPager.adapter = VoteViewPageAdapter(item.thumbnailEndPoint)
 
             retrain.setOnClickListener { dismiss() }
             disAgree.setOnClickListener {
-                fragment.lifecycleScope.launch {
-                    viewModel.registerVote(VoteRequest(item.fitMate.toInt(), true, 1, item.groupId))
-                }
+/*                fragment.lifecycleScope.launch {
+                    viewModel.registerVote(VoteRequestDto(item.fitMate.toInt(), true, 1, item.groupId))
+                }*/
                 dismiss()
             }
             agree.setOnClickListener {
-                fragment.lifecycleScope.launch {
-                    viewModel.registerVote(VoteRequest(item.fitMate.toInt(), false, 1, item.groupId))
-                }
+/*                fragment.lifecycleScope.launch {
+                    viewModel.registerVote(VoteRequestDto(item.fitMate.toInt(), false, 1, item.groupId))
+                }*/
                 dismiss()
             }
         }

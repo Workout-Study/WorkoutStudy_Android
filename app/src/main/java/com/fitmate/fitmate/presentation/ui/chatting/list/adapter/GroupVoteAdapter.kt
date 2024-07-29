@@ -6,14 +6,23 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import com.fitmate.fitmate.databinding.ItemVoteBinding
+import com.fitmate.fitmate.domain.model.GroupVoteCertificationDetail
 import com.fitmate.fitmate.domain.model.VoteItem
 import com.fitmate.fitmate.domain.usecase.GroupUseCase
 import com.fitmate.fitmate.presentation.ui.chatting.list.GroupVoteViewHolder
 import com.fitmate.fitmate.presentation.viewmodel.GroupViewModel
 import com.fitmate.fitmate.presentation.viewmodel.VoteViewModel
 
-class GroupVoteAdapter(private val fragment: Fragment, private val viewModel: VoteViewModel, private val onclick: (VoteItem) -> Unit):
-    ListAdapter<VoteItem, GroupVoteViewHolder>(VoteItemDiffCallback) {
+class GroupVoteAdapter(
+    private val fragment: Fragment,
+    private val viewModel: VoteViewModel,
+    private val onclick: (VoteItem) -> Unit
+) :
+    ListAdapter<GroupVoteCertificationDetail, GroupVoteViewHolder>(VoteItemDiffCallback) {
+
+    override fun getItemViewType(position: Int): Int {
+        return super.getItemViewType(position)
+    }
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): GroupVoteViewHolder {
         val binding = ItemVoteBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return GroupVoteViewHolder(binding, fragment, viewModel, onclick)
@@ -25,15 +34,25 @@ class GroupVoteAdapter(private val fragment: Fragment, private val viewModel: Vo
     }
 
     companion object {
-        private val VoteItemDiffCallback = object: DiffUtil.ItemCallback<VoteItem>() {
+        const val VIEW_TYPE_NEW_VOTE = true
+        const val VIEW_TYPE_OLD_VOTE = false
 
-            override fun areItemsTheSame(oldItem: VoteItem, newItem: VoteItem): Boolean {
-                return oldItem.title == newItem.title
-            }
+        private val VoteItemDiffCallback =
+            object : DiffUtil.ItemCallback<GroupVoteCertificationDetail>() {
 
-            override fun areContentsTheSame(oldItem: VoteItem, newItem: VoteItem): Boolean {
-                return oldItem == newItem
+                override fun areItemsTheSame(
+                    oldItem: GroupVoteCertificationDetail,
+                    newItem: GroupVoteCertificationDetail
+                ): Boolean {
+                    return oldItem.certificationId == newItem.certificationId
+                }
+
+                override fun areContentsTheSame(
+                    oldItem: GroupVoteCertificationDetail,
+                    newItem: GroupVoteCertificationDetail
+                ): Boolean {
+                    return oldItem == newItem
+                }
             }
-        }
     }
 }
