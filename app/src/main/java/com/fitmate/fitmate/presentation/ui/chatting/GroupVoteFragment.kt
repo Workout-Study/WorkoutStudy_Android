@@ -8,13 +8,12 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.ui.setupWithNavController
-import com.fitmate.fitmate.MainActivity
+import com.fitmate.fitmate.ChatActivity
 import com.fitmate.fitmate.R
 import com.fitmate.fitmate.data.model.dto.GroupVoteCertificationDetailDto
 import com.fitmate.fitmate.databinding.FragmentGroupVoteBinding
 import com.fitmate.fitmate.presentation.ui.chatting.list.adapter.GroupVoteAdapter
 import com.fitmate.fitmate.presentation.viewmodel.VoteViewModel
-import com.fitmate.fitmate.util.ControlActivityInterface
 import dagger.hilt.android.AndroidEntryPoint
 import java.time.ZonedDateTime
 import java.time.format.DateTimeFormatter
@@ -44,7 +43,7 @@ class GroupVoteFragment : Fragment(R.layout.fragment_group_vote) {
     }
 
     private fun loadUserPreference() {
-        val userPreference = (activity as MainActivity).loadUserPreference()
+        val userPreference = (activity as ChatActivity).loadUserPreference()
         userId = userPreference.getOrNull(2)?.toString()?.toInt() ?: -1
         accessToken = userPreference.getOrNull(0)?.toString() ?: ""
         platform = userPreference.getOrNull(3)?.toString() ?: ""
@@ -53,7 +52,6 @@ class GroupVoteFragment : Fragment(R.layout.fragment_group_vote) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding = FragmentGroupVoteBinding.bind(view)
-        (activity as? ControlActivityInterface)?.goneNavigationBar()
         binding.materialToolbarGroupVote.setupWithNavController(findNavController())
 
 

@@ -16,7 +16,7 @@ class VoteViewHolder(private val binding: ItemVoteBinding, private val fragment:
     RecyclerView.ViewHolder(binding.root) {
 
     fun bind(item: VoteItem) {
-        binding.voteItem = item
+/*        binding.voteItem = item
         binding.buttonItemVoteFitgroupVote.visibility = View.GONE
         binding.root.setOnClickListener {
             onClick(item)
@@ -29,6 +29,6 @@ class VoteViewHolder(private val binding: ItemVoteBinding, private val fragment:
             .load(item.image)
             .transform(CenterCrop(), RoundedCorners(16))
             .error(R.drawable.ic_launcher_logo)
-            .into(binding.imageViewItemCategoryFitgroupThumbnail)
+            .into(binding.imageViewItemCategoryFitgroupThumbnail)*/
     }
 }

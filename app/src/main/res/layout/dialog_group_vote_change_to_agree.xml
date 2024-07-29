@@ -7,50 +7,22 @@
     android:layout_marginStart="16dp"
     android:layout_marginEnd="16dp">
 
-    <TextView
-        android:id="@+id/buttonGroupVoteRetrain"
-        style="@style/button_textView"
-        android:layout_width="92dp"
-        android:layout_height="48dp"
-        android:layout_marginBottom="16dp"
-        android:backgroundTint="#E5E8EC"
-        android:fontFamily="@font/pretendard_bold"
-        android:text="보류"
-        android:textColor="#737984"
-        android:textSize="14sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/buttonGroupVoteDisagree"
-        app:layout_constraintStart_toStartOf="parent" />
 
     <TextView
-        android:id="@+id/buttonGroupVoteDisagree"
+        android:id="@+id/buttonGroupVoteChangeToAgree"
         style="@style/button_textView"
-        android:layout_width="92dp"
+        android:layout_width="wrap_content"
+        android:paddingHorizontal="10dp"
         android:layout_height="48dp"
         android:layout_marginBottom="16dp"
-        android:backgroundTint="#E5E8EC"
+        android:backgroundTint="@color/fitmate_blue"
         android:fontFamily="@font/pretendard_bold"
-        android:text="반대"
-        android:textColor="#737984"
+        android:text="찬성으로 번복하기"
+        android:textColor="@color/white"
         android:textSize="14sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
-
-    <TextView
-        android:id="@+id/buttonGroupVoteAgree"
-        style="@style/button_textView"
-        android:layout_width="92dp"
-        android:layout_height="48dp"
-        android:layout_marginBottom="16dp"
-        android:backgroundTint="#E5E8EC"
-        android:fontFamily="@font/pretendard_bold"
-        android:text="찬성"
-        android:textColor="#737984"
-        android:textSize="14sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/buttonGroupVoteDisagree" />
 
     <LinearLayout
         android:id="@+id/linearLayout2"

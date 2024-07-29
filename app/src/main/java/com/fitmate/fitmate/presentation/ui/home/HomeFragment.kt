@@ -57,8 +57,8 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
         super.onViewCreated(view, savedInstanceState)
 
         (activity as MainActivity).viewNavigationBar()
-        initView(view)
-        setCarousel()
+        //initView(view)
+        //setCarousel()
         observeViewModel()
 
     }
@@ -67,7 +67,7 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
         super.onResume()
         //메인 액티비티의 바텀 네비 아이디를 수동으로 설정
         (activity as MainActivity).selecedMenuId = R.id.homeFragment
-        viewModel.fetchMyFitGroupVotes(userId)
+        //viewModel.fetchMyFitGroupVotes(userId)
     }
 
 
@@ -113,7 +113,7 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
                             groupId = group.groupId, startTime = null, endTime = null
                         )}}.flatten().distinctBy { it.title + it.fitMate + it.time }
                 val voteAdapter = binding.recyclerViewHomeMain.adapter as VoteAdapter
-                voteAdapter.submitList(voteItems)
+                //voteAdapter.submitList(voteItems)
             }
         }
     }
