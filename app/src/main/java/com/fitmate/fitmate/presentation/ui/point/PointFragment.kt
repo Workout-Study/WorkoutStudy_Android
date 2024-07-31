@@ -56,7 +56,7 @@ class PointFragment : Fragment() {
         binding.recyclerViewPointHistory.adapter = adapter
 
         //통신 시작(포인트 정보 및 포인트 기록 데이터)
-        viewModel.getPointInfo(63, pointOwnerType.value)
+        viewModel.getPointInfo(userId, pointOwnerType.value)
         viewModel.getPagingPointHistory(723, pointOwnerType.value,null,null,0,10,null)
 
         //포인트 기록 데이터 통신 감시

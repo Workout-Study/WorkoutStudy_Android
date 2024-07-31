@@ -8,7 +8,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.fitmate.fitmate.R
 
-class VoteViewPageAdapter(private val imageUrls: List<String>) : RecyclerView.Adapter<VoteViewPageAdapter.SliderViewHolder>() {
+class VoteViewPageAdapter(private val imageUrls: List<String>?) : RecyclerView.Adapter<VoteViewPageAdapter.SliderViewHolder>() {
 
     inner class SliderViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val imageView: ImageView = itemView.findViewById(R.id.imageView)
@@ -20,10 +20,15 @@ class VoteViewPageAdapter(private val imageUrls: List<String>) : RecyclerView.Ad
     }
 
     override fun onBindViewHolder(holder: SliderViewHolder, position: Int) {
-        Glide.with(holder.itemView.context).load(imageUrls[position]).into(holder.imageView)
+        imageUrls?.let {
+            Glide.with(holder.itemView.context).load(imageUrls[position]).into(holder.imageView)
+        }
     }
 
     override fun getItemCount(): Int {
-        return imageUrls.size
+        imageUrls?.let {
+            return imageUrls.size
+        }
+        return 0
     }
 }
