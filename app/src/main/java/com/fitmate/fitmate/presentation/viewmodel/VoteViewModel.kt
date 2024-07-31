@@ -1,5 +1,6 @@
 package com.fitmate.fitmate.presentation.viewmodel
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
@@ -65,7 +66,10 @@ class VoteViewModel @Inject constructor(
                 val response = voteUseCase.eachFitGroupVotes(fitGroupId, userId)
                 if(response.isSuccessful) {
                     response.body()?.let { dtoBody ->
-                        _fitGroupVotes.value = mapEachVoteCertificationResponseDto(dtoBody)
+                        Log.d("tlqkf","통신 결과: "+dtoBody.toString())
+                        val mappingData = mapEachVoteCertificationResponseDto(dtoBody)
+                        Log.d("tlqkf","매핑 결과: "+mappingData.toString())
+                        _fitGroupVotes.value = mappingData
                     }
                 }
             } catch (e: Exception) {

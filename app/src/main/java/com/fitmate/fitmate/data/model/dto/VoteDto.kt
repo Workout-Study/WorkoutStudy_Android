@@ -9,7 +9,6 @@ data class EachVoteCertificationResponseDto(
 data class GroupVoteCertificationDetailDto(
     val certificationId: Int,
     val recordId: Int,
-    @SerializedName("fitGroupName")
     val certificationRequestUserId: Int,
     val certificationRequestUserNickname: String,
     val isUserVoteDone: Boolean,
@@ -17,7 +16,7 @@ data class GroupVoteCertificationDetailDto(
     val agreeCount: Int,
     val disagreeCount: Int,
     val maxAgreeCount: Int,
-    val thumbnailEndPoint: List<String>,
+    val thumbnailEndPoint: List<String>?,
     val fitRecordStartDate: String,
     val fitRecordEndDate: String,
     val voteEndDate: String

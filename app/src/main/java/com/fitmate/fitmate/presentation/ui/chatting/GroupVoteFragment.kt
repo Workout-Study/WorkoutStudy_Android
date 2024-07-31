@@ -39,7 +39,7 @@ class GroupVoteFragment : Fragment(R.layout.fragment_group_vote) {
             Toast.makeText(context, "Error: Group not found!", Toast.LENGTH_SHORT).show()
         }
         loadUserPreference()
-        viewModel.fetchFitGroupVotes(groupId, userId)
+
     }
 
     private fun loadUserPreference() {
@@ -60,12 +60,13 @@ class GroupVoteFragment : Fragment(R.layout.fragment_group_vote) {
             adapter = voteListAdapter
         }
 
-
-
+        viewModel.fetchFitGroupVotes(groupId, userId)
 
         viewModel.fitGroupVotes.observe(viewLifecycleOwner) { eachFitResponse ->
             stopShimmer()
             val voteItems = eachFitResponse.fitCertificationDetails
+            Log.d("tlqkf", "옵저버 부분 결과"+eachFitResponse.toString())
+            Log.d("tlqkf", "최종적으로 사용할 데이터: "+voteItems.toString())
             voteListAdapter.submitList(voteItems)
         }
     }

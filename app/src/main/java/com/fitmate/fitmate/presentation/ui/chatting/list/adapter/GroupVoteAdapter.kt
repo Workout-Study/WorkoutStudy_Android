@@ -20,8 +20,7 @@ class GroupVoteAdapter(
     private val fragment: Fragment,
     private val viewModel: VoteViewModel,
     private val onclick: (VoteItem) -> Unit
-) :
-    ListAdapter<GroupVoteCertificationDetail, VoteBindingViewHolder<*>>(VoteItemDiffCallback) {
+) : ListAdapter<GroupVoteCertificationDetail, VoteBindingViewHolder<*>>(VoteItemDiffCallback) {
 
     override fun getItemViewType(position: Int): Int {
         return if (!currentList[position].isUserVoteDone){
