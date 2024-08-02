@@ -6,6 +6,7 @@ import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.fitmate.fitmate.data.model.VoteMapper.VoteResponse
 import com.fitmate.fitmate.data.model.VoteMapper.mapEachVoteCertificationResponseDto
 import com.fitmate.fitmate.data.model.VoteMapper.toVoteRequestDto
 import com.fitmate.fitmate.data.model.dto.FitGroupDetail
@@ -13,8 +14,11 @@ import com.fitmate.fitmate.data.model.dto.FitGroupProgress
 import com.fitmate.fitmate.data.model.dto.GetFitGroupDetail
 import com.fitmate.fitmate.data.model.dto.MyFitGroupVote
 import com.fitmate.fitmate.data.model.dto.VoteResponseDto
+import com.fitmate.fitmate.data.model.dto.VoteUpdateResponseDto
 import com.fitmate.fitmate.domain.model.EachVoteCertificationResponse
 import com.fitmate.fitmate.domain.model.VoteRequest
+import com.fitmate.fitmate.domain.model.VoteResponse
+import com.fitmate.fitmate.domain.model.VoteUpdateResponse
 import com.fitmate.fitmate.domain.usecase.GroupUseCase
 import com.fitmate.fitmate.domain.usecase.VoteUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -47,8 +51,11 @@ class VoteViewModel @Inject constructor(
     private val _fitMateProgress = MutableLiveData<FitGroupProgress>()
     val fitMateProgress: LiveData<FitGroupProgress> = _fitMateProgress
 
-    private val _voteResponse = MutableLiveData<Response<VoteResponseDto>>()
-    val voteResponseDto: LiveData<Response<VoteResponseDto>> = _voteResponse
+    private val _voteResponse = MutableLiveData<VoteResponse>()
+    val voteResponse: LiveData<VoteResponse> = _voteResponse
+
+    private val _voteUpdateResponse = MutableLiveData<VoteUpdateResponse>()
+    val voteUpdateResponse: LiveData<VoteUpdateResponse> = _voteUpdateResponse
 
     private val _isLoading = MutableStateFlow(false)
     val isLoading: StateFlow<Boolean> = _isLoading
@@ -117,7 +124,22 @@ class VoteViewModel @Inject constructor(
             try {
                 val response = voteUseCase.registerVote(voteRequest.toVoteRequestDto())
                 if(response.isSuccessful) {
-                    _voteResponse.postValue(response)
+                    _voteResponse.postValue(response.body()?.VoteResponse())
+                }
+            } catch (e: Exception) {
+                // 에러 처리
+                _isLoading.value = false
+            }
+        }
+    }
+
+    fun updateVote(voteRequest: VoteRequest) {
+        viewModelScope.launch {
+            _isLoading.value = true
+            try {
+                val response = voteUseCase.updateVote(voteRequest.toVoteRequestDto())
+                if(response.isSuccessful) {
+                    _voteUpdateResponse.postValue(response.body()?.VoteResponse())
                 }
             } catch (e: Exception) {
                 // 에러 처리

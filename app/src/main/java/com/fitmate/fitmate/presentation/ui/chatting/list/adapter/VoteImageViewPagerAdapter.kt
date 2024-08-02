@@ -8,7 +8,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.fitmate.fitmate.R
 
-class VoteViewPageAdapter(private val imageUrls: List<String>?) : RecyclerView.Adapter<VoteViewPageAdapter.SliderViewHolder>() {
+class VoteImageViewPagerAdapter(private val imageUrls: List<String>?) : RecyclerView.Adapter<VoteImageViewPagerAdapter.SliderViewHolder>() {
 
     inner class SliderViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val imageView: ImageView = itemView.findViewById(R.id.imageView)

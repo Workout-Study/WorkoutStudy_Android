@@ -18,4 +18,6 @@ class VoteUseCase @Inject constructor(private val voteRepository: VoteRepository
 
     suspend fun registerVote(voteRequestDto: VoteRequestDto) = voteRepository.registerVote(voteRequestDto)
 
+    suspend fun updateVote(voteRequestDto: VoteRequestDto) = voteRepository.updateVote(voteRequestDto)
+
 }
