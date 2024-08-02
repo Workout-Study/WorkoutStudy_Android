@@ -10,6 +10,7 @@ import com.fitmate.fitmate.databinding.ItemOppositeVoteBinding
 import com.fitmate.fitmate.databinding.ItemVoteBinding
 import com.fitmate.fitmate.domain.model.GroupVoteCertificationDetail
 import com.fitmate.fitmate.domain.model.VoteItem
+import com.fitmate.fitmate.presentation.ui.chatting.dialog.VoteFragmentInterface
 import com.fitmate.fitmate.presentation.ui.chatting.list.GroupAgreeVoteViewHolder
 import com.fitmate.fitmate.presentation.ui.chatting.list.GroupOppositeVoteViewHolder
 import com.fitmate.fitmate.presentation.ui.chatting.list.GroupProcessingVoteViewHolder
@@ -18,8 +19,8 @@ import com.fitmate.fitmate.presentation.viewmodel.VoteViewModel
 
 class GroupVoteAdapter(
     private val fragment: Fragment,
+    private val voteFragmentInterface:VoteFragmentInterface,
     private val viewModel: VoteViewModel,
-    private val onclick: (VoteItem) -> Unit
 ) : ListAdapter<GroupVoteCertificationDetail, VoteBindingViewHolder<*>>(VoteItemDiffCallback) {
 
     override fun getItemViewType(position: Int): Int {
@@ -35,15 +36,15 @@ class GroupVoteAdapter(
         return when(viewType){
             VIEW_TYPE_UNFINISHED_VOTE -> {
                 val binding = ItemVoteBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-                GroupProcessingVoteViewHolder(binding, fragment, viewModel, onclick)
+                GroupProcessingVoteViewHolder(binding, fragment, voteFragmentInterface, viewModel)
             }
             VIEW_TYPE_AGREE_VOTE -> {
                 val binding = ItemAgreeVoteBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-                GroupAgreeVoteViewHolder(binding, fragment, viewModel, onclick)
+                GroupAgreeVoteViewHolder(binding, fragment, voteFragmentInterface, viewModel)
             }
             VIEW_TYPE_OPPOSITE_VOTE -> {
                 val binding = ItemOppositeVoteBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-                GroupOppositeVoteViewHolder(binding, fragment, viewModel, onclick)
+                GroupOppositeVoteViewHolder(binding, fragment, voteFragmentInterface, viewModel)
             }
             else -> {
                 throw IllegalArgumentException("Invalid view type")

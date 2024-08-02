@@ -11,19 +11,22 @@ import androidx.navigation.ui.setupWithNavController
 import com.fitmate.fitmate.ChatActivity
 import com.fitmate.fitmate.R
 import com.fitmate.fitmate.databinding.FragmentGroupVoteBinding
+import com.fitmate.fitmate.presentation.ui.chatting.dialog.VoteFragmentInterface
 import com.fitmate.fitmate.presentation.ui.chatting.list.adapter.GroupVoteAdapter
 import com.fitmate.fitmate.presentation.viewmodel.VoteViewModel
 import com.google.android.material.tabs.TabLayout
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class GroupVoteFragment : Fragment(R.layout.fragment_group_vote) {
+class GroupVoteFragment : Fragment(R.layout.fragment_group_vote), VoteFragmentInterface {
 
     private lateinit var binding: FragmentGroupVoteBinding
     private val viewModel: VoteViewModel by viewModels()
     private lateinit var voteListAdapter: GroupVoteAdapter
+
+    override var userId: Int = -1
+
     private var groupId = -1
-    private var userId: Int = -1
     private var accessToken: String = ""
     private var platform: String = ""
 
@@ -131,18 +134,16 @@ class GroupVoteFragment : Fragment(R.layout.fragment_group_vote) {
                 }
             }
         }
-
     }
 
     private fun observeVoteData() {
         viewModel.fitGroupVotes.observe(viewLifecycleOwner) { eachFitResponse ->
             stopShimmer()
 
-            //리사이클러뷰 업데이트를 진행하고 현재 내가 진입해있는 탭의 포지션을 재진입 시킴(탭에 맞는 데이터를 submitList하기 위함)
-            voteListAdapter.submitList(eachFitResponse.fitCertificationDetails) {
-                val tabPosition = binding.voteItemTabLayout.selectedTabPosition
-                binding.voteItemTabLayout.selectTab(binding.voteItemTabLayout.getTabAt(tabPosition))
-            }
+            //현재 내가 진입해있는 탭의 포지션을 재진입 시킴(탭에 맞는 데이터를 submitList하기 위함)
+            val tabPosition = binding.voteItemTabLayout.selectedTabPosition
+            binding.voteItemTabLayout.selectTab(binding.voteItemTabLayout.getTabAt(tabPosition))
+
         }
     }
 
@@ -154,12 +155,11 @@ class GroupVoteFragment : Fragment(R.layout.fragment_group_vote) {
     }
 
     private fun getGroupDetail() {
-        viewModel.getGroupDetail(groupId)
-        startShimmer()
+        fetchVoteData()
     }
 
     private fun settingRecyclerView() {
-        voteListAdapter = GroupVoteAdapter(this, viewModel) { }
+        voteListAdapter = GroupVoteAdapter(this,this, viewModel)
         binding.recyclerGroupVote.apply {
             adapter = voteListAdapter
         }
@@ -182,6 +182,19 @@ class GroupVoteFragment : Fragment(R.layout.fragment_group_vote) {
         binding.groupVoteShimmer.stopShimmer()
         binding.groupVoteShimmer.visibility = View.GONE
         binding.recyclerGroupVote.visibility = View.VISIBLE
+    }
+
+    override fun fetchVoteData() {
+        viewModel.getGroupDetail(groupId)
+        startShimmer()
+    }
+
+    override fun postVote() {
+        TODO("Not yet implemented")
+    }
+
+    override fun putVote() {
+        TODO("Not yet implemented")
     }
 
 }

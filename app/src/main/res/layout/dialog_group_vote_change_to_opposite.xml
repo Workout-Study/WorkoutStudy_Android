@@ -4,7 +4,12 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
-
+        <variable
+            name="data"
+            type="com.fitmate.fitmate.domain.model.GroupVoteCertificationDetail" />
+        <variable
+            name="dialog"
+            type="com.fitmate.fitmate.presentation.ui.chatting.dialog.VoteDialog" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -13,20 +18,16 @@
         android:layout_marginStart="16dp"
         android:layout_marginEnd="16dp">
 
-
         <TextView
-            android:id="@+id/buttonGroupVoteChangeToOpposite"
-            style="@style/button_textView"
+            android:id="@+id/buttonGroupVoteFitMate"
             android:layout_width="wrap_content"
-            android:layout_height="48dp"
-            android:paddingHorizontal="10dp"
+            android:layout_height="wrap_content"
             android:layout_marginBottom="16dp"
-            android:backgroundTint="#E5E8EC"
             android:fontFamily="@font/pretendard_bold"
-            android:text="반대로 번복하기"
-            android:textColor="#737984"
-            android:textSize="14sp"
-            app:layout_constraintBottom_toBottomOf="parent"
+            tools:text="000님이 인증을 수행하셨습니다"
+            android:text="@{@string/vote_item_nickname(data.certificationRequestUserNickname)}"
+            android:textSize="16sp"
+            app:layout_constraintBottom_toTopOf="@+id/linearLayout2"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent" />
 
@@ -64,20 +65,60 @@
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/pretendard_regular"
                 android:gravity="center"
-                android:text="OOOO/OO/OO 오후 1:11 ~ 오후 2:22"
+                tools:text="OOOO/OO/OO 오후 1:11 ~ OOOO/OO/OO 오후 2:22"
+                android:text="@{dialog.formatDateRange(data.fitRecordStartDate,data.fitRecordEndDate)}"
                 android:textSize="13sp" />
         </LinearLayout>
 
-        <TextView
-            android:id="@+id/buttonGroupVoteFitMate"
-            android:layout_width="wrap_content"
+        <LinearLayout
+            app:layout_constraintTop_toBottomOf="@+id/linearLayout2"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="16dp"
-            android:fontFamily="@font/pretendard_bold"
-            android:text="OOO 님의 운동기록에 투표하세요!"
-            android:textSize="16sp"
-            app:layout_constraintBottom_toTopOf="@+id/linearLayout2"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent" />
+            android:layout_marginTop="30dp"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <View
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_weight="1"/>
+
+            <Button
+                android:id="@+id/vote_cancel_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:backgroundTint="#E5E8EC"
+                android:textColor="@color/dark_gray"
+                android:textSize="15sp"
+                android:fontFamily="@font/pretendard_regular"
+                android:textAppearance="@style/Font.bold20"
+                android:paddingVertical="15dp"
+                android:text="취소"
+                style="@style/Widget.MaterialComponents.Button" />
+            <View
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_weight="1"/>
+
+
+            <Button
+                android:id="@+id/vote_change_to_opposite_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:backgroundTint="@color/red"
+                android:textColor="@color/white"
+                android:textSize="15sp"
+                android:fontFamily="@font/pretendard_regular"
+                android:textAppearance="@style/Font.bold20"
+                android:paddingVertical="15dp"
+                android:text="반대로 번복"
+                style="@style/Widget.MaterialComponents.Button" />
+
+            <View
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_weight="1"/>
+        </LinearLayout>
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

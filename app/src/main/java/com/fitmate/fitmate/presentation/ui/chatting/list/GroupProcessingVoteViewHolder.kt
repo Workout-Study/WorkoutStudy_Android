@@ -8,10 +8,13 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.widget.ViewPager2
 import com.fitmate.fitmate.R
+import com.fitmate.fitmate.databinding.DialogGroupVoteBinding
 import com.fitmate.fitmate.databinding.DialogGroupVoteChangeToOppositeBinding
 import com.fitmate.fitmate.databinding.ItemVoteBinding
 import com.fitmate.fitmate.domain.model.GroupVoteCertificationDetail
 import com.fitmate.fitmate.domain.model.VoteItem
+import com.fitmate.fitmate.presentation.ui.chatting.dialog.VoteDialog
+import com.fitmate.fitmate.presentation.ui.chatting.dialog.VoteFragmentInterface
 import com.fitmate.fitmate.presentation.ui.chatting.list.adapter.VoteViewPageAdapter
 import com.fitmate.fitmate.presentation.viewmodel.VoteViewModel
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
@@ -25,8 +28,8 @@ import java.time.format.DateTimeFormatter
 class GroupProcessingVoteViewHolder(
     private val binding: ItemVoteBinding,
     private val fragment: Fragment,
+    private val voteFragmentInterface: VoteFragmentInterface,
     private val viewModel: VoteViewModel,
-    private val onClick: (VoteItem) -> Unit
 ): VoteBindingViewHolder<ItemVoteBinding>(binding) {
 
     override fun bind(item: GroupVoteCertificationDetail) {
@@ -58,12 +61,10 @@ class GroupProcessingVoteViewHolder(
 
 
     fun showVoteDialog(item: GroupVoteCertificationDetail) {
-        val customView = DialogGroupVoteChangeToOppositeBinding.inflate(LayoutInflater.from(fragment.requireContext()))
-        val test = MaterialAlertDialogBuilder(fragment.requireContext()).apply {
-            setView(customView.root)
-        }
-        test.show()
+        val customView = DialogGroupVoteBinding.inflate(LayoutInflater.from(fragment.requireContext()))
+        val dialog = VoteDialog(voteFragmentInterface,customView,item)
+        val fragmentManager = fragment.activity?.supportFragmentManager
+        dialog.show(fragmentManager!!,"VoteDialog")
     }
 
-    private fun formatDate(time: ZonedDateTime): String = time.format(DateTimeFormatter.ofPattern("yyyy/MM/dd a hh:mm"))
 }
