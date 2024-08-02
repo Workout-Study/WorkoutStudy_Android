@@ -10,13 +10,11 @@ import androidx.navigation.fragment.findNavController
 import androidx.navigation.ui.setupWithNavController
 import com.fitmate.fitmate.ChatActivity
 import com.fitmate.fitmate.R
-import com.fitmate.fitmate.data.model.dto.GroupVoteCertificationDetailDto
 import com.fitmate.fitmate.databinding.FragmentGroupVoteBinding
 import com.fitmate.fitmate.presentation.ui.chatting.list.adapter.GroupVoteAdapter
 import com.fitmate.fitmate.presentation.viewmodel.VoteViewModel
+import com.google.android.material.tabs.TabLayout
 import dagger.hilt.android.AndroidEntryPoint
-import java.time.ZonedDateTime
-import java.time.format.DateTimeFormatter
 
 @AndroidEntryPoint
 class GroupVoteFragment : Fragment(R.layout.fragment_group_vote) {
@@ -42,33 +40,136 @@ class GroupVoteFragment : Fragment(R.layout.fragment_group_vote) {
 
     }
 
-    private fun loadUserPreference() {
-        val userPreference = (activity as ChatActivity).loadUserPreference()
-        userId = userPreference.getOrNull(2)?.toString()?.toInt() ?: -1
-        accessToken = userPreference.getOrNull(0)?.toString() ?: ""
-        platform = userPreference.getOrNull(3)?.toString() ?: ""
-    }
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding = FragmentGroupVoteBinding.bind(view)
         binding.materialToolbarGroupVote.setupWithNavController(findNavController())
 
+        //리사이클러뷰 초기화
+        settingRecyclerView()
 
+        //탭 레이아웃 설정
+        settingTabLayoutFunction()
+
+        //그룹 정보 통신
+        getGroupDetail()
+
+        //그룹 정보 통신 결과 감시 후 투표 데이터 통신 시작
+        observeGroupDetailAndGetVoteDate()
+
+        //투표 데이터 통신 결과 감시
+        observeVoteData()
+    }
+
+    private fun settingTabLayoutFunction() {
+        binding.voteItemTabLayout.addOnTabSelectedListener(object :
+            TabLayout.OnTabSelectedListener {
+            override fun onTabSelected(tab: TabLayout.Tab?) {
+                when (tab?.position) {
+                    0 -> {
+                        filterVoteDataByTab(0)
+                    }
+
+                    1 -> {
+                        filterVoteDataByTab(1)
+                    }
+
+                    2 -> {
+                        filterVoteDataByTab(2)
+                    }
+                }
+            }
+
+            override fun onTabUnselected(tab: TabLayout.Tab?) {}
+
+            override fun onTabReselected(tab: TabLayout.Tab?) {
+                when (tab?.position) {
+                    0 -> {
+                        filterVoteDataByTab(0)
+                    }
+
+                    1 -> {
+                        filterVoteDataByTab(1)
+                    }
+
+                    2 -> {
+                        filterVoteDataByTab(2)
+                    }
+                }
+            }
+
+        })
+    }
+
+    private fun filterVoteDataByTab(tabPosition: Int) {
+        //통신 데이터가 있다면
+        viewModel.fitGroupVotes.value?.let { voteItem ->
+            when (tabPosition) {
+                0 -> {
+                    val filterData = voteItem.fitCertificationDetails.filter {
+                        !it.isUserVoteDone
+                    }
+                    voteListAdapter.submitList(filterData)
+                }
+
+                1 -> {
+                    val filterData = voteItem.fitCertificationDetails.filter {
+                        it.isUserVoteDone
+                    }.filter {
+                        it.isUserAgree
+                    }
+                    voteListAdapter.submitList(filterData)
+                }
+
+                2 -> {
+                    val filterData = voteItem.fitCertificationDetails.filter {
+                        it.isUserVoteDone
+                    }.filter {
+                        !it.isUserAgree
+                    }
+                    voteListAdapter.submitList(filterData)
+                }
+            }
+        }
+
+    }
+
+    private fun observeVoteData() {
+        viewModel.fitGroupVotes.observe(viewLifecycleOwner) { eachFitResponse ->
+            stopShimmer()
+
+            //리사이클러뷰 업데이트를 진행하고 현재 내가 진입해있는 탭의 포지션을 재진입 시킴(탭에 맞는 데이터를 submitList하기 위함)
+            voteListAdapter.submitList(eachFitResponse.fitCertificationDetails) {
+                val tabPosition = binding.voteItemTabLayout.selectedTabPosition
+                binding.voteItemTabLayout.selectTab(binding.voteItemTabLayout.getTabAt(tabPosition))
+            }
+        }
+    }
+
+    private fun observeGroupDetailAndGetVoteDate() {
+        viewModel.groupDetail.observe(viewLifecycleOwner) { groupDetail ->
+            //투표 데이터 통신하기
+            viewModel.fetchFitGroupVotes(groupId, userId)
+        }
+    }
+
+    private fun getGroupDetail() {
+        viewModel.getGroupDetail(groupId)
+        startShimmer()
+    }
+
+    private fun settingRecyclerView() {
         voteListAdapter = GroupVoteAdapter(this, viewModel) { }
         binding.recyclerGroupVote.apply {
             adapter = voteListAdapter
         }
+    }
 
-        viewModel.fetchFitGroupVotes(groupId, userId)
-
-        viewModel.fitGroupVotes.observe(viewLifecycleOwner) { eachFitResponse ->
-            stopShimmer()
-            val voteItems = eachFitResponse.fitCertificationDetails
-            Log.d("tlqkf", "옵저버 부분 결과"+eachFitResponse.toString())
-            Log.d("tlqkf", "최종적으로 사용할 데이터: "+voteItems.toString())
-            voteListAdapter.submitList(voteItems)
-        }
+    private fun loadUserPreference() {
+        val userPreference = (activity as ChatActivity).loadUserPreference()
+        userId = userPreference.getOrNull(2)?.toString()?.toInt() ?: -1
+        accessToken = userPreference.getOrNull(0)?.toString() ?: ""
+        platform = userPreference.getOrNull(3)?.toString() ?: ""
     }
 
     private fun startShimmer() {
@@ -83,13 +184,4 @@ class GroupVoteFragment : Fragment(R.layout.fragment_group_vote) {
         binding.recyclerGroupVote.visibility = View.VISIBLE
     }
 
-    private fun formatPercent(detail: GroupVoteCertificationDetailDto): Int {
-        return if (detail.agreeCount + detail.disagreeCount > 0) (detail.agreeCount * 100) / (detail.agreeCount + detail.disagreeCount) else 0
-    }
-
-
-    private fun formatDate(voteEndDate: String): String {
-        val endDate = ZonedDateTime.parse(voteEndDate)
-        return endDate.format(DateTimeFormatter.ofPattern("(MM/dd) HH:mm 종료"))
-    }
 }
