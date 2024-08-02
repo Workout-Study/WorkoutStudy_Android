@@ -73,7 +73,7 @@ class MyFitMainFragment: Fragment() {
         }
 
     //뷰페이저 스크롤 버튼 visible 설정
-    fun viewPagerScrollButtonVisible() {
+    private fun viewPagerScrollButtonVisible() {
         viewModel.fitProgressItem.value?.let { myFitGroupList ->
             binding.recyclerviewMyFitFragmentMyFitProgress.registerOnPageChangeCallback(object :ViewPager2.OnPageChangeCallback(){
                 override fun onPageSelected(position: Int) {

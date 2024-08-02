@@ -1,27 +1,15 @@
 package com.fitmate.fitmate.presentation.ui.chatting.list
 
 import android.view.LayoutInflater
-import android.widget.Button
-import android.widget.TextView
 import androidx.fragment.app.Fragment
-import androidx.viewpager2.widget.ViewPager2
-import com.fitmate.fitmate.R
 import com.fitmate.fitmate.databinding.DialogGroupVoteChangeToAgreeBinding
-import com.fitmate.fitmate.databinding.DialogGroupVoteChangeToOppositeBinding
-import com.fitmate.fitmate.databinding.ItemAgreeVoteBinding
 import com.fitmate.fitmate.databinding.ItemOppositeVoteBinding
 import com.fitmate.fitmate.domain.model.GroupVoteCertificationDetail
-import com.fitmate.fitmate.domain.model.VoteItem
 import com.fitmate.fitmate.presentation.ui.chatting.dialog.VoteDialog
 import com.fitmate.fitmate.presentation.ui.chatting.dialog.VoteFragmentInterface
-import com.fitmate.fitmate.presentation.ui.chatting.list.adapter.VoteViewPageAdapter
 import com.fitmate.fitmate.presentation.viewmodel.VoteViewModel
-import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import java.time.Duration
-import java.time.Instant
 import java.time.OffsetDateTime
-import java.time.ZoneId
-import java.time.ZonedDateTime
 import java.time.format.DateTimeFormatter
 
 class GroupOppositeVoteViewHolder(

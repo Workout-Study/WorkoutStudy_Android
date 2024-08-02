@@ -199,6 +199,7 @@
 
 
     <string name="vote_item_nickname">%s님이 인증을 수행하셨습니다</string>
+    <string name="dialog_vote_item_nickname">%s님의 운동기록에 투표하세요!</string>
     <string name="vote_item_end_time">%s뒤에 종료</string>
 
 

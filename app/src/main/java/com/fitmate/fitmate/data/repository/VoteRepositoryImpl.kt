@@ -5,6 +5,7 @@ import com.fitmate.fitmate.data.model.dto.FitGroupProgress
 import com.fitmate.fitmate.data.model.dto.MyFitGroupVote
 import com.fitmate.fitmate.data.model.dto.VoteRequestDto
 import com.fitmate.fitmate.data.model.dto.VoteResponseDto
+import com.fitmate.fitmate.data.model.dto.VoteUpdateResponseDto
 import com.fitmate.fitmate.data.source.remote.VoteService
 import com.fitmate.fitmate.domain.repository.VoteRepository
 import retrofit2.Response
@@ -25,5 +26,9 @@ class VoteRepositoryImpl(private val voteService: VoteService): VoteRepository {
 
     override suspend fun registerVote(voteRequestDto: VoteRequestDto): Response<VoteResponseDto> {
         return voteService.registerVote(voteRequestDto)
+    }
+
+    override suspend fun updateVote(voteUpdateRequestDto: VoteRequestDto): Response<VoteUpdateResponseDto> {
+        return voteService.updateVote(voteUpdateRequestDto)
     }
 }

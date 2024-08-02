@@ -11,7 +11,6 @@ import com.fitmate.fitmate.ui.myfit.list.MyFitGroupProgressViewHolder
 
 class MyFitGroupProgressAdapter(private val context: Context) : ListAdapter<FitProgressItem, MyFitGroupProgressViewHolder>(diffUtil) {
 
-
     override fun onCreateViewHolder(
         parent: ViewGroup,
         viewType: Int,

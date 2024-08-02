@@ -5,10 +5,12 @@ import com.fitmate.fitmate.data.model.dto.FitGroupProgress
 import com.fitmate.fitmate.data.model.dto.MyFitResponse
 import com.fitmate.fitmate.data.model.dto.VoteRequestDto
 import com.fitmate.fitmate.data.model.dto.VoteResponseDto
+import com.fitmate.fitmate.data.model.dto.VoteUpdateResponseDto
 import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.GET
 import retrofit2.http.POST
+import retrofit2.http.PUT
 import retrofit2.http.Path
 import retrofit2.http.Query
 
@@ -23,6 +25,12 @@ interface VoteService {
     suspend fun registerVote(   // Register Vote
         @Body voteRequestDto: VoteRequestDto
     ): Response<VoteResponseDto>
+
+    @PUT("/my-fit-service/votes")
+    suspend fun updateVote(   // Update Vote
+        @Body voteUpdateRequestDto: VoteRequestDto
+    ): Response<VoteUpdateResponseDto>
+
     @GET("/my-fit-service/my-fits/certifications/need-votes")
     suspend fun getMyFitGroupVotes(   // Need Vote Fit Certification List
         @Query("requestUserId") requestUserId: Int

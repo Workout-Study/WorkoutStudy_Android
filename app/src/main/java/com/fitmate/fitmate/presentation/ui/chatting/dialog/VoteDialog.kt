@@ -8,11 +8,15 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.ViewDataBinding
 import androidx.fragment.app.DialogFragment
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.viewpager2.widget.ViewPager2
 import com.fitmate.fitmate.R
 import com.fitmate.fitmate.databinding.DialogGroupVoteBinding
 import com.fitmate.fitmate.databinding.DialogGroupVoteChangeToAgreeBinding
 import com.fitmate.fitmate.databinding.DialogGroupVoteChangeToOppositeBinding
 import com.fitmate.fitmate.domain.model.GroupVoteCertificationDetail
+import com.fitmate.fitmate.domain.model.VoteRequest
+import com.fitmate.fitmate.presentation.ui.chatting.list.adapter.VoteImageViewPagerAdapter
 import com.fitmate.fitmate.presentation.viewmodel.VoteViewModel
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
@@ -51,12 +55,20 @@ class VoteDialog(
                     data = itemData
                     dialog = this@VoteDialog
 
+
+                    viewPagerGroupVote.adapter = VoteImageViewPagerAdapter(itemData.thumbnailEndPoint)
+                    viewPagerGroupVote.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
+
                     voteOppositeButton.setOnClickListener {
-                        fragmentRemote.postVote()
+                        val voteRequest = VoteRequest(fragmentRemote.userId, false, 1, itemData.certificationId)
+                        fragmentRemote.postVote(voteRequest)
+                        dismiss()
                     }
 
                     voteAgreeButton.setOnClickListener {
-
+                        val voteRequest = VoteRequest(fragmentRemote.userId, true, 1, itemData.certificationId)
+                        fragmentRemote.postVote(voteRequest)
+                        dismiss()
                     }
 
                     voteCancelButton.setOnClickListener {
@@ -68,7 +80,16 @@ class VoteDialog(
                 (binding as DialogGroupVoteChangeToOppositeBinding).apply {
                     data = itemData
                     dialog = this@VoteDialog
+
+                    viewPagerGroupVote.adapter = VoteImageViewPagerAdapter(itemData.thumbnailEndPoint)
+                    viewPagerGroupVote.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
+
                     voteCancelButton.setOnClickListener {
+                        dismiss()
+                    }
+                    voteChangeToOppositeButton.setOnClickListener {
+                        val voteRequest = VoteRequest(fragmentRemote.userId, false, 1, itemData.certificationId)
+                        fragmentRemote.putVote(voteRequest)
                         dismiss()
                     }
 
@@ -78,7 +99,16 @@ class VoteDialog(
                 (binding as DialogGroupVoteChangeToAgreeBinding).apply {
                     data = itemData
                     dialog = this@VoteDialog
+
+                    viewPagerGroupVote.adapter = VoteImageViewPagerAdapter(itemData.thumbnailEndPoint)
+                    viewPagerGroupVote.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
+
                     voteCancelButton.setOnClickListener {
+                        dismiss()
+                    }
+                    voteChangeToAgreeButton.setOnClickListener {
+                        val voteRequest = VoteRequest(fragmentRemote.userId, true, 1, itemData.certificationId)
+                        fragmentRemote.putVote(voteRequest)
                         dismiss()
                     }
                 }

@@ -5,6 +5,7 @@ import com.fitmate.fitmate.data.model.dto.FitGroupProgress
 import com.fitmate.fitmate.data.model.dto.MyFitGroupVote
 import com.fitmate.fitmate.data.model.dto.VoteRequestDto
 import com.fitmate.fitmate.data.model.dto.VoteResponseDto
+import com.fitmate.fitmate.data.model.dto.VoteUpdateResponseDto
 import retrofit2.Response
 
 interface VoteRepository {
@@ -16,4 +17,6 @@ interface VoteRepository {
     suspend fun getFitMateProgress(fitGroupId: Int): Response<FitGroupProgress>
 
     suspend fun registerVote(voteRequestDto: VoteRequestDto): Response<VoteResponseDto>
+
+    suspend fun updateVote(voteUpdateRequestDto: VoteRequestDto): Response<VoteUpdateResponseDto>
 }

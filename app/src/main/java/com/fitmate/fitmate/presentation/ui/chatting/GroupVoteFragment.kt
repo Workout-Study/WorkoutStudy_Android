@@ -11,6 +11,7 @@ import androidx.navigation.ui.setupWithNavController
 import com.fitmate.fitmate.ChatActivity
 import com.fitmate.fitmate.R
 import com.fitmate.fitmate.databinding.FragmentGroupVoteBinding
+import com.fitmate.fitmate.domain.model.VoteRequest
 import com.fitmate.fitmate.presentation.ui.chatting.dialog.VoteFragmentInterface
 import com.fitmate.fitmate.presentation.ui.chatting.list.adapter.GroupVoteAdapter
 import com.fitmate.fitmate.presentation.viewmodel.VoteViewModel
@@ -62,6 +63,19 @@ class GroupVoteFragment : Fragment(R.layout.fragment_group_vote), VoteFragmentIn
 
         //투표 데이터 통신 결과 감시
         observeVoteData()
+
+        //투표 수행 결과 감시
+        observeVoteResponse()
+    }
+
+    private fun observeVoteResponse() {
+        viewModel.voteResponse.observe(viewLifecycleOwner) {
+            fetchVoteData()
+        }
+
+        viewModel.voteUpdateResponse.observe(viewLifecycleOwner) {
+            fetchVoteData()
+        }
     }
 
     private fun settingTabLayoutFunction() {
@@ -150,12 +164,13 @@ class GroupVoteFragment : Fragment(R.layout.fragment_group_vote), VoteFragmentIn
     private fun observeGroupDetailAndGetVoteDate() {
         viewModel.groupDetail.observe(viewLifecycleOwner) { groupDetail ->
             //투표 데이터 통신하기
-            viewModel.fetchFitGroupVotes(groupId, userId)
+            fetchVoteData()
         }
     }
 
     private fun getGroupDetail() {
-        fetchVoteData()
+        viewModel.getGroupDetail(groupId)
+        startShimmer()
     }
 
     private fun settingRecyclerView() {
@@ -185,16 +200,18 @@ class GroupVoteFragment : Fragment(R.layout.fragment_group_vote), VoteFragmentIn
     }
 
     override fun fetchVoteData() {
-        viewModel.getGroupDetail(groupId)
+        viewModel.fetchFitGroupVotes(groupId, userId)
         startShimmer()
     }
 
-    override fun postVote() {
-        TODO("Not yet implemented")
+    override fun postVote(voteItem: VoteRequest) {
+        viewModel.registerVote(voteItem)
+        startShimmer()
     }
 
-    override fun putVote() {
-        TODO("Not yet implemented")
+    override fun putVote(voteItem: VoteRequest) {
+        viewModel.updateVote(voteItem)
+        startShimmer()
     }
 
 }

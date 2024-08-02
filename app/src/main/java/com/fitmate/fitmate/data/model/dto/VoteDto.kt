@@ -41,6 +41,10 @@ data class VoteResponseDto(
     val isRegisterSuccess: Boolean
 )
 
+data class VoteUpdateResponseDto(
+    val isUpdateSuccess: Boolean
+)
+
 
 
 data class FitGroupProgress(

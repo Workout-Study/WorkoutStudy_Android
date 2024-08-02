@@ -15,8 +15,8 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginEnd="16dp">
+        android:background="@drawable/dialog_round_16"
+        android:padding="15dp">
 
         <TextView
             android:id="@+id/buttonGroupVoteFitMate"
@@ -24,8 +24,8 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="16dp"
             android:fontFamily="@font/pretendard_bold"
-            tools:text="000님이 인증을 수행하셨습니다"
-            android:text="@{@string/vote_item_nickname(data.certificationRequestUserNickname)}"
+            tools:text="000님의 운동기록에 투표하세요!"
+            android:text="@{@string/dialog_vote_item_nickname(data.certificationRequestUserNickname)}"
             android:textSize="20sp"
             app:layout_constraintBottom_toTopOf="@+id/linearLayout2"
             app:layout_constraintEnd_toEndOf="parent"
@@ -33,8 +33,9 @@
 
         <LinearLayout
             android:id="@+id/linearLayout2"
-            android:layout_width="296dp"
-            android:layout_height="136dp"
+            android:layout_width="match_parent"
+            android:layout_marginHorizontal="15dp"
+            android:layout_height="wrap_content"
             android:layout_marginTop="80dp"
             android:layout_marginBottom="96dp"
             android:orientation="vertical"
@@ -44,20 +45,12 @@
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="0.0">
 
-            <androidx.viewpager2.widget.ViewPager2
+            <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/viewPagerGroupVote"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="0dp"
                 android:layout_weight="1" />
 
-            <TextView
-                android:id="@+id/textGroupVoteCategory"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:fontFamily="@font/pretendard_bold"
-                android:gravity="center"
-                android:text="웨이트 운동"
-                android:visibility="gone" />
 
             <TextView
                 android:id="@+id/textGroupVoteDuration"

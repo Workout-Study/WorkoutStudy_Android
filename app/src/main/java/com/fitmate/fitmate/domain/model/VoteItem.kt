@@ -43,3 +43,7 @@ data class VoteRequest(
 data class VoteResponse(
     val isRegisterSuccess: Boolean
 )
+
+data class VoteUpdateResponse(
+    val isUpdateSuccess: Boolean
+)
