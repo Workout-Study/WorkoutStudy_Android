@@ -10,6 +10,8 @@ import com.fitmate.fitmate.databinding.DialogGroupVoteChangeToOppositeBinding
 import com.fitmate.fitmate.databinding.ItemAgreeVoteBinding
 import com.fitmate.fitmate.domain.model.GroupVoteCertificationDetail
 import com.fitmate.fitmate.domain.model.VoteItem
+import com.fitmate.fitmate.presentation.ui.chatting.dialog.VoteDialog
+import com.fitmate.fitmate.presentation.ui.chatting.dialog.VoteFragmentInterface
 import com.fitmate.fitmate.presentation.ui.chatting.list.adapter.VoteViewPageAdapter
 import com.fitmate.fitmate.presentation.viewmodel.VoteViewModel
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
@@ -23,8 +25,8 @@ import java.time.format.DateTimeFormatter
 class GroupAgreeVoteViewHolder(
     private val binding: ItemAgreeVoteBinding,
     private val fragment: Fragment,
+    private val voteFragmentInterface: VoteFragmentInterface,
     private val viewModel: VoteViewModel,
-    private val onClick: (VoteItem) -> Unit
 ): VoteBindingViewHolder<ItemAgreeVoteBinding>(binding) {
 
     override fun bind(item: GroupVoteCertificationDetail) {
@@ -54,42 +56,11 @@ class GroupAgreeVoteViewHolder(
         }
     }
 
+
     fun showVoteDialog(item: GroupVoteCertificationDetail) {
-        MaterialAlertDialogBuilder(fragment.requireContext(), R.style.Theme_Fitmate_Dialog).apply {
-            setVoteCustomDialog(item)
-        }.show()
+        val customView = DialogGroupVoteChangeToOppositeBinding.inflate(LayoutInflater.from(fragment.requireContext()))
+        val dialog = VoteDialog(voteFragmentInterface,customView,item)
+        val fragmentManager = fragment.activity?.supportFragmentManager
+        dialog.show(fragmentManager!!,"VoteDialog")
     }
-
-    private fun MaterialAlertDialogBuilder.setVoteCustomDialog(item: GroupVoteCertificationDetail) {
-        //val binding = DialogGroupVoteChangeToOppositeBinding.inflate(LayoutInflater.from(this.context))
-        val dialogView = LayoutInflater.from(fragment.context).inflate(R.layout.dialog_group_vote_change_to_opposite, null)
-        val startTime = Instant.parse(item.fitRecordStartDate).atZone(ZoneId.of("Asia/Seoul"))
-        val endTime = Instant.parse(item.fitRecordEndDate).atZone(ZoneId.of("Asia/Seoul"))
-        val duration = Duration.between(startTime, endTime)
-        val hours = duration.toHours()
-        val minutes = duration.toMinutes() % 60
-        val title = dialogView.findViewById<TextView>(R.id.buttonGroupVoteFitMate)
-        val buttonGroupVoteChangeToOpposite = dialogView.findViewById<TextView>(R.id.buttonGroupVoteChangeToOpposite)
-
-        val textDuration = dialogView.findViewById<TextView>(R.id.textGroupVoteDuration)
-        val category = dialogView.findViewById<TextView>(R.id.textGroupVoteCategory)
-        val viewPager = dialogView.findViewById<ViewPager2>(R.id.viewPagerGroupVote)
-
-        val dialog = this.setView(dialogView).create().apply {
-            title.text = "${item.certificationRequestUserNickname} 님의 운동기록에 투표하세요!"
-            textDuration.text = formatDate(startTime) + " ~ " + formatDate(endTime)
-            category.text = "${hours}시간 ${minutes}분"
-            viewPager.adapter = VoteViewPageAdapter(item.thumbnailEndPoint)
-
-
-            buttonGroupVoteChangeToOpposite.setOnClickListener {
-/*                fragment.lifecycleScope.launch {
-                    viewModel.registerVote(VoteRequestDto(item.fitMate.toInt(), true, 1, item.groupId))
-                }*/
-                dismiss()
-            }
-        }
-        dialog.show()
-    }
-    private fun formatDate(time: ZonedDateTime): String = time.format(DateTimeFormatter.ofPattern("yyyy/MM/dd a hh:mm"))
 }
