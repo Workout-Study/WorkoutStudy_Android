@@ -10,10 +10,12 @@ import com.fitmate.fitmate.data.model.VoteMapper.mapEachVoteCertificationRespons
 import com.fitmate.fitmate.data.model.VoteMapper.toVoteRequestDto
 import com.fitmate.fitmate.data.model.dto.FitGroupDetail
 import com.fitmate.fitmate.data.model.dto.FitGroupProgress
+import com.fitmate.fitmate.data.model.dto.GetFitGroupDetail
 import com.fitmate.fitmate.data.model.dto.MyFitGroupVote
 import com.fitmate.fitmate.data.model.dto.VoteResponseDto
 import com.fitmate.fitmate.domain.model.EachVoteCertificationResponse
 import com.fitmate.fitmate.domain.model.VoteRequest
+import com.fitmate.fitmate.domain.usecase.GroupUseCase
 import com.fitmate.fitmate.domain.usecase.VoteUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -25,8 +27,14 @@ import javax.inject.Inject
 
 @HiltViewModel
 class VoteViewModel @Inject constructor(
-    private val voteUseCase: VoteUseCase
-): ViewModel() {
+    private val voteUseCase: VoteUseCase,
+    private val groupUseCase: GroupUseCase,
+
+    ): ViewModel() {
+
+    private val _groupDetail = MutableLiveData<GetFitGroupDetail>()
+    val groupDetail: LiveData<GetFitGroupDetail> = _groupDetail
+
     private val _myGroupVotes = MediatorLiveData<Result<List<MyFitGroupVote>>>()
     val myGroupVotes: LiveData<Result<List<MyFitGroupVote>>> = _myGroupVotes
 
@@ -42,7 +50,6 @@ class VoteViewModel @Inject constructor(
     private val _voteResponse = MutableLiveData<Response<VoteResponseDto>>()
     val voteResponseDto: LiveData<Response<VoteResponseDto>> = _voteResponse
 
-
     private val _isLoading = MutableStateFlow(false)
     val isLoading: StateFlow<Boolean> = _isLoading
 
@@ -55,6 +62,17 @@ class VoteViewModel @Inject constructor(
                 _isLoading.value = false
             } catch (e: Exception) {
                 _isLoading.value = false
+            }
+        }
+    }
+
+    fun getGroupDetail(fitGroupId:Int) {
+        viewModelScope.launch {
+            try {
+                val response = groupUseCase.getFitGroupDetail(fitGroupId)
+                _groupDetail.value = response
+            } catch (e: Exception) {
+                //통신 오류
             }
         }
     }
