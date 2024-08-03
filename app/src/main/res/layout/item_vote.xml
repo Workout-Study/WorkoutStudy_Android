@@ -15,10 +15,9 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="16dp"
-        android:background="@drawable/bg_rounded_rectangle"
+        android:padding="16dp"
         android:layout_marginBottom="16dp"
-        android:layout_marginRight="16dp"
+        android:background="@drawable/bg_rounded_rectangle"
         android:orientation="vertical">
 
 
@@ -27,8 +26,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:cardCornerRadius="12dp"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="16dp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
 
@@ -65,7 +62,7 @@
             android:layout_marginTop="5dp"
             android:ellipsize="end"
             android:textColor="@color/zircon"
-            tools:text="sadjfsakldfhjashdflkhasdsadfljasdfjhasd"
+            tools:text="강강강강강강강강강강강강님이 최근에 인증을 수행하였습니다"
             android:fontFamily="@font/pretendard_regular"
             android:maxLines="1"
             android:text="@{@string/vote_item_nickname(data.certificationRequestUserNickname)}"
@@ -75,45 +72,92 @@
             app:layout_constraintStart_toStartOf="@+id/textViewItemVoteFitgroupTitle"
             app:layout_constraintTop_toBottomOf="@+id/textViewItemVoteFitgroupTitle" />
 
-        <TextView
-            android:id="@+id/textViewItemVoteFitgroupPerComment"
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:id="@+id/voteAgreePercentLayout"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:fontFamily="@font/pretendard_regular"
-            android:text="@string/item_vote_scr_per_comment"
-            android:textColor="@color/zircon"
-            android:textSize="12sp"
-            app:layout_constraintBottom_toBottomOf="@+id/cardViewItemCategoryFitGroupThumbnailContainer"
-            app:layout_constraintStart_toStartOf="@+id/textViewItemVoteFitgroupTitle" />
+            android:layout_marginTop="8dp"
+            android:gravity="center"
+            android:orientation="horizontal"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="@+id/textViewItemVoteFitgroupContext"
+            app:layout_constraintTop_toBottomOf="@+id/textViewItemVoteFitgroupContext">
 
-        <TextView
-            android:id="@+id/textViewItemVoteFitgroupPercent"
-            android:layout_width="wrap_content"
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/pretendard_regular"
+                android:text="찬성률"
+                android:textColor="@color/white" />
+
+            <ProgressBar
+                style="?android:attr/progressBarStyleHorizontal"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginEnd="10dp"
+                android:layout_weight="1"
+                android:progressDrawable="@drawable/drawable_progress_mint" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="16dp"
+                android:fontFamily="@font/pretendard_regular"
+                android:text="75%"
+                android:textColor="@color/white" />
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:id="@+id/voteProgressPercentLayout"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:fontFamily="@font/pretendard_bold"
-            android:textSize="12sp"
-            android:text="@{view_holder.calculateVoteProcess()}"
-            app:layout_constraintBottom_toBottomOf="@+id/textViewItemVoteFitgroupPerComment"
-            app:layout_constraintStart_toEndOf="@+id/textViewItemVoteFitgroupPerComment"
-            app:layout_constraintTop_toTopOf="@+id/textViewItemVoteFitgroupPerComment" />
+            android:layout_marginTop="8dp"
+            android:gravity="center"
+            android:orientation="horizontal"
+            app:layout_constraintTop_toBottomOf="@+id/voteAgreePercentLayout"
+            app:layout_constraintStart_toStartOf="@+id/voteAgreePercentLayout"
+            app:layout_constraintEnd_toEndOf="@+id/voteAgreePercentLayout">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/pretendard_regular"
+                android:text="찬성률"
+                android:textColor="@color/white" />
+
+            <ProgressBar
+                style="?android:attr/progressBarStyleHorizontal"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginEnd="10dp"
+                android:layout_weight="1"
+                android:progressDrawable="@drawable/drawable_progress_mint" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="16dp"
+                android:fontFamily="@font/pretendard_regular"
+                android:text="75%"
+                android:textColor="@color/white" />
+        </LinearLayout>
+
 
         <TextView
             android:id="@+id/textViewItemVoteFitgroupTime"
-            android:layout_width="0dp"
+            android:layout_width="wrap_content"
             android:layout_height="0dp"
-            android:layout_marginStart="10dp"
             android:ellipsize="start"
+            android:layout_marginTop="8dp"
             android:maxLines="1"
             tools:text="xx시간 뒤에 종료"
             android:textColor="@color/zircon"
             android:text="@{@string/vote_item_end_time(view_holder.timeUntilEnd(data.voteEndDate))}"
-            android:textAppearance="@style/Font.bold12"
-            app:layout_constraintBottom_toBottomOf="@+id/textViewItemVoteFitgroupPercent"
-            app:layout_constraintEnd_toEndOf="@+id/buttonItemVoteFitgroupVote"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toEndOf="@+id/textViewItemVoteFitgroupPercent"
-            app:layout_constraintTop_toTopOf="@+id/textViewItemVoteFitgroupPercent"
-            app:layout_constraintVertical_bias="0.0" />
+            app:layout_constraintStart_toStartOf="@+id/voteProgressPercentLayout"
+            app:layout_constraintTop_toBottomOf="@+id/voteProgressPercentLayout" />
 
 
 
@@ -133,10 +177,9 @@
             android:text="투표하기"
             android:textColor="@color/mediumStateBlue"
             android:textSize="13sp"
-            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/cardViewItemCategoryFitGroupThumbnailContainer" />
+            app:layout_constraintTop_toBottomOf="@+id/textViewItemVoteFitgroupTime" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
