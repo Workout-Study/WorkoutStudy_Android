@@ -33,7 +33,6 @@ class MainActivity : AppCompatActivity(), ControlActivityInterface {
     private lateinit var binding: ActivityMainBinding
     private lateinit var navController: NavController
     private var pendingToken: PendingTokenValue? = null
-    var selecedMenuId: Int = -1
     private val viewModel: MainActivityViewModel by viewModels()
     private val sharedPreferences: SharedPreferences by lazy {
         val masterKeyAlies = MasterKey
@@ -59,7 +58,6 @@ class MainActivity : AppCompatActivity(), ControlActivityInterface {
     //유효하지 않으면 로그인 창으로
     @RequiresApi(Build.VERSION_CODES.S)
     override fun onCreate(savedInstanceState: Bundle?) {
-        selecedMenuId = R.id.homeFragment
         super.onCreate(savedInstanceState)
         val splashScreen = installSplashScreen()
         splash(splashScreen)

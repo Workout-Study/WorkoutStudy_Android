@@ -1,7 +1,6 @@
 package com.fitmate.fitmate.presentation.ui.chatting.list
 
 import androidx.databinding.ViewDataBinding
-import androidx.databinding.library.baseAdapters.BR
 import androidx.recyclerview.widget.RecyclerView
 import com.fitmate.fitmate.domain.model.GroupVoteCertificationDetail
 import java.time.Duration
@@ -18,13 +17,10 @@ open class VoteBindingViewHolder<VB : ViewDataBinding>(private val binding: VB) 
     }
 
     open fun timeUntilEnd(timeString: String): String {
-
         val formatter = DateTimeFormatter.ISO_OFFSET_DATE_TIME
         val endTime = OffsetDateTime.parse(timeString, formatter)
 
-
         val currentTime = OffsetDateTime.now()
-
 
         val duration = Duration.between(currentTime, endTime)
 

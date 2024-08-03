@@ -9,10 +9,6 @@ import com.fitmate.fitmate.domain.model.GroupVoteCertificationDetail
 import com.fitmate.fitmate.presentation.ui.chatting.dialog.VoteDialog
 import com.fitmate.fitmate.presentation.ui.chatting.dialog.VoteFragmentInterface
 import com.fitmate.fitmate.presentation.viewmodel.VoteViewModel
-import java.lang.ArithmeticException
-import java.time.Duration
-import java.time.OffsetDateTime
-import java.time.format.DateTimeFormatter
 
 class GroupProcessingVoteViewHolder(
     private val binding: ItemVoteBinding,
