@@ -9,26 +9,27 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.fitmate.fitmate.R
+import com.fitmate.fitmate.databinding.ItemMyGroupNewsBinding
 import com.fitmate.fitmate.databinding.ItemVoteBinding
+import com.fitmate.fitmate.domain.model.MyGroupNews
 import com.fitmate.fitmate.domain.model.VoteItem
 
-class VoteViewHolder(private val binding: ItemVoteBinding, private val fragment: Fragment, val onClick: (VoteItem) -> Unit) :
+class VoteViewHolder(private val binding: ItemMyGroupNewsBinding, private val fragment: Fragment, val onClick: (MyGroupNews) -> Unit) :
     RecyclerView.ViewHolder(binding.root) {
 
-    fun bind(item: VoteItem) {
-/*        binding.voteItem = item
-        binding.buttonItemVoteFitgroupVote.visibility = View.GONE
-        binding.root.setOnClickListener {
-            onClick(item)
-            val bundle = Bundle()
-            bundle.putInt("groupId", item.groupId)
-            fragment.findNavController().navigate(R.id.groupVoteFragment2, bundle)
+    fun bind(item: MyGroupNews) {
+        binding.data = item
+        try {
+            val agreePercent = (item.agreeCount / item.agreeCount + item.disagreeCount.toFloat() * 100).toInt()
+            binding.textViewVoteAgreePercent.text = fragment.context?.getString(R.string.vote_agree_percent, agreePercent)
+        }catch (e:ArithmeticException){
+            binding.textViewVoteAgreePercent.text = fragment.context?.getString(R.string.vote_agree_percent,0)
         }
-
-        Glide.with(binding.imageViewItemCategoryFitgroupThumbnail.context)
-            .load(item.image)
-            .transform(CenterCrop(), RoundedCorners(16))
-            .error(R.drawable.ic_launcher_logo)
-            .into(binding.imageViewItemCategoryFitgroupThumbnail)*/
+        try {
+            val progressPercent = (item.agreeCount + item.disagreeCount / item.maxAgreeCount.toFloat() * 100).toInt()
+            binding.textViewVoteProgressPercent.text = fragment.context?.getString(R.string.vote_agree_percent, progressPercent)
+        }catch (e:ArithmeticException){
+            binding.textViewVoteProgressPercent.text = fragment.context?.getString(R.string.vote_agree_percent,0)
+        }
     }
 }
