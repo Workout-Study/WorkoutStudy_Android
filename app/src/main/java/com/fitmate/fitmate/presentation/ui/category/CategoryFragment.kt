@@ -29,7 +29,7 @@ class CategoryFragment: Fragment(R.layout.fragment_category) {
         categoryNumber = arguments?.getInt("categoryNumber") ?: 0
         if(categoryNumber == 1) categoryNumber = 0
         Log.d(TAG, categoryNumber.toString())
-        (activity as MainActivity).viewNavigationBar()
+        (activity as MainActivity).goneNavigationBar()
         initView(view)
         observeModel()
         getChipFitGroups()

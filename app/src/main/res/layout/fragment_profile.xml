@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools">
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
 
@@ -46,8 +45,8 @@
 
         <ImageView
             android:id="@+id/imageViewProfliePhoto"
-            android:layout_width="100dp"
-            android:layout_height="100dp"
+            android:layout_width="96dp"
+            android:layout_height="96dp"
             android:layout_marginTop="24dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -58,9 +57,11 @@
             android:id="@+id/imageViewPhoto"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:layout_constraintBottom_toBottomOf="@+id/imageViewProfliePhoto"
-            app:layout_constraintEnd_toEndOf="@+id/imageViewProfliePhoto"
-            app:srcCompat="@drawable/ic_baseline_camera_24" />
+            android:layout_marginStart="52dp"
+            android:layout_marginTop="56dp"
+            app:layout_constraintStart_toStartOf="@+id/imageViewProfliePhoto"
+            app:layout_constraintTop_toTopOf="@+id/imageViewProfliePhoto"
+            app:srcCompat="@drawable/ic_baseline_camera_new" />
 
         <TextView
             android:id="@+id/textViewProflieName"
@@ -73,30 +74,41 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textViewProflieTitle" />
 
-        <EditText
-            android:id="@+id/editTextProfileName"
-            android:layout_width="0dp"
-            android:layout_height="48dp"
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/textInputLayoutSetProflieName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="15dp"
             android:layout_marginStart="16dp"
             android:layout_marginTop="12dp"
             android:layout_marginEnd="16dp"
-            android:ems="10"
-            android:fontFamily="@font/pretendard_regular"
-            android:hint="이름을 입력하세요."
-            android:inputType="text"
-            android:textSize="14sp"
+            app:hintEnabled="false"
+            app:hintTextAppearance="@style/Font.medium12"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textViewProflieName" />
+            app:layout_constraintTop_toBottomOf="@+id/textViewProflieName">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/editTextSetProfileName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="이름을 입력하세요."
+                android:inputType="text"
+                android:maxLines="1"
+                android:textAppearance="@style/Font.regular16" />
+
+        </com.google.android.material.textfield.TextInputLayout>
 
         <LinearLayout
             android:id="@+id/buttonProfileConfirm"
-            app:layout_constraintBottom_toBottomOf="parent"
             android:layout_width="match_parent"
-            android:layout_height="60dp"
-            android:gravity="center"
+            android:layout_height="56dp"
+            android:background="@drawable/linear_button_gradient"
             android:clickable="true"
-            android:background="@drawable/linear_button_gradient">
+            android:gravity="center"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent">
 
             <TextView
                 android:layout_width="wrap_content"
