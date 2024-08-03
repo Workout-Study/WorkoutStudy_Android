@@ -22,30 +22,8 @@ class GroupOppositeVoteViewHolder(
     override fun bind(item: GroupVoteCertificationDetail) {
         binding.viewHolder = this
         binding.data = item
+        binding.viewModel = viewModel
     }
-
-    fun timeUntilEnd(timeString: String): String {
-        // Parse the input time string
-        val formatter = DateTimeFormatter.ISO_OFFSET_DATE_TIME
-        val endTime = OffsetDateTime.parse(timeString, formatter)
-
-        // Get current time
-        val currentTime = OffsetDateTime.now()
-
-        // Calculate duration between current time and end time
-        val duration = Duration.between(currentTime, endTime)
-
-        // Calculate hours and minutes until end time
-        val hours = duration.toHours()
-        val minutes = duration.toMinutes() % 60
-
-        // Return formatted string based on remaining time
-        return when {
-            hours > 0 -> "${hours}시간"
-            else -> "${minutes}분"
-        }
-    }
-
 
     fun showVoteDialog(item: GroupVoteCertificationDetail) {
         val customView = DialogGroupVoteChangeToAgreeBinding.inflate(LayoutInflater.from(fragment.requireContext()))

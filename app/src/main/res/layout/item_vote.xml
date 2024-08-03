@@ -8,8 +8,12 @@
             name="view_holder"
             type="com.fitmate.fitmate.presentation.ui.chatting.list.GroupProcessingVoteViewHolder" />
         <variable
-            name="data"
-            type="com.fitmate.fitmate.domain.model.GroupVoteCertificationDetail" />
+        name="data"
+        type="com.fitmate.fitmate.domain.model.GroupVoteCertificationDetail" />
+
+        <variable
+            name="viewModel"
+            type="com.fitmate.fitmate.presentation.viewmodel.VoteViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -47,6 +51,7 @@
             android:layout_marginTop="2dp"
             android:layout_marginEnd="16dp"
             tools:text="그룹 이름"
+            android:text="@{viewModel.groupDetailData.fitGroupName}"
             android:fontFamily="@font/pretendard_bold"
             android:textColor="@color/turquoise"
             android:textSize="14sp"
@@ -94,17 +99,19 @@
                 style="?android:attr/progressBarStyleHorizontal"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:max="@{data.agreeCount+data.disagreeCount}"
+                tools:progress="@{data.agreeCount}"
                 android:layout_marginStart="8dp"
                 android:layout_marginEnd="10dp"
                 android:layout_weight="1"
                 android:progressDrawable="@drawable/drawable_progress_mint" />
 
             <TextView
+                android:id="@+id/textViewVoteAgreePercent"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="16dp"
                 android:fontFamily="@font/pretendard_regular"
-                android:text="75%"
                 android:textColor="@color/white" />
         </LinearLayout>
 
@@ -124,24 +131,27 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/pretendard_regular"
-                android:text="찬성률"
+                android:text="진행률"
                 android:textColor="@color/white" />
 
             <ProgressBar
                 style="?android:attr/progressBarStyleHorizontal"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:max="@{data.maxAgreeCount}"
+                android:progress="@{data.agreeCount+data.disagreeCount}"
                 android:layout_marginStart="8dp"
                 android:layout_marginEnd="10dp"
                 android:layout_weight="1"
                 android:progressDrawable="@drawable/drawable_progress_mint" />
 
             <TextView
+                android:id="@+id/textViewVoteProgressPercent"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="16dp"
                 android:fontFamily="@font/pretendard_regular"
-                android:text="75%"
+                android:text="@{@string/vote_agree_percent(((int)((data.agreeCount+data.disagreeCount)/data.maxAgreeCount*100)))}"
                 android:textColor="@color/white" />
         </LinearLayout>
 
