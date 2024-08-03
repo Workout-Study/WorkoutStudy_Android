@@ -7,63 +7,51 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.lifecycleScope
-import androidx.lifecycle.repeatOnLifecycle
 import androidx.lifecycle.viewModelScope
 import com.fitmate.fitmate.MainActivity
+import com.fitmate.fitmate.R
 import com.fitmate.fitmate.databinding.FragmentPointBinding
 import com.fitmate.fitmate.domain.model.PointType
-import com.fitmate.fitmate.presentation.ui.category.list.adapter.CategoryAdapter
 import com.fitmate.fitmate.presentation.ui.point.list.adapter.PointHistoryAdapter
 import com.fitmate.fitmate.presentation.viewmodel.PointViewModel
 import com.fitmate.fitmate.util.customGetSerializable
-import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
-class PointFragment : Fragment() {
+class PointFragment : Fragment(R.layout.fragment_point) {
     private lateinit var binding:FragmentPointBinding
     private lateinit var pointOwnerType: PointType
     private lateinit var adapter: PointHistoryAdapter
     private val viewModel: PointViewModel by viewModels()
-    private var userId: Int = -1
+    private var pointOwnerId: Int = -1
     private lateinit var createAt: String
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        val userPreference = (activity as MainActivity).loadUserPreference()
-        userId = userPreference.getOrNull(2)?.toString()?.toInt() ?: -1
 
-        //번들 값에 따라 pointOwnerType 및 createAt값 설정하는 메서드
-        getArgumentAndSettingCreateAt(userPreference)
-
-        adapter = PointHistoryAdapter()
+        //번들 값에 따라 pointOwnerId, pointOwnerType, createAt값 설정하는 메서드
+        getArgumentAndSettingCreateAt()
     }
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?,
-    ): View {
-        binding = FragmentPointBinding.inflate(layoutInflater)
-
-        return binding.root
-    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        binding = FragmentPointBinding.bind(view)
+
+        //어뎁터 초기화 및 설정
+        adapter = PointHistoryAdapter()
         binding.recyclerViewPointHistory.adapter = adapter
 
         //통신 시작(포인트 정보 및 포인트 기록 데이터)
-        viewModel.getPointInfo(userId, pointOwnerType.value)
-        viewModel.getPagingPointHistory(723, pointOwnerType.value,null,null,0,10,null)
+        viewModel.getPointInfo(pointOwnerId, pointOwnerType.value)
+        viewModel.getPagingPointHistory(pointOwnerId, pointOwnerType.value,null,null,0,10,null)
 
         //포인트 기록 데이터 통신 감시
         observePointHistory()
 
     }
-    private fun getArgumentAndSettingCreateAt(userInfo:List<Any>) {
+    private fun getArgumentAndSettingCreateAt() {
         arguments?.let {
             it.customGetSerializable<PointType>("pointOwnerType")?.let {
                 pointOwnerType = it
@@ -73,10 +61,15 @@ class PointFragment : Fragment() {
                     it.getString("createAt")?.let { createString ->
                         createAt = createString
                     }
+                    it.getInt("groupId").let { groupId ->
+                        pointOwnerId = groupId
+                    }
                 }
 
                 PointType.USER -> {
-                    createAt = userInfo[4].toString()
+                    val userPreference = (activity as MainActivity).loadUserPreference()
+                    pointOwnerId = userPreference.getOrNull(2)?.toString()?.toInt() ?: -1
+                    createAt = userPreference[4].toString()
                 }
             }
         }
@@ -87,9 +80,13 @@ class PointFragment : Fragment() {
             viewModelScope.launch {
                 pagingData.collectLatest {
                     if (it != null){
+                        Log.d("tlqkf",it.toString())
                         adapter.submitData(lifecycle, it)
                     }
                 }
+            }
+            pointInfo.observe(viewLifecycleOwner) {
+                Log.d("tlqkf",it.toString())
             }
         }
     }

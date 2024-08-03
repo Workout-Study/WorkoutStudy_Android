@@ -13,6 +13,7 @@ import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.fitmate.fitmate.MainActivity
 import com.fitmate.fitmate.R
 import com.fitmate.fitmate.databinding.FragmentUserInfoBinding
+import com.fitmate.fitmate.domain.model.PointType
 import com.fitmate.fitmate.presentation.viewmodel.LoginViewModel
 import com.fitmate.fitmate.util.ControlActivityInterface
 import com.google.android.material.snackbar.Snackbar
@@ -132,8 +133,11 @@ class UserInfoFragment : Fragment(R.layout.fragment_user_info) {
     }
 
     private fun navigatePoint() {
-        Toast.makeText(context, "추후 업데이트 예정입니다.", Toast.LENGTH_SHORT).show()
-        navigateTo(R.id.action_userInfoFragment_to_loginFragment)
+        val bundle = Bundle().apply {
+            putSerializable("pointOwnerType", PointType.USER)
+        }
+        findNavController().navigate(R.id.pointFragment,bundle)
+
     }
 
 }
