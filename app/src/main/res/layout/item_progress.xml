@@ -31,12 +31,12 @@
                 android:layout_width="100dp"
                 android:layout_height="100dp"
                 android:src="@color/dark_gray"
-                app:url="@{data.thumbnailEndPoint}"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.4" />
+                app:layout_constraintVertical_bias="0.4"
+                app:url="@{data.thumbnailEndPoint}" />
 
             <TextView
                 android:id="@+id/textViewItemProgressName"
@@ -55,8 +55,8 @@
                 android:id="@+id/containerGroupInfo"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:gravity="center_vertical"
                 android:layout_marginTop="20dp"
+                android:gravity="center_vertical"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/textViewItemProgressName">
@@ -74,14 +74,14 @@
                     android:text="@{@string/fit_cycle_info(data.cycle,data.frequency)}"
                     android:textAppearance="@style/Font.regular16"
                     android:textColor="@color/white"
-                    tools:text="1주/2회"/>
+                    tools:text="1주/2회" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:text="▪"
                     android:textAppearance="@style/Font.regular16"
-                    android:textColor="@color/white"
-                    android:text="▪"/>
+                    android:textColor="@color/white" />
 
                 <ImageView
                     android:layout_width="wrap_content"
@@ -104,25 +104,25 @@
                 style="?android:attr/progressBarStyleHorizontal"
                 android:layout_width="0dp"
                 android:layout_height="25dp"
-                app:layout_constraintVertical_bias="0.7"
-                app:layout_constraintTop_toBottomOf="@+id/containerGroupInfo"
-                android:progress="@{data.certificationCount}"
+                android:layout_marginHorizontal="20dp"
                 android:max="@{data.frequency}"
+                android:progress="@{data.certificationCount}"
                 android:progressDrawable="@drawable/drawable_progress"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                android:layout_marginHorizontal="20dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/containerGroupInfo"
+                app:layout_constraintVertical_bias="0.7"
                 tools:progress="4" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@{@string/my_fit_scr_group_progress_text(data.certificationCount,data.frequency)}"
-                app:layout_constraintStart_toStartOf="@+id/progressBarItemProgress"
+                app:layout_constraintBottom_toBottomOf="@+id/progressBarItemProgress"
                 app:layout_constraintEnd_toEndOf="@+id/progressBarItemProgress"
-                app:layout_constraintTop_toTopOf="@+id/progressBarItemProgress"
-                app:layout_constraintBottom_toBottomOf="@+id/progressBarItemProgress"/>
+                app:layout_constraintStart_toStartOf="@+id/progressBarItemProgress"
+                app:layout_constraintTop_toTopOf="@+id/progressBarItemProgress" />
 
 
         </androidx.constraintlayout.widget.ConstraintLayout>
