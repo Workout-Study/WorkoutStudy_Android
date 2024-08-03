@@ -15,6 +15,7 @@ import com.fitmate.fitmate.databinding.FragmentHomeBinding
 import com.fitmate.fitmate.domain.model.VoteItem
 import com.fitmate.fitmate.presentation.ui.home.list.adapter.CarouselAdapter
 import com.fitmate.fitmate.presentation.ui.home.list.adapter.VoteAdapter
+import com.fitmate.fitmate.presentation.viewmodel.HomeViewModel
 import com.fitmate.fitmate.presentation.viewmodel.VoteViewModel
 import com.fitmate.fitmate.util.PendingTokenValue
 import com.fitmate.fitmate.util.customGetSerializable
@@ -30,7 +31,7 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
     private lateinit var binding: FragmentHomeBinding
     private lateinit var recyclerView: RecyclerView
     private var pendingTokenValue: PendingTokenValue? = null
-    private val viewModel: VoteViewModel by viewModels()
+    private val viewModel: HomeViewModel by viewModels()
     private var userId: Int = -1
     private var accessToken: String = ""
     private var refreshToken: String = ""
@@ -39,6 +40,8 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        //펜딩 인텐트로 앱이 시작되었을 경우 네비게이션 작업 수행
         arguments?.let {
             it.customGetSerializable<PendingTokenValue>("pendingToken")?.let {
                 pendingTokenValue = it
@@ -50,6 +53,7 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
             }
             else -> {}
         }
+
         loadUserPreference()
     }
 
@@ -65,8 +69,6 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
 
     override fun onResume() {
         super.onResume()
-        //메인 액티비티의 바텀 네비 아이디를 수동으로 설정
-        (activity as MainActivity).selecedMenuId = R.id.homeFragment
         //viewModel.fetchMyFitGroupVotes(userId)
     }
 
