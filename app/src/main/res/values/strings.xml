@@ -110,6 +110,8 @@
     <string name="item_my_group_message">[ recent messages.. ]</string>
     <string name="item_my_group_date">[ ** : ** ]</string>
 
+
+    <!--그룹 만들기 화면-->
     <string name="make_group_scr_toolbar">FitGroup 만들기</string>
     <string name="make_group_scr_group_name">그룹 이름</string>
     <string name="make_group_scr_group_name_insert">그룹 이름을 입력하세요.</string>
@@ -126,27 +128,14 @@
     <string name="make_group_scr_background">그룹 배경화면 *</string>
     <string name="make_group_scr_confirm">FITGROUP 만들기</string>
 
-
-    <string name="make_fit_off_scr_toolbar">피트오프 신청</string>
-    <string name="make_fit_off_scr_group_name">[ GROUP NAME ]</string>
-    <string name="make_fit_off_scr_reason">사유</string>
-    <string name="make_fit_off_scr_date">날짜</string>
-    <string name="make_fit_off_scr_select_date">날짜 선택하기</string>
-    <string name="make_fit_off_scr_duration">피트오프 기간</string>
-    <string name="make_fit_off_scr_submit">진단서 제출</string>
-    <string name="make_fit_off_scr_confirm">\t\t\t피트오프 신청\t\t\t</string>
-
-    <string name="group_fit_off_scr_toolbar">FitGroup 피트오프 열람</string>
-    <string name="item_fit_off_scr_name">[ Name ]</string>
-    <string name="item_fit_off_scr_date">20**.**.** ~ 20**.**.**</string>
-    <string name="item_fit_off_scr_reason">사유 : [**사유**]</string>
-
+    <!--바텀 메뉴-->
     <string name="menu_home">Home</string>
     <string name="menu_myfit">MyFit</string>
     <string name="menu_category">Category</string>
     <string name="menu_chat">Chat</string>
     <string name="menu_my_page">My Page</string>
 
+    <!--채팅화면-->
     <string name="chatting_scr_fit_mate_progress">운동 현황</string>
     <string name="chatting_scr_fit_mate_vote">투표</string>
     <string name="chatting_scr_fit_group_point">그룹포인트 현황</string>
@@ -159,13 +148,15 @@
     <string name="chatting_scr_quit_group">그룹 탈퇴하기</string>
     <string name="item_chatting_scr_export">추방하기</string>
 
-
+    <!--운동 현황 화면-->
     <string name="progress_scr_toolbar">Fitmate 운동 현황</string>
 
+    <!--벌금 내역인데 삭제될 값-->
     <string name="group_fine_scr_toolbar">FitGroup 벌금 내역 일람</string>
     <string name="group_fine_scr_fine">[**,***]</string>
     <string name="group_fine_scr_account">[**] [***-******-***]</string>
 
+    <!--운동 기록 화면-->
     <string name="certificate_scr_toolbar">운동 기록하기</string>
     <string name="certificate_scr_timer">00 : 00 : 00</string>
     <string name="certificate_scr_confirm">\t\t FIT 기록 시작하기 \t\t</string>
@@ -178,30 +169,55 @@
     <string name="certificate_scr_dialog_positive_button">권한 허용하러가기</string>
     <string name="certificate_scr_dialog_negative_button">알림 없이 진행하기</string>
 
+    <!--피트오프화면-->
     <string name="my_fit_off_scr_toolbar">나의 피트오프 열람</string>
     <string name="my_fit_off_scr_empty_text">피트 오프 데이터가 존재하지 않습니다</string>
+    <string name="make_fit_off_scr_toolbar">피트오프 신청</string>
+    <string name="make_fit_off_scr_group_name">[ GROUP NAME ]</string>
+    <string name="make_fit_off_scr_reason">사유</string>
+    <string name="make_fit_off_scr_date">날짜</string>
+    <string name="make_fit_off_scr_select_date">날짜 선택하기</string>
+    <string name="make_fit_off_scr_duration">피트오프 기간</string>
+    <string name="make_fit_off_scr_submit">진단서 제출</string>
+    <string name="make_fit_off_scr_confirm">\t\t\t피트오프 신청\t\t\t</string>
 
-    <string name="group_vote_scr_toolbar">그룹 투표 현황</string>
+    <!--피트오프 열람화면-->
+    <string name="group_fit_off_scr_toolbar">FitGroup 피트오프 열람</string>
+    <string name="item_fit_off_scr_name">[ Name ]</string>
+    <string name="item_fit_off_scr_date">20**.**.** ~ 20**.**.**</string>
+    <string name="item_fit_off_scr_reason">사유 : [**사유**]</string>
 
-    <string name="permission_dialog_scr_guide_setting">저장소 권한을 항상 모두 허용해야만 갤러리에 접근할 수 있습니다!</string>
-    <string name="permission_dialog_scr_guide_setting_select">권한 설정하러 가기</string>
-    <string name="permission_dialog_scr_guide_setting_cancel">취소</string>
 
+    <!--권한 다이얼로그-->
     <string name="permission_dialog_scr_guide">정말 거부하시겠습니까?</string>
     <string name="permission_dialog_scr_guide_message">저장소 권한을 허용하지 않으면 사진 첨부를 할 수 없습니다!</string>
     <string name="permission_dialog_scr_guide_select">권한 허용하러가기</string>
     <string name="permission_dialog_scr_guide_cancel">취소</string>
-    <string name="my_fit_main_empty_group_guide_text">아직 FitGroup 가입이 되어있지 않으시네요.\n 더 많은 그룹에 가입해보세요!</string>
+    <string name="permission_dialog_scr_guide_setting">저장소 권한을 항상 모두 허용해야만 갤러리에 접근할 수 있습니다!</string>
+    <string name="permission_dialog_scr_guide_setting_select">권한 설정하러 가기</string>
+    <string name="permission_dialog_scr_guide_setting_cancel">취소</string>
+
+
+    <!--마이피트 메인 화면-->
     <string name="fit_cycle_info">%d주/%d회</string>
     <string name="fit_group_count_info">%d/%d</string>
+    <string name="my_fit_main_empty_group_guide_text">아직 FitGroup 가입이 되어있지 않으시네요.\n 더 많은 그룹에 가입해보세요!</string>
+
+    <!--마이피트 화면-->
     <string name="my_fit_calendar_year_info">%d년</string>
     <string name="my_fit_history_total_num">%d건</string>
 
 
+    <!--투표화면-->
     <string name="vote_item_nickname">%s님이 인증을 수행하셨습니다</string>
     <string name="dialog_vote_item_nickname">%s님의 운동기록에 투표하세요!</string>
     <string name="vote_item_end_time">%s뒤에 종료</string>
     <string name="vote_agree_percent">%d%%</string>
+    <string name="group_vote_scr_toolbar">그룹 투표 현황</string>
+
+
+    <!--포인트 화면-->
+    <string name="point_amount">%dP</string>
 
 
 </resources>

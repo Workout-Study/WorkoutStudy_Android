@@ -40,7 +40,7 @@
             android:id="@+id/textViewItemPointHistoryValue"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="일단 보류"
+            android:text="@{@string/point_amount(data.amount)}"
             android:textColor="@color/dark_gray"
             android:textAppearance="@style/Font.medium16"
             app:layout_constraintTop_toBottomOf="@+id/textViewItemPointHistoryOwnerNickName"

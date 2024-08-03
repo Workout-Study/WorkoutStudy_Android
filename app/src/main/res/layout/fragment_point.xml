@@ -4,7 +4,9 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
-
+        <variable
+            name="viewModel"
+            type="com.fitmate.fitmate.presentation.viewmodel.PointViewModel" />
     </data>
 
     <LinearLayout
@@ -40,6 +42,7 @@
                     android:id="@+id/textViewPointBalance"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:text="@{@string/point_amount(viewModel.pointData.balance)}"
                     android:textAppearance="@style/Font.bold24"
                     android:textSize="32sp"
                     tools:text="15,000P"/>
