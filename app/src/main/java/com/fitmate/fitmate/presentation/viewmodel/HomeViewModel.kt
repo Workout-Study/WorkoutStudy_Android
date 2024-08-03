@@ -1,5 +1,6 @@
 package com.fitmate.fitmate.presentation.viewmodel
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.paging.PagingData
@@ -11,12 +12,14 @@ import com.fitmate.fitmate.domain.model.MyGroupNews
 import com.fitmate.fitmate.domain.model.PointHistoryContent
 import com.fitmate.fitmate.domain.usecase.MyGroupNewsUseCase
 import com.fitmate.fitmate.domain.usecase.PointUseCase
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
+@HiltViewModel
 class HomeViewModel@Inject constructor(
     private val myGroupNewsUseCase: MyGroupNewsUseCase
 ): ViewModel() {
@@ -40,7 +43,7 @@ class HomeViewModel@Inject constructor(
                         _pagingData.value = myGroupNewsList
                     }
             } catch (e: Exception) {
-
+                Log.d("tlqkf","그룹 소식 오류:$e")
             }
         }
     }

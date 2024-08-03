@@ -5,33 +5,30 @@ import android.util.Log
 import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.viewModelScope
 import androidx.navigation.fragment.findNavController
-import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.fitmate.fitmate.MainActivity
 import com.fitmate.fitmate.R
-import com.fitmate.fitmate.data.model.dto.VoteCertification
 import com.fitmate.fitmate.databinding.FragmentHomeBinding
-import com.fitmate.fitmate.domain.model.VoteItem
 import com.fitmate.fitmate.presentation.ui.home.list.adapter.CarouselAdapter
-import com.fitmate.fitmate.presentation.ui.home.list.adapter.VoteAdapter
+import com.fitmate.fitmate.presentation.ui.home.list.adapter.MyGroupNewsAdapter
 import com.fitmate.fitmate.presentation.viewmodel.HomeViewModel
-import com.fitmate.fitmate.presentation.viewmodel.VoteViewModel
 import com.fitmate.fitmate.util.PendingTokenValue
 import com.fitmate.fitmate.util.customGetSerializable
 import com.google.android.material.carousel.CarouselLayoutManager
 import com.google.android.material.carousel.MultiBrowseCarouselStrategy
 import dagger.hilt.android.AndroidEntryPoint
-import java.time.ZonedDateTime
-import java.time.format.DateTimeFormatter
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class HomeFragment : Fragment(R.layout.fragment_home) {
 
     private lateinit var binding: FragmentHomeBinding
-    private lateinit var recyclerView: RecyclerView
     private var pendingTokenValue: PendingTokenValue? = null
     private val viewModel: HomeViewModel by viewModels()
+    lateinit var myGroupNewsAdapter: MyGroupNewsAdapter
     private var userId: Int = -1
     private var accessToken: String = ""
     private var refreshToken: String = ""
@@ -54,30 +51,73 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
             else -> {}
         }
 
+        //로컬에 저장된 데이터 가져오기
         loadUserPreference()
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        binding = FragmentHomeBinding.bind(view)
+
+        //바텀 네비 보이도록 설정
         (activity as MainActivity).viewNavigationBar()
-        //initView(view)
+
+        //리사이클러뷰 설정
+        initRecyclerView()
         //setCarousel()
+
+        //네트워킹 감시
         observeViewModel()
 
-    }
-
-    override fun onResume() {
-        super.onResume()
-        //viewModel.fetchMyFitGroupVotes(userId)
+        //그룹 소식 네트워킹
+        viewModel.getPagingGroupNews(userId,0, 10)
     }
 
 
-    private fun initView(view: View) {
-        binding = FragmentHomeBinding.bind(view)
-        recyclerView = binding.recyclerViewHomeMain
-        recyclerView.layoutManager = LinearLayoutManager(context)
-        recyclerView.adapter = VoteAdapter(this) {}
+    private fun initRecyclerView() {
+        myGroupNewsAdapter = MyGroupNewsAdapter(this) {}
+        binding.recyclerViewMyGroupNews.apply {
+            adapter = myGroupNewsAdapter
+        }
+    }
+
+
+
+    private fun observeViewModel() {
+        viewModel.run {
+            viewModelScope.launch {
+                pagingData.collectLatest {
+                    if (it != null){
+                        myGroupNewsAdapter.submitData(lifecycle, it)
+                    }
+                }
+            }
+        }
+    }
+
+    private fun startShimmer() {
+        binding.homeShimmer.startShimmer()
+        binding.homeShimmer.visibility = View.VISIBLE
+        binding.recyclerViewMyGroupNews.visibility = View.GONE
+    }
+
+    private fun stopShimmer() {
+        binding.homeShimmer.stopShimmer()
+        binding.homeShimmer.visibility = View.GONE
+        binding.recyclerViewMyGroupNews.visibility = View.VISIBLE
+    }
+
+    private fun loadUserPreference() {
+        val userPreference = (activity as MainActivity).loadUserPreference()
+        accessToken = userPreference.getOrNull(0)?.toString() ?: ""
+        refreshToken = userPreference.getOrNull(1)?.toString() ?: ""
+        userId = userPreference.getOrNull(2)?.toString()?.toInt() ?: -1
+        platform = userPreference.getOrNull(3)?.toString() ?: ""
+        createdAt = userPreference.getOrNull(4)?.toString() ?: ""
+        Log.d("woojugoing", "$userId, $platform")
+        Log.d("woojugoing", accessToken)
+        Log.d("woojugoing", createdAt)
     }
 
     private fun setCarousel(){
@@ -99,58 +139,5 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
             findNavController().navigate(R.id.action_homeMainFragment_to_groupJoinFragment, bundle)
         }
         carouselView.adapter = carouselAdapter
-    }
-
-    private fun observeViewModel() {
-        //startShimmer()
-        viewModel.myGroupVotes.observe(viewLifecycleOwner) { result ->
-            stopShimmer()
-            result.onSuccess { groups ->
-                val voteItems = groups.map { group ->
-                    group.certificationList.map { cert ->
-                        VoteItem(
-                            title = group.groupName, fitMate = cert.requestUserId.toString(),
-                            percent = formatPercent(cert), time = formatDate(cert),
-                            image = cert.multiMediaEndPoints.firstOrNull() ?: "",
-                            groupId = group.groupId, startTime = null, endTime = null
-                        )}}.flatten().distinctBy { it.title + it.fitMate + it.time }
-                val voteAdapter = binding.recyclerViewHomeMain.adapter as VoteAdapter
-                //voteAdapter.submitList(voteItems)
-            }
-        }
-    }
-
-    private fun startShimmer() {
-        binding.homeShimmer.startShimmer()
-        binding.homeShimmer.visibility = View.VISIBLE
-        binding.recyclerViewHomeMain.visibility = View.GONE
-    }
-
-    private fun stopShimmer() {
-        binding.homeShimmer.stopShimmer()
-        binding.homeShimmer.visibility = View.GONE
-        binding.recyclerViewHomeMain.visibility = View.VISIBLE
-    }
-
-    private fun formatPercent(cert: VoteCertification): Int {
-        return if (cert.agreeCount + cert.disagreeCount > 0) (cert.agreeCount * 100) / (cert.agreeCount + cert.disagreeCount) else 0
-    }
-
-    private fun formatDate(cert: VoteCertification): String {
-        return ZonedDateTime.parse(cert.voteEndDate).format(
-            DateTimeFormatter.ofPattern("(MM/dd) HH:mm 종료")
-        )
-    }
-
-    private fun loadUserPreference() {
-        val userPreference = (activity as MainActivity).loadUserPreference()
-        accessToken = userPreference.getOrNull(0)?.toString() ?: ""
-        refreshToken = userPreference.getOrNull(1)?.toString() ?: ""
-        userId = userPreference.getOrNull(2)?.toString()?.toInt() ?: -1
-        platform = userPreference.getOrNull(3)?.toString() ?: ""
-        createdAt = userPreference.getOrNull(4)?.toString() ?: ""
-        Log.d("woojugoing", "$userId, $platform")
-        Log.d("woojugoing", accessToken)
-        Log.d("woojugoing", createdAt)
     }
 }
