@@ -10,13 +10,14 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/constraintCategorySelect"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:background="@color/white">
 
         <androidx.appcompat.widget.Toolbar
             android:id="@+id/toolbar_category_select"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/zircon"
+            android:background="@color/white"
             android:minHeight="?attr/actionBarSize"
             android:theme="?attr/actionBarTheme"
             app:layout_constraintEnd_toEndOf="parent"
@@ -41,7 +42,7 @@
             android:id="@+id/gridCategorySelect"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_margin="20dp"
+            android:layout_margin="10dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -50,9 +51,10 @@
             <FrameLayout
                 android:id="@+id/frame_category_select_1"
                 android:layout_width="0dp"
-                android:layout_height="0dp"
+                android:layout_height="110dp"
                 android:layout_margin="4dp"
-                android:background="@drawable/bg_rounded_rectangle"
+                android:background="@drawable/bg_rounded_group_5"
+                android:translationZ="10dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHeight_percent="0.18"
@@ -67,24 +69,26 @@
                     android:layout_width="48dp"
                     android:layout_height="48dp"
                     android:layout_gravity="center"
-                    app:srcCompat="@drawable/ic_baseline_category_24" />
+                    android:layout_marginBottom="15dp"
+                    app:srcCompat="@drawable/ic_baseline_category_all_new" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal|bottom"
-                    android:paddingBottom="8dp"
+                    android:paddingBottom="8sp"
                     android:text="전체"
                     android:textAppearance="@style/Font.semibold16"
-                    android:textColor="@color/white" />
+                    android:textColor="@color/violet" />
             </FrameLayout>
 
             <FrameLayout
                 android:id="@+id/frame_category_select_2"
                 android:layout_width="0dp"
-                android:layout_height="0dp"
+                android:layout_height="110dp"
                 android:layout_margin="4dp"
-                android:background="@drawable/bg_rounded_rectangle"
+                android:background="@drawable/bg_rounded_group_5"
+                android:translationZ="10dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHeight_percent="0.18"
@@ -98,24 +102,26 @@
                     android:layout_width="48dp"
                     android:layout_height="48dp"
                     android:layout_gravity="center"
+                    android:layout_marginBottom="15dp"
                     app:srcCompat="@drawable/ic_baseline_normal_24" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal|bottom"
-                    android:paddingBottom="8dp"
+                    android:paddingBottom="8sp"
                     android:text="생활체육"
                     android:textAppearance="@style/Font.semibold16"
-                    android:textColor="@color/white" />
+                    android:textColor="@color/violet" />
             </FrameLayout>
 
             <FrameLayout
                 android:id="@+id/frame_category_select_3"
                 android:layout_width="0dp"
-                android:layout_height="0dp"
+                android:layout_height="110dp"
                 android:layout_margin="4dp"
-                android:background="@drawable/bg_rounded_rectangle"
+                android:background="@drawable/bg_rounded_group_5"
+                android:translationZ="10dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHeight_percent="0.18"
@@ -130,24 +136,26 @@
                     android:layout_width="48dp"
                     android:layout_height="48dp"
                     android:layout_gravity="center"
+                    android:layout_marginBottom="15dp"
                     app:srcCompat="@drawable/ic_baseline_health_24" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal|bottom"
-                    android:paddingBottom="8dp"
+                    android:paddingBottom="8sp"
                     android:text="웨이트"
                     android:textAppearance="@style/Font.semibold16"
-                    android:textColor="@color/white" />
+                    android:textColor="@color/violet" />
             </FrameLayout>
 
             <FrameLayout
                 android:id="@+id/frame_category_select_4"
                 android:layout_width="0dp"
-                android:layout_height="0dp"
+                android:layout_height="110dp"
                 android:layout_margin="4dp"
-                android:background="@drawable/bg_rounded_rectangle"
+                android:background="@drawable/bg_rounded_group_5"
+                android:translationZ="10dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHeight_percent="0.18"
@@ -162,24 +170,26 @@
                     android:layout_width="48dp"
                     android:layout_height="48dp"
                     android:layout_gravity="center"
+                    android:layout_marginBottom="15dp"
                     app:srcCompat="@drawable/ic_baseline_swim_24" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal|bottom"
-                    android:paddingBottom="8dp"
+                    android:paddingBottom="8sp"
                     android:text="수영"
                     android:textAppearance="@style/Font.semibold16"
-                    android:textColor="@color/white" />
+                    android:textColor="@color/violet" />
             </FrameLayout>
 
             <FrameLayout
                 android:id="@+id/frame_category_select_5"
                 android:layout_width="0dp"
-                android:layout_height="0dp"
+                android:layout_height="110dp"
                 android:layout_margin="4dp"
-                android:background="@drawable/bg_rounded_rectangle"
+                android:background="@drawable/bg_rounded_group_5"
+                android:translationZ="10dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHeight_percent="0.18"
@@ -193,26 +203,28 @@
                     android:layout_width="48dp"
                     android:layout_height="48dp"
                     android:layout_gravity="center"
+                    android:layout_marginBottom="15dp"
                     app:srcCompat="@drawable/ic_baseline_soccer_24" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal|bottom"
-                    android:paddingBottom="8dp"
+                    android:paddingBottom="8sp"
                     android:text="축구"
                     android:textAppearance="@style/Font.semibold16"
-                    android:textColor="@color/white" />
+                    android:textColor="@color/violet" />
             </FrameLayout>
 
             <FrameLayout
                 android:id="@+id/frame_category_select_6"
                 android:layout_width="0dp"
-                android:layout_height="0dp"
+                android:layout_height="110dp"
                 android:layout_margin="4dp"
                 android:layout_marginTop="15dp"
                 android:layout_marginBottom="464dp"
-                android:background="@drawable/bg_rounded_rectangle"
+                android:background="@drawable/bg_rounded_group_5"
+                android:translationZ="10dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHeight_percent="0.18"
@@ -227,31 +239,33 @@
                     android:layout_width="48dp"
                     android:layout_height="48dp"
                     android:layout_gravity="center"
+                    android:layout_marginBottom="15dp"
                     app:srcCompat="@drawable/ic_baseline_basketball_24" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal|bottom"
-                    android:paddingBottom="8dp"
+                    android:paddingBottom="8sp"
                     android:text="농구"
                     android:textAppearance="@style/Font.semibold16"
-                    android:textColor="@color/white" />
+                    android:textColor="@color/violet" />
             </FrameLayout>
 
             <FrameLayout
                 android:id="@+id/frame_category_select_7"
                 android:layout_width="0dp"
-                android:layout_height="0dp"
+                android:layout_height="110dp"
                 android:layout_margin="4dp"
-                android:background="@drawable/bg_rounded_rectangle"
+                android:background="@drawable/bg_rounded_group_5"
+                android:translationZ="10dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHeight_percent="0.18"
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/frame_category_select_4"
-                app:layout_constraintVertical_bias="0.05"
+                app:layout_constraintVertical_bias="0.03"
                 app:layout_constraintWidth_percent="0.3">
 
                 <ImageView
@@ -259,30 +273,32 @@
                     android:layout_width="48dp"
                     android:layout_height="48dp"
                     android:layout_gravity="center"
+                    android:layout_marginBottom="15dp"
                     app:srcCompat="@drawable/ic_baseline_baseball_24" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal|bottom"
-                    android:paddingBottom="8dp"
+                    android:paddingBottom="8sp"
                     android:text="야구"
                     android:textAppearance="@style/Font.semibold16"
-                    android:textColor="@color/white" />
+                    android:textColor="@color/violet" />
             </FrameLayout>
 
             <FrameLayout
                 android:id="@+id/frame_category_select_8"
                 android:layout_width="0dp"
-                android:layout_height="0dp"
+                android:layout_height="110dp"
                 android:layout_margin="4dp"
-                android:background="@drawable/bg_rounded_rectangle"
+                android:background="@drawable/bg_rounded_group_5"
+                android:translationZ="10dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHeight_percent="0.18"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/frame_category_select_4"
-                app:layout_constraintVertical_bias="0.05"
+                app:layout_constraintVertical_bias="0.03"
                 app:layout_constraintWidth_percent="0.3">
 
                 <ImageView
@@ -290,31 +306,33 @@
                     android:layout_width="48dp"
                     android:layout_height="48dp"
                     android:layout_gravity="center"
+                    android:layout_marginBottom="15dp"
                     app:srcCompat="@drawable/ic_baseline_biking_24" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal|bottom"
-                    android:paddingBottom="8dp"
+                    android:paddingBottom="8sp"
                     android:text="바이크"
                     android:textAppearance="@style/Font.semibold16"
-                    android:textColor="@color/white" />
+                    android:textColor="@color/violet" />
             </FrameLayout>
 
             <FrameLayout
                 android:id="@+id/frame_category_select_9"
                 android:layout_width="0dp"
-                android:layout_height="0dp"
+                android:layout_height="110dp"
                 android:layout_margin="4dp"
-                android:background="@drawable/bg_rounded_rectangle"
+                android:background="@drawable/bg_rounded_group_5"
+                android:translationZ="10dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHeight_percent="0.18"
                 app:layout_constraintHorizontal_bias="1.0"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/frame_category_select_4"
-                app:layout_constraintVertical_bias="0.05"
+                app:layout_constraintVertical_bias="0.03"
                 app:layout_constraintWidth_percent="0.3">
 
                 <ImageView
@@ -322,31 +340,33 @@
                     android:layout_width="48dp"
                     android:layout_height="48dp"
                     android:layout_gravity="center"
+                    android:layout_marginBottom="15dp"
                     app:srcCompat="@drawable/ic_baseline_climbing_24" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal|bottom"
-                    android:paddingBottom="8dp"
+                    android:paddingBottom="8sp"
                     android:text="클라이밍"
                     android:textAppearance="@style/Font.semibold16"
-                    android:textColor="@color/white" />
+                    android:textColor="@color/violet" />
             </FrameLayout>
 
             <FrameLayout
                 android:id="@+id/frame_category_select_10"
                 android:layout_width="0dp"
-                android:layout_height="0dp"
+                android:layout_height="110dp"
                 android:layout_margin="4dp"
-                android:background="@drawable/bg_rounded_rectangle"
+                android:background="@drawable/bg_rounded_group_5"
+                android:translationZ="10dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHeight_percent="0.18"
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/frame_category_select_7"
-                app:layout_constraintVertical_bias="0.11"
+                app:layout_constraintVertical_bias="0.03"
                 app:layout_constraintWidth_percent="0.3">
 
                 <ImageView
@@ -354,79 +374,17 @@
                     android:layout_width="48dp"
                     android:layout_height="48dp"
                     android:layout_gravity="center"
-                    app:srcCompat="@drawable/ic_baseline_health_24" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_horizontal|bottom"
-                    android:paddingBottom="8dp"
-                    android:text="헬스"
-                    android:textAppearance="@style/Font.semibold16"
-                    android:textColor="@color/white" />
-            </FrameLayout>
-
-            <FrameLayout
-                android:id="@+id/frame_category_select_11"
-                android:layout_width="0dp"
-                android:layout_height="0dp"
-                android:layout_margin="4dp"
-                android:background="@drawable/bg_rounded_rectangle"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHeight_percent="0.18"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/frame_category_select_7"
-                app:layout_constraintVertical_bias="0.11"
-                app:layout_constraintWidth_percent="0.3">
-
-                <ImageView
-                    android:id="@+id/image_category_11"
-                    android:layout_width="48dp"
-                    android:layout_height="48dp"
-                    android:layout_gravity="center"
-                    app:srcCompat="@drawable/ic_baseline_golf_24px" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_horizontal|bottom"
-                    android:paddingBottom="8dp"
-                    android:text="골프"
-                    android:textAppearance="@style/Font.semibold16"
-                    android:textColor="@color/white" />
-            </FrameLayout>
-
-            <FrameLayout
-                android:id="@+id/frame_category_select_12"
-                android:layout_width="0dp"
-                android:layout_height="0dp"
-                android:layout_margin="4dp"
-                android:background="@drawable/bg_rounded_rectangle"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHeight_percent="0.18"
-                app:layout_constraintHorizontal_bias="1.0"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/frame_category_select_7"
-                app:layout_constraintVertical_bias="0.11"
-                app:layout_constraintWidth_percent="0.3">
-
-                <ImageView
-                    android:id="@+id/image_category_12"
-                    android:layout_width="48dp"
-                    android:layout_height="48dp"
-                    android:layout_gravity="center"
+                    android:layout_marginBottom="15dp"
                     app:srcCompat="@drawable/ic_baseline_mountain_24" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal|bottom"
-                    android:paddingBottom="8dp"
+                    android:paddingBottom="8sp"
                     android:text="등산"
                     android:textAppearance="@style/Font.semibold16"
-                    android:textColor="@color/white" />
+                    android:textColor="@color/violet" />
             </FrameLayout>
 
 

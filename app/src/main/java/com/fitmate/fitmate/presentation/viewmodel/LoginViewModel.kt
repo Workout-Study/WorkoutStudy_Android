@@ -28,6 +28,9 @@ class LoginViewModel @Inject constructor(
     private val _user = MutableLiveData<LoginResponse?>()
     val user: LiveData<LoginResponse?> = _user
 
+    private val _userInfo = MutableLiveData<UserResponse?>()
+    val userInfo: LiveData<UserResponse?> = _userInfo
+
     private val _nickname = MutableLiveData<UserResponse>()
     val nickname: LiveData<UserResponse> = _nickname
 
@@ -100,7 +103,8 @@ class LoginViewModel @Inject constructor(
             _isLoading.value = true
             try {
                 val response = loginUseCase.getUserInfo(userId)
-                _nickname.value = response
+                _userInfo.postValue(response)
+//                _nickname.value = response
                 _isLoading.value = false
             } catch (e: Exception) {
                 Log.d(TAG, "getUserInfo Error... $e")
