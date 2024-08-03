@@ -38,6 +38,7 @@ class VoteViewModel @Inject constructor(
 
     private val _groupDetail = MutableLiveData<GetFitGroupDetail>()
     val groupDetail: LiveData<GetFitGroupDetail> = _groupDetail
+    lateinit var groupDetailData: GetFitGroupDetail
 
     private val _myGroupVotes = MediatorLiveData<Result<List<MyFitGroupVote>>>()
     val myGroupVotes: LiveData<Result<List<MyFitGroupVote>>> = _myGroupVotes
@@ -78,6 +79,7 @@ class VoteViewModel @Inject constructor(
             try {
                 val response = groupUseCase.getFitGroupDetail(fitGroupId)
                 _groupDetail.value = response
+                groupDetailData = response
             } catch (e: Exception) {
                 //통신 오류
             }
