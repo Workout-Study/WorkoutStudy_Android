@@ -26,6 +26,8 @@ data class NicknameRequest(
 data class UserResponse(
     @SerializedName("userId") val userId: Int,
     @SerializedName("nickname") val nickname: String,
+    @SerializedName("imageUrl") val imageUrl: String,
+    @SerializedName("state") val state: Boolean,
     @SerializedName("createdAt") val createdAt: String,
     @SerializedName("createdBy") val createdBy: String,
 )

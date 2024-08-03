@@ -7,6 +7,9 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
+import com.bumptech.glide.Glide
+import com.bumptech.glide.load.resource.bitmap.CenterCrop
+import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.fitmate.fitmate.MainActivity
 import com.fitmate.fitmate.R
 import com.fitmate.fitmate.databinding.FragmentUserInfoBinding
@@ -32,6 +35,26 @@ class UserInfoFragment : Fragment(R.layout.fragment_user_info) {
         (activity as ControlActivityInterface).viewNavigationBar()
         loadUserPreference()
         setClickListener()
+        viewModel.getUserInfo(userId)
+        observeViewModel()
+    }
+
+    private fun observeViewModel() {
+        viewModel.userInfo.observe(viewLifecycleOwner) { user ->
+            user?.let {
+                binding.textViewUserInfoName.text = it.nickname
+                binding.textViewUserInfoDate.text = it.createdAt
+                if(it.imageUrl != null) {
+                    Glide.with(binding.imageViewUserInfoIcon.context)
+                        .load(it.imageUrl)
+                        .transform(CenterCrop(), RoundedCorners(16))
+                        .error(R.drawable.ic_launcher_logo)
+                        .into(binding.imageViewUserInfoIcon)
+                } else {
+                    Log.d("woojugoing", "image is null")
+                }
+            }
+        }
     }
 
     private fun loadUserPreference() {

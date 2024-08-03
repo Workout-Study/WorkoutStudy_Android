@@ -1,17 +1,14 @@
 package com.fitmate.fitmate.presentation.ui.category
 
-import android.graphics.Color
 import android.os.Bundle
 import android.view.View
-import android.view.ViewGroup
-import android.widget.ImageView
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.fitmate.fitmate.MainActivity
 import com.fitmate.fitmate.R
 import com.fitmate.fitmate.databinding.FragmentCategorySelectBinding
 
-class CategorySelectFragment: Fragment(R.layout.fragment_category_select){
+class CategorySelectFragment: Fragment(R.layout.fragment_category_select) {
 
     private lateinit var binding: FragmentCategorySelectBinding
 
@@ -20,7 +17,6 @@ class CategorySelectFragment: Fragment(R.layout.fragment_category_select){
         (activity as MainActivity).viewNavigationBar()
 
         initView(view)
-        setColorFilter(Color.WHITE)
         setCategoryClickListeners()
     }
 
@@ -28,20 +24,6 @@ class CategorySelectFragment: Fragment(R.layout.fragment_category_select){
         binding = FragmentCategorySelectBinding.bind(view)
     }
 
-    private fun setColorFilter(color: Int) {
-        val imageViews = binding.run {
-            listOf(
-                imageCategory1, imageCategory2, imageCategory3,
-                imageCategory4, imageCategory5, imageCategory6,
-                imageCategory7, imageCategory8, imageCategory9,
-                imageCategory10, imageCategory11, imageCategory12,
-            )
-        }
-
-        for(imageView in imageViews) {
-            imageView.setColorFilter(color)
-        }
-    }
 
     private fun setCategoryClickListeners() {
         val frames = binding.run {
@@ -49,7 +31,7 @@ class CategorySelectFragment: Fragment(R.layout.fragment_category_select){
                 frameCategorySelect1, frameCategorySelect2, frameCategorySelect3,
                 frameCategorySelect4, frameCategorySelect5, frameCategorySelect6,
                 frameCategorySelect7, frameCategorySelect8, frameCategorySelect9,
-                frameCategorySelect10, frameCategorySelect11, frameCategorySelect12,
+                frameCategorySelect10
             )
         }
 

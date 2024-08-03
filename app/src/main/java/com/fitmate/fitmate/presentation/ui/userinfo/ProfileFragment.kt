@@ -8,6 +8,7 @@ import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.provider.Settings
+import android.util.Log
 import android.view.KeyEvent
 import android.view.View
 import android.view.inputmethod.EditorInfo
@@ -33,6 +34,7 @@ import com.fitmate.fitmate.databinding.FragmentProfileBinding
 import com.fitmate.fitmate.presentation.viewmodel.LoginViewModel
 import com.fitmate.fitmate.util.ControlActivityInterface
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.ktx.storage
 import dagger.hilt.android.AndroidEntryPoint
@@ -67,9 +69,9 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
 
     private fun setListener() {
         binding.imageViewProfliePhoto.setOnClickListener { requestPermission() }
-        //binding.buttonProfileConfirm.setOnClickListener { sendServerChangeProfile() }
+        binding.buttonProfileConfirm.setOnClickListener { sendServerChangeProfile() }
         binding.toolbarProfile.setupWithNavController(findNavController())
-        binding.editTextProfileName.setOnEditorActionListener(TextView.OnEditorActionListener { v, actionId, event ->
+        binding.editTextSetProfileName.setOnEditorActionListener(TextView.OnEditorActionListener { v, actionId, event ->
             if (actionId == EditorInfo.IME_ACTION_DONE || event?.keyCode == KeyEvent.KEYCODE_ENTER) {
                 val imm = activity?.getSystemService(AppCompatActivity.INPUT_METHOD_SERVICE) as InputMethodManager
                 imm.hideSoftInputFromWindow(v.windowToken, 0)
@@ -203,13 +205,17 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
         }
     }
 
-/*    private fun sendServerChangeProfile() {
+    private fun sendServerChangeProfile() {
         imageUri?.let { imageUpload(userId, it) }
-        if(binding.editTextProfileName.length() != 0) {
-            val newNickName = binding.editTextProfileName.text.toString()
-            viewModel.updateNickname(userId, newNickName)
+        if (binding.editTextSetProfileName.length() != 0) {
+            val newNickName = binding.editTextSetProfileName.text.toString()
+            viewModel.updateNickname(userId.toString(), newNickName, imageUri.toString())
+            Log.d("woojugoing", imageUri.toString());
+        } else if(binding.editTextSetProfileName.length() == 0) {
+            // TODO 기존의 닉네임을 안바꾸고 프로필 사진만 바꾸려는 사람에 대한 핸들링 필요
         }
 
         findNavController().navigate(R.id.userInfoFragment)
-    }*/
+        Snackbar.make(binding.root, "프로필 변경을 완료했습니다.", Snackbar.LENGTH_SHORT).show()
+    }
 }

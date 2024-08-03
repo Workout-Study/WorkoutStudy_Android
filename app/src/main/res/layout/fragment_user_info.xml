@@ -54,6 +54,7 @@
                 android:layout_marginTop="10dp"
                 android:text="[ User Name ]"
                 android:textAppearance="@style/Font.bold16"
+                android:textColor="@color/zircon"
                 app:layout_constraintStart_toEndOf="@+id/imageViewUserInfoIcon"
                 app:layout_constraintTop_toTopOf="@+id/imageViewUserInfoIcon" />
 

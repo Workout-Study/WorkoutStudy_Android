@@ -217,7 +217,7 @@
     <fragment
         android:id="@+id/profileFragment"
         android:name="com.fitmate.fitmate.presentation.ui.userinfo.ProfileFragment"
-        android:label="ProfileFragment" />
+        android:label="프로필 사진 변경" />
     <fragment
         android:id="@+id/pointFragment"
         android:name="com.fitmate.fitmate.presentation.ui.point.PointFragment"
