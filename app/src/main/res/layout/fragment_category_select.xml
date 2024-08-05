@@ -103,7 +103,7 @@
                     android:layout_height="48dp"
                     android:layout_gravity="center"
                     android:layout_marginBottom="15dp"
-                    app:srcCompat="@drawable/ic_baseline_normal_24" />
+                    app:srcCompat="@drawable/ic_baseline_png_category_life" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -137,7 +137,7 @@
                     android:layout_height="48dp"
                     android:layout_gravity="center"
                     android:layout_marginBottom="15dp"
-                    app:srcCompat="@drawable/ic_baseline_health_24" />
+                    app:srcCompat="@drawable/ic_baseline_png_category_weight" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -171,7 +171,7 @@
                     android:layout_height="48dp"
                     android:layout_gravity="center"
                     android:layout_marginBottom="15dp"
-                    app:srcCompat="@drawable/ic_baseline_swim_24" />
+                    app:srcCompat="@drawable/ic_baseline_png_category_swim" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -204,7 +204,7 @@
                     android:layout_height="48dp"
                     android:layout_gravity="center"
                     android:layout_marginBottom="15dp"
-                    app:srcCompat="@drawable/ic_baseline_soccer_24" />
+                    app:srcCompat="@drawable/ic_baseline_png_category_soccer" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -240,7 +240,7 @@
                     android:layout_height="48dp"
                     android:layout_gravity="center"
                     android:layout_marginBottom="15dp"
-                    app:srcCompat="@drawable/ic_baseline_basketball_24" />
+                    app:srcCompat="@drawable/ic_baseline_png_category_basketball" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -274,7 +274,7 @@
                     android:layout_height="48dp"
                     android:layout_gravity="center"
                     android:layout_marginBottom="15dp"
-                    app:srcCompat="@drawable/ic_baseline_baseball_24" />
+                    app:srcCompat="@drawable/ic_baseline_png_category_baseball" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -307,7 +307,7 @@
                     android:layout_height="48dp"
                     android:layout_gravity="center"
                     android:layout_marginBottom="15dp"
-                    app:srcCompat="@drawable/ic_baseline_biking_24" />
+                    app:srcCompat="@drawable/ic_baseline_png_category_bike" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -375,7 +375,7 @@
                     android:layout_height="48dp"
                     android:layout_gravity="center"
                     android:layout_marginBottom="15dp"
-                    app:srcCompat="@drawable/ic_baseline_mountain_24" />
+                    app:srcCompat="@drawable/ic_baseline_png_category_mountain" />
 
                 <TextView
                     android:layout_width="wrap_content"
