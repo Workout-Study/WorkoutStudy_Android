@@ -20,8 +20,11 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.mapLatest
+import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.flow.onEmpty
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
@@ -33,7 +36,6 @@ class PointViewModel @Inject constructor(
     private val _pointInfo = MutableLiveData<Point>()
     val pointInfo: LiveData<Point>
         get() = _pointInfo
-    lateinit var pointData: Point
 
     private val _pagingData = MutableStateFlow<PagingData<PointHistoryContent>?>(null)
     val pagingData: StateFlow<PagingData<PointHistoryContent>?> = _pagingData
@@ -44,9 +46,6 @@ class PointViewModel @Inject constructor(
             withContext(Dispatchers.Main) {
                 if (response.isSuccessful) {
                     _pointInfo.value = response.body()?.toPoint()
-                    response.body()?.toPoint()?.let {
-                        pointData = it
-                    }
                 }
             }
 

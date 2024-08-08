@@ -27,6 +27,7 @@
         <Button
             android:id="@+id/chattingExtraFunctionButton"
             style="?attr/materialIconButtonFilledStyle"
+            android:onClick="@{() -> fragment.navigateToPointFragment()}"
             app:icon="@drawable/icon_group_point"
             android:backgroundTint="#8771FA"
             android:layout_width="wrap_content"

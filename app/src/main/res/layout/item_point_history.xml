@@ -4,15 +4,23 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
+
         <variable
             name="data"
             type="com.fitmate.fitmate.domain.model.PointHistoryContent" />
+
+        <variable
+            name="viewHolder"
+            type="com.fitmate.fitmate.presentation.ui.point.list.PointHistoryViewHolder" />
     </data>
 
+
     <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/pointHistoryItemContainer"
         android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:paddingVertical="12dp"
-        android:layout_height="wrap_content">
+        app:layout_constraintTop_toTopOf="parent">
 
         <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/imageViewItemPointHistoryOwnerThumbnail"
@@ -22,29 +30,29 @@
             android:src="@drawable/ic_launcher_logo"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"/>
+            app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
             android:id="@+id/textViewItemPointHistoryOwnerNickName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@{data.depositUserNickname}"
             android:layout_marginStart="12dp"
             android:layout_marginTop="5dp"
-            tools:text="강현구"
+            android:text="@{data.depositUserNickname}"
             android:textAppearance="@style/Font.medium20"
             app:layout_constraintStart_toEndOf="@+id/imageViewItemPointHistoryOwnerThumbnail"
-            app:layout_constraintTop_toTopOf="@+id/imageViewItemPointHistoryOwnerThumbnail" />
+            app:layout_constraintTop_toTopOf="@+id/imageViewItemPointHistoryOwnerThumbnail"
+            tools:text="강현구" />
 
         <TextView
             android:id="@+id/textViewItemPointHistoryValue"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@{@string/point_amount(data.amount)}"
-            android:textColor="@color/dark_gray"
             android:textAppearance="@style/Font.medium16"
-            app:layout_constraintTop_toBottomOf="@+id/textViewItemPointHistoryOwnerNickName"
+            android:textColor="@color/dark_gray"
             app:layout_constraintStart_toStartOf="@+id/textViewItemPointHistoryOwnerNickName"
+            app:layout_constraintTop_toBottomOf="@+id/textViewItemPointHistoryOwnerNickName"
             tools:text="5,000P" />
 
         <TextView
@@ -52,11 +60,13 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="20dp"
-            android:text="@{data.createdAt}"
-            tools:text="2024-04-14"
+            android:text="@{viewHolder.formatDateTime(data.createdAt)}"
             android:textAppearance="@style/Font.regular16"
             android:textColor="@color/dark_gray"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/textViewItemPointHistoryOwnerNickName" />
+            app:layout_constraintTop_toTopOf="@+id/textViewItemPointHistoryOwnerNickName"
+            tools:text="2024-04-14" />
     </androidx.constraintlayout.widget.ConstraintLayout>
+
+
 </layout>

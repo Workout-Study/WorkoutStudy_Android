@@ -1,7 +1,5 @@
 package com.fitmate.fitmate.presentation.ui.chatting
 
-import android.content.ClipData
-import android.content.ClipboardManager
 import android.content.Context
 import android.os.Bundle
 import android.util.Log
@@ -21,6 +19,7 @@ import com.fitmate.fitmate.MainActivity
 import com.fitmate.fitmate.R
 import com.fitmate.fitmate.databinding.FragmentChattingBinding
 import com.fitmate.fitmate.domain.model.ChatItem
+import com.fitmate.fitmate.domain.model.PointType
 import com.fitmate.fitmate.domain.usecase.DBChatUseCase
 import com.fitmate.fitmate.presentation.ui.chatting.list.adapter.ChatAdapter
 import com.fitmate.fitmate.presentation.ui.chatting.list.adapter.FitMate
@@ -57,6 +56,7 @@ class ChattingFragment : Fragment(R.layout.fragment_chatting) {
     private lateinit var chatAdapter: ChatAdapter
     private var isFirst = true
     private var userId: Int = -1
+    private lateinit var groupCreatedAt: String
     private val viewModel: ChattingViewModel by viewModels()
     private val group: GroupViewModel by viewModels()
     private var webSocket: WebSocket? = null
@@ -76,6 +76,8 @@ class ChattingFragment : Fragment(R.layout.fragment_chatting) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        //가져온 그룹 정보 감시하기
+        observeGroupDetail()
         initFragment(view)                          // 화면 바인딩
         initHeightProvider()                        // 메뉴 높이 조절
         setUpRecyclerView()                         // 채팅 아이템 리스트 설정
@@ -142,10 +144,16 @@ class ChattingFragment : Fragment(R.layout.fragment_chatting) {
 
     //포인트 화면으로 이동하는 메서드
     fun navigateToPointFragment() {
-        val bundle = Bundle().apply {
-            putInt("groupId", fitGroupId)
+        if (::groupCreatedAt.isInitialized){
+            val bundle = Bundle().apply {
+                putSerializable("pointOwnerType", PointType.GROUP)
+                putString("createdAt", groupCreatedAt)
+                putInt("groupId", fitGroupId)
+            }
+            findNavController().navigate(R.id.pointFragment, bundle)
+        }else{
+            Toast.makeText(requireContext(),"알 수 없는 오류 발생! 잠시후 이용해주세요!",Toast.LENGTH_SHORT).show()
         }
-        findNavController().navigate(R.id.groupVoteFragment, bundle)
     }
 
 
@@ -315,6 +323,12 @@ class ChattingFragment : Fragment(R.layout.fragment_chatting) {
                     setupWebSocketConnection()
                 }
             }
+        }
+    }
+
+    private fun observeGroupDetail() {
+        group.groupDetail.observe(viewLifecycleOwner) {
+            groupCreatedAt = it.createdAt
         }
     }
 
