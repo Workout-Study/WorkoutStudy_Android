@@ -171,7 +171,7 @@
             app:destination="@id/userInfoFragment" />
     </fragment>
     <fragment
-        android:id="@+id/groupVoteFragment2"
+        android:id="@+id/groupVoteFragment"
         android:name="com.fitmate.fitmate.presentation.ui.chatting.GroupVoteFragment"
         android:label="@string/group_vote_scr_toolbar" />
     <fragment

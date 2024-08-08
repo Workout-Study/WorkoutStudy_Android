@@ -12,7 +12,7 @@ class VoteUseCase @Inject constructor(private val voteRepository: VoteRepository
 
     suspend fun myFitGroupVotes(requestUserId: Int): Result<List<MyFitGroupVote>> = voteRepository.myFitGroupVotes(requestUserId)
 
-    suspend fun eachFitGroupVotes(fitGroupId: Int, userId: Int): Response<EachVoteCertificationResponseDto> = voteRepository.getEachGroupVotes(fitGroupId, userId)
+    suspend fun eachFitGroupVotes(fitGroupId: Int, userId: Int, withOwn: Int): Response<EachVoteCertificationResponseDto> = voteRepository.getEachGroupVotes(fitGroupId, userId, withOwn)
 
     suspend fun getFitMateProgress(fitGroupId: Int): Response<FitGroupProgress> = voteRepository.getFitMateProgress(fitGroupId)
 

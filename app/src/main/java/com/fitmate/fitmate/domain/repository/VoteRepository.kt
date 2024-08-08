@@ -10,7 +10,7 @@ import retrofit2.Response
 
 interface VoteRepository {
 
-    suspend fun getEachGroupVotes(fitGroupId: Int, userId: Int): Response<EachVoteCertificationResponseDto>
+    suspend fun getEachGroupVotes(fitGroupId: Int, userId: Int, withOwn: Int): Response<EachVoteCertificationResponseDto>
 
     suspend fun myFitGroupVotes(requestUserId: Int): Result<List<MyFitGroupVote>>
 

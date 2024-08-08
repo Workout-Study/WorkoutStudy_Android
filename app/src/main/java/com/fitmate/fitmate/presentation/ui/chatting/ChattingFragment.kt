@@ -77,7 +77,6 @@ class ChattingFragment : Fragment(R.layout.fragment_chatting) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initFragment(view)                          // 화면 바인딩
-        setupClickListeners()                       // + 메뉴 클릭 리스너
         initHeightProvider()                        // 메뉴 높이 조절
         setUpRecyclerView()                         // 채팅 아이템 리스트 설정
         loadChatMessage()                           // 채팅 아이템 실시간 load
@@ -99,40 +98,14 @@ class ChattingFragment : Fragment(R.layout.fragment_chatting) {
         binding.toolbarFragmentChatting.setupWithNavController(findNavController())
     }
 
-    private fun setupClickListeners() {
-        binding.run {
-            val clickMappings = mapOf(
-                imageViewChattingFragmentOpenContentList to { toggleExtraFunctionContainer() },
-                buttonFragmentChattingExit to { findNavController().popBackStack() },
-                imageViewChattingToolbarForDrawerLayout to { toggleDrawer() },
-            )
-            clickMappings.forEach { (button, action) -> button.setOnClickListener { action() } }
-        }
+
+    //뒤로가기 메서드
+    fun navigateToBack() {
+        findNavController().popBackStack()
     }
 
-    private fun navigate(fragmentId: Int, isBundle: Boolean) {
-        if(isBundle){
-            val bundle = Bundle()
-            bundle.putInt("groupId", fitGroupId)
-            findNavController().navigate(fragmentId, bundle)
-        } else {
-            findNavController().navigate(fragmentId)
-            //Toast.makeText(context, "추후 업데이트 예정입니다.", Toast.LENGTH_SHORT).show()
-        }
-    }
-
-
-    private fun copyAccountNum() {
-        hideKeyboard()
-        group.groupDetail.observe(viewLifecycleOwner) {groupDetail ->
-            penaltyAccountNumber = groupDetail.penaltyAccountNumber
-        }
-        val clipboard = context?.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
-        val clip = ClipData.newPlainText("Group Account Number", penaltyAccountNumber)
-        clipboard.setPrimaryClip(clip)
-    }
-
-    private fun toggleDrawer() {
+    //드로워 레이아웃 여는 메서드
+    fun toggleDrawer() {
         group.getFitMateList(fitGroupId)
         val includedLayout = view?.findViewById<View>(R.id.includeFragmentChattingMyInfo)
         val textView = includedLayout?.findViewById<TextView>(R.id.textViewItemChattingFitMateName)
@@ -151,19 +124,38 @@ class ChattingFragment : Fragment(R.layout.fragment_chatting) {
         binding.drawerLayoutForFragmentChatting.apply { if (isDrawerOpen(GravityCompat.END)) closeDrawer(GravityCompat.END) else openDrawer(GravityCompat.END) }
     }
 
-
-    private fun toggleExtraFunctionContainer() {
+    //하단 + 클릭 시 추가 기능 영역 여는 메서드
+     fun toggleExtraFunctionContainer() {
         binding.containerExtraFunction.also { container ->
             container.visibility = if (container.visibility == View.GONE) View.VISIBLE else View.GONE
             if (container.visibility == View.VISIBLE) hideKeyboard()
         }
     }
 
+    //투표 화면으로 이동하는 메서드
+    fun navigateToVoteFragment() {
+        val bundle = Bundle().apply {
+            putInt("groupId", fitGroupId)
+        }
+        findNavController().navigate(R.id.groupVoteFragment, bundle)
+    }
+
+    //포인트 화면으로 이동하는 메서드
+    fun navigateToPointFragment() {
+        val bundle = Bundle().apply {
+            putInt("groupId", fitGroupId)
+        }
+        findNavController().navigate(R.id.groupVoteFragment, bundle)
+    }
+
+
+    //키보드 닫는 메서드
     private fun hideKeyboard() {
-        val imm = context?.getSystemService(Context.INPUT_METHOD_SERVICE) as? InputMethodManager
+        val imm = requireContext().getSystemService(Context.INPUT_METHOD_SERVICE) as? InputMethodManager
         imm?.hideSoftInputFromWindow(binding.root.windowToken, 0)
     }
 
+    //키보드 높이 계산 메서드
     private fun initHeightProvider() {
         (activity as MainActivity).let {
             heightProvider = HeightProvider(it).init().setHeightListener { height ->

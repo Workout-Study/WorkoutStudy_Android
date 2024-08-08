@@ -90,7 +90,7 @@ class VoteViewModel @Inject constructor(
         viewModelScope.launch {
             _isLoading.value = true
             try {
-                val response = voteUseCase.eachFitGroupVotes(fitGroupId, userId)
+                val response = voteUseCase.eachFitGroupVotes(fitGroupId, userId, 1)
                 if(response.isSuccessful) {
                     response.body()?.let { dtoBody ->
                         Log.d("tlqkf","통신 결과: "+dtoBody.toString())
