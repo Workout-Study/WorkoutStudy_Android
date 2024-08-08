@@ -54,6 +54,15 @@
     <string name="item_category_scr_fit">[**]회 / 1주</string>
     <string name="item_category_scr_people">[**] / [**]명</string>
 
+    <!--홈 화면-->
+    <string name="home_main_scr_title_1">HOT FITGROUP</string>
+    <string name="home_main_scr_title_2">나의 FITGROUP 소식</string>
+    <string name="home_main_scr_mine">내 것만 보기</string>
+
+
+    <!--카테고리 화면-->
+    <string name="category_title">Category</string>
+    <string name="category_all">전체</string>
     <string name="category_scr_1">등산</string>
     <string name="category_scr_2">생활 체육</string>
     <string name="category_scr_3">웨이트</string>
@@ -63,9 +72,7 @@
     <string name="category_scr_7">야구</string>
     <string name="category_scr_8">바이킹</string>
     <string name="category_scr_9">클라이밍</string>
-    <string name="home_main_scr_title_1">HOT FITGROUP</string>
-    <string name="home_main_scr_title_2">나의 FITGROUP 소식</string>
-    <string name="home_main_scr_mine">내 것만 보기</string>
+
 
 
     <string name="login_scr_kakao">카카오로 시작하기</string>
@@ -96,7 +103,6 @@
     <string name="onboarding_permission_scr_button_text">FITMATE 시작하기</string>
 
 
-    <string name="my_fit_scr_title">My Fit</string>
     <string name="my_fit_scr_fit_off">피트 오프</string>
     <string name="my_fit_scr_fit_record">기록하기</string>
     <string name="my_fit_scr_guide_enter_group">아직 FitGroup에 가입되어있지 않으시군요?!</string>
@@ -203,11 +209,13 @@
 
 
     <!--마이피트 메인 화면-->
+    <string name="fit_title">My Fit</string>
     <string name="fit_cycle_info">%d주/%d회</string>
     <string name="fit_group_count_info">%d/%d</string>
     <string name="my_fit_main_empty_group_guide_text">아직 FitGroup 가입이 되어있지 않으시네요.\n 더 많은 그룹에 가입해보세요!</string>
 
     <!--마이피트 화면-->
+    <string name="my_fit_title">내 운동기록</string>
     <string name="my_fit_calendar_year_info">%d년</string>
     <string name="my_fit_history_total_num">%d건</string>
 

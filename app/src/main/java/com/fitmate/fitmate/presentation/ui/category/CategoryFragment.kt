@@ -32,7 +32,6 @@ class CategoryFragment: Fragment(R.layout.fragment_category) {
         (activity as MainActivity).goneNavigationBar()
         initView(view)
         observeModel()
-        getChipFitGroups()
     }
 
     override fun onPause() {
@@ -53,7 +52,7 @@ class CategoryFragment: Fragment(R.layout.fragment_category) {
         binding.recyclerViewCategory.adapter = CategoryAdapter(this) {}
 
 
-        binding.toolbarTitle.text = when(categoryNumber) {
+        binding.toolbar.title = when(categoryNumber) {
             0 -> "#전체"   2 -> "#생활체육"    3 -> "#웨이트"
             4 -> "#수영"   5 -> "#축구"       6 -> "#농구"
             7 -> "#야구"   8 -> "#바이크"      9 -> "#클라이밍"
@@ -83,30 +82,10 @@ class CategoryFragment: Fragment(R.layout.fragment_category) {
             }
         }
     }
-    private fun getChipFitGroups() {
-        val chipToCategoryMap = mapOf(
-            R.id.chipCategory1 to 1, R.id.chipCategory2 to 2, R.id.chipCategory3 to 3,
-            R.id.chipCategory4 to 4, R.id.chipCategory5 to 5, R.id.chipCategory6 to 6,
-            R.id.chipCategory7 to 7, R.id.chipCategory8 to 8, R.id.chipCategory9 to 9
-        )
-
-        binding.chipGroupCategory.setOnCheckedStateChangeListener { _, checkedIds ->
-            if (checkedIds.isEmpty()) {
-                Log.d(TAG, "connect in 0")
-                viewModel.getGroups(true, 0, 0)
-            } else {
-                val categoryId = chipToCategoryMap[checkedIds[0]] ?: return@setOnCheckedStateChangeListener
-                Log.d(TAG, "connect in $categoryId")
-                viewModel.getGroups(true, categoryId, 0)
-            }
-        }
-    }
 
 
-    private fun getAllFitGroups() {
-        binding.chipGroupCategory.clearCheck()
-        viewModel.getGroups(true,  0, 1000)
-    }
+
+
 
     private fun startShimmer() {
         binding.categoryShimmer.startShimmer()
