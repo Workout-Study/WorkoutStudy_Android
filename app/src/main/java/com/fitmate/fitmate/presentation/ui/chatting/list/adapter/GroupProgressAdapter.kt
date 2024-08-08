@@ -4,13 +4,15 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
+import com.fitmate.fitmate.databinding.ItemGroupProgressBinding
 import com.fitmate.fitmate.databinding.ItemProgressBinding
 import com.fitmate.fitmate.domain.model.FitProgressItem
+import com.fitmate.fitmate.domain.model.ItemFitMateProgressForAdapter
 
-class GroupProgressAdapter (private val onClick: (FitProgressItem) -> Unit):
-    ListAdapter<FitProgressItem, GroupProgressViewHolder>(GroupProgressDiffCallback) {
+class GroupProgressAdapter (private val onClick: (ItemFitMateProgressForAdapter) -> Unit):
+    ListAdapter<ItemFitMateProgressForAdapter, GroupProgressViewHolder>(GroupProgressDiffCallback) {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): GroupProgressViewHolder {
-        val binding = ItemProgressBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        val binding = ItemGroupProgressBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return GroupProgressViewHolder(binding, onClick)
     }
 
@@ -20,13 +22,13 @@ class GroupProgressAdapter (private val onClick: (FitProgressItem) -> Unit):
     }
 
     companion object {
-        private val GroupProgressDiffCallback = object: DiffUtil.ItemCallback<FitProgressItem>() {
+        private val GroupProgressDiffCallback = object: DiffUtil.ItemCallback<ItemFitMateProgressForAdapter>() {
 
-            override fun areItemsTheSame(oldItem: FitProgressItem, newItem: FitProgressItem): Boolean {
-                return oldItem.itemId == newItem.itemId
+            override fun areItemsTheSame(oldItem: ItemFitMateProgressForAdapter, newItem: ItemFitMateProgressForAdapter): Boolean {
+                return oldItem.fitMateUserId == newItem.fitMateUserId
             }
 
-            override fun areContentsTheSame(oldItem: FitProgressItem, newItem: FitProgressItem): Boolean {
+            override fun areContentsTheSame(oldItem: ItemFitMateProgressForAdapter, newItem: ItemFitMateProgressForAdapter): Boolean {
                 return oldItem == newItem
             }
         }

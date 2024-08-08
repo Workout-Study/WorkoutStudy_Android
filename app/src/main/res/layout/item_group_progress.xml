@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="data"
+            type="com.fitmate.fitmate.domain.model.ItemFitMateProgressForAdapter" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:background="@drawable/bg_rounded_rectangle"
+        android:padding="16dp"
+        android:layout_marginBottom="12dp"
+        android:layout_height="wrap_content">
+
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/imageViewItemProgressThumbnail"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:src="@drawable/ic_launcher_logo"
+            app:civ_circle_background_color="@color/black"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+             />
+        <!--app:url="@{data.thumbnailEndPoint}"-->
+
+        <TextView
+            android:id="@+id/textViewItemFitMateProgressName"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:maxLines="1"
+            android:ellipsize="end"
+            android:layout_marginStart="12dp"
+            android:text="@{data.fitMateUserNickname}"
+            android:textAppearance="@style/Font.semibold16"
+            android:textColor="@color/white"
+            app:layout_constraintStart_toEndOf="@+id/imageViewItemProgressThumbnail"
+            app:layout_constraintTop_toTopOf="@+id/imageViewItemProgressThumbnail"
+            tools:text="[ Name ]" />
+
+        <ProgressBar
+            android:id="@+id/progressBarItemProgress"
+            style="?android:attr/progressBarStyleHorizontal"
+            android:layout_width="0dp"
+            android:layout_height="25dp"
+            android:layout_marginStart="12dp"
+            android:layout_marginTop="6dp"
+            android:progress="@{data.certificationCount}"
+            android:max="@{data.frequency}"
+            android:progressDrawable="@drawable/drawable_progress_mint"
+            app:layout_constraintBottom_toBottomOf="@+id/imageViewItemProgressThumbnail"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/imageViewItemProgressThumbnail"
+            app:layout_constraintTop_toBottomOf="@+id/textViewItemFitMateProgressName"
+            tools:progress="4" />
+
+        <TextView
+            android:id="@+id/textViewFitMateFitCount"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            tools:text="5"
+            android:textAppearance="@style/Font.bold16"
+            android:textColor="@color/white"
+            android:text="@{String.valueOf(data.certificationCount)}"
+            app:layout_constraintEnd_toStartOf="@+id/textViewGroupFitCount"
+            app:layout_constraintTop_toTopOf="@+id/textViewGroupFitCount"
+            app:layout_constraintBottom_toBottomOf="@+id/textViewGroupFitCount"
+            />
+
+        <TextView
+            android:id="@+id/textViewGroupFitCount"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            tools:text="/7"
+            android:textAppearance="@style/Font.regular16"
+            android:textColor="@color/white"
+            android:text="@{@string/my_fit_scr_group_progress_text(data.frequency)}"
+            app:layout_constraintEnd_toEndOf="@+id/progressBarItemProgress"
+            android:layout_marginBottom="5dp"
+            app:layout_constraintBottom_toTopOf="@+id/progressBarItemProgress"
+            />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</layout>

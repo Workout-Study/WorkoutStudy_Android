@@ -104,7 +104,7 @@
     <string name="my_fit_scr_fit_off_spacebar">\t피트오프</string>
     <string name="my_fit_scr_fit_record_spacebar">\t기록하기</string>
     <string name="my_fit_scr_fit_timer_text">[00:00:00]</string>
-    <string name="my_fit_scr_group_progress_text">%d / %d</string>
+
 
     <string name="my_group_scr_toolbar">My FitGroup</string>
 
@@ -151,7 +151,9 @@
     <string name="item_chatting_scr_export">추방하기</string>
 
     <!--운동 현황 화면-->
-    <string name="progress_scr_toolbar">Fitmate 운동 현황</string>
+    <string name="my_fit_scr_group_progress_toolbar">Fitmate 운동 현황</string>
+    <string name="my_fit_scr_group_progress_text">/%d</string>
+
 
     <!--벌금 내역인데 삭제될 값-->
     <string name="group_fine_scr_toolbar">FitGroup 벌금 내역 일람</string>
@@ -213,12 +215,13 @@
     <!--투표화면-->
     <string name="vote_item_nickname">%s님이 인증을 수행하셨습니다</string>
     <string name="dialog_vote_item_nickname">%s님의 운동기록에 투표하세요!</string>
-    <string name="vote_item_end_time">%s뒤에 종료</string>
+    <string name="vote_item_end_time">%s 뒤에 종료</string>
     <string name="vote_agree_percent">%d%%</string>
-    <string name="group_vote_scr_toolbar">그룹 투표 현황</string>
+    <string name="group_vote_scr_toolbar">투표</string>
 
 
     <!--포인트 화면-->
+    <string name="point_title">포인트 내역 열람</string>
     <string name="point_amount">%dP</string>
 
 

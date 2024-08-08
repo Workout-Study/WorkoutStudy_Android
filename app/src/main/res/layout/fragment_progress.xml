@@ -17,19 +17,22 @@
             style="@style/Theme.Fitmate.Toolbar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:title="@string/progress_scr_toolbar" />
+            app:titleCentered="true"
+            app:title="@string/my_fit_scr_group_progress_toolbar" />
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_margin="10dp"
+            android:layout_margin="16dp"
             android:orientation="vertical">
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/recycler_progress"
                 android:layout_width="match_parent"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                tools:itemCount="2"
                 android:layout_height="match_parent"
-                tools:listitem="@layout/item_progress" />
+                tools:listitem="@layout/item_group_progress" />
         </LinearLayout>
 
     </LinearLayout>

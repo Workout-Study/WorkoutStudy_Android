@@ -78,8 +78,10 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
 
     private fun initRecyclerView() {
         myGroupNewsAdapter = MyGroupNewsAdapter(this) {}
+
         myGroupNewsAdapter.addOnPagesUpdatedListener {
             if (myGroupNewsAdapter.itemCount == 0){
+                stopShimmer()
                 binding.textViewHomeNoGroup.visibility = View.VISIBLE
             }
         }
@@ -94,7 +96,6 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
         viewModel.run {
             viewModelScope.launch {
                 pagingData.collectLatest {
-                    stopShimmer()
                     if (it != null){
                         myGroupNewsAdapter.submitData(lifecycle, it)
                     }
@@ -106,13 +107,11 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
     private fun startShimmer() {
         binding.homeShimmer.startShimmer()
         binding.homeShimmer.visibility = View.VISIBLE
-        binding.recyclerViewMyGroupNews.visibility = View.GONE
     }
 
     private fun stopShimmer() {
         binding.homeShimmer.stopShimmer()
         binding.homeShimmer.visibility = View.GONE
-        binding.recyclerViewMyGroupNews.visibility = View.VISIBLE
     }
 
     private fun loadUserPreference() {

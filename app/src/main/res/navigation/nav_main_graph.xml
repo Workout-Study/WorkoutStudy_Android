@@ -226,5 +226,9 @@
         android:id="@+id/chattingFragment"
         android:name="com.fitmate.fitmate.presentation.ui.chatting.ChattingFragment"
         android:label="ChattingFragment" />
+    <fragment
+        android:id="@+id/groupProgressFragment"
+        android:name="com.fitmate.fitmate.presentation.ui.chatting.GroupProgressFragment"
+        android:label="Fitmate 운동 현황" />
 
 </navigation>

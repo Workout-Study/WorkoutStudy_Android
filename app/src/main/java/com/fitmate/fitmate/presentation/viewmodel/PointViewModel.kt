@@ -74,7 +74,7 @@ class PointViewModel @Inject constructor(
                         _pagingData.value = pointHistoryList
                     }
             } catch (e: Exception) {
-
+                Log.d("tlqkf","그룹 투표 오류:$e")
             }
         }
     }

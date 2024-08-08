@@ -39,7 +39,7 @@
                 app:url="@{data.thumbnailEndPoint}" />
 
             <TextView
-                android:id="@+id/textViewItemProgressName"
+                android:id="@+id/textViewItemFitMateProgressName"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
@@ -59,7 +59,7 @@
                 android:gravity="center_vertical"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textViewItemProgressName">
+                app:layout_constraintTop_toBottomOf="@+id/textViewItemFitMateProgressName">
 
                 <ImageView
                     android:layout_width="wrap_content"
@@ -105,6 +105,7 @@
                 android:layout_width="0dp"
                 android:layout_height="25dp"
                 android:layout_marginHorizontal="20dp"
+                tools:max="10"
                 android:max="@{data.frequency}"
                 android:progress="@{data.certificationCount}"
                 android:progressDrawable="@drawable/drawable_progress"
@@ -113,16 +114,20 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/containerGroupInfo"
                 app:layout_constraintVertical_bias="0.7"
-                tools:progress="4" />
+                tools:progress="2" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@{@string/my_fit_scr_group_progress_text(data.certificationCount,data.frequency)}"
+                android:fontFamily="@font/pretendard_bold"
+                android:text="@{@string/fit_group_count_info(data.certificationCount,data.frequency)}"
+                android:textColor="#00D9FA"
+                android:textColorLink="@color/black"
                 app:layout_constraintBottom_toBottomOf="@+id/progressBarItemProgress"
                 app:layout_constraintEnd_toEndOf="@+id/progressBarItemProgress"
                 app:layout_constraintStart_toStartOf="@+id/progressBarItemProgress"
-                app:layout_constraintTop_toTopOf="@+id/progressBarItemProgress" />
+                app:layout_constraintTop_toTopOf="@+id/progressBarItemProgress"
+                tools:text="5 / 7" />
 
 
         </androidx.constraintlayout.widget.ConstraintLayout>

@@ -17,6 +17,9 @@
 
         <com.google.android.material.appbar.MaterialToolbar
             android:layout_width="match_parent"
+            app:titleCentered="true"
+            style="@style/Theme.Fitmate.Toolbar"
+            app:title="@string/point_title"
             android:layout_height="wrap_content"/>
 
         <androidx.cardview.widget.CardView

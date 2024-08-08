@@ -17,6 +17,7 @@
             style="@style/Theme.Fitmate.Toolbar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            app:titleCentered="true"
             app:title="@string/group_vote_scr_toolbar" />
 
         <com.google.android.material.tabs.TabLayout

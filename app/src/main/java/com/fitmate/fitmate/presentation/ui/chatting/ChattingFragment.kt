@@ -156,6 +156,18 @@ class ChattingFragment : Fragment(R.layout.fragment_chatting) {
         }
     }
 
+    //포인트 화면으로 이동하는 메서드
+    fun navigateToProgressFragment() {
+        if (fitGroupId != -1){
+            val bundle = Bundle().apply {
+                putInt("groupId", fitGroupId)
+            }
+            findNavController().navigate(R.id.groupProgressFragment, bundle)
+        }else{
+            Toast.makeText(requireContext(),"알 수 없는 오류 발생! 잠시후 이용해주세요!",Toast.LENGTH_SHORT).show()
+        }
+    }
+
 
     //키보드 닫는 메서드
     private fun hideKeyboard() {

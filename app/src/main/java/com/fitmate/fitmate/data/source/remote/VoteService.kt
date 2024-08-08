@@ -1,7 +1,7 @@
 package com.fitmate.fitmate.data.source.remote
 
 import com.fitmate.fitmate.data.model.dto.EachVoteCertificationResponseDto
-import com.fitmate.fitmate.data.model.dto.FitGroupProgress
+import com.fitmate.fitmate.data.model.dto.FitMateProgressDto
 import com.fitmate.fitmate.data.model.dto.MyFitResponse
 import com.fitmate.fitmate.data.model.dto.VoteRequestDto
 import com.fitmate.fitmate.data.model.dto.VoteResponseDto
@@ -19,7 +19,7 @@ interface VoteService {
     @GET("/my-fit-service/my-fits/certifications/progresses/{fit-group-id}")
     suspend fun getFitMateProgress( // Fit Certification Progress List By fit group id
         @Path("fit-group-id") fitGroupId: Int
-    ): Response<FitGroupProgress>
+    ): Response<FitMateProgressDto>
 
     @POST("/my-fit-service/votes")
     suspend fun registerVote(   // Register Vote

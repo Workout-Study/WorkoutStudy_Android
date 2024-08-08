@@ -30,7 +30,6 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:baselineAligned="false"
                 android:orientation="vertical">
 
                 <TextView
@@ -69,27 +68,26 @@
 
                     <TextView
                         android:id="@+id/textViewHomeNoGroup"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="가입된 FitGroup이 없습니다."
-                        android:visibility="gone"
-                        app:layout_constraintBottom_toBottomOf="@+id/homeShimmer"
-                        app:layout_constraintEnd_toEndOf="@+id/homeShimmer"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="@+id/homeShimmer" />
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:layout_marginTop="16dp"
+                        android:textAppearance="@style/Font.semibold16"
+                        android:text="가입된 그룹이 없거나 그룹이 조용하네요"
+                        android:textColor="@color/fitmate_blue"
+                        android:layout_marginHorizontal="20dp"
+                        android:visibility="gone" />
 
                     <androidx.recyclerview.widget.RecyclerView
                         android:layout_marginTop="16dp"
-                        app:layout_constraintTop_toTopOf="@+id/textViewMainTitle2"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        android:layout_weight="1"
                         android:id="@+id/recyclerViewMyGroupNews"
                         android:nestedScrollingEnabled="false"
                         android:overScrollMode="never"
                         android:layout_marginHorizontal="16dp"
                         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                         android:layout_width="match_parent"
-                        android:layout_height="0dp" />
+                        android:layout_height="wrap_content" />
 
                     <com.facebook.shimmer.ShimmerFrameLayout
                         android:id="@+id/homeShimmer"
