@@ -72,11 +72,17 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
 
         //그룹 소식 네트워킹
         viewModel.getPagingGroupNews(userId,0, 10)
+        startShimmer()
     }
 
 
     private fun initRecyclerView() {
         myGroupNewsAdapter = MyGroupNewsAdapter(this) {}
+        myGroupNewsAdapter.addOnPagesUpdatedListener {
+            if (myGroupNewsAdapter.itemCount == 0){
+                binding.textViewHomeNoGroup.visibility = View.VISIBLE
+            }
+        }
         binding.recyclerViewMyGroupNews.apply {
             adapter = myGroupNewsAdapter
         }
@@ -88,6 +94,7 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
         viewModel.run {
             viewModelScope.launch {
                 pagingData.collectLatest {
+                    stopShimmer()
                     if (it != null){
                         myGroupNewsAdapter.submitData(lifecycle, it)
                     }

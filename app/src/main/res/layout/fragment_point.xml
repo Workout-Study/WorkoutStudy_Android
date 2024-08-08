@@ -115,7 +115,7 @@
             android:layout_weight="1"
             android:gravity="center"
             android:textAppearance="@style/Font.semibold16"
-            android:text="포인트 내역이 존재하지 않습니다!"
+            android:text="포인트 거래 기록이 존재하지 않습니다!"
             android:layout_gravity="center"/>
 
         <androidx.recyclerview.widget.RecyclerView
@@ -129,14 +129,6 @@
             tools:itemCount="3"
             android:layout_weight="1"/>
 
-        <com.facebook.shimmer.ShimmerFrameLayout
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:visibility="gone"
-            android:layout_weight="1">
-
-
-        </com.facebook.shimmer.ShimmerFrameLayout>
 
     </LinearLayout>
 </layout>

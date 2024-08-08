@@ -53,6 +53,14 @@ class PointFragment : Fragment(R.layout.fragment_point) {
         adapter = PointHistoryAdapter()
         binding.recyclerViewPointHistory.adapter = adapter
 
+        //리사이클러뷰 어뎁터 업데이트 후 데이터가 있는지 확인하고 없으면 비어있다는 안내 메시지 띄우는작업
+        adapter.addOnPagesUpdatedListener {
+            val test = adapter.itemCount
+            if (test == 0){
+                binding.recyclerViewPointHistory.visibility = View.GONE
+                binding.textViewGuidePointHistoryEmpty.visibility = View.VISIBLE
+            }
+        }
 
         //통신 시작(포인트 정보 및 포인트 기록 데이터)
         viewModel.getPointInfo(pointOwnerId, pointOwnerType.value)
@@ -94,7 +102,6 @@ class PointFragment : Fragment(R.layout.fragment_point) {
             viewModelScope.launch {
                  pagingData.collectLatest {
                     if (it != null){
-                        Log.d("tlqkf",it.toString())
                         adapter.submitData(lifecycle, it)
                     }
                 }
