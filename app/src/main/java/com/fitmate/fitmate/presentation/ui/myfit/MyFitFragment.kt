@@ -64,7 +64,6 @@ class MyFitFragment : Fragment() {
 
     private fun toolbarSetting() {
         binding.toolbar.setupWithNavController(findNavController())
-        binding.toolbar.title = getString(R.string.my_fit_scr_title)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

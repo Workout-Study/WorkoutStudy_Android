@@ -25,7 +25,8 @@
             style="@style/Theme.Fitmate.Toolbar"
             app:navigationIcon="@null"
             android:layout_height="wrap_content"
-            app:title="My Fit" />
+            app:titleCentered="true"
+            app:title="@string/fit_title" />
 
         <LinearLayout
             android:layout_marginHorizontal="15dp"

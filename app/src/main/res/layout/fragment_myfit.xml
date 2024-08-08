@@ -23,7 +23,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="bottom"
-            app:title="@string/my_fit_scr_title"/>
+            app:titleCentered="true"
+            app:title="@string/my_fit_title"/>
 
         <androidx.core.widget.NestedScrollView
             android:id="@+id/contentsNestedSScrollView"

@@ -91,7 +91,7 @@
     <fragment
         android:id="@+id/myFitFragment"
         android:name="com.fitmate.fitmate.presentation.ui.myfit.MyFitFragment"
-        android:label="MyFitFragment">
+        android:label="@string/my_fit_title">
         <action
             android:id="@+id/action_myFitFragment_to_myFitOffFragment"
             app:destination="@id/myFitOffFragment" />
