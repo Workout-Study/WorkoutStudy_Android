@@ -34,6 +34,7 @@
             android:layout_height="0dp"
             android:layout_weight="0.7"
             android:visibility="visible"
+            android:layout_marginBottom="25dp"
             android:background="@drawable/dot_line_myfit_main"
             android:orientation="vertical"
             android:gravity="center"

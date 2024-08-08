@@ -90,7 +90,6 @@ class MakeGroupFragment : Fragment() {
         //post 작업 감시
         observePostMakeGroupRegister()
 
-
         //이미지 추가 리사이클러뷰 설정
         setImageListRecyclerView()
 
@@ -105,6 +104,7 @@ class MakeGroupFragment : Fragment() {
         viewModel.postResult.observe(viewLifecycleOwner) {
             //로딩 종료
             loadingViewGone()
+            //TODO 그룹 생성이 완료된 상태이므로 화면전환이 필요함
         }
     }
 

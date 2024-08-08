@@ -58,18 +58,18 @@
                     app:layout_constraintEnd_toEndOf="parent" />
 
 
-                <com.google.android.material.chip.Chip
+                <TextView
                     android:id="@+id/chipGroupDetailCategory"
-                    style="@style/Theme.Fitmate.Chip"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:paddingHorizontal="10dp"
+                    android:paddingVertical="5dp"
                     android:layout_marginStart="20dp"
                     android:layout_marginTop="25dp"
                     android:text="@string/group_join_scr_category"
-                    android:textAppearance="@style/Font.bold10"
+                    android:textAppearance="@style/Font.bold12"
                     android:textColor="@color/white"
-                    android:textSize="16sp"
-                    app:chipBackgroundColor="@color/fitmate_blue"
+                    android:background="@drawable/button_linear_radius8"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/imageViewItemDayCurrentDate" />
 
@@ -77,10 +77,14 @@
                     android:id="@+id/textViewGroupDetailName"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:ellipsize="end"
+                    android:maxLines="1"
                     android:text="@string/group_join_scr_default_name"
-                    android:textAppearance="@style/Font.bold24"
-                    android:textSize="28sp"
+                    android:textAppearance="@style/Font.bold20"
                     android:textColor="@color/black"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="1.0"
                     app:layout_constraintStart_toStartOf="@+id/chipGroupDetailCategory"
                     app:layout_constraintTop_toBottomOf="@+id/chipGroupDetailCategory" />
 
@@ -97,8 +101,8 @@
 
                     <ImageView
                         android:id="@+id/imageView4"
-                        android:layout_width="22dp"
-                        android:layout_height="22dp"
+                        android:layout_width="16dp"
+                        android:layout_height="16dp"
                         android:contentDescription="@null"
                         app:srcCompat="@drawable/calendar_blue_icon" />
 
@@ -108,7 +112,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginStart="3dp"
                         android:text="@string/group_join_scr_now_people_term"
-                        android:textAppearance="@style/Font.regular16"
+                        android:textAppearance="@style/Font.semibold12"
                         android:textColor="@color/black" />
 
 
@@ -116,12 +120,13 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginHorizontal="5dp"
+                        android:textAppearance="@style/Font.semibold12"
                         android:text="▪"/>
 
                     <ImageView
                         android:id="@+id/imageView5"
-                        android:layout_width="22dp"
-                        android:layout_height="22dp"
+                        android:layout_width="16dp"
+                        android:layout_height="16dp"
                         android:contentDescription="@null"
                         app:srcCompat="@drawable/person_blue_icon" />
 
@@ -129,7 +134,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="3dp"
-                        android:textAppearance="@style/Font.regular16"
+                        android:textAppearance="@style/Font.semibold12"
                         android:textColor="@color/black"
                         android:text="현재 "/>
                     <TextView
@@ -137,7 +142,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/group_join_scr_now_people"
-                        android:textAppearance="@style/Font.bold16"
+                        android:textAppearance="@style/Font.bold12"
                         android:textColor="@color/fitmate_heavy_blue"
                         app:layout_constraintBottom_toBottomOf="@+id/imageView4"
                         app:layout_constraintStart_toEndOf="@+id/imageView4"
@@ -146,13 +151,13 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="/"
-                        android:textAppearance="@style/Font.regular16"/>
+                        android:textAppearance="@style/Font.regular12"/>
 
                     <TextView
                         android:id="@+id/textViewGroupDetailPresentMax"
                         android:text="@string/group_join_scr_now_people"
                         android:layout_width="wrap_content"
-                        android:textAppearance="@style/Font.regular16"
+                        android:textAppearance="@style/Font.semibold12"
                         android:layout_height="wrap_content"/>
 
                 </LinearLayout>
@@ -163,7 +168,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="8dp"
                     android:layout_marginTop="30dp"
-                    android:background="?android:attr/listDivider"
+                    android:background="@color/zircon"
                     app:layout_constraintTop_toBottomOf="@+id/containerTopFitGroupInfo"
                     tools:layout_editor_absoluteX="-16dp" />
 
@@ -175,7 +180,8 @@
                     android:layout_marginTop="20dp"
                     android:layout_marginRight="20dp"
                     android:text="@string/group_join_scr_comment"
-                    android:textAppearance="@style/Font.regular16"
+                    android:textAppearance="@style/Font.regular12"
+                    android:textSize="13sp"
                     android:textColor="@color/violet"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
@@ -203,8 +209,8 @@
 
                 <ImageView
                     android:id="@+id/imageView2"
-                    android:layout_width="22dp"
-                    android:layout_height="22dp"
+                    android:layout_width="16dp"
+                    android:layout_height="16dp"
                     android:layout_marginStart="20dp"
                     android:contentDescription="@null"
                     app:srcCompat="@drawable/calendar_icon" />
@@ -215,19 +221,20 @@
                     android:layout_height="wrap_content"
                     android:layout_marginHorizontal="5dp"
                     android:text="@string/group_join_scr_now_people_term"
-                    android:textAppearance="@style/Font.bold16"
+                    android:textAppearance="@style/Font.regular12"
                     android:textColor="@color/white" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:textAppearance="@style/Font.regular12"
                     android:text="▪"
                     android:textColor="@color/white" />
 
                 <ImageView
                     android:id="@+id/imageView3"
-                    android:layout_width="22dp"
-                    android:layout_height="22dp"
+                    android:layout_width="16dp"
+                    android:layout_height="16dp"
                     android:layout_marginHorizontal="5dp"
                     android:contentDescription="@null"
                     app:srcCompat="@drawable/person_icon" />
@@ -237,7 +244,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/group_join_scr_now_people"
-                    android:textAppearance="@style/Font.bold16"
+                    android:textAppearance="@style/Font.regular12"
                     android:textColor="@color/white"
                     app:layout_constraintBottom_toBottomOf="@+id/imageView2"
                     app:layout_constraintStart_toEndOf="@+id/imageView2"
