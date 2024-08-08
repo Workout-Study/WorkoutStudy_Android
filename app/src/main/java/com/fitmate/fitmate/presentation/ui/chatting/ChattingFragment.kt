@@ -3,7 +3,6 @@ package com.fitmate.fitmate.presentation.ui.chatting
 import android.content.ClipData
 import android.content.ClipboardManager
 import android.content.Context
-import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.View
@@ -14,11 +13,10 @@ import androidx.core.view.GravityCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
-import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.fragment.findNavController
+import androidx.navigation.ui.setupWithNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.fitmate.fitmate.BuildConfig
-import com.fitmate.fitmate.ChatActivity
 import com.fitmate.fitmate.MainActivity
 import com.fitmate.fitmate.R
 import com.fitmate.fitmate.databinding.FragmentChattingBinding
@@ -34,7 +32,6 @@ import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import okhttp3.Interceptor
 import okhttp3.OkHttpClient
 import okhttp3.Request
 import okhttp3.Response
@@ -69,6 +66,8 @@ class ChattingFragment : Fragment(R.layout.fragment_chatting) {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        //메인 액티비티의 바텀 네비 지우기
+        (activity as MainActivity).goneNavigationBar()
         arguments?.getInt("fitGroupId")?.let { groupId ->
             fitGroupId = groupId
         }
@@ -90,7 +89,7 @@ class ChattingFragment : Fragment(R.layout.fragment_chatting) {
     }
 
     private fun loadUserPreference() {
-        val userPreference = (activity as ChatActivity).loadUserPreference()
+        val userPreference = (activity as MainActivity).loadUserPreference()
         userId = userPreference.getOrNull(2)?.toString()?.toInt() ?: -1
     }
 
@@ -98,46 +97,14 @@ class ChattingFragment : Fragment(R.layout.fragment_chatting) {
         binding = FragmentChattingBinding.bind(view)
         binding.fragment = this
         binding.containerExtraFunction.layoutTransition = null
-        binding.toolbarFragmentChatting.setNavigationOnClickListener {
-            (activity as ChatActivity).finish()
-        }
+        binding.toolbarFragmentChatting.setupWithNavController(findNavController())
     }
 
     private fun setupClickListeners() {
         binding.run {
             val clickMappings = mapOf(
-                containerFitSituation.chattingExtraFunctionButton to {
-                    navigate(
-                        R.id.groupProgressFragment,
-                        true
-                    )
-                },//운동 현황
-                containerFitVote.chattingExtraFunctionButton to {
-                    navigate(
-                        R.id.groupVoteFragment,
-                        true
-                    )
-                },//
-                containerGroupPointSituation.chattingExtraFunctionButton to {
-                    navigate(
-                        R.id.groupFineFragment,
-                        false
-                    )
-                },
-                containerFitOffSituation.chattingExtraFunctionButton to {
-                    navigate(
-                        R.id.groupFitOffFragment,
-                        true
-                    )
-                },
-                containerFitOffApply.chattingExtraFunctionButton to {
-                    navigate(
-                        R.id.groupFitOffFragment,
-                        false
-                    )
-                },
                 imageViewChattingFragmentOpenContentList to { toggleExtraFunctionContainer() },
-                buttonFragmentChattingExit to { (activity as ChatActivity).finish() },
+                buttonFragmentChattingExit to { findNavController().popBackStack() },
                 imageViewChattingToolbarForDrawerLayout to { toggleDrawer() },
             )
             clickMappings.forEach { (button, action) -> button.setOnClickListener { action() } }
@@ -155,11 +122,6 @@ class ChattingFragment : Fragment(R.layout.fragment_chatting) {
         }
     }
 
-    private fun navigate() {
-        val intent = Intent(activity, MainActivity::class.java).apply { putExtra("navigateTo", "certificateFragment") }
-        startActivity(intent)
-        (activity as ChatActivity).finish()
-    }
 
     private fun copyAccountNum() {
         hideKeyboard()
@@ -204,7 +166,7 @@ class ChattingFragment : Fragment(R.layout.fragment_chatting) {
     }
 
     private fun initHeightProvider() {
-        (activity as ChatActivity).let {
+        (activity as MainActivity).let {
             heightProvider = HeightProvider(it).init().setHeightListener { height ->
                 if (height > 0) {
                     binding.containerExtraFunction.visibility = View.GONE
@@ -273,7 +235,7 @@ class ChattingFragment : Fragment(R.layout.fragment_chatting) {
                     val chatItem = ChatItem(messageId, receivedFitGroupId, userId, message, parsedMessageTime, messageType)
                     Log.d("tlqkf","소켓에서 날아온 데이터 : "+chatItem.toString())
 
-                    (activity as ChatActivity).runOnUiThread {
+                    (activity as MainActivity).runOnUiThread {
                         lifecycleScope.launch {
                             withContext(Dispatchers.IO){
                                 dbChatUseCase.insert(chatItem)

@@ -222,13 +222,9 @@
         android:id="@+id/pointFragment"
         android:name="com.fitmate.fitmate.presentation.ui.point.PointFragment"
         android:label="PointFragment" />
-    <activity
-        android:id="@+id/chatActivity"
-        android:name="com.fitmate.fitmate.ChatActivity"
-        android:label="ChatActivity" >
-        <argument
-            android:name="fitGroupId"
-            app:argType="integer" />
-    </activity>
+    <fragment
+        android:id="@+id/chattingFragment"
+        android:name="com.fitmate.fitmate.presentation.ui.chatting.ChattingFragment"
+        android:label="ChattingFragment" />
 
 </navigation>

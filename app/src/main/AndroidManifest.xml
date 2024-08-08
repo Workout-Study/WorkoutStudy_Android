@@ -61,9 +61,6 @@
             android:value="false" />
 
         <activity
-            android:name=".ChatActivity"
-            android:exported="false" />
-        <activity
             android:name=".MainActivity"
             android:exported="true"
             android:theme="@style/Theme.Fitmate.Splash">

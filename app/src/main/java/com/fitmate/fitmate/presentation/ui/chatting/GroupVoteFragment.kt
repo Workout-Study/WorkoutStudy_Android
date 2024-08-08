@@ -8,7 +8,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.ui.setupWithNavController
-import com.fitmate.fitmate.ChatActivity
+import com.fitmate.fitmate.MainActivity
 import com.fitmate.fitmate.R
 import com.fitmate.fitmate.databinding.FragmentGroupVoteBinding
 import com.fitmate.fitmate.domain.model.VoteRequest
@@ -181,7 +181,7 @@ class GroupVoteFragment : Fragment(R.layout.fragment_group_vote), VoteFragmentIn
     }
 
     private fun loadUserPreference() {
-        val userPreference = (activity as ChatActivity).loadUserPreference()
+        val userPreference = (activity as MainActivity).loadUserPreference()
         userId = userPreference.getOrNull(2)?.toString()?.toInt() ?: -1
         accessToken = userPreference.getOrNull(0)?.toString() ?: ""
         platform = userPreference.getOrNull(3)?.toString() ?: ""
