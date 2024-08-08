@@ -73,58 +73,8 @@ class MainActivity : AppCompatActivity(), ControlActivityInterface {
         //펜딩 인텐트로 날아오는 토킅 값 가져오기
 
         pendingToken = intent.customGetSerializable("pendingToken", PendingTokenValue::class.java)
-
-
-        //if (intent.getStringExtra("navigateTo") == "certificateFragment") navController.navigate(R.id.certificateFragment)
-
-/*        binding.bottomNavigationViewMainActivity.setOnItemSelectedListener { item ->
-            val positionId = item.itemId
-            Log.d("testtt","item.itemId: $positionId // selecedMenuId: $selecedMenuId")
-            if (positionId == selecedMenuId) return@setOnItemSelectedListener false
-            when (positionId) {
-                R.id.homeFragment -> {
-                    selecedMenuId = R.id.homeFragment
-                    navigateWithoutBackStack(R.id.homeFragment, false)
-                    true
-                }
-
-                R.id.myFitMainFragment -> {
-                    selecedMenuId = R.id.myFitMainFragment
-                    navigateWithoutBackStack(R.id.myFitMainFragment, false)
-                    true
-                }
-
-                R.id.categorySelectFragment -> {
-                    selecedMenuId = R.id.categorySelectFragment
-                    navigateWithoutBackStack(R.id.categorySelectFragment, false)
-                    true
-                }
-
-                R.id.myGroupFragment -> {
-                    selecedMenuId = R.id.myGroupFragment
-                    navigateWithoutBackStack(R.id.myGroupFragment, false)
-                    true
-                }
-
-                R.id.userInfoFragment -> {
-                    selecedMenuId = R.id.userInfoFragment
-                    navigateWithoutBackStack(R.id.userInfoFragment, false)
-                    true
-                }
-
-                else -> false
-            }
-        }*/
     }
 
-    private fun navigateWithoutBackStack(destinationId: Int, clearBackStack: Boolean) {
-        val navOptionsBuilder = NavOptions.Builder()
-
-        navOptionsBuilder.setPopUpTo(navController.graph.startDestinationId, clearBackStack)
-
-        val navOptions = navOptionsBuilder.build()
-        navController.navigate(destinationId, null, navOptions)
-    }
 
     //TODO 엑세스 토큰 확인하는 작업 수행하고 이후 넘어오는 값에 따라 로그인처리핧지 로그인 화면으로 넘길지 결정
     //지금 현재 homeFragment

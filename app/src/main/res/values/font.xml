@@ -65,6 +65,11 @@
         <item name="fontFamily">@font/pretendard_medium</item>
     </style>
 
+    <style name="Font.semibold12">
+        <item name="android:textSize">@dimen/text_S</item>
+        <item name="fontFamily">@font/pretendard_medium</item>
+    </style>
+
     <style name="Font.medium24">
         <item name="android:textSize">@dimen/text_XL</item>
         <item name="fontFamily">@font/pretendard_medium</item>

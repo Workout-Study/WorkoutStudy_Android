@@ -1,6 +1,12 @@
 package com.fitmate.fitmate.presentation.ui.category.list
 
+import android.graphics.fonts.Font
+import android.graphics.fonts.FontFamily
+import android.graphics.fonts.FontStyle
 import android.os.Bundle
+import android.text.Spannable
+import android.text.SpannableStringBuilder
+import android.text.style.TextAppearanceSpan
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
@@ -16,6 +22,7 @@ class CategoryViewHolder(private val binding: ItemCategoryBinding, private val f
 
     fun bind(item: CategoryItem) {
         binding.categoryItem = item
+
         binding.root.setOnClickListener {
             onClick(item)
             val bundle = Bundle()

@@ -57,7 +57,6 @@ class ChattingFragment : Fragment(R.layout.fragment_chatting) {
     private lateinit var chatAdapter: ChatAdapter
     private var isFirst = true
     private var userId: Int = -1
-    private val TAG = "ChattingFragment"
     private val viewModel: ChattingViewModel by viewModels()
     private val group: GroupViewModel by viewModels()
     private var webSocket: WebSocket? = null

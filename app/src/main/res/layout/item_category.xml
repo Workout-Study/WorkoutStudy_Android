@@ -48,6 +48,8 @@
             android:id="@+id/textViewItemCategoryFitgroupTitle"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:textColor="@color/colorClick"
+            tools:text="그룹 이름"
             android:layout_marginStart="20dp"
             android:layout_marginTop="-10dp"
             android:layout_marginEnd="20dp"
@@ -78,7 +80,9 @@
             android:layout_marginStart="5dp"
             android:contentDescription="@null"
             android:text="@{categoryItem.fitCount}"
-            android:textAppearance="@style/Font.bold12"
+            android:textColor="@color/white"
+            tools:text="sdfsdf"
+            android:textAppearance="@style/Font.regular12"
             app:layout_constraintBottom_toBottomOf="@+id/imageViewItemCategoryIconCalendar"
             app:layout_constraintStart_toEndOf="@+id/imageViewItemCategoryIconCalendar"
             app:layout_constraintTop_toTopOf="@+id/imageViewItemCategoryIconCalendar" />
@@ -100,6 +104,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="5dp"
+            tools:text="1"
             android:text="@{categoryItem.peopleCount}"
             android:textAppearance="@style/Font.bold12"
             android:textColor="@color/zircon"
@@ -108,15 +113,29 @@
             app:layout_constraintTop_toTopOf="@+id/imageViewItemCategoryIconPeople" />
 
         <TextView
+            android:id="@+id/textViewItemCategoryMaxCountPeople"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            tools:text="/5"
+            android:text="@{@string/group_join_scr_max_people(categoryItem.maxPeopleCount)}"
+            android:textAppearance="@style/Font.regular12"
+            android:textColor="@color/white"
+            app:layout_constraintBottom_toBottomOf="@+id/textViewItemCategoryCountPeople"
+            app:layout_constraintStart_toEndOf="@+id/textViewItemCategoryCountPeople"
+            app:layout_constraintTop_toTopOf="@+id/textViewItemCategoryCountPeople" />
+
+        <TextView
             android:id="@+id/textViewItemCategoryComment"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
             android:layout_marginEnd="20dp"
             android:ellipsize="end"
-            android:maxLines="3"
+            android:maxLines="2"
+            tools:text="그룹 설명 부분입니다."
+            android:textColor="@color/dark_gray"
             android:text="@{categoryItem.comment}"
-            android:textAppearance="@style/Font.regular12"
+            android:textAppearance="@style/Font.semibold12"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="@+id/textViewItemCategoryFitgroupTitle"
             app:layout_constraintTop_toBottomOf="@+id/textViewItemCategoryFitgroupTitle" />

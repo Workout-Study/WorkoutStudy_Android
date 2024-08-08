@@ -70,7 +70,8 @@ class GroupViewModel @Inject constructor(
                         CategoryItem(
                             title = it.fitGroupName,
                             fitCount = "${it.frequency}회 / 1주",
-                            peopleCount = "${it.presentFitMateCount} / ${it.maxFitMate}",
+                            peopleCount = "${it.presentFitMateCount}",
+                            maxPeopleCount = it.maxFitMate.toString(),
                             comment = it.introduction,
                             fitGroupId = it.fitGroupId,
                             thumbnail = try {
