@@ -1,7 +1,7 @@
 package com.fitmate.fitmate.domain.repository
 
 import com.fitmate.fitmate.data.model.dto.EachVoteCertificationResponseDto
-import com.fitmate.fitmate.data.model.dto.FitGroupProgress
+import com.fitmate.fitmate.data.model.dto.FitMateProgressDto
 import com.fitmate.fitmate.data.model.dto.MyFitGroupVote
 import com.fitmate.fitmate.data.model.dto.VoteRequestDto
 import com.fitmate.fitmate.data.model.dto.VoteResponseDto
@@ -14,7 +14,7 @@ interface VoteRepository {
 
     suspend fun myFitGroupVotes(requestUserId: Int): Result<List<MyFitGroupVote>>
 
-    suspend fun getFitMateProgress(fitGroupId: Int): Response<FitGroupProgress>
+    suspend fun getFitMateProgress(fitGroupId: Int): Response<FitMateProgressDto>
 
     suspend fun registerVote(voteRequestDto: VoteRequestDto): Response<VoteResponseDto>
 

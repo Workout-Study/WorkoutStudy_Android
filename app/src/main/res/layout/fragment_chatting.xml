@@ -180,6 +180,7 @@
                 <include
                     android:id="@+id/containerFitSituation"
                     layout="@layout/chatting_extra_item_fit_situation"
+                    app:fragment="@{fragment}"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="20dp"

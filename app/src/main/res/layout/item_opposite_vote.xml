@@ -52,7 +52,7 @@
             tools:text="그룹 이름"
             android:text="@{viewModel.groupDetailData.fitGroupName}"
             android:fontFamily="@font/pretendard_bold"
-            android:textColor="@color/turquoise"
+            android:textColor="@color/white"
             android:textSize="14sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
@@ -103,7 +103,7 @@
                 android:layout_marginStart="8dp"
                 android:layout_marginEnd="10dp"
                 android:layout_weight="1"
-                android:progressDrawable="@drawable/drawable_progress_mint" />
+                android:progressDrawable="@drawable/drawable_progress_red_white" />
 
             <TextView
                 android:layout_width="wrap_content"
@@ -142,7 +142,7 @@
                 android:layout_marginStart="8dp"
                 android:layout_marginEnd="10dp"
                 android:layout_weight="1"
-                android:progressDrawable="@drawable/drawable_progress_mint" />
+                android:progressDrawable="@drawable/drawable_progress_red_white" />
 
             <TextView
                 android:layout_width="wrap_content"
@@ -183,7 +183,7 @@
             style="@style/button_textView2"
             android:onClick="@{() -> view_holder.showVoteDialog(data)}"
             android:text="번복하기"
-            android:textColor="@color/mediumStateBlue"
+            android:textColor="@color/dark_gray"
             android:textSize="13sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"

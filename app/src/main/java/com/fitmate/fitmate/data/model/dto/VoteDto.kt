@@ -22,13 +22,7 @@ data class GroupVoteCertificationDetailDto(
     val voteEndDate: String
 )
 
-data class FitGroupProgressList(
-    @SerializedName("fitMateUserId")
-    val fitMateUserId: String,
 
-    @SerializedName("certificationCount")
-    val certificationCount: Int
-)
 
 data class VoteRequestDto(
     val requestUserId: Int,
@@ -47,14 +41,22 @@ data class VoteUpdateResponseDto(
 
 
 
-data class FitGroupProgress(
+data class FitMateProgressDto(
     @SerializedName("fitGroupId") val fitGroupId: Int,
     @SerializedName("fitGroupName") val fitGroupName: String,
     @SerializedName("cycle") val cycle: Int,
     @SerializedName("frequency") val frequency: Int,
-    @SerializedName("fitCertificationProgresses") val fitCertificationProgresses: List<FitGroupProgressList>
+    @SerializedName("fitCertificationProgresses") val fitCertificationProgresses: List<FitMateProgressContentDto>
 )
 
+data class FitMateProgressContentDto(
+    @SerializedName("fitMateUserId")
+    val fitMateUserId: String,
+    @SerializedName("fitMateUserNickname")
+    val fitMateUserNickname: String,
+    @SerializedName("certificationCount")
+    val certificationCount: Int
+)
 data class MyFitGroupVote(
     @SerializedName("fitGroupId") val groupId: Int,
     @SerializedName("fitGroupName") val groupName: String,

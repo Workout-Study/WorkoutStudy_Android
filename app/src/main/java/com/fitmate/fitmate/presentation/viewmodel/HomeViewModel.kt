@@ -7,11 +7,8 @@ import androidx.paging.PagingData
 import androidx.paging.cachedIn
 import androidx.paging.map
 import com.fitmate.fitmate.data.model.MyGroupNewsMapper.toMyGroupNews
-import com.fitmate.fitmate.data.model.PointMapper.toPointHistoryContent
 import com.fitmate.fitmate.domain.model.MyGroupNews
-import com.fitmate.fitmate.domain.model.PointHistoryContent
 import com.fitmate.fitmate.domain.usecase.MyGroupNewsUseCase
-import com.fitmate.fitmate.domain.usecase.PointUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -26,17 +23,17 @@ class HomeViewModel@Inject constructor(
     private val _pagingData = MutableStateFlow<PagingData<MyGroupNews>?>(null)
     val pagingData: StateFlow<PagingData<MyGroupNews>?> = _pagingData
 
-    fun getPagingGroupNews(
-        userId: Int,
-        pageNumber: Int,
-        pageSize: Int,
-    ) {
-        viewModelScope.launch {
-            try {
-                myGroupNewsUseCase.getMyGroupNews(userId, pageNumber, pageSize)
-                    .cachedIn(this)
-                    .collectLatest { list ->
-                        // DTO 리스트를 도메인 모델 리스트로 변환
+     fun getPagingGroupNews(
+         userId: Int,
+         pageNumber: Int,
+         pageSize: Int,
+     ) {
+         viewModelScope.launch {
+             try {
+                 myGroupNewsUseCase.getMyGroupNews(userId, pageNumber, pageSize)
+                     .cachedIn(this)
+                     .collectLatest { list ->
+                         // DTO 리스트를 도메인 모델 리스트로 변환
                         val myGroupNewsList = list.map {
                             it.toMyGroupNews()
                         }

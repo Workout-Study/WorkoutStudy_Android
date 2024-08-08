@@ -19,6 +19,8 @@ import com.fitmate.fitmate.domain.model.VoteRequest
 import com.fitmate.fitmate.presentation.ui.chatting.list.adapter.VoteImageViewPagerAdapter
 import com.fitmate.fitmate.presentation.viewmodel.VoteViewModel
 import java.time.LocalDateTime
+import java.time.OffsetDateTime
+import java.time.ZoneId
 import java.time.format.DateTimeFormatter
 import java.time.format.DateTimeFormatterBuilder
 import java.time.temporal.ChronoField
@@ -128,9 +130,13 @@ class VoteDialog(
             .parseDefaulting(ChronoField.SECOND_OF_MINUTE, 0)
             .toFormatter()
 
-        // 입력 문자열을 LocalDateTime으로 파싱
-        val startDateTime = LocalDateTime.parse(startDate, inputFormatter)
-        val endDateTime = LocalDateTime.parse(endDate, inputFormatter)
+        // 입력 문자열을 OffsetDateTime으로 파싱하고 한국 시간대로 변환
+        val startDateTime = OffsetDateTime.parse(startDate, inputFormatter)
+            .atZoneSameInstant(ZoneId.of("Asia/Seoul"))
+            .toLocalDateTime()
+        val endDateTime = OffsetDateTime.parse(endDate, inputFormatter)
+            .atZoneSameInstant(ZoneId.of("Asia/Seoul"))
+            .toLocalDateTime()
 
         // 날짜 부분 포맷팅
         val startDatePart = dateFormatter.format(startDateTime)
