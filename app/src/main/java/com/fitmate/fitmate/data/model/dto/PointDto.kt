@@ -21,8 +21,8 @@ data class PointHistoryContentDto(
     @SerializedName("tradeType") val tradeType: String,
     @SerializedName("amount") val amount: Long,
     @SerializedName("message") val message: String,
-    @SerializedName("depositUserId") val depositUserId: Int,
-    @SerializedName("depositUserNickname") val depositUserNickname: String,
+    @SerializedName("depositUserId") val depositUserId: Int?,
+    @SerializedName("depositUserNickname") val depositUserNickname: String?,
     @SerializedName("createdAt") val createdAt: String,
 )
 

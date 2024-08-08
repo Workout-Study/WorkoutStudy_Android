@@ -2,22 +2,31 @@ package com.fitmate.fitmate.presentation.ui.point
 
 import android.os.Bundle
 import android.util.Log
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.viewModelScope
+import androidx.paging.PagingData
+import androidx.paging.filter
+import androidx.paging.flatMap
+import androidx.paging.map
 import com.fitmate.fitmate.MainActivity
 import com.fitmate.fitmate.R
 import com.fitmate.fitmate.databinding.FragmentPointBinding
+import com.fitmate.fitmate.domain.model.PointHistoryContent
 import com.fitmate.fitmate.domain.model.PointType
 import com.fitmate.fitmate.presentation.ui.point.list.adapter.PointHistoryAdapter
 import com.fitmate.fitmate.presentation.viewmodel.PointViewModel
 import com.fitmate.fitmate.util.customGetSerializable
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.flow.onEmpty
 import kotlinx.coroutines.launch
+import okhttp3.internal.notify
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
 
 @AndroidEntryPoint
 class PointFragment : Fragment(R.layout.fragment_point) {
@@ -26,7 +35,7 @@ class PointFragment : Fragment(R.layout.fragment_point) {
     private lateinit var adapter: PointHistoryAdapter
     private val viewModel: PointViewModel by viewModels()
     private var pointOwnerId: Int = -1
-    private lateinit var createAt: String
+    private lateinit var createdAt: String
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -38,10 +47,12 @@ class PointFragment : Fragment(R.layout.fragment_point) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding = FragmentPointBinding.bind(view)
+        binding.viewModel = viewModel
 
         //어뎁터 초기화 및 설정
         adapter = PointHistoryAdapter()
         binding.recyclerViewPointHistory.adapter = adapter
+
 
         //통신 시작(포인트 정보 및 포인트 기록 데이터)
         viewModel.getPointInfo(pointOwnerId, pointOwnerType.value)
@@ -58,18 +69,21 @@ class PointFragment : Fragment(R.layout.fragment_point) {
             }
             when (pointOwnerType) {
                 PointType.GROUP -> {
-                    it.getString("createAt")?.let { createString ->
-                        createAt = createString
+                    it.getString("createdAt")?.let { createString ->
+                        createdAt = createString
                     }
                     it.getInt("groupId").let { groupId ->
                         pointOwnerId = groupId
                     }
+
+                    Log.d("tlqkf","createdAt: $createdAt / id:$pointOwnerId")
                 }
 
                 PointType.USER -> {
                     val userPreference = (activity as MainActivity).loadUserPreference()
                     pointOwnerId = userPreference.getOrNull(2)?.toString()?.toInt() ?: -1
-                    createAt = userPreference[4].toString()
+                    createdAt = userPreference[4].toString()
+                    Log.d("tlqkf","createdAt: $createdAt / id:$pointOwnerId")
                 }
             }
         }
@@ -78,7 +92,7 @@ class PointFragment : Fragment(R.layout.fragment_point) {
     private fun observePointHistory(){
         viewModel.run {
             viewModelScope.launch {
-                pagingData.collectLatest {
+                 pagingData.collectLatest {
                     if (it != null){
                         Log.d("tlqkf",it.toString())
                         adapter.submitData(lifecycle, it)
@@ -86,10 +100,13 @@ class PointFragment : Fragment(R.layout.fragment_point) {
                 }
             }
             pointInfo.observe(viewLifecycleOwner) {
-                Log.d("tlqkf",it.toString())
+                binding.textViewPointBalance.text = getString(R.string.point_amount,it.balance)
             }
         }
     }
+
+
+
 }
 
 

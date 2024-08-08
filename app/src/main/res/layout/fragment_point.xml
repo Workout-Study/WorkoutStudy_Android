@@ -38,14 +38,15 @@
                     android:layout_height="wrap_content"
                     android:textAppearance="@style/Font.semibold16"
                     android:text="포인트 내역"/>
+
                 <TextView
                     android:id="@+id/textViewPointBalance"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@{@string/point_amount(viewModel.pointData.balance)}"
                     android:textAppearance="@style/Font.bold24"
                     android:textSize="32sp"
                     tools:text="15,000P"/>
+                <!--android:text="@{@string/point_amount(viewModel.pointInfo.balance)}"-->
             </LinearLayout>
 
         </androidx.cardview.widget.CardView>
@@ -105,15 +106,37 @@
 
         </LinearLayout>
 
+        <TextView
+            android:id="@+id/textViewGuidePointHistoryEmpty"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:visibility="gone"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:textAppearance="@style/Font.semibold16"
+            android:text="포인트 내역이 존재하지 않습니다!"
+            android:layout_gravity="center"/>
+
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recyclerViewPointHistory"
             android:layout_marginTop="12dp"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             android:layout_width="match_parent"
+            android:visibility="visible"
             android:layout_height="0dp"
             tools:listitem="@layout/item_point_history"
             tools:itemCount="3"
             android:layout_weight="1"/>
+
+        <com.facebook.shimmer.ShimmerFrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:visibility="gone"
+            android:layout_weight="1">
+
+
+        </com.facebook.shimmer.ShimmerFrameLayout>
 
     </LinearLayout>
 </layout>

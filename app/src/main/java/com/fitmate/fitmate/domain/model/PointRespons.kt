@@ -21,8 +21,8 @@ data class PointHistoryContent(
     val tradeType: String,
     val amount: Long,
     val message: String,
-    val depositUserId: Int,
-    val depositUserNickname: String,
+    val depositUserId: Int?,
+    val depositUserNickname: String?,
     val createdAt: String,
 )
 

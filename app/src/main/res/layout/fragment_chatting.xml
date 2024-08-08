@@ -195,6 +195,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="20dp"
+                    app:fragment="@{fragment}"
                     app:layout_constraintStart_toStartOf="@+id/containerFitOffSituation"
                     app:layout_constraintTop_toBottomOf="@+id/containerFitOffSituation"
                     app:layout_constraintEnd_toEndOf="@+id/containerFitOffSituation"
