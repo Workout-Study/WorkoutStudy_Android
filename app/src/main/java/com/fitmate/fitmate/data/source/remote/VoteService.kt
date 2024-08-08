@@ -39,7 +39,8 @@ interface VoteService {
     @GET("/my-fit-service/certifications/filters/{fit-group-id}/{user-id}")
     suspend fun getEachFitGroupVotes(   // Proceeding Fit Certification List By fit group id
         @Path("fit-group-id") fitGroupId: Int,
-        @Path("user-id") userId: Int
+        @Path("user-id") userId: Int,
+        @Query("withOwn") withOwn: Int
     ): Response<EachVoteCertificationResponseDto>
 
 }

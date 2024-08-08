@@ -16,8 +16,8 @@ class VoteRepositoryImpl(private val voteService: VoteService): VoteRepository {
         return Result.success(voteService.getMyFitGroupVotes(requestUserId).body()!!.fitGroupList)
     }
 
-    override suspend fun getEachGroupVotes(fitGroupId: Int, userId: Int): Response<EachVoteCertificationResponseDto> {
-        return voteService.getEachFitGroupVotes(fitGroupId, userId)
+    override suspend fun getEachGroupVotes(fitGroupId: Int, userId: Int, withOwn: Int): Response<EachVoteCertificationResponseDto> {
+        return voteService.getEachFitGroupVotes(fitGroupId, userId, withOwn)
     }
 
     override suspend fun getFitMateProgress(fitGroupId: Int): Response<FitGroupProgress> {
