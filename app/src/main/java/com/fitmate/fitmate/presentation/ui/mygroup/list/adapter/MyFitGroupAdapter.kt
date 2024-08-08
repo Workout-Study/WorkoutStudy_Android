@@ -6,7 +6,6 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
-import com.fitmate.fitmate.ChatActivity
 import com.fitmate.fitmate.databinding.ItemGroupBinding
 import com.fitmate.fitmate.domain.model.FitGroup
 import com.fitmate.fitmate.ui.myfit.list.MyFitGroupViewHolder

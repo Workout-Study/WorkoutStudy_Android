@@ -10,7 +10,6 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
-import com.fitmate.fitmate.ChatActivity
 import com.fitmate.fitmate.MainActivity
 import com.fitmate.fitmate.R
 import com.fitmate.fitmate.databinding.FragmentMyGroupBinding
@@ -51,7 +50,7 @@ class MyGroupFragment: Fragment(R.layout.fragment_my_group) {
             val bundle = Bundle().apply {
                 putInt("fitGroupId", fitGroup.fitGroupId)
             }
-            findNavController().navigate(R.id.chatActivity,bundle)
+            findNavController().navigate(R.id.chattingFragment, bundle)
             /*val intent = Intent(requireContext(), ChatActivity::class.java).apply {
                 putExtra("fitGroupId", fitGroup.fitGroupId)
             }
