@@ -230,6 +230,9 @@
 
     <!--포인트 화면-->
     <string name="point_title">포인트 내역 열람</string>
+    <string name="group_point_title">그룹 포인트 내역 열람</string>
+    <string name="point_text_field_date">전체</string>
+    <string name="point_text_field_deal">전체</string>
     <string name="point_amount">%dP</string>
 
 

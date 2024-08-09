@@ -221,7 +221,7 @@
     <fragment
         android:id="@+id/pointFragment"
         android:name="com.fitmate.fitmate.presentation.ui.point.PointFragment"
-        android:label="PointFragment" />
+        android:label="@string/point_title" />
     <fragment
         android:id="@+id/chattingFragment"
         android:name="com.fitmate.fitmate.presentation.ui.chatting.ChattingFragment"
