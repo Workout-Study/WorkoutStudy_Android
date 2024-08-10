@@ -198,7 +198,8 @@
         <TextView
             android:id="@+id/buttonFitCertificate"
             android:layout_width="match_parent"
-            android:layout_height="55dp"
+            android:paddingVertical="15dp"
+            android:layout_height="wrap_content"
             android:text="운동 기록하기"
             android:textAppearance="@style/Font.bold20"
             android:clickable="true"
