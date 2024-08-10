@@ -106,16 +106,17 @@ class UserInfoFragment : Fragment(R.layout.fragment_user_info) {
     }
 
     private fun logout() {
-        when(platform) {
-            "kakao" -> viewModel.logout(accessToken, "kakao")
-            "naver" -> viewModel.logout(accessToken, "naver")
-        }
+        Log.d("tlqkf","로그아웃 시도:$platform")
 
         viewModel.logoutComplete.observe(viewLifecycleOwner) { isComplete ->
             if (isComplete) {
                 navigateTo(R.id.action_userInfoFragment_to_loginFragment)
-                Snackbar.make(binding.root, "로그아웃을 성공했습니다. [USERID ${userId}]", Snackbar.LENGTH_SHORT).show()
+                Snackbar.make(requireView(), "로그아웃을 성공했습니다. [USERID ${userId}]", Snackbar.LENGTH_SHORT).show()
             }
+        }
+        when(platform) {
+            "kakao" -> viewModel.logout(accessToken, "kakao")
+            "naver" -> viewModel.logout(accessToken, "naver")
         }
     }
 

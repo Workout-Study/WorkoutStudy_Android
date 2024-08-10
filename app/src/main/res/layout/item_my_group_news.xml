@@ -91,7 +91,7 @@
             <ProgressBar
                 style="?android:attr/progressBarStyleHorizontal"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
+                android:layout_height="@dimen/text_S"
                 android:max="@{data.agreeCount + data.disagreeCount}"
                 tools:progress="@{data.agreeCount}"
                 android:layout_marginStart="8dp"
@@ -130,7 +130,7 @@
             <ProgressBar
                 style="?android:attr/progressBarStyleHorizontal"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
+                android:layout_height="@dimen/text_S"
                 android:max="@{data.maxAgreeCount}"
                 android:progress="@{data.agreeCount + data.disagreeCount}"
                 android:layout_marginStart="8dp"

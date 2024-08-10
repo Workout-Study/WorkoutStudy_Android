@@ -22,19 +22,17 @@ class GroupProcessingVoteViewHolder(
         binding.data = item
         binding.viewModel = viewModel
         try {
-            val agreePercent = (item.agreeCount / item.agreeCount + item.disagreeCount.toFloat() * 100).toInt()
+            val agreePercent = ((item.agreeCount / (item.agreeCount + item.disagreeCount.toFloat())) * 100).toInt()
             binding.textViewVoteAgreePercent.text = fragment.context?.getString(R.string.vote_agree_percent, agreePercent)
         }catch (e:ArithmeticException){
             binding.textViewVoteAgreePercent.text = fragment.context?.getString(R.string.vote_agree_percent,0)
         }
         try {
-            val progressPercent = (item.agreeCount + item.disagreeCount / item.maxAgreeCount.toFloat() * 100).toInt()
+            val progressPercent = (((item.agreeCount + item.disagreeCount) / item.maxAgreeCount.toFloat()) * 100).toInt()
             binding.textViewVoteProgressPercent.text = fragment.context?.getString(R.string.vote_agree_percent, progressPercent)
         }catch (e:ArithmeticException){
             binding.textViewVoteProgressPercent.text = fragment.context?.getString(R.string.vote_agree_percent,0)
         }
-
-
     }
 
     fun showVoteDialog(item: GroupVoteCertificationDetail) {
