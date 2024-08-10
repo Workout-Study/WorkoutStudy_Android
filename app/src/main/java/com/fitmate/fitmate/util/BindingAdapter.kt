@@ -97,7 +97,7 @@ fun CardView.setContainerVisible(state: CertificateState) {
 
 //인증 화면의 버튼 상태 설정
 @BindingAdapter("certificate_button_state")
-fun Button.buttonSetState(state: CertificateState) {
+fun TextView.buttonSetState(state: CertificateState) {
     when (state) {
         CertificateState.NON_PROCEEDING -> {
             this.isEnabled = false
@@ -106,13 +106,13 @@ fun Button.buttonSetState(state: CertificateState) {
         }
         CertificateState.ADDED_START_IMAGE -> {
             this.isEnabled = true
-            setTextColor(this.context.getColor(R.color.turquoise))
+            setTextColor(this.context.getColor(R.color.white))
             this.text = this.context.getString(R.string.certificate_scr_confirm)
         }
 
         CertificateState.PROCEEDING -> {
             this.isEnabled = true
-            setTextColor(this.context.getColor(R.color.turquoise))
+            setTextColor(this.context.getColor(R.color.white))
             this.text = this.context.getString(R.string.certificate_scr_confirm_finish)
         }
     }
@@ -120,7 +120,7 @@ fun Button.buttonSetState(state: CertificateState) {
 
 //인증 화면의 리셋 버튼 visible 설정
 @BindingAdapter("certificate_reset_button_state")
-fun Button.resetButtonSetState(state: CertificateState) {
+fun TextView.resetButtonSetState(state: CertificateState) {
     when (state) {
         CertificateState.NON_PROCEEDING -> {
             this.visibility = View.GONE

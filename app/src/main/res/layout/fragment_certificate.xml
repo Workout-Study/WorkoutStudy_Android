@@ -19,8 +19,8 @@
             android:id="@+id/materialToolbarCertificate"
             style="@style/Theme.Fitmate.Toolbar"
             android:layout_width="match_parent"
+            app:titleCentered="true"
             android:layout_height="wrap_content"
-            android:background="@color/zircon"
             app:title="@string/certificate_scr_toolbar" />
 
         <androidx.constraintlayout.widget.ConstraintLayout
@@ -29,23 +29,20 @@
             android:layout_height="match_parent"
             android:layout_margin="10dp">
 
-
-
             <TextView
                 android:id="@+id/textViewCertificateTimer"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="40dp"
                 android:text="@string/certificate_scr_timer"
-                android:textAppearance="@style/OnboardTitle"
+                android:textAppearance="@style/Font.bold16"
                 android:textSize="48sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
-
             <LinearLayout
-                android:id="@+id/imageViewCertificateContainerStart"
+                android:id="@+id/layoutCertificateContainerStart"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:background="@drawable/bg_rounded_rectangle"
@@ -116,7 +113,7 @@
             </LinearLayout>
 
             <LinearLayout
-                android:id="@+id/imageViewCertificateContainerEnd"
+                android:id="@+id/layoutCertificateContainerEnd"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:background="@drawable/bg_rounded_rectangle"
@@ -127,7 +124,7 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/imageViewCertificateContainerStart"
+                app:layout_constraintTop_toBottomOf="@+id/layoutCertificateContainerStart"
                 app:layout_constraintVertical_bias="0.1">
 
 
@@ -185,36 +182,46 @@
 
             </LinearLayout>
 
-
-            <Button
+            <TextView
                 android:id="@+id/buttonCertificateConfirm"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
+                android:layout_marginHorizontal="10dp"
                 android:layout_height="wrap_content"
+                android:paddingVertical="15dp"
+                android:paddingHorizontal="20dp"
                 android:textAppearance="@style/Font.bold20"
                 tools:ignore="SpeakableTextPresentCheck"
-
+                android:foreground="?attr/selectableItemBackground"
+                style="@style/button_textView"
+                tools:text="fit 기록 시작하기"
+                android:clickable="true"
                 app:certificate_button_state="@{viewModel.state}"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toStartOf="@+id/buttonCertificateReset"
                 app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/imageViewCertificateContainerEnd" />
+                app:layout_constraintTop_toBottomOf="@+id/layoutCertificateContainerEnd" />
 
-            <Button
+            <TextView
                 android:id="@+id/buttonCertificateReset"
-                style="?attr/materialIconButtonFilledStyle"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_marginHorizontal="10dp"
                 android:backgroundTint="@color/red"
                 android:text="인증 취소"
-                android:textAppearance="@style/Font.bold16"
+                android:paddingVertical="15dp"
+                android:paddingHorizontal="20dp"
+                tools:ignore="SpeakableTextPresentCheck"
+                android:foreground="?attr/selectableItemBackground"
+                style="@style/button_textView"
+                android:textAppearance="@style/Font.bold20"
                 app:certificate_reset_button_state="@{viewModel.state}"
                 app:icon="@drawable/baseline_close_24"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toEndOf="@+id/buttonCertificateConfirm"
-                app:layout_constraintTop_toBottomOf="@+id/imageViewCertificateContainerEnd" />
+                app:layout_constraintTop_toBottomOf="@+id/layoutCertificateContainerEnd" />
 
             <com.airbnb.lottie.LottieAnimationView
                 android:id="@+id/progressBarSubmitLoading"
