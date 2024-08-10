@@ -105,15 +105,14 @@
                         android:id="@+id/textViewTotalHistoryDateGuide"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:textAppearance="@style/Font.bold20"
-                        />
+                        android:textAppearance="@style/Font.bold16" />
 
                     <TextView
                         android:id="@+id/textViewTotalFitHistoryNum"
                         android:layout_marginStart="5dp"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:textAppearance="@style/Font.bold20"
+                        android:textAppearance="@style/Font.bold16"
                         android:textColor="@color/fitmate_blue"
                         android:text="@{@string/my_fit_history_total_num(0)}"/>
 

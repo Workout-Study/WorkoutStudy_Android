@@ -33,7 +33,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="5dp"
-            android:text="FitGroup"
+            android:text="인증한 그룹 내역"
             android:textAppearance="@style/Font.bold16"
             android:textColor="@color/white"
             app:layout_constraintStart_toStartOf="@+id/textViewItemMyFitHistoryRecord"
