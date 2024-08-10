@@ -218,6 +218,8 @@
     <string name="my_fit_title">내 운동기록</string>
     <string name="my_fit_calendar_year_info">%d년</string>
     <string name="my_fit_history_total_num">%d건</string>
+    <string name="my_fit_history_date_guide_num">%d월 기록 총</string>
+    <string name="my_fit_history_date_day_guide_num">%d월 %d일 기록 총</string>
 
 
     <!--투표화면-->

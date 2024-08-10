@@ -96,7 +96,7 @@
             <ProgressBar
                 style="?android:attr/progressBarStyleHorizontal"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
+                android:layout_height="@dimen/text_S"
                 android:max="@{data.agreeCount+data.disagreeCount}"
                 tools:progress="@{data.agreeCount}"
                 android:layout_marginStart="8dp"
@@ -105,11 +105,11 @@
                 android:progressDrawable="@drawable/drawable_progress" />
 
             <TextView
+                android:id="@+id/textViewVoteAgreePercent"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="16dp"
                 android:fontFamily="@font/pretendard_regular"
-                android:text="@{@string/vote_agree_percent((int)(data.agreeCount/(data.agreeCount+data.disagreeCount)*100))}"
                 android:textColor="@color/white" />
         </LinearLayout>
 
@@ -135,7 +135,7 @@
             <ProgressBar
                 style="?android:attr/progressBarStyleHorizontal"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
+                android:layout_height="@dimen/text_S"
                 android:max="@{data.maxAgreeCount}"
                 android:progress="@{data.agreeCount+data.disagreeCount}"
                 android:layout_marginStart="8dp"
@@ -144,11 +144,11 @@
                 android:progressDrawable="@drawable/drawable_progress" />
 
             <TextView
+                android:id="@+id/textViewVoteProgressPercent"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="16dp"
                 android:fontFamily="@font/pretendard_regular"
-                android:text="@{@string/vote_agree_percent((int)((data.agreeCount+data.disagreeCount)/data.maxAgreeCount*100))}"
                 android:textColor="@color/white" />
         </LinearLayout>
 

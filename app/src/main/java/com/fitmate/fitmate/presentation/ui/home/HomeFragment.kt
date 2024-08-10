@@ -80,8 +80,8 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
         myGroupNewsAdapter = MyGroupNewsAdapter(this) {}
 
         myGroupNewsAdapter.addOnPagesUpdatedListener {
+            stopShimmer()
             if (myGroupNewsAdapter.itemCount == 0){
-                stopShimmer()
                 binding.textViewHomeNoGroup.visibility = View.VISIBLE
             }
         }

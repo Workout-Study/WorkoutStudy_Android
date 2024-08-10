@@ -2,6 +2,7 @@ package com.fitmate.fitmate.presentation.ui.myfit
 
 import android.graphics.Color
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -90,6 +91,13 @@ class MyFitFragment : Fragment() {
     private fun observeMyFitHistoryInCalendar() {
         viewModel.myFitRecordHistory.observe(viewLifecycleOwner) {
             it?.let{
+                //TODO 해당 캘린더에 보여지는 월을 구해서 아래 string에 추가해야함.
+                val now = binding.calendarView.findFirstVisibleMonth()?.yearMonth
+                val month = now?.let{ nowData ->
+                    extractNumbers(nowData.month.displayText(false))
+                }
+
+                binding.textViewTotalHistoryDateGuide.text = getString(R.string.my_fit_history_date_guide_num, month)
                 binding.textViewTotalFitHistoryNum.text = getString(R.string.my_fit_history_total_num, it.size)
                 fitHistoryAdapter.submitList(it)
                 val fitDateList =  it.map { fitHistoryData ->
@@ -286,17 +294,9 @@ class MyFitFragment : Fragment() {
                     //클릭했던 낳짜를 또 클릭했을 경우
                     if (currentSelection == day.date) {
                         //해당 낳짜의 운동 기록 리사이클러뷰 업데이트(빈 리스트)
-                        val fitHistory = viewModel.myFitRecordHistory.value.let {
-                            if (it.isNullOrEmpty()){
-                                fitHistoryAdapter.submitList(emptyList())
-                                binding.textViewTotalFitHistoryNum.text = getString(R.string.my_fit_history_total_num, 0)
-                            }else{
-                                fitHistoryAdapter.submitList(it)
-                                binding.textViewTotalFitHistoryNum.text = getString(R.string.my_fit_history_total_num, it.size)
-                            }
-                        }
-
-
+                        fitHistoryAdapter.submitList(emptyList())
+                        binding.textViewTotalHistoryDateGuide.text = ""
+                        binding.textViewTotalFitHistoryNum.text = getString(R.string.my_fit_history_total_num, 0)
 
                         //선택된 날짜 삭제 후 캘린더에 변경사항 알리기
                         selectedDate = null
@@ -307,6 +307,7 @@ class MyFitFragment : Fragment() {
                             it.recordStartDate.contains(day.date.toString())
                         }
                         fitHistoryAdapter.submitList(thatDayFitHistory)
+                        binding.textViewTotalHistoryDateGuide.text = getString(R.string.my_fit_history_date_day_guide_num,day.date.monthValue,day.date.dayOfMonth)
                         binding.textViewTotalFitHistoryNum.text = getString(R.string.my_fit_history_total_num, if(thatDayFitHistory.isNullOrEmpty()) 0 else thatDayFitHistory.size )
 
 

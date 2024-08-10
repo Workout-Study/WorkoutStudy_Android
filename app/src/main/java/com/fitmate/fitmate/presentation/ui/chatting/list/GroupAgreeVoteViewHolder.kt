@@ -1,7 +1,9 @@
 package com.fitmate.fitmate.presentation.ui.chatting.list
 
+import android.util.Log
 import android.view.LayoutInflater
 import androidx.fragment.app.Fragment
+import com.fitmate.fitmate.R
 import com.fitmate.fitmate.databinding.DialogGroupVoteChangeToOppositeBinding
 import com.fitmate.fitmate.databinding.ItemAgreeVoteBinding
 import com.fitmate.fitmate.domain.model.GroupVoteCertificationDetail
@@ -23,6 +25,19 @@ class GroupAgreeVoteViewHolder(
         binding.viewHolder = this
         binding.data = item
         binding.viewModel = viewModel
+
+        try {
+            val agreePercent = ((item.agreeCount / (item.agreeCount + item.disagreeCount.toFloat())) * 100).toInt()
+            binding.textViewVoteAgreePercent.text = fragment.context?.getString(R.string.vote_agree_percent, agreePercent)
+        }catch (e:ArithmeticException){
+            binding.textViewVoteAgreePercent.text = fragment.context?.getString(R.string.vote_agree_percent,0)
+        }
+        try {
+            val progressPercent = (((item.agreeCount + item.disagreeCount) / item.maxAgreeCount.toFloat()) * 100).toInt()
+            binding.textViewVoteProgressPercent.text = fragment.context?.getString(R.string.vote_agree_percent, progressPercent)
+        }catch (e:ArithmeticException){
+            binding.textViewVoteProgressPercent.text = fragment.context?.getString(R.string.vote_agree_percent,0)
+        }
     }
 
     fun showVoteDialog(item: GroupVoteCertificationDetail) {
