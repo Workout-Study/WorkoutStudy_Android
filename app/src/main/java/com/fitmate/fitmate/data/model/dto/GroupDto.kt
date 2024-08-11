@@ -31,12 +31,14 @@ data class GetFitMateList(
 
 data class FitLeaderDetail(
     @SerializedName("fitLeaderUserId") val fitLeaderUserId: String,
+    @SerializedName("fitLeaderUserNickname") val fitLeaderUserNickname: String,
     @SerializedName("createdAt") val createdAt: String
 )
 
 data class FitMateDetail(
     @SerializedName("fitMateId") val fitMateId: Int,
     @SerializedName("fitMateUserId") val fitMateUserId: String,
+    @SerializedName("fitMateUserNickname") val fitMateUserNickname: String,
     @SerializedName("createdAt") val createdAt: String
 )
 
