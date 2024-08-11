@@ -45,6 +45,7 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
     private lateinit var binding: FragmentProfileBinding
     private val viewModel: LoginViewModel by viewModels()
     private var userId: Int = -1
+    private var accessToken: String = ""
     private var imageUri: Uri? = null
 
     private val multiplePermissionsLauncher = registerForActivityResult(
@@ -84,6 +85,7 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
     private fun loadUserPreference() {
         val userPreference = (activity as MainActivity).loadUserPreference()
         userId = userPreference.getOrNull(2)?.toString()?.toInt() ?: -1
+        accessToken = userPreference.getOrNull(0)?.toString() ?: ""
     }
 
     private fun handlePermissionResult(permission: String, isGranted: Boolean) {
@@ -143,6 +145,7 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
     private fun loadProfileImage() {
         val sharedPreferences = requireActivity().getSharedPreferences("UserInfo", AppCompatActivity.MODE_PRIVATE)
         val profileImageUri = sharedPreferences.getString("profileImageUri", null)
+        Log.d("woojugoing", profileImageUri.toString())
         profileImageUri?.let {
             Glide.with(this).load(Uri.parse(it)).apply(RequestOptions().circleCrop())
                 .into(binding.imageViewProfliePhoto)
@@ -209,7 +212,7 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
         imageUri?.let { imageUpload(userId, it) }
         if (binding.editTextSetProfileName.length() != 0) {
             val newNickName = binding.editTextSetProfileName.text.toString()
-            viewModel.updateNickname(userId.toString(), newNickName, imageUri.toString())
+            viewModel.updateNickname(accessToken, newNickName, imageUri.toString())
             Log.d("woojugoing", imageUri.toString());
         } else if(binding.editTextSetProfileName.length() == 0) {
             // TODO 기존의 닉네임을 안바꾸고 프로필 사진만 바꾸려는 사람에 대한 핸들링 필요

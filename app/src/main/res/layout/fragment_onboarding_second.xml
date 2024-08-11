@@ -62,12 +62,13 @@
 
         <ImageView
             android:id="@+id/imageView8"
-            android:layout_width="400dp"
-            android:layout_height="600dp"
+            android:layout_width="250dp"
+            android:layout_height="500dp"
+            android:layout_marginTop="192dp"
             app:layout_constraintBottom_toTopOf="@+id/buttonNextFragment"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/indicatorMockView"
+            app:layout_constraintTop_toTopOf="parent"
             app:srcCompat="@drawable/ic_baseline_png_onboard_2" />
 
 

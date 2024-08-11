@@ -113,11 +113,12 @@ class LoginViewModel @Inject constructor(
         }
     }
 
-    fun updateNickname(userId: String, nickname: String, imageUrl: String) {
+    fun updateNickname(userToken: String, nickname: String, imageUrl: String) {
+        // TODO 이거 userID 말고 access토큰이어야함.
         viewModelScope.launch {
             _isLoading.value = true
             try {
-                val response = loginUseCase.updateNickname(userId, nickname, imageUrl)
+                val response = loginUseCase.updateNickname(userToken, nickname, imageUrl)
                 _success.value = response
                 _isLoading.value = false
             } catch (e: Exception) {

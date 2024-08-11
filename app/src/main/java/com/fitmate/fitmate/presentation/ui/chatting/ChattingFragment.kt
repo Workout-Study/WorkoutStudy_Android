@@ -26,6 +26,7 @@ import com.fitmate.fitmate.presentation.ui.chatting.list.adapter.FitMate
 import com.fitmate.fitmate.presentation.ui.chatting.list.adapter.FitMateListAdapter
 import com.fitmate.fitmate.presentation.viewmodel.ChattingViewModel
 import com.fitmate.fitmate.presentation.viewmodel.GroupViewModel
+import com.fitmate.fitmate.presentation.viewmodel.LoginViewModel
 import com.fitmate.fitmate.util.HeightProvider
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Dispatchers
@@ -58,6 +59,7 @@ class ChattingFragment : Fragment(R.layout.fragment_chatting) {
     private var userId: Int = -1
     private lateinit var groupCreatedAt: String
     private val viewModel: ChattingViewModel by viewModels()
+    private val login: LoginViewModel by viewModels()
     private val group: GroupViewModel by viewModels()
     private var webSocket: WebSocket? = null
     private var penaltyAccountNumber: String? = null
@@ -109,18 +111,17 @@ class ChattingFragment : Fragment(R.layout.fragment_chatting) {
     //드로워 레이아웃 여는 메서드
     fun toggleDrawer() {
         group.getFitMateList(fitGroupId)
-        val includedLayout = view?.findViewById<View>(R.id.includeFragmentChattingMyInfo)
-        val textView = includedLayout?.findViewById<TextView>(R.id.textViewItemChattingFitMateName)
-        val fitMateListAdapter = FitMateListAdapter(emptyList())
+        val fitMateListAdapter = FitMateListAdapter(emptyList(), "", "", login)
         binding.recyclerViewFragmentChattingForFitMateList.adapter = fitMateListAdapter
         binding.recyclerViewFragmentChattingForFitMateList.layoutManager = LinearLayoutManager(context)
 
         group.getMate.observe(viewLifecycleOwner) { fitMateList ->
-            val isLeader = fitMateList.fitLeaderDetail.fitLeaderUserId == userId.toString()
-            Log.d("woojugoing_isLeader", isLeader.toString())
-            fitMateList.fitMateDetails.firstOrNull { it.fitMateId == userId }?.let { textView?.text = it.fitMateUserId }
-            val filteredFitMates = fitMateList.fitMateDetails.filter { it.fitMateId != userId }.map { FitMate(it.fitMateId, it.fitMateUserId,it.createdAt) }
-            (binding.recyclerViewFragmentChattingForFitMateList.adapter as FitMateListAdapter).updateData(filteredFitMates, isLeader)
+//            val isLeader = fitMateList.fitLeaderDetail.fitLeaderUserId == userId.toString()
+            val leaderID = fitMateList.fitLeaderDetail.fitLeaderUserId
+            val myID = userId.toString()
+            binding.textViewFragmentChattingFitGroupSize.text = "대화 상대 " + fitMateList.fitMateDetails.size.toString();
+            val filteredFitMates = fitMateList.fitMateDetails.map { FitMate(it.fitMateId, it.fitMateUserId, it.fitMateUserNickname ,it.createdAt) }
+            (binding.recyclerViewFragmentChattingForFitMateList.adapter as FitMateListAdapter).updateData(filteredFitMates, leaderID, myID)
         }
 
         binding.drawerLayoutForFragmentChatting.apply { if (isDrawerOpen(GravityCompat.END)) closeDrawer(GravityCompat.END) else openDrawer(GravityCompat.END) }
