@@ -14,6 +14,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.CheckBox
 import android.widget.Toast
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
@@ -28,6 +29,8 @@ import androidx.navigation.ui.setupWithNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.fitmate.fitmate.MainActivity
 import com.fitmate.fitmate.R
+import com.fitmate.fitmate.databinding.DialogEmptyTargetCertificationGroupBinding
+import com.fitmate.fitmate.databinding.DialogSelectCertificationGroupBinding
 import com.fitmate.fitmate.databinding.FragmentCertificateBinding
 import com.fitmate.fitmate.domain.model.CertificationImage
 import com.fitmate.fitmate.domain.model.FitGroupItem
@@ -259,6 +262,7 @@ class CertificateFragment : Fragment() {
     private fun observeMyFitGroupListDataResult() {
         viewModel.myFitGroupData.observe(viewLifecycleOwner) {
             if (it.isEmpty()) {
+                loadingTaskSettingEnd()
                 guideEmptyMyFitGroupState()
 
             } else {
@@ -576,9 +580,50 @@ class CertificateFragment : Fragment() {
         val multiChoiceList = BooleanArray(dataList.size) { i -> false }
         val resultGroupIdList = mutableListOf<String>()
         val builder = MaterialAlertDialogBuilder(requireContext(), R.style.Theme_Fitmate_Dialog)
-        builder.setTitle("인증을 수행할 그룹을 선택해주세요")
+        val dialogBinding = DialogSelectCertificationGroupBinding.inflate(layoutInflater)
+        //builder.setTitle("인증을 수행할 그룹을 선택해주세요")
+        builder.setView(dialogBinding.root)
 
-        builder.setMultiChoiceItems(
+        dataList.forEachIndexed { index, s ->
+            val checkBox: CheckBox = CheckBox(requireContext())
+            checkBox.setText(s)
+            checkBox.isChecked = multiChoiceList[index]
+            checkBox.setOnCheckedChangeListener { compoundButton, b -> multiChoiceList[index] = b }
+            dialogBinding.checkboxContainer.addView(checkBox)
+        }
+
+        dialogBinding.buttonConfirmMyCertificationToSelectedGroup.setOnClickListener {
+            for (idx in 0 until multiChoiceList.size) {
+                if (multiChoiceList[idx] == true) {
+                    resultGroupIdList.add(groupList[idx].fitGroupId)
+                }
+            }
+            if (resultGroupIdList.size > 0) {
+                //최종 통신까지 진행 시작
+                val intent = Intent(
+                    this@CertificateFragment.context,
+                    StopWatchService::class.java
+                ).apply {
+                    action = STOP_WATCH_RESET
+                }
+                requireContext().startService(intent)
+                viewModel.selectedTarget = resultGroupIdList
+                networkState = NetworkState.STATE_UPLOAD_STORAGE
+                loadingTaskSettingStart()
+                viewModel.updateCertificationInfo(
+                    viewModel.certificationData.value!!.copy(
+                        recordEndDate = Instant.now(),
+                        endImages = viewModel.endImageList.value?.map { it.imagesUri }
+                            ?.toMutableList(),
+                        certificateTime = totalElapsedTime)
+                )
+                builder.create().dismiss()
+            } else {
+                Toast.makeText(requireContext(), "그룹을 하나 이상 선택하셔야합니다!", Toast.LENGTH_SHORT).show()
+            }
+        }
+
+/*        builder.setMultiChoiceItems(
             dataList,
             multiChoiceList
         ) { dialogInterface: DialogInterface, i: Int, b: Boolean ->
@@ -594,13 +639,13 @@ class CertificateFragment : Fragment() {
             }
             if (resultGroupIdList.size > 0) {
                 //최종 통신까지 진행 시작
-/*                val intent = Intent(
+                val intent = Intent(
                     this@CertificateFragment.context,
                     StopWatchService::class.java
                 ).apply {
                     action = STOP_WATCH_RESET
                 }
-                requireContext().startService(intent)*/
+                requireContext().startService(intent)
                 viewModel.selectedTarget = resultGroupIdList
                 networkState = NetworkState.STATE_UPLOAD_STORAGE
                 loadingTaskSettingStart()
@@ -614,15 +659,29 @@ class CertificateFragment : Fragment() {
             } else {
                 Toast.makeText(requireContext(), "그룹을 하나 이상 선택하셔야합니다!", Toast.LENGTH_SHORT).show()
             }
-        }
+        }*/
         builder.show()
     }
 
     private fun guideEmptyMyFitGroupState() {
-        MaterialAlertDialogBuilder(requireContext(), R.style.Theme_Fitmate_Dialog)
-            .setTitle("회원님은 현재 가입된 그룹이 없습니다!")
-            .setMessage("인증을 진행할 그룹이 존재하지 않으면 인증을 더이상 진행할 수 없습니다")
-            .setPositiveButton("그룹 가입하러 가기") { dialogInterface: DialogInterface, i: Int ->
+        val dialogBinding = DialogEmptyTargetCertificationGroupBinding.inflate(layoutInflater)
+
+        val dialogBuilder = MaterialAlertDialogBuilder(requireContext(), R.style.Theme_Fitmate_Dialog)
+            .setView(dialogBinding.root)
+
+        dialogBinding.buttonCancelAndStay.setOnClickListener {
+            //인증 취소하기
+            certificationReset()
+            dialogBuilder.create().dismiss()
+        }
+        dialogBinding.buttonNavigateToEnterGroup.setOnClickListener {
+            //인증 취소하고 가입하러 보내기 TODO 네비게이트 시키기
+            //networkState = NetworkState.CANCEL_CERTIFICATION
+            certificationReset()
+            dialogBuilder.create().dismiss()
+            findNavController().navigate(R.id.categorySelectFragment)
+        }
+/*            .setPositiveButton("그룹 가입하러 가기") { dialogInterface: DialogInterface, i: Int ->
                 //인증 취소하고 가입하러 보내기
                 networkState = NetworkState.CANCEL_CERTIFICATION
                 loadingTaskSettingEnd()
@@ -632,7 +691,8 @@ class CertificateFragment : Fragment() {
                 //인증 취소하기
                 loadingTaskSettingEnd()
                 certificationReset()
-            }.show()
+            }*/
+        dialogBuilder.show()
     }
 
     private fun showStoragePermissionDialog() {
