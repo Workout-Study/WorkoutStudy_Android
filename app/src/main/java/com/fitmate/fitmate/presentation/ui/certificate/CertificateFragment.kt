@@ -289,7 +289,7 @@ class CertificateFragment : Fragment() {
             else{
                 //TODO 스낵바 처리 해야함
                 networkState = NetworkState.STATE_NON
-                Toast.makeText(requireContext(), "인증이 불가한 그룹에 인증을 시도하셨습니다!",Toast.LENGTH_SHORT).show()
+                Toast.makeText(requireContext(), "해당 그룹에서 심사가 진행중인 운동이 존재합니다!",Toast.LENGTH_SHORT).show()
                 loadingTaskSettingEnd()
                 //certificationReset()
             }
@@ -579,7 +579,7 @@ class CertificateFragment : Fragment() {
         val dataList = groupList.map { it.fitGroupName }.toTypedArray()
         val multiChoiceList = BooleanArray(dataList.size) { i -> false }
         val resultGroupIdList = mutableListOf<String>()
-        val builder = MaterialAlertDialogBuilder(requireContext(), R.style.Theme_Fitmate_Dialog)
+        val builder = MaterialAlertDialogBuilder(requireContext(), R.style.Theme_Fitmate_Dialog).create()
         val dialogBinding = DialogSelectCertificationGroupBinding.inflate(layoutInflater)
         //builder.setTitle("인증을 수행할 그룹을 선택해주세요")
         builder.setView(dialogBinding.root)
@@ -599,14 +599,15 @@ class CertificateFragment : Fragment() {
                 }
             }
             if (resultGroupIdList.size > 0) {
+                builder.dismiss()
                 //최종 통신까지 진행 시작
-                val intent = Intent(
+/*                val intent = Intent(
                     this@CertificateFragment.context,
                     StopWatchService::class.java
                 ).apply {
                     action = STOP_WATCH_RESET
                 }
-                requireContext().startService(intent)
+                requireContext().startService(intent)*/
                 viewModel.selectedTarget = resultGroupIdList
                 networkState = NetworkState.STATE_UPLOAD_STORAGE
                 loadingTaskSettingStart()
@@ -617,7 +618,7 @@ class CertificateFragment : Fragment() {
                             ?.toMutableList(),
                         certificateTime = totalElapsedTime)
                 )
-                builder.create().dismiss()
+
             } else {
                 Toast.makeText(requireContext(), "그룹을 하나 이상 선택하셔야합니다!", Toast.LENGTH_SHORT).show()
             }
