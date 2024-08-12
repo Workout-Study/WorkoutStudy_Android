@@ -102,7 +102,7 @@ class MyFitFragment : Fragment() {
                 binding.textViewTotalFitHistoryNum.text = getString(R.string.my_fit_history_total_num, it.size)
                 fitHistoryAdapter.submitList(it)
                 val fitDateList =  it.map { fitHistoryData ->
-                    Instant.parse(fitHistoryData.recordStartDate).atZone(ZoneId.systemDefault()).toLocalDate()
+                    DateParseUtils.stringToInstant(fitHistoryData.recordEndDate).atZone(ZoneId.systemDefault()).toLocalDate()
                 }
                 fitDateList.forEach {
                     binding.calendarView.notifyDayChanged(CalendarDay(it, DayPosition.MonthDate))
@@ -180,7 +180,7 @@ class MyFitFragment : Fragment() {
 
                 viewModel.myFitRecordHistory.value?.let{
                     val fitDateList =  it.map { fitHistoryData ->
-                        Instant.parse(fitHistoryData.recordStartDate).atZone(ZoneId.systemDefault()).toLocalDate()
+                        DateParseUtils.stringToInstant(fitHistoryData.recordEndDate).atZone(ZoneId.systemDefault()).toLocalDate()
                     }
                     if (fitDateList.contains(container.day.date)){
                         container.dot.visibility = View.VISIBLE

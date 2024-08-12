@@ -163,8 +163,8 @@ fun ShimmerFrameLayout.setVisibleShimmer(data: List<FitProgressItem>?) {
 //my fit fitHistory 리사이클러뷰 텍스트 설정(운동 시간 계산)
 @BindingAdapter(value = ["startTime", "endTime"], requireAll = true)
 fun TextView.calculateTotalFitTime(startTime:String, endTime:String) {
-    val startInstant = Instant.parse(startTime)
-    val endInstant = Instant.parse(endTime)
+    val startInstant = DateParseUtils.stringToInstant(startTime)
+    val endInstant = DateParseUtils.stringToInstant(endTime)
 
     val duration = Duration.between(startInstant,endInstant)
 
