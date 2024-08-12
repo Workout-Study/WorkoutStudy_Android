@@ -8,6 +8,7 @@ import com.fitmate.fitmate.domain.model.DbCertification
 import com.fitmate.fitmate.domain.model.FitGroupItem
 import com.fitmate.fitmate.domain.model.ResisterCertificationRecord
 import com.fitmate.fitmate.domain.model.ResisterCertificationRecordResponse
+import com.fitmate.fitmate.util.DateParseUtils
 
 object CertificationMapper {
 
@@ -41,8 +42,8 @@ object CertificationMapper {
     //ui layer의 데이터를 data layer의 엔티티로 변환
     fun DbCertification.toCertificationRecordDto() = CertificationRecordDto(
         requestUserId = this.userId,
-        recordStartDate = this.recordStartDate.toString(),
-        recordEndDate = this.recordEndDate.toString(),
+        recordStartDate = DateParseUtils.instantToString(this.recordStartDate),
+        recordEndDate = DateParseUtils.instantToString(this.recordEndDate),
         multiMediaEndPoints = (this.startImagesUrl!! + this.endImagesUrl!!).toList()
     )
 
