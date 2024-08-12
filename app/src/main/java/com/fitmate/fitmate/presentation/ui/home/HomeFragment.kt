@@ -53,6 +53,10 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
 
         //로컬에 저장된 데이터 가져오기
         loadUserPreference()
+
+        //리사이클러뷰 설정
+        initRecyclerView()
+        //setCarousel()
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -62,11 +66,7 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
 
         //바텀 네비 보이도록 설정
         (activity as MainActivity).viewNavigationBar()
-
-        //리사이클러뷰 설정
-        initRecyclerView()
-        //setCarousel()
-
+        
         //네트워킹 감시
         observeViewModel()
 

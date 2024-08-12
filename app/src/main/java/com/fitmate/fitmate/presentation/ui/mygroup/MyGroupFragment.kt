@@ -35,7 +35,7 @@ class MyGroupFragment: Fragment(R.layout.fragment_my_group) {
         super.onCreate(savedInstanceState)
         val userPreference = (activity as MainActivity).loadUserPreference()
         userId = userPreference.getOrNull(2)?.toString()?.toInt() ?: -1
-        viewModel.retrieveFitGroup(userId.toString())
+
     }
 
     override fun onCreateView(
@@ -61,7 +61,9 @@ class MyGroupFragment: Fragment(R.layout.fragment_my_group) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        Log.d("tlqkf","onViewCreated, 통신 시작")
         binding.floatingButtonMakeFitGroup.setOnClickListener { findNavController().navigate(R.id.makeGroupFragment) }
+        viewModel.retrieveFitGroup(userId.toString())
         observeFitGroupData()
         observeLoadingState()
     }
