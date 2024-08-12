@@ -33,12 +33,13 @@
                 android:id="@+id/textViewCertificateTimer"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="40dp"
                 android:text="@string/certificate_scr_timer"
                 android:textAppearance="@style/Font.bold16"
-                android:textSize="48sp"
+                android:textSize="56sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintVertical_bias="0.25"
                 app:layout_constraintTop_toTopOf="parent" />
 
             <LinearLayout
@@ -46,14 +47,15 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:background="@drawable/bg_rounded_rectangle"
-                android:backgroundTint="#DC9094"
+                android:backgroundTint="#E1ECF6"
                 android:orientation="horizontal"
                 android:padding="10dp"
-                app:layout_constraintBottom_toBottomOf="parent"
+                android:layout_marginBottom="12dp"
+                app:layout_constraintBottom_toTopOf="@+id/layoutCertificateContainerEnd"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/textViewCertificateTimer"
-                app:layout_constraintVertical_bias="0.1">
+                app:layout_constraintVertical_bias="1.0">
 
 
                 <com.tans.horizontalnestedscrollview.HorizontalNestedScrollView
@@ -82,13 +84,14 @@
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toTopOf="parent" />
 
-                        <androidx.cardview.widget.CardView
+                        <LinearLayout
                             android:id="@+id/cardViewItemCertificateStart"
-                            android:layout_width="108dp"
-                            android:layout_height="180dp"
+                            android:layout_width="92dp"
+                            android:layout_height="92dp"
                             android:layout_margin="5dp"
-                            android:src="@color/violet"
-                            app:cardCornerRadius="10dp"
+                            android:gravity="center"
+                            android:background="@drawable/dot_line_myfit_main"
+                            android:orientation="vertical"
                             app:certificate_end_image_add_state="@{viewModel.state}"
                             app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintStart_toEndOf="@+id/recyclerCertificateStartImage"
@@ -96,13 +99,19 @@
 
                             <ImageView
                                 android:id="@+id/imageViewFitStartSelectImage"
-                                android:layout_width="match_parent"
-                                android:layout_height="match_parent"
-                                android:background="@color/dark_gray"
-                                android:scaleType="centerInside"
-                                android:src="@drawable/add_picture" />
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:src="@drawable/camera_blue_icon"
+                                android:scaleType="centerInside" />
 
-                        </androidx.cardview.widget.CardView>
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="5dp"
+                                android:text="시작 사진 추가"
+                                android:textAppearance="@style/Font.regular12" />
+
+                        </LinearLayout>
 
 
                     </LinearLayout>
@@ -117,15 +126,14 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:background="@drawable/bg_rounded_rectangle"
-                android:backgroundTint="#8FA5E2"
+                android:backgroundTint="#E4E2F6"
                 android:orientation="horizontal"
                 android:padding="10dp"
+                android:layout_marginBottom="25dp"
                 app:certificate_end_image_container_state="@{viewModel.state}"
-                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintBottom_toTopOf="@+id/buttonCertificateConfirm"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/layoutCertificateContainerStart"
-                app:layout_constraintVertical_bias="0.1">
+                app:layout_constraintStart_toStartOf="parent">
 
 
                 <com.tans.horizontalnestedscrollview.HorizontalNestedScrollView
@@ -153,26 +161,35 @@
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toTopOf="parent" />
 
-                        <androidx.cardview.widget.CardView
+                        <LinearLayout
                             android:id="@+id/cardViewItemCertificateEnd"
-                            android:layout_width="108dp"
-                            android:layout_height="180dp"
+                            android:layout_width="92dp"
+                            android:layout_height="92dp"
                             android:layout_margin="5dp"
-                            android:src="@color/violet"
+                            android:gravity="center"
+                            android:background="@drawable/dot_line_myfit_main"
+                            android:orientation="vertical"
                             app:cardCornerRadius="10dp"
                             app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintStart_toEndOf="@+id/recyclerCertificateStartImage"
                             app:layout_constraintTop_toTopOf="parent">
 
+
                             <ImageView
                                 android:id="@+id/imageViewFitEndSelectImage"
-                                android:layout_width="match_parent"
-                                android:layout_height="match_parent"
-                                android:background="@color/dark_gray"
-                                android:scaleType="centerInside"
-                                android:src="@drawable/add_picture" />
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:src="@drawable/camera_blue_icon"
+                                android:scaleType="centerInside" />
 
-                        </androidx.cardview.widget.CardView>
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="5dp"
+                                android:text="종료 사진 추가"
+                                android:textAppearance="@style/Font.regular12" />
+
+                        </LinearLayout>
 
 
                     </LinearLayout>
@@ -189,6 +206,7 @@
                 android:layout_height="wrap_content"
                 android:paddingVertical="15dp"
                 android:paddingHorizontal="20dp"
+                android:layout_marginBottom="15dp"
                 android:textAppearance="@style/Font.bold20"
                 tools:ignore="SpeakableTextPresentCheck"
                 android:foreground="?attr/selectableItemBackground"
@@ -199,8 +217,7 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toStartOf="@+id/buttonCertificateReset"
                 app:layout_constraintHorizontal_bias="0.5"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/layoutCertificateContainerEnd" />
+                app:layout_constraintStart_toStartOf="parent" />
 
             <TextView
                 android:id="@+id/buttonCertificateReset"
@@ -217,11 +234,11 @@
                 android:textAppearance="@style/Font.bold20"
                 app:certificate_reset_button_state="@{viewModel.state}"
                 app:icon="@drawable/baseline_close_24"
-                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintBottom_toBottomOf="@+id/buttonCertificateConfirm"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toEndOf="@+id/buttonCertificateConfirm"
-                app:layout_constraintTop_toBottomOf="@+id/layoutCertificateContainerEnd" />
+                app:layout_constraintTop_toTopOf="@+id/buttonCertificateConfirm" />
 
             <com.airbnb.lottie.LottieAnimationView
                 android:id="@+id/progressBarSubmitLoading"

@@ -171,7 +171,7 @@
     <string name="certificate_scr_toolbar">운동 기록</string>
     <string name="certificate_scr_timer">00 : 00 : 00</string>
     <string name="certificate_scr_confirm">\t\t FIT 기록 시작하기 \t\t</string>
-    <string name="certificate_scr_confirm_unactive">인증을 시작하려면 사진을 첨부해주세요!</string>
+    <string name="certificate_scr_confirm_unactive">시작 사진을 첨부하세요</string>
     <string name="certificate_scr_image_add_warning">사진은 최대 5장까지 첨부할 수 있습니다!</string>
     <string name="certificate_scr_end_image_check_warning">종료 사진을 하나 이상 첨부해주세요!</string>
     <string name="certificate_scr_confirm_finish">인증 완료하기</string>

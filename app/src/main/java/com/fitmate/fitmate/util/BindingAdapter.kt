@@ -83,7 +83,7 @@ fun LinearLayout.setContainerVisible(state: CertificateState) {
 
 //인증 화면의 시작 사진 첨부 카드뷰 visible 설정
 @BindingAdapter("certificate_end_image_add_state")
-fun CardView.setContainerVisible(state: CertificateState) {
+fun LinearLayout.setImageContainerVisible(state: CertificateState) {
     when (state) {
         CertificateState.NON_PROCEEDING, CertificateState.ADDED_START_IMAGE -> {
             this.visibility = View.VISIBLE

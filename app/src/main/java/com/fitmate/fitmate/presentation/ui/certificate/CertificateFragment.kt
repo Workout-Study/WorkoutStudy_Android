@@ -450,7 +450,7 @@ class CertificateFragment : Fragment() {
 
     //인증 시작 사진 첨부 클릭 리스너
     private fun setStartImageAddButtonClick() {
-        binding.imageViewFitStartSelectImage.setOnClickListener {
+        binding.cardViewItemCertificateStart.setOnClickListener {
             if ((viewModel.startImageList.value?.size ?: 0) >= IMAGE_PICK_MAX) {
                 return@setOnClickListener
             }
@@ -460,7 +460,7 @@ class CertificateFragment : Fragment() {
 
     //인증 종료 사진 첨부 클릭 리스너
     private fun setEndImageAddButtonClick() {
-        binding.imageViewFitEndSelectImage.setOnClickListener {
+        binding.cardViewItemCertificateEnd.setOnClickListener {
             if ((viewModel.endImageList.value?.size ?: 0) >= IMAGE_PICK_MAX) {
                 return@setOnClickListener
             }
