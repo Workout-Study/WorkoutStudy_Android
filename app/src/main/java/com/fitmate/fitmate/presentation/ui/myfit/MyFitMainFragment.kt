@@ -45,6 +45,7 @@ class MyFitMainFragment: Fragment() {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        Log.d("tlqkf","onViewCreated, 통신 시작")
         //내 그룹 통신 시작 및 데이터 감시
         networkFitProgressAndObserve()
 
