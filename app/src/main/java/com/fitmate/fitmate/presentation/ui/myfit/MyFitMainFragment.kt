@@ -63,6 +63,8 @@ class MyFitMainFragment: Fragment() {
         viewModel.fitProgressItem.observe(viewLifecycleOwner) { fitProgressList ->
             if (fitProgressList.isEmpty()){
                 binding.containerFitGroupItem.visibility = View.GONE
+            }else{
+                binding.containerFitGroupItem.visibility = View.VISIBLE
             }
             fitGroupProgressAdapter.submitList(fitProgressList) {
                 binding.recyclerviewMyFitFragmentMyFitProgress.orientation = ViewPager2.ORIENTATION_HORIZONTAL
