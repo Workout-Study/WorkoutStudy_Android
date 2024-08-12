@@ -145,6 +145,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="20dp"
+                    app:fragment="@{fragment}"
                     app:layout_constraintEnd_toStartOf="@+id/containerFitOffApply"
                     app:layout_constraintHorizontal_bias="0.5"
                     app:layout_constraintStart_toStartOf="parent"
@@ -158,6 +159,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="20dp"
+                    app:fragment="@{fragment}"
                     app:layout_constraintEnd_toStartOf="@+id/containerFitVote"
                     app:layout_constraintHorizontal_bias="0.5"
                     app:layout_constraintStart_toEndOf="@+id/containerFitOffSituation"
@@ -167,6 +169,7 @@
                 <include
                     android:id="@+id/containerFitVote"
                     layout="@layout/chatting_extra_item_fit_vote"
+                    app:fragment="@{fragment}"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="20dp"
@@ -179,6 +182,7 @@
                 <include
                     android:id="@+id/containerFitSituation"
                     layout="@layout/chatting_extra_item_fit_situation"
+                    app:fragment="@{fragment}"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="20dp"
@@ -190,6 +194,7 @@
 
                 <include
                     android:id="@+id/containerGroupPointSituation"
+                    app:fragment="@{fragment}"
                     layout="@layout/chatting_extra_item_group_point_situation"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"

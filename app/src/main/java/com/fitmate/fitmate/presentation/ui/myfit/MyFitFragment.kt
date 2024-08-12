@@ -19,6 +19,7 @@ import com.fitmate.fitmate.databinding.FragmentMyfitBinding
 import com.fitmate.fitmate.presentation.viewmodel.MyFitViewModel
 import com.fitmate.fitmate.ui.myfit.list.adapter.MyFitHistoryAdapter
 import com.fitmate.fitmate.util.ControlActivityInterface
+import com.fitmate.fitmate.util.DateParseUtils
 import com.kizitonwose.calendar.core.CalendarDay
 import com.kizitonwose.calendar.core.CalendarMonth
 import com.kizitonwose.calendar.core.DayPosition
@@ -269,12 +270,13 @@ class MyFitFragment : Fragment() {
 
         // 해당 월의 첫 번째 날의 00:00:00과 마지막 날의 23:59:59의 Instant 구하기
         val startInstant =
-            firstDayOfMonth.atStartOfDay(ZoneId.systemDefault()).toInstant().toString()
+            firstDayOfMonth.atStartOfDay(ZoneId.systemDefault()).toInstant()
         val endInstant =
             lastDayOfMonth.atStartOfDay(ZoneId.systemDefault()).plusDays(1).minusSeconds(1)
-                .toInstant().toString()
-
-        return Pair(startInstant, endInstant)
+                .toInstant()
+        Log.d("tlqkf",DateParseUtils.instantToString(startInstant))
+        Log.d("tlqkf",DateParseUtils.instantToString(endInstant))
+        return Pair(DateParseUtils.instantToString(startInstant), DateParseUtils.instantToString(endInstant))
     }
 
 
