@@ -8,12 +8,10 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
-import androidx.navigation.ui.setupWithNavController
 import androidx.viewpager2.widget.ViewPager2
 import com.fitmate.fitmate.MainActivity
 import com.fitmate.fitmate.R
 import com.fitmate.fitmate.databinding.FragmentMyFitMainBinding
-import com.fitmate.fitmate.databinding.FragmentMyfitBinding
 import com.fitmate.fitmate.presentation.viewmodel.MyFitViewModel
 import com.fitmate.fitmate.ui.myfit.list.adapter.MyFitGroupProgressAdapter
 import com.fitmate.fitmate.util.ControlActivityInterface
@@ -48,11 +46,11 @@ class MyFitMainFragment: Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         //내 그룹 통신 시작 및 데이터 감시
-        observeFitProgress()
+        networkFitProgressAndObserve()
 
     }
 
-    private fun observeFitProgress() {
+    private fun networkFitProgressAndObserve() {
         observeNetworkMyProgress()
         val userPreference = (activity as MainActivity).loadUserPreference()
         val userId = userPreference.getOrNull(2)?.toString()?.toInt() ?: -1
@@ -84,8 +82,14 @@ class MyFitMainFragment: Fragment() {
                         binding.buttonCardViewScrollRight.visibility = View.GONE
                     }else{
                         when{
-                            position == 0 -> binding.buttonCardViewScrollLeft.visibility = View.GONE
-                            position == myFitGroupList.size - 1 -> binding.buttonCardViewScrollRight.visibility = View.GONE
+                            position == 0 -> {
+                                binding.buttonCardViewScrollLeft.visibility = View.GONE
+                                binding.buttonCardViewScrollRight.visibility = View.VISIBLE
+                            }
+                            position == myFitGroupList.size - 1 -> {
+                                binding.buttonCardViewScrollLeft.visibility = View.VISIBLE
+                                binding.buttonCardViewScrollRight.visibility = View.GONE
+                            }
                             else -> {
                                 binding.buttonCardViewScrollLeft.visibility = View.VISIBLE
                                 binding.buttonCardViewScrollRight.visibility = View.VISIBLE
