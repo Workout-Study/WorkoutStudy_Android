@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+    </data>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="40dp"
+            android:layout_marginBottom="25dp"
+            android:fontFamily="@font/pretendard_bold"
+            android:text="가입된 그룹이 없습니다"
+            android:textSize="20sp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="15dp"
+            android:fontFamily="@font/pretendard_bold"
+            android:text="가입된 그룹이 존재하지 않으면 인증을 진행할 수 없습니다!"
+            android:textSize="15sp" />
+
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="40dp"
+            android:layout_marginHorizontal="15dp"
+            android:orientation="horizontal"
+            android:layout_gravity="center">
+
+            <Button
+                android:id="@+id/buttonCancelAndStay"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:backgroundTint="@color/fitmate_blue"
+                android:textColor="@color/white"
+                android:textSize="15sp"
+                android:layout_weight="1"
+                android:textAppearance="@style/Font.bold20"
+                android:paddingVertical="15dp"
+                android:text="인증 취소하고 머무르기"
+                style="@style/Widget.MaterialComponents.Button" />
+
+            <View
+                android:layout_width="0dp"
+                android:layout_weight="0.2"
+                android:layout_height="0dp"/>
+
+            <Button
+                android:id="@+id/buttonNavigateToEnterGroup"
+                android:layout_width="wrap_content"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:backgroundTint="@color/fitmate_blue"
+                android:textColor="@color/white"
+                android:textSize="15sp"
+                android:textAppearance="@style/Font.bold20"
+                android:paddingVertical="15dp"
+                android:text="그룹 가입하러 가기"
+                style="@style/Widget.MaterialComponents.Button" />
+
+        </LinearLayout>
+
+
+        </LinearLayout>
+
+
+</layout>
