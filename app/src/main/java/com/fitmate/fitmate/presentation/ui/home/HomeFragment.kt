@@ -70,14 +70,16 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
         //네트워킹 감시
         observeViewModel()
 
-        //그룹 소식 네트워킹
-        viewModel.getPagingGroupNews(userId,0, 10)
+        //내가 가입한 그룹 네트워킹
+        viewModel.getMyFitGroupList(userId)
+
+
         startShimmer()
     }
 
 
     private fun initRecyclerView() {
-        myGroupNewsAdapter = MyGroupNewsAdapter(this) {}
+        myGroupNewsAdapter = MyGroupNewsAdapter(this,viewModel) {}
 
         myGroupNewsAdapter.addOnPagesUpdatedListener {
             stopShimmer()
@@ -96,6 +98,13 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
 
     private fun observeViewModel() {
         viewModel.run {
+            viewModelScope.launch {
+                myFitGroupList.observe(viewLifecycleOwner) { groupList ->
+                    //그룹 소식 네트워킹
+                    viewModel.getPagingGroupNews(userId,0, 10)
+                }
+            }
+
             viewModelScope.launch {
                 pagingData.collectLatest {
                     if (it != null){

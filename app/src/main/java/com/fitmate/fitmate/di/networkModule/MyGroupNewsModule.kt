@@ -2,6 +2,7 @@ package com.fitmate.fitmate.di.networkModule
 
 import com.fitmate.fitmate.BuildConfig
 import com.fitmate.fitmate.data.repository.MyGroupNewsRepositoryImpl
+import com.fitmate.fitmate.data.source.remote.CertificationTargetGroupService
 import com.fitmate.fitmate.data.source.remote.MyGroupNewsService
 import com.fitmate.fitmate.domain.repository.MyGroupNewsRepository
 import dagger.Module
@@ -26,5 +27,5 @@ object MyGroupNewsModule {
 
     @Provides
     @Singleton
-    fun providesMyGroupNewsRepository(myGroupNewsService: MyGroupNewsService): MyGroupNewsRepository = MyGroupNewsRepositoryImpl(myGroupNewsService)
+    fun providesMyGroupNewsRepository(myGroupService: CertificationTargetGroupService, myGroupNewsService: MyGroupNewsService): MyGroupNewsRepository = MyGroupNewsRepositoryImpl(myGroupService, myGroupNewsService)
 }
