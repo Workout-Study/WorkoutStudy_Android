@@ -3,6 +3,7 @@ package com.fitmate.fitmate.presentation.ui.chatting.dialog
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -18,6 +19,7 @@ import com.fitmate.fitmate.domain.model.GroupVoteCertificationDetail
 import com.fitmate.fitmate.domain.model.VoteRequest
 import com.fitmate.fitmate.presentation.ui.chatting.list.adapter.VoteImageViewPagerAdapter
 import com.fitmate.fitmate.presentation.viewmodel.VoteViewModel
+import com.fitmate.fitmate.util.DateParseUtils
 import java.time.LocalDateTime
 import java.time.OffsetDateTime
 import java.time.ZoneId
@@ -50,7 +52,7 @@ class VoteDialog(
     ): View {
         //배경 색 변경
         dialog?.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
-
+        Log.d("tlqkf",itemData.multiMediaEndPoints.toString())
         when(binding){
             is DialogGroupVoteBinding -> {
                 (binding as DialogGroupVoteBinding).apply {
@@ -58,7 +60,7 @@ class VoteDialog(
                     dialog = this@VoteDialog
 
 
-                    viewPagerGroupVote.adapter = VoteImageViewPagerAdapter(itemData.thumbnailEndPoint)
+                    viewPagerGroupVote.adapter = VoteImageViewPagerAdapter(itemData.multiMediaEndPoints)
                     viewPagerGroupVote.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
 
                     voteOppositeButton.setOnClickListener {
@@ -83,7 +85,7 @@ class VoteDialog(
                     data = itemData
                     dialog = this@VoteDialog
 
-                    viewPagerGroupVote.adapter = VoteImageViewPagerAdapter(itemData.thumbnailEndPoint)
+                    viewPagerGroupVote.adapter = VoteImageViewPagerAdapter(itemData.multiMediaEndPoints)
                     viewPagerGroupVote.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
 
                     voteCancelButton.setOnClickListener {
@@ -102,7 +104,7 @@ class VoteDialog(
                     data = itemData
                     dialog = this@VoteDialog
 
-                    viewPagerGroupVote.adapter = VoteImageViewPagerAdapter(itemData.thumbnailEndPoint)
+                    viewPagerGroupVote.adapter = VoteImageViewPagerAdapter(itemData.multiMediaEndPoints)
                     viewPagerGroupVote.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
 
                     voteCancelButton.setOnClickListener {
@@ -121,31 +123,22 @@ class VoteDialog(
     }
 
     fun formatDateRange(startDate: String, endDate: String): String {
-        // 입력과 출력을 위한 날짜-시간 포맷터 정의
-        val inputFormatter = DateTimeFormatter.ISO_OFFSET_DATE_TIME
-        val dateFormatter = DateTimeFormatter.ofPattern("yyyy/MM/dd")
-        val timeFormatter = DateTimeFormatterBuilder()
-            .appendPattern("a h:mm")
-            .parseCaseInsensitive()
-            .parseDefaulting(ChronoField.SECOND_OF_MINUTE, 0)
-            .toFormatter()
+        // 한국 시간대
+        val koreaZone = ZoneId.of("Asia/Seoul")
 
-        // 입력 문자열을 OffsetDateTime으로 파싱하고 한국 시간대로 변환
-        val startDateTime = OffsetDateTime.parse(startDate, inputFormatter)
-            .atZoneSameInstant(ZoneId.of("Asia/Seoul"))
-            .toLocalDateTime()
-        val endDateTime = OffsetDateTime.parse(endDate, inputFormatter)
-            .atZoneSameInstant(ZoneId.of("Asia/Seoul"))
-            .toLocalDateTime()
+        //한국 시간으로 변환
+        val startDateToInstant = LocalDateTime.ofInstant(DateParseUtils.stringToInstant(startDate),koreaZone)
+        val endDateToInstant = LocalDateTime.ofInstant(DateParseUtils.stringToInstant(endDate),koreaZone)
 
-        // 날짜 부분 포맷팅
-        val startDatePart = dateFormatter.format(startDateTime)
-        val endDatePart = dateFormatter.format(endDateTime)
+        // 날짜 및 시간 형식 설정
+        val dateFormatter = DateTimeFormatter.ofPattern("yyyy/MM/dd a h:mm")
+        val timeFormatter = DateTimeFormatter.ofPattern("a h:mm")
 
-        // 시간 부분 포맷팅
-        val startTimePart = timeFormatter.format(startDateTime)
-        val endTimePart = timeFormatter.format(endDateTime)
+        // 형식에 맞게 변환
+        val startFormatted = startDateToInstant.format(dateFormatter)
+        val endFormatted = endDateToInstant.format(timeFormatter)
 
-        return "$startDatePart $startTimePart ~ $endDatePart $endTimePart"
+        // 결과 문자열 반환
+        return "$startFormatted ~ $endFormatted"
     }
 }

@@ -24,7 +24,7 @@ object VoteMapper {
                 agreeCount = detailDto.agreeCount,
                 disagreeCount = detailDto.disagreeCount,
                 maxAgreeCount = detailDto.maxAgreeCount,
-                thumbnailEndPoint = detailDto.thumbnailEndPoint,
+                multiMediaEndPoints = detailDto.multiMediaEndPoints,
                 fitRecordStartDate = detailDto.fitRecordStartDate,
                 fitRecordEndDate = detailDto.fitRecordEndDate,
                 voteEndDate = detailDto.voteEndDate

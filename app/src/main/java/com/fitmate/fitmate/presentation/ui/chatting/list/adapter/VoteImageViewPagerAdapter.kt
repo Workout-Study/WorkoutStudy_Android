@@ -1,5 +1,6 @@
 package com.fitmate.fitmate.presentation.ui.chatting.list.adapter
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup

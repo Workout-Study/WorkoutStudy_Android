@@ -24,6 +24,7 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="16dp"
             android:fontFamily="@font/pretendard_bold"
+            android:gravity="center"
             tools:text="000님의 운동기록에 투표하세요!"
             android:text="@{@string/dialog_vote_item_nickname(data.certificationRequestUserNickname)}"
             android:textSize="20sp"
@@ -48,8 +49,7 @@
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/viewPagerGroupVote"
                 android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="1" />
+                android:layout_height="wrap_content" />
 
 
             <TextView
@@ -57,10 +57,11 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/pretendard_regular"
+                android:layout_marginTop="10dp"
                 android:gravity="center"
                 tools:text="OOOO/OO/OO 오후 1:11 ~ 오후 2:22"
                 android:text="@{dialog.formatDateRange(data.fitRecordStartDate,data.fitRecordEndDate)}"
-                android:textSize="13sp" />
+                android:textSize="15sp" />
         </LinearLayout>
 
         <LinearLayout
@@ -83,8 +84,7 @@
                 android:backgroundTint="#E5E8EC"
                 android:textColor="@color/dark_gray"
                 android:textSize="15sp"
-                android:fontFamily="@font/pretendard_regular"
-                android:textAppearance="@style/Font.bold20"
+                android:fontFamily="@font/pretendard_semibold"
                 android:paddingVertical="15dp"
                 android:text="취소"
                 style="@style/Widget.MaterialComponents.Button" />
@@ -101,8 +101,7 @@
                 android:backgroundTint="@color/fitmate_blue"
                 android:textColor="@color/white"
                 android:textSize="15sp"
-                android:fontFamily="@font/pretendard_regular"
-                android:textAppearance="@style/Font.bold20"
+                android:fontFamily="@font/pretendard_bold"
                 android:paddingVertical="15dp"
                 android:text="찬성으로 번복"
                 style="@style/Widget.MaterialComponents.Button" />
