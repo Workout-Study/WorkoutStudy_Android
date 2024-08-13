@@ -16,6 +16,7 @@ import com.fitmate.fitmate.databinding.FragmentPointBinding
 import com.fitmate.fitmate.domain.model.PointType
 import com.fitmate.fitmate.presentation.ui.point.list.adapter.PointHistoryAdapter
 import com.fitmate.fitmate.presentation.viewmodel.PointViewModel
+import com.fitmate.fitmate.util.DateParseUtils
 import com.fitmate.fitmate.util.customGetSerializable
 import com.google.android.material.textfield.MaterialAutoCompleteTextView
 import dagger.hilt.android.AndroidEntryPoint
@@ -23,9 +24,11 @@ import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import java.time.LocalDate
 import java.time.LocalDateTime
+import java.time.YearMonth
 import java.time.ZoneId
 import java.time.ZoneOffset
 import java.time.format.DateTimeFormatter
+import java.time.format.DateTimeFormatterBuilder
 import java.time.format.DateTimeParseException
 import java.time.temporal.TemporalAdjusters
 
@@ -161,7 +164,7 @@ class PointFragment : Fragment(R.layout.fragment_point) {
                         pointOwnerId = groupId
                     }
 
-                    dateTextFieldList = getYearMonthUntilToday(createdAt.dropLast(1))
+                    dateTextFieldList = getYearMonthUntilToday(createdAt)
                 }
 
                 PointType.USER -> {
@@ -194,58 +197,47 @@ class PointFragment : Fragment(R.layout.fragment_point) {
 
     //createdAt을 사용해서 오늘 날짜로부터 모든 월을 반환하는 메서드
     private fun getYearMonthUntilToday(startDate: String): Array<String> {
-        // 날짜 포맷 설정
-        val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSSSSS")
+        // 한국 시간대
+        val koreaZone = ZoneId.of("Asia/Seoul")
 
-        // 시작 날짜를 LocalDateTime으로 변환 (UTC 기준)
-        val startLocalDateTime = LocalDateTime.parse(startDate, formatter)
+        // 현재 시간을 한국 시간으로 변환
+        val nowKoreaTime = LocalDateTime.now(koreaZone)
 
-        // UTC 날짜를 한국 날짜로 변환
-        val startKoreaDate =
-            startLocalDateTime.atZone(ZoneId.of("UTC")).withZoneSameInstant(ZoneId.of("Asia/Seoul"))
-                .toLocalDate()
+        // 주어진 Instant 값을 한국 시간으로 변환
+        val targetTime = LocalDateTime.ofInstant(DateParseUtils.stringToInstant(startDate), koreaZone)
 
-        // 현재 한국 날짜 (KST) 가져오기
-        val today = LocalDate.now(ZoneId.of("Asia/Seoul"))
+        // DateTimeFormatter to format the dates
+        val formatter = DateTimeFormatter.ofPattern("yyyy-MM")
 
-        // 날짜 리스트 초기화
-        val dateSet = LinkedHashSet<String>()
+        // List to store the intervals
+        val intervals = mutableListOf<String>()
 
-        // 현재 날짜부터 시작 날짜까지 루프 (역순)
-        var currentDate = today
-        val yearMonthFormatter = DateTimeFormatter.ofPattern("yyyy-MM")
-        while (!currentDate.isBefore(startKoreaDate)) {
-            dateSet.add(currentDate.format(yearMonthFormatter))
-            currentDate = currentDate.minusMonths(1)
+        var current = if (targetTime.isAfter(nowKoreaTime)) targetTime else nowKoreaTime
+
+        // Ensure to include the start month if it matches the current month
+        while (current.isAfter(targetTime) || current.isEqual(targetTime)) {
+            intervals.add(current.format(formatter))
+            current = current.minusMonths(1)
         }
+        intervals.add(targetTime.format(formatter))
 
-        // 리스트를 배열로 변환하여 반환
-        return dateSet.toTypedArray()
+        return intervals.distinct().sortedDescending().toTypedArray()
     }
 
     //날짜를 파라미터로 해당 월의 시작 시점과 끝 시점을 ISO 8601 문자열 형식으로 반환하는 메서드
     private fun getMonthStartAndEnd(yearMonth: String): Pair<String, String> {
-        // 날짜 포맷 설정
+        // DateTimeFormatter를 사용하여 "yyyy-MM" 형태의 문자열을 파싱
         val formatter = DateTimeFormatter.ofPattern("yyyy-MM")
+        val yearMonth = YearMonth.parse(yearMonth, formatter)
 
-        try {
-            // 입력 받은 년-월을 LocalDate로 변환 (첫 번째 날)
-            val firstDayOfMonth = LocalDate.parse("$yearMonth-01", DateTimeFormatter.ofPattern("yyyy-MM-dd"))
+        // 해당 월의 첫째 날과 마지막 날의 LocalDateTime을 생성
+        val startOfMonth = yearMonth.atDay(1).atStartOfDay(ZoneOffset.UTC)
+        val endOfMonth = yearMonth.atEndOfMonth().atTime(23, 59, 59, 999_999_999).atOffset(ZoneOffset.UTC).toInstant()
 
-            // 해당 월의 마지막 날 계산
-            val lastDayOfMonth = firstDayOfMonth.with(TemporalAdjusters.lastDayOfMonth())
+        // Instant로 변환
+        val startInstant = startOfMonth.toInstant()
 
-            // ISO 8601 형식으로 변환 (UTC 시간대)
-            val startDateTime = LocalDateTime.of(firstDayOfMonth, LocalDateTime.MIN.toLocalTime()).atOffset(ZoneOffset.UTC)
-            val endDateTime = LocalDateTime.of(lastDayOfMonth, LocalDateTime.MAX.toLocalTime()).atOffset(ZoneOffset.UTC)
-
-            // 결과를 문자열로 반환
-            val isoFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss'Z'")
-            return Pair(startDateTime.format(isoFormatter), endDateTime.format(isoFormatter))
-        } catch (e: DateTimeParseException) {
-            Log.d("tlqkf","날짜 파싱 실패했어")
-            throw IllegalArgumentException("Invalid date format: $yearMonth. Expected format is yyyy-MM.")
-        }
+        return Pair(DateParseUtils.instantToString(startInstant), DateParseUtils.instantToString(endOfMonth))
     }
 }
 
