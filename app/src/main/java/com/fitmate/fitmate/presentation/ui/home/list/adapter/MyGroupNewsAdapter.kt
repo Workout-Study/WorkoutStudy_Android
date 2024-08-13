@@ -11,14 +11,15 @@ import com.fitmate.fitmate.databinding.ItemVoteBinding
 import com.fitmate.fitmate.domain.model.MyGroupNews
 import com.fitmate.fitmate.domain.model.VoteItem
 import com.fitmate.fitmate.presentation.ui.home.list.VoteViewHolder
+import com.fitmate.fitmate.presentation.viewmodel.HomeViewModel
 
-class MyGroupNewsAdapter(private val fragment: Fragment, private val onClick: (MyGroupNews) -> Unit): PagingDataAdapter<MyGroupNews, VoteViewHolder>(
+class MyGroupNewsAdapter(private val fragment: Fragment, private val viewModel: HomeViewModel, val onClick: (MyGroupNews) -> Unit): PagingDataAdapter<MyGroupNews, VoteViewHolder>(
     VoteItemDiffCallback
 ) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): VoteViewHolder {
         val binding = ItemMyGroupNewsBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-        return VoteViewHolder(binding, fragment, onClick)
+        return VoteViewHolder(binding, fragment, viewModel, onClick)
     }
 
     override fun onBindViewHolder(holder: VoteViewHolder, position: Int) {
