@@ -1,266 +1,176 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <data>
 
+        <variable
+            name="fragment"
+            type="com.fitmate.fitmate.presentation.ui.chatting.MakeFitOffFragment" />
+
+        <variable
+            name="viewModel"
+            type="com.fitmate.fitmate.presentation.viewmodel.FitOffViewModel" />
     </data>
 
-    <LinearLayout
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
+        android:id="@+id/rootView"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:layout_height="match_parent">
 
-        <com.google.android.material.appbar.MaterialToolbar
-            android:id="@+id/materialToolbar2"
-            style="@style/Theme.Fitmate.Toolbar"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:minHeight="?attr/actionBarSize"
-            android:theme="?attr/actionBarTheme"
-            app:title="@string/make_fit_off_scr_toolbar" />
-
-        <androidx.constraintlayout.widget.ConstraintLayout
+        <LinearLayout
+            android:id="@+id/rootLayout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginLeft="20dp"
-            android:layout_marginRight="20dp">
+            android:orientation="vertical">
 
-            <TextView
-                android:id="@+id/textViewMakeFitOffName"
-                android:layout_width="wrap_content"
+            <com.google.android.material.appbar.MaterialToolbar
+                android:id="@+id/materialToolbar2"
+                style="@style/Theme.Fitmate.Toolbar"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/make_group_scr_group_name"
-                android:textAppearance="@style/Font.medium16"
-                android:textColor="@color/violet"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                android:minHeight="?attr/actionBarSize"
+                android:theme="?attr/actionBarTheme"
+                app:title="@string/make_fit_off_scr_toolbar"
+                app:titleCentered="true" />
 
-            <ImageView
-                android:id="@+id/imageViewMakeFitOffName"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:contentDescription="@null"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textViewMakeFitOffName"
-                app:srcCompat="@drawable/bg_rounded_group_1" />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
 
-            <EditText
-                android:id="@+id/editTextMakeFitOffName"
-                android:layout_width="0dp"
-                android:layout_height="40dp"
-                android:layout_marginLeft="10dp"
-                android:layout_marginRight="10dp"
-                android:autofillHints=""
-                android:background="@null"
-                android:focusableInTouchMode="false"
-                android:ems="10"
-                android:inputType="text"
-                android:text="@string/make_fit_off_scr_group_name"
-                android:textAppearance="@style/Font.regular12"
-                app:layout_constraintBottom_toBottomOf="@+id/imageViewMakeFitOffName"
-                app:layout_constraintEnd_toEndOf="@+id/imageViewMakeFitOffName"
-                app:layout_constraintStart_toStartOf="@+id/imageViewMakeFitOffName"
-                app:layout_constraintTop_toTopOf="@+id/imageViewMakeFitOffName"
-                app:layout_constraintVertical_bias="0.0"
-                tools:ignore="LabelFor" />
-
-            <TextView
-                android:id="@+id/textViewMakeFitOffCategory"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
-                android:text="@string/make_group_scr_category"
-                android:textAppearance="@style/Font.medium16"
-                android:textColor="@color/violet"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/imageViewMakeFitOffName" />
-
-            <Spinner
-                android:id="@+id/spinnerMakeFitOffCategory"
-                android:layout_width="120dp"
-                android:layout_height="wrap_content"
-                app:layout_constraintBottom_toBottomOf="@+id/imageViewMakeFitOffReason"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="@+id/imageViewMakeFitOffReason" />
-
-            <TextView
-                android:id="@+id/textViewMakeFitOffReason"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/make_fit_off_scr_reason"
-                android:textAppearance="@style/Font.medium16"
-                android:textColor="@color/violet"
-                app:layout_constraintBottom_toBottomOf="@+id/textViewMakeFitOffCategory"
-                app:layout_constraintStart_toStartOf="@+id/imageViewMakeFitOffReason"
-                app:layout_constraintTop_toTopOf="@+id/textViewMakeFitOffCategory"
-                app:layout_constraintVertical_bias="0.5" />
-
-            <ImageView
-                android:id="@+id/imageViewMakeFitOffReason"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textViewMakeFitOffReason"
-                app:srcCompat="@drawable/bg_rounded_group_6"
-                android:contentDescription="@null" />
-
-            <EditText
-                android:id="@+id/editTextText"
-                android:layout_width="0dp"
-                android:layout_height="40dp"
-                android:layout_marginLeft="10dp"
-                android:layout_marginRight="10dp"
-                android:background="@null"
-                android:ems="10"
-                android:hint="신청 사유를 입력해주세요."
-                android:inputType="text"
-                android:textAppearance="@style/Font.regular12"
-                app:layout_constraintBottom_toBottomOf="@+id/imageViewMakeFitOffReason"
-                app:layout_constraintEnd_toEndOf="@+id/imageViewMakeFitOffReason"
-                app:layout_constraintHorizontal_bias="0.0"
-                app:layout_constraintStart_toStartOf="@+id/imageViewMakeFitOffReason"
-                app:layout_constraintTop_toTopOf="@+id/imageViewMakeFitOffReason" />
-
-            <TextView
-                android:id="@+id/textViewMakeFitOffDate"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
-                android:text="@string/make_fit_off_scr_date"
-                android:textAppearance="@style/Font.medium16"
-                android:textColor="@color/violet"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/imageViewMakeFitOffReason" />
-
-            <Button
-                android:id="@+id/buttonMakeFitOffSelectDate"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:backgroundTint="@color/stateBlue"
-                android:text="@string/make_fit_off_scr_select_date"
-                android:textAppearance="@style/Font.regular12"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textViewMakeFitOffDate" />
-
-            <TextView
-                android:id="@+id/textView14"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/make_fit_off_scr_duration"
-                android:textAppearance="@style/Font.medium16"
-                android:textColor="@color/violet"
-                app:layout_constraintStart_toStartOf="@+id/textViewMakeFitOffReason"
-                app:layout_constraintTop_toTopOf="@+id/textViewMakeFitOffDate" />
-
-            <SeekBar
-                android:id="@+id/seekBar"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:progressTint="@color/stateBlue"
-                android:thumbTint="@color/stateBlue"
-                app:layout_constraintBottom_toBottomOf="@+id/buttonMakeFitOffSelectDate"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="@+id/textView14"
-                app:layout_constraintTop_toTopOf="@+id/buttonMakeFitOffSelectDate" />
-
-            <TextView
-                android:id="@+id/textView15"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
-                android:text="@string/make_fit_off_scr_submit"
-                android:textAppearance="@style/Font.medium16"
-                android:textColor="@color/violet"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/buttonMakeFitOffSelectDate" />
-
-            <ImageView
-                android:id="@+id/imageViewMakeFitOffPhotoBackground"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
-                android:contentDescription="@null"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="1.0"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textView15"
-                app:srcCompat="@drawable/bg_rounded_group_4" />
-
-            <ImageView
-                android:id="@+id/imageViewMakeFitOffCamera"
-                android:layout_width="63dp"
-                android:layout_height="63dp"
-                android:layout_marginStart="23dp"
-                android:contentDescription="@null"
-                app:layout_constraintBottom_toBottomOf="@+id/imageViewMakeFitOffPhotoBackground"
-                app:layout_constraintStart_toStartOf="@+id/imageViewMakeFitOffPhotoBackground"
-                app:layout_constraintTop_toTopOf="@+id/imageViewMakeFitOffPhotoBackground"
-                app:srcCompat="@drawable/bg_rounded_group_5" />
-
-            <ImageView
-                android:id="@+id/imageViewMakeFitOffPhoto1"
-                android:layout_width="63dp"
-                android:layout_height="63dp"
-                android:layout_marginStart="25dp"
-                android:contentDescription="@null"
-                app:layout_constraintBottom_toBottomOf="@+id/imageViewMakeFitOffPhotoBackground"
-                app:layout_constraintStart_toEndOf="@+id/imageViewMakeFitOffCamera"
-                app:layout_constraintTop_toTopOf="@+id/imageViewMakeFitOffPhotoBackground"
-                app:srcCompat="@drawable/bg_rounded_group_5" />
-
-            <ImageView
-                android:id="@+id/imageViewMakeFitOffPhoto2"
-                android:layout_width="63dp"
-                android:layout_height="63dp"
-                android:layout_marginStart="25dp"
-                android:contentDescription="@null"
-                app:layout_constraintBottom_toBottomOf="@+id/imageViewMakeFitOffPhotoBackground"
-                app:layout_constraintStart_toEndOf="@+id/imageViewMakeFitOffPhoto1"
-                app:layout_constraintTop_toTopOf="@+id/imageViewMakeFitOffPhotoBackground"
-                app:srcCompat="@drawable/bg_rounded_group_5" />
-
-            <ImageView
-                android:id="@+id/imageViewMakeFitOffPhoto3"
-                android:layout_width="63dp"
-                android:layout_height="63dp"
-                android:layout_marginStart="25dp"
-                android:contentDescription="@null"
-                app:layout_constraintBottom_toBottomOf="@+id/imageViewMakeFitOffPhotoBackground"
-                app:layout_constraintStart_toEndOf="@+id/imageViewMakeFitOffPhoto2"
-                app:layout_constraintTop_toTopOf="@+id/imageViewMakeFitOffPhotoBackground"
-                app:srcCompat="@drawable/bg_rounded_group_5" />
-
-            <ImageView
-                android:id="@+id/imageViewMakeFitOffCameraIcon"
-                android:layout_width="48dp"
-                android:layout_height="48dp"
-                android:contentDescription="@null"
-                app:layout_constraintBottom_toBottomOf="@+id/imageViewMakeFitOffCamera"
-                app:layout_constraintEnd_toEndOf="@+id/imageViewMakeFitOffCamera"
-                app:layout_constraintStart_toStartOf="@+id/imageViewMakeFitOffCamera"
-                app:layout_constraintTop_toTopOf="@+id/imageViewMakeFitOffCamera"
-                app:srcCompat="@drawable/ic_baseline_camera_24" />
-
-            <Button
-                android:id="@+id/button3"
-                android:layout_width="260dp"
-                android:layout_height="60dp"
-                android:layout_marginBottom="100dp"
-                android:text="@string/make_fit_off_scr_confirm"
-                android:textAppearance="@style/Font.bold20"
-                android:textColor="@color/turquoise"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="15dp"
+                    android:layout_marginTop="24dp"
+                    android:text="@string/make_fit_off_scr_select_date_title"
+                    android:textAppearance="@style/Font.bold16"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/buttonMakeGroupSelectBank" />
 
 
-        </androidx.constraintlayout.widget.ConstraintLayout>
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="12dp"
+                    android:orientation="horizontal">
 
-    </LinearLayout>
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/dateRangeTextViewContainer"
+                        android:layout_width="0dp"
+                        android:layout_marginStart="15dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        app:hintEnabled="false"
+                        app:hintTextAppearance="@style/Font.medium12"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintEnd_toStartOf="@+id/buttonSelectFitOffRange"
+                        app:layout_constraintTop_toTopOf="parent">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/textViewDateRange"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:enabled="false"
+                            android:text="@={viewModel.fitOffDateRange}"
+                            android:hint="@string/make_fit_off_scr_select_date"
+                            android:textAppearance="@style/Font.regular16"
+                            android:textColor="@color/black" />
+
+
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <ImageView
+                        android:id="@+id/buttonSelectFitOffRange"
+                        android:layout_width="0dp"
+                        android:layout_height="0dp"
+                        android:src="@drawable/calendar_icon"
+                        android:padding="10dp"
+                        android:clickable="true"
+                        android:onClick="@{() -> fragment.onClickSelectDateRange()}"
+                        android:foreground="?attr/selectableItemBackground"
+                        app:layout_constraintBottom_toBottomOf="@+id/dateRangeTextViewContainer"
+                        app:layout_constraintDimensionRatio="1:1"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="@+id/dateRangeTextViewContainer"
+                        app:tint="@color/blueGem" />
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="15dp"
+                    android:layout_marginTop="24dp"
+                    android:text="@string/make_fit_off_scr_reason_title"
+                    android:textAppearance="@style/Font.bold16" />
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/textInputLayoutSetGroupComment"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_marginHorizontal="15dp"
+                    android:layout_marginTop="12dp"
+                    android:layout_weight="1"
+                    app:hintEnabled="false"
+                    app:hintTextAppearance="@style/Font.medium12"
+                    app:layout_constraintTop_toBottomOf="@+id/seekBarMakeGroupPeople">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/editTextSetGroupComment"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:text="@={viewModel.fitOffReason}"
+                        android:gravity="top"
+                        android:hint="@string/make_fit_off_scr_reason"
+                        android:textAppearance="@style/Font.regular16" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="1" />
+
+                <LinearLayout
+                    android:id="@+id/buttonMakeGroupConfirm"
+                    android:layout_width="match_parent"
+                    android:layout_height="60dp"
+                    android:background="@drawable/linear_button_gradient"
+                    android:clickable="true"
+                    android:onClick="@{() -> fragment.onClickConfirmFitOff()}"
+                    android:gravity="center">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/linear_button_gradient"
+                        android:text="@string/make_fit_off_scr_confirm"
+                        android:textAppearance="@style/Font.bold20"
+                        android:textColor="@color/white" />
+                </LinearLayout>
+
+            </LinearLayout>
+        </LinearLayout>
+
+        <com.airbnb.lottie.LottieAnimationView
+            android:id="@+id/progressBarSubmitLoading"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:visibility="gone"
+            app:lottie_autoPlay="true"
+            app:lottie_loop="true"
+            app:lottie_rawRes="@raw/loading_progress" />
+
+        <View
+            android:id="@+id/loadingLayoutView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/white"
+            android:alpha="0.5"
+            android:visibility="gone" />
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
 </layout>

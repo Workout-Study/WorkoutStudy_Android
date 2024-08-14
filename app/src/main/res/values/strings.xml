@@ -185,12 +185,14 @@
     <string name="my_fit_off_scr_empty_text">피트 오프 데이터가 존재하지 않습니다</string>
     <string name="make_fit_off_scr_toolbar">피트오프 신청</string>
     <string name="make_fit_off_scr_group_name">[ GROUP NAME ]</string>
-    <string name="make_fit_off_scr_reason">사유</string>
+    <string name="make_fit_off_scr_reason_title">Fit off 사유 *</string>
+    <string name="make_fit_off_scr_reason">Fit off 사유를 입력해주세요</string>
+    <string name="make_fit_off_scr_select_date_title">Fit off 기간 선택 *</string>
+    <string name="make_fit_off_scr_select_date">Fit off 기간을 선택해주세요</string>
     <string name="make_fit_off_scr_date">날짜</string>
-    <string name="make_fit_off_scr_select_date">날짜 선택하기</string>
     <string name="make_fit_off_scr_duration">피트오프 기간</string>
     <string name="make_fit_off_scr_submit">진단서 제출</string>
-    <string name="make_fit_off_scr_confirm">\t\t\t피트오프 신청\t\t\t</string>
+    <string name="make_fit_off_scr_confirm">피트오프 신청</string>
 
     <!--피트오프 열람화면-->
     <string name="group_fit_off_scr_toolbar">FitGroup 피트오프 열람</string>
