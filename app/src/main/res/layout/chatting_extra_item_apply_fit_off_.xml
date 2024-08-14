@@ -25,6 +25,7 @@
             style="?attr/materialIconButtonFilledStyle"
             app:icon="@drawable/icon_apply_fit_off"
             android:backgroundTint="#8771FA"
+            android:onClick="@{() -> fragment.navigateToRegisterFitOff()}"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
 

@@ -30,6 +30,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:minHeight="?attr/actionBarSize"
+                app:titleCentered="true"
                 android:theme="?attr/actionBarTheme"
                 app:title="@string/make_group_scr_toolbar" />
 

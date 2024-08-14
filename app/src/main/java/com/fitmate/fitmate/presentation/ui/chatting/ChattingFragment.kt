@@ -144,6 +144,10 @@ class ChattingFragment : Fragment(R.layout.fragment_chatting) {
         }
     }
 
+    fun navigateToRegisterFitOff() {
+        findNavController().navigate(R.id.makeFitOffFragment)
+    }
+
     //투표 화면으로 이동하는 메서드
     fun navigateToVoteFragment() {
         val bundle = Bundle().apply {

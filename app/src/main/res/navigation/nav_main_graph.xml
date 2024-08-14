@@ -230,5 +230,9 @@
         android:id="@+id/groupProgressFragment"
         android:name="com.fitmate.fitmate.presentation.ui.chatting.GroupProgressFragment"
         android:label="Fitmate 운동 현황" />
+    <fragment
+        android:id="@+id/makeFitOffFragment"
+        android:name="com.fitmate.fitmate.presentation.ui.chatting.MakeFitOffFragment"
+        android:label="@string/make_fit_off_scr_toolbar" />
 
 </navigation>
