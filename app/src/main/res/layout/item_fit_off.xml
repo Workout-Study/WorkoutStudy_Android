@@ -6,58 +6,68 @@
     <data>
         <variable
             name="data"
-            type="com.fitmate.fitmate.domain.model.MyFitOff" />
+            type="com.fitmate.fitmate.domain.model.FitOff" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="200dp">
+        android:background="@drawable/bg_rounded_rectangle"
+        android:layout_marginHorizontal="16dp"
+        android:padding="16dp"
+        android:layout_marginBottom="12dp"
+        android:layout_height="wrap_content">
 
-        <ImageView
-            android:id="@+id/imageViewFitOffItemBackground"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:contentDescription="@null"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="1.0"
-            app:srcCompat="@drawable/bg_rounded_rectangle" />
 
         <TextView
             android:id="@+id/textViewFitOffItemName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="20dp"
-            android:layout_marginTop="20dp"
-            android:text="@{data.title}"
             tools:text="@string/item_fit_off_scr_name"
             android:textAppearance="@style/Font.semibold20"
             android:textColor="@color/turquoise"
-            app:layout_constraintStart_toStartOf="@+id/imageViewFitOffItemBackground"
-            app:layout_constraintTop_toTopOf="@+id/imageViewFitOffItemBackground" />
-
-        <TextView
-            android:id="@+id/textViewFitOffItemDate"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            android:text="@string/item_fit_off_scr_date"
-            android:textAppearance="@style/Font.medium16"
-            app:layout_constraintStart_toStartOf="@+id/textViewFitOffItemName"
-            app:layout_constraintTop_toBottomOf="@+id/textViewFitOffItemName" />
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
             android:id="@+id/textViewFitOffItemReason"
-            android:layout_width="332dp"
-            android:layout_height="60dp"
-            android:layout_marginTop="10dp"
-            android:text="@{`사유 : `+ data.reason }"
-            tools:text="@string/item_fit_off_scr_reason"
-            android:textAppearance="@style/Font.medium16"
-            android:textColor="@color/zircon"
-            app:layout_constraintStart_toStartOf="@+id/textViewFitOffItemDate"
-            app:layout_constraintTop_toBottomOf="@+id/textViewFitOffItemDate" />
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="2dp"
+            android:textColor="@color/dark_gray"
+            tools:text="사유: 몸이 아픔"
+            android:text="@{@string/item_fit_off_scr_reason(data.fitOffReason)}"
+            android:textAppearance="@style/Font.regular16"
+            app:layout_constraintStart_toStartOf="@+id/textViewFitOffItemName"
+            app:layout_constraintTop_toBottomOf="@+id/textViewFitOffItemName" />
+
+        <LinearLayout
+            app:layout_constraintTop_toBottomOf="@+id/textViewFitOffItemReason"
+            app:layout_constraintStart_toStartOf="@+id/textViewFitOffItemReason"
+            android:layout_width="wrap_content"
+            android:layout_marginTop="9dp"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:id="@+id/imageViewItemCategoryIconCalendar"
+                android:layout_width="17dp"
+                android:layout_height="17dp"
+                android:contentDescription="@null"
+                app:srcCompat="@drawable/ic_baseline_checked_calendar_16"
+                app:tint="@color/zircon" />
+
+            <TextView
+                android:id="@+id/textViewFitOffItemDate"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="6dp"
+                tools:text="@string/item_fit_off_scr_date"
+                android:textAppearance="@style/Font.medium16"
+                android:textColor="@color/zircon" />
+            
+        </LinearLayout>
+        
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

@@ -1,6 +1,7 @@
 package com.fitmate.fitmate.data.model.dto
 
 import com.google.gson.annotations.SerializedName
+import java.io.Serializable
 
 
 // Get Fit Group Detail
@@ -27,7 +28,7 @@ data class GetFitMateList(
     @SerializedName("fitGroupId") val fitGroupId: Int,
     @SerializedName("fitLeaderDetail") val fitLeaderDetail: FitLeaderDetail,
     @SerializedName("fitMateDetails") val fitMateDetails: List<FitMateDetail>
-)
+):Serializable
 
 data class FitLeaderDetail(
     @SerializedName("fitLeaderUserId") val fitLeaderUserId: String,

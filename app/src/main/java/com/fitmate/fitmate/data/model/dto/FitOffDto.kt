@@ -19,3 +19,16 @@ data class FitOffResponseDto(
     @SerializedName("fitOffId")
     val fitOffId: Int?
 )
+
+data class FitOffListDto(
+    @SerializedName("content")
+    val content: List<FitOffDto>
+)
+
+data class FitOffDto(
+    @SerializedName("fitOffId") val fitOffId: Int,
+    @SerializedName("userId") val userId: Int,
+    @SerializedName("fitOffStartDate") val fitOffStartDate: String,
+    @SerializedName("fitOffEndDate") val fitOffEndDate: String,
+    @SerializedName("fitOffReason") val fitOffReason: String
+)
