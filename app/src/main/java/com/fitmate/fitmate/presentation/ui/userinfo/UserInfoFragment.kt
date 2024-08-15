@@ -130,7 +130,13 @@ class UserInfoFragment : Fragment(R.layout.fragment_user_info) {
     }
 
     private fun navigateFitOff() {
-        Toast.makeText(context, "추후 업데이트 예정입니다.", Toast.LENGTH_SHORT).show()
+        val bundle = Bundle().apply {
+            viewModel.userInfo.value?.let {userInfoData ->
+                Log.d("tlqkf",userInfoData.toString())
+                putSerializable("fitOffOwnerNameInfo", userInfoData)
+            }
+        }
+        findNavController().navigate(R.id.viewFitOffFragment, bundle)
     }
 
     private fun navigatePoint() {

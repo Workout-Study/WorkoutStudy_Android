@@ -18,6 +18,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:minHeight="?attr/actionBarSize"
+            app:titleCentered="true"
             app:layout_constraintTop_toTopOf="parent"
             app:title="@string/my_fit_off_scr_toolbar" />
 
@@ -26,6 +27,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
+            android:visibility="gone"
             android:text="@string/my_fit_off_scr_empty_text"
             android:textAppearance="@style/Font.bold20"
             android:textColor="@color/violet"
@@ -38,13 +40,14 @@
             android:id="@+id/recyclerMyFitOff"
             android:layout_width="0dp"
             android:layout_height="0dp"
+            android:layout_marginTop="16dp"
             android:orientation="vertical"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/materialToolbar_MyFitOff"
-            tools:itemCount="0"
+            tools:itemCount="2"
             tools:listitem="@layout/item_fit_off" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>

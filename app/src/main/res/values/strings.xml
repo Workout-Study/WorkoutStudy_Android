@@ -196,9 +196,9 @@
 
     <!--피트오프 열람화면-->
     <string name="group_fit_off_scr_toolbar">FitGroup 피트오프 열람</string>
-    <string name="item_fit_off_scr_name">[ Name ]</string>
-    <string name="item_fit_off_scr_date">20**.**.** ~ 20**.**.**</string>
-    <string name="item_fit_off_scr_reason">사유 : [**사유**]</string>
+    <string name="item_fit_off_scr_name">이름</string>
+    <string name="item_fit_off_scr_date">기간</string>
+    <string name="item_fit_off_scr_reason">사유 : %s</string>
 
 
     <!--권한 다이얼로그-->

@@ -93,9 +93,6 @@
         android:name="com.fitmate.fitmate.presentation.ui.myfit.MyFitFragment"
         android:label="@string/my_fit_title">
         <action
-            android:id="@+id/action_myFitFragment_to_myFitOffFragment"
-            app:destination="@id/myFitOffFragment" />
-        <action
             android:id="@+id/action_myFitFragment_self"
             app:destination="@id/myFitFragment" />
         <action
@@ -126,10 +123,6 @@
             app:destination="@id/homeFragment" />
     </fragment>
     <fragment
-        android:id="@+id/myFitOffFragment"
-        android:name="com.fitmate.fitmate.ui.myfit.MyFitOffFragment"
-        android:label="@string/my_fit_off_scr_toolbar" />
-    <fragment
         android:id="@+id/certificateFragment"
         android:name="com.fitmate.fitmate.presentation.ui.certificate.CertificateFragment"
         android:label="@string/certificate_scr_toolbar">
@@ -150,9 +143,6 @@
         <action
             android:id="@+id/action_userInfoFragment_to_licenseFragment"
             app:destination="@id/licenseFragment" />
-        <action
-            android:id="@+id/action_userInfoFragment_to_myFitOffFragment"
-            app:destination="@id/myFitOffFragment" />
         <action
             android:id="@+id/action_userInfoFragment_to_loginFragment"
             app:destination="@id/loginFragment"
@@ -234,5 +224,9 @@
         android:id="@+id/makeFitOffFragment"
         android:name="com.fitmate.fitmate.presentation.ui.chatting.MakeFitOffFragment"
         android:label="@string/make_fit_off_scr_toolbar" />
+    <fragment
+        android:id="@+id/viewFitOffFragment"
+        android:name="com.fitmate.fitmate.presentation.ui.fitoff.ViewFitOffFragment"
+        android:label="ViewFitOffFragment" />
 
 </navigation>

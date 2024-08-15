@@ -13,3 +13,17 @@ data class FitOffResponse(
     val isRegisterSuccess: Boolean,
     val fitOffId: Int?
 )
+
+data class FitOffList(
+    val content: List<FitOff>
+)
+
+data class FitOff(
+    val fitOffId: Int,
+    val userId: Int,
+    val fitOffStartDate: String,
+    val fitOffEndDate: String,
+    val fitOffReason: String
+)
+
+
