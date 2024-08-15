@@ -43,6 +43,7 @@ import org.json.JSONObject
 import java.time.Instant
 import java.time.LocalDateTime
 import java.time.ZoneId
+import java.time.format.DateTimeFormatter
 import java.time.format.DateTimeFormatterBuilder
 import java.util.UUID
 import javax.inject.Inject
@@ -74,6 +75,7 @@ class ChattingFragment : Fragment(R.layout.fragment_chatting) {
         }
         loadUserPreference() //유저 정보 가져오기
         group.getFitGroupDetail(fitGroupId) //서버로부터 그룹 정보 가저오기
+        group.getFitMateList(fitGroupId)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -86,8 +88,6 @@ class ChattingFragment : Fragment(R.layout.fragment_chatting) {
         loadChatMessage()                           // 채팅 아이템 실시간 load
         observeChatResponse()                       // 새로 들어온 채팅 내역 load & save
         //scrollBottom()                              // 들어 왔을 때 최하단 으로 이동
-
-
     }
 
     private fun loadUserPreference() {
@@ -110,13 +110,11 @@ class ChattingFragment : Fragment(R.layout.fragment_chatting) {
 
     //드로워 레이아웃 여는 메서드
     fun toggleDrawer() {
-        group.getFitMateList(fitGroupId)
         val fitMateListAdapter = FitMateListAdapter(emptyList(), "", "", login)
         binding.recyclerViewFragmentChattingForFitMateList.adapter = fitMateListAdapter
         binding.recyclerViewFragmentChattingForFitMateList.layoutManager = LinearLayoutManager(context)
 
         group.getMate.observe(viewLifecycleOwner) { fitMateList ->
-//            val isLeader = fitMateList.fitLeaderDetail.fitLeaderUserId == userId.toString()
             val leaderID = fitMateList.fitLeaderDetail.fitLeaderUserId
             val myID = userId.toString()
             binding.textViewFragmentChattingFitGroupSize.text = "대화 상대 " + fitMateList.fitMateDetails.size.toString();
