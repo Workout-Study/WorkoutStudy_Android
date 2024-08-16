@@ -82,12 +82,18 @@ class ChattingFragment : Fragment(R.layout.fragment_chatting) {
         super.onViewCreated(view, savedInstanceState)
         //가져온 그룹 정보 감시하기
         observeGroupDetail()
+        observeFitMateList()                        // FitMate 리스트 가져오기
         initFragment(view)                          // 화면 바인딩
         initHeightProvider()                        // 메뉴 높이 조절
         setUpRecyclerView()                         // 채팅 아이템 리스트 설정
         loadChatMessage()                           // 채팅 아이템 실시간 load
         observeChatResponse()                       // 새로 들어온 채팅 내역 load & save
         //scrollBottom()                              // 들어 왔을 때 최하단 으로 이동
+    }
+
+    override fun onResume() {
+        super.onResume()
+        group.getFitMateList(fitGroupId)
     }
 
     private fun loadUserPreference() {
@@ -114,16 +120,21 @@ class ChattingFragment : Fragment(R.layout.fragment_chatting) {
         binding.recyclerViewFragmentChattingForFitMateList.adapter = fitMateListAdapter
         binding.recyclerViewFragmentChattingForFitMateList.layoutManager = LinearLayoutManager(context)
 
-        group.getMate.observe(viewLifecycleOwner) { fitMateList ->
+        group.getMate.value?.let { fitMateList ->
             val leaderID = fitMateList.fitLeaderDetail.fitLeaderUserId
             val myID = userId.toString()
-            binding.textViewFragmentChattingFitGroupSize.text = "대화 상대 " + fitMateList.fitMateDetails.size.toString();
-            val filteredFitMates = fitMateList.fitMateDetails.map { FitMate(it.fitMateId, it.fitMateUserId, it.fitMateUserNickname ,it.createdAt) }
-            (binding.recyclerViewFragmentChattingForFitMateList.adapter as FitMateListAdapter).updateData(filteredFitMates, leaderID, myID)
+            binding.textViewFragmentChattingFitGroupSize.text = "대화 상대 " + fitMateList.fitMateDetails.size.toString()
+            val filteredFitMates = fitMateList.fitMateDetails.map {
+                FitMate(it.fitMateId, it.fitMateUserId, it.fitMateUserNickname, it.createdAt)
+            }
+            fitMateListAdapter.updateData(filteredFitMates, leaderID, myID)
         }
 
-        binding.drawerLayoutForFragmentChatting.apply { if (isDrawerOpen(GravityCompat.END)) closeDrawer(GravityCompat.END) else openDrawer(GravityCompat.END) }
+        binding.drawerLayoutForFragmentChatting.apply {
+            if (isDrawerOpen(GravityCompat.END)) closeDrawer(GravityCompat.END) else openDrawer(GravityCompat.END)
+        }
     }
+
 
     //하단 + 클릭 시 추가 기능 영역 여는 메서드
      fun toggleExtraFunctionContainer() {
@@ -340,6 +351,18 @@ class ChattingFragment : Fragment(R.layout.fragment_chatting) {
     private fun observeGroupDetail() {
         group.groupDetail.observe(viewLifecycleOwner) {
             groupCreatedAt = it.createdAt
+        }
+    }
+
+    private fun observeFitMateList() {
+        group.getMate.observe(viewLifecycleOwner) { fitMateList ->
+            val leaderId = fitMateList.fitLeaderDetail.fitLeaderUserId
+            val myID = userId.toString()
+            val filteredFitMates = fitMateList.fitMateDetails.map{
+                FitMate(it.fitMateId, it.fitMateUserId, it.fitMateUserNickname, it.createdAt)
+            }
+            (binding.recyclerViewFragmentChattingForFitMateList.adapter as FitMateListAdapter)
+                .updateData(filteredFitMates, leaderId, myID)
         }
     }
 
