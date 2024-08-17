@@ -24,7 +24,8 @@ object MakeFitGroupMapper {
 
     fun   RegisterFitGroupResponseDto.toResponseRegisterFitGroup(): ResponseRegisterFitGroup {
         return ResponseRegisterFitGroup(
-            isRegisterSuccess = this.isRegisterSuccess
+            isRegisterSuccess = this.isRegisterSuccess,
+            fitGroupId = this.fitGroupId
         )
     }
 }

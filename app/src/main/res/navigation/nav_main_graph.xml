@@ -113,7 +113,13 @@
     <fragment
         android:id="@+id/makeGroupFragment"
         android:name="com.fitmate.fitmate.presentation.ui.mygroup.MakeGroupFragment"
-        android:label="Fit Group 생성하기" />
+        android:label="Fit Group 생성하기" >
+        <action
+            android:id="@+id/action_makeGroupFragment_to_groupJoinFragment"
+            app:destination="@id/groupJoinFragment"
+            app:popUpTo="@id/makeGroupFragment"
+            app:popUpToInclusive="true"/>
+    </fragment>
     <fragment
         android:id="@+id/groupJoinFragment"
         android:name="com.fitmate.fitmate.presentation.ui.home.GroupJoinFragment"

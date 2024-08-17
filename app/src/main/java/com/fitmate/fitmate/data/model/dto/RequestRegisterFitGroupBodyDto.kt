@@ -15,5 +15,6 @@ data class RequestRegisterFitGroupBodyDto(
 )
 
 data class RegisterFitGroupResponseDto(
-    @SerializedName("isRegisterSuccess") val isRegisterSuccess: Boolean
+    @SerializedName("isRegisterSuccess") val isRegisterSuccess: Boolean,
+    @SerializedName("fitGroupId") val fitGroupId: Int
 )

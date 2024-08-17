@@ -105,6 +105,15 @@ class MakeGroupFragment : Fragment() {
             //로딩 종료
             loadingViewGone()
             //TODO 그룹 생성이 완료된 상태이므로 화면전환이 필요함
+            if (it.isRegisterSuccess){
+                val bundle = Bundle().apply {
+                    putInt("groupId", it.fitGroupId)
+                }
+                findNavController().navigate(R.id.action_makeGroupFragment_to_groupJoinFragment, bundle)
+            }else{
+                Toast.makeText(requireContext(),"그룹 생성을 실패하였습니다 가입되어있는 그룹이 5개 이상인지 확인해주세요!",Toast.LENGTH_SHORT).show()
+            }
+
         }
     }
 

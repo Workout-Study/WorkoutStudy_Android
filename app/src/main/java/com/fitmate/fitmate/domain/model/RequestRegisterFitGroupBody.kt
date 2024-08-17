@@ -1,5 +1,7 @@
 package com.fitmate.fitmate.domain.model
 
+import com.google.gson.annotations.SerializedName
+
 data class RequestRegisterFitGroupBody(
     val requestUserId: Int,
     val fitGroupName: String,
@@ -14,5 +16,7 @@ data class RequestRegisterFitGroupBody(
 
 data class ResponseRegisterFitGroup(
     val isRegisterSuccess: Boolean,
+    val fitGroupId: Int
+
 )
 
