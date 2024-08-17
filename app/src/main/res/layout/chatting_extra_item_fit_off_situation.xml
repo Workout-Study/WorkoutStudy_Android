@@ -26,6 +26,7 @@
 
         <Button
             android:id="@+id/chattingExtraFunctionButton"
+            android:onClick="@{()->fragment.navigateToViewFitOffFragment()}"
             style="?attr/materialIconButtonFilledStyle"
             app:icon="@drawable/ic_baseline_rest_24"
             android:backgroundTint="#8771FA"

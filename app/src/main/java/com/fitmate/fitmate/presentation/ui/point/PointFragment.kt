@@ -69,15 +69,18 @@ class PointFragment : Fragment(R.layout.fragment_point) {
             }
         }
 
+        //포인트 기록 데이터 통신 감시
+        observePointHistory()
+
         //어뎁터 초기화 및 설정
         adapterInit()
 
         //통신 시작(포인트 정보 및 포인트 기록 데이터)
         viewModel.getPointInfo(pointOwnerId, pointOwnerType.value)
-        viewModel.getPagingPointHistory(pointOwnerId, pointOwnerType.value, null, null, 0, 10, null)
+        val (startDate, endDate)= getMonthStartAndEnd(dateTextFieldList[0])
+        viewModel.getPagingPointHistory(pointOwnerId, pointOwnerType.value, startDate, endDate, 0, 10, null)
 
-        //포인트 기록 데이터 통신 감시
-        observePointHistory()
+
 
     }
 
@@ -91,6 +94,9 @@ class PointFragment : Fragment(R.layout.fragment_point) {
             if (test == 0) {
                 binding.recyclerViewPointHistory.visibility = View.GONE
                 binding.textViewGuidePointHistoryEmpty.visibility = View.VISIBLE
+            }else{
+                binding.recyclerViewPointHistory.visibility = View.VISIBLE
+                binding.textViewGuidePointHistoryEmpty.visibility = View.GONE
             }
         }
 

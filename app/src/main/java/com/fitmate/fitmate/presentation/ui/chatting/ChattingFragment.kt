@@ -51,10 +51,15 @@ import javax.inject.Inject
 @AndroidEntryPoint
 class ChattingFragment : Fragment(R.layout.fragment_chatting) {
 
-    companion object { const val chatServerAddress = BuildConfig.SERVER_ADDRESS }
+    companion object {
+        const val chatServerAddress = BuildConfig.SERVER_ADDRESS
+    }
+
     private lateinit var binding: FragmentChattingBinding
     private lateinit var heightProvider: HeightProvider
-    @Inject lateinit var dbChatUseCase: DBChatUseCase
+
+    @Inject
+    lateinit var dbChatUseCase: DBChatUseCase
     private lateinit var chatAdapter: ChatAdapter
     private var isFirst = true
     private var userId: Int = -1
@@ -118,12 +123,14 @@ class ChattingFragment : Fragment(R.layout.fragment_chatting) {
     fun toggleDrawer() {
         val fitMateListAdapter = FitMateListAdapter(emptyList(), "", "", login)
         binding.recyclerViewFragmentChattingForFitMateList.adapter = fitMateListAdapter
-        binding.recyclerViewFragmentChattingForFitMateList.layoutManager = LinearLayoutManager(context)
+        binding.recyclerViewFragmentChattingForFitMateList.layoutManager =
+            LinearLayoutManager(context)
 
         group.getMate.value?.let { fitMateList ->
             val leaderID = fitMateList.fitLeaderDetail.fitLeaderUserId
             val myID = userId.toString()
-            binding.textViewFragmentChattingFitGroupSize.text = "대화 상대 " + fitMateList.fitMateDetails.size.toString()
+            binding.textViewFragmentChattingFitGroupSize.text =
+                "대화 상대 " + fitMateList.fitMateDetails.size.toString()
             val filteredFitMates = fitMateList.fitMateDetails.map {
                 FitMate(it.fitMateId, it.fitMateUserId, it.fitMateUserNickname, it.createdAt)
             }
@@ -131,21 +138,35 @@ class ChattingFragment : Fragment(R.layout.fragment_chatting) {
         }
 
         binding.drawerLayoutForFragmentChatting.apply {
-            if (isDrawerOpen(GravityCompat.END)) closeDrawer(GravityCompat.END) else openDrawer(GravityCompat.END)
+            if (isDrawerOpen(GravityCompat.END)) closeDrawer(GravityCompat.END) else openDrawer(
+                GravityCompat.END
+            )
         }
     }
 
 
     //하단 + 클릭 시 추가 기능 영역 여는 메서드
-     fun toggleExtraFunctionContainer() {
+    fun toggleExtraFunctionContainer() {
         binding.containerExtraFunction.also { container ->
-            container.visibility = if (container.visibility == View.GONE) View.VISIBLE else View.GONE
+            container.visibility =
+                if (container.visibility == View.GONE) View.VISIBLE else View.GONE
             if (container.visibility == View.VISIBLE) hideKeyboard()
         }
     }
 
+    //피트오프 신청화면으로 이동하는 메서드
     fun navigateToRegisterFitOff() {
         findNavController().navigate(R.id.makeFitOffFragment)
+    }
+
+    //그룹 피트오프 현황으로 이동하는 메서드
+    fun navigateToViewFitOffFragment() {
+        group.getMate.value?.let { fitMate ->
+            val bundle = Bundle().apply {
+                putSerializable("fitOffOwnerNameInfo", fitMate)
+            }
+            findNavController().navigate(R.id.viewFitOffFragment, bundle)
+        }
     }
 
     //투표 화면으로 이동하는 메서드
@@ -158,34 +179,35 @@ class ChattingFragment : Fragment(R.layout.fragment_chatting) {
 
     //포인트 화면으로 이동하는 메서드
     fun navigateToPointFragment() {
-        if (::groupCreatedAt.isInitialized){
+        if (::groupCreatedAt.isInitialized) {
             val bundle = Bundle().apply {
                 putSerializable("pointOwnerType", PointType.GROUP)
                 putString("createdAt", groupCreatedAt)
                 putInt("groupId", fitGroupId)
             }
             findNavController().navigate(R.id.pointFragment, bundle)
-        }else{
-            Toast.makeText(requireContext(),"알 수 없는 오류 발생! 잠시후 이용해주세요!",Toast.LENGTH_SHORT).show()
+        } else {
+            Toast.makeText(requireContext(), "알 수 없는 오류 발생! 잠시후 이용해주세요!", Toast.LENGTH_SHORT).show()
         }
     }
 
-    //포인트 화면으로 이동하는 메서드
+    //운동 현황 화면으로 이동하는 메서드
     fun navigateToProgressFragment() {
-        if (fitGroupId != -1){
+        if (fitGroupId != -1) {
             val bundle = Bundle().apply {
                 putInt("groupId", fitGroupId)
             }
             findNavController().navigate(R.id.groupProgressFragment, bundle)
-        }else{
-            Toast.makeText(requireContext(),"알 수 없는 오류 발생! 잠시후 이용해주세요!",Toast.LENGTH_SHORT).show()
+        } else {
+            Toast.makeText(requireContext(), "알 수 없는 오류 발생! 잠시후 이용해주세요!", Toast.LENGTH_SHORT).show()
         }
     }
 
 
     //키보드 닫는 메서드
     private fun hideKeyboard() {
-        val imm = requireContext().getSystemService(Context.INPUT_METHOD_SERVICE) as? InputMethodManager
+        val imm =
+            requireContext().getSystemService(Context.INPUT_METHOD_SERVICE) as? InputMethodManager
         imm?.hideSoftInputFromWindow(binding.root.windowToken, 0)
     }
 
@@ -232,7 +254,9 @@ class ChattingFragment : Fragment(R.layout.fragment_chatting) {
             .addInterceptor(loggingInterceptor)
             .build()
 
-        val request = Request.Builder().url("ws://${chatServerAddress}:8888/chat?fitGroupId=${fitGroupId}&userId=${userId}").build()
+        val request = Request.Builder()
+            .url("ws://${chatServerAddress}:8888/chat?fitGroupId=${fitGroupId}&userId=${userId}")
+            .build()
 
         webSocket = client.newWebSocket(request, object : WebSocketListener() {
             override fun onOpen(webSocket: WebSocket, response: Response) {
@@ -250,24 +274,33 @@ class ChattingFragment : Fragment(R.layout.fragment_chatting) {
                     val messageTime = messageObject.getString("messageTime")
                     val messageType = messageObject.getString("messageType")
 
-                    val parsedMessageTime = LocalDateTime.parse(messageTime, DateTimeFormatterBuilder()
-                        .appendPattern("yyyy-MM-dd'T'HH:mm:ss")
-                        .appendPattern("[.SSSSSS][.SSSSS][.SSSS][.SSS][.SS][.S]")
-                        .appendPattern("'Z'")
-                        .toFormatter()
-                        .withZone(ZoneId.systemDefault()))
+                    val parsedMessageTime = LocalDateTime.parse(
+                        messageTime, DateTimeFormatterBuilder()
+                            .appendPattern("yyyy-MM-dd'T'HH:mm:ss")
+                            .appendPattern("[.SSSSSS][.SSSSS][.SSSS][.SSS][.SS][.S]")
+                            .appendPattern("'Z'")
+                            .toFormatter()
+                            .withZone(ZoneId.systemDefault())
+                    )
 
-                    val chatItem = ChatItem(messageId, receivedFitGroupId, userId, message, parsedMessageTime, messageType)
-                    Log.d("tlqkf","소켓에서 날아온 데이터 : "+chatItem.toString())
+                    val chatItem = ChatItem(
+                        messageId,
+                        receivedFitGroupId,
+                        userId,
+                        message,
+                        parsedMessageTime,
+                        messageType
+                    )
+                    Log.d("tlqkf", "소켓에서 날아온 데이터 : " + chatItem.toString())
 
                     (activity as MainActivity).runOnUiThread {
                         lifecycleScope.launch {
-                            withContext(Dispatchers.IO){
+                            withContext(Dispatchers.IO) {
                                 dbChatUseCase.insert(chatItem)
                             }
                             val currentList = chatAdapter.currentList.toMutableList()
                             currentList.add(chatItem)
-                            chatAdapter.submitList(currentList.toMutableList()){
+                            chatAdapter.submitList(currentList.toMutableList()) {
                                 chatAdapter.notifyItemInserted(chatAdapter.currentList.lastIndex)
                                 binding.recyclerViewFragmentChatting.scrollToPosition(chatAdapter.currentList.lastIndex)
                             }
@@ -278,21 +311,20 @@ class ChattingFragment : Fragment(R.layout.fragment_chatting) {
 
             override fun onClosed(webSocket: WebSocket, code: Int, reason: String) {
                 super.onClosed(webSocket, code, reason)
-                Log.d("tlqkf","소켓 onClosed")
+                Log.d("tlqkf", "소켓 onClosed")
             }
 
             override fun onFailure(webSocket: WebSocket, t: Throwable, response: Response?) {
                 super.onFailure(webSocket, t, response)
-                Log.d("tlqkf","소켓 onFailure")
+                Log.d("tlqkf", "소켓 onFailure")
             }
 
             override fun onMessage(webSocket: WebSocket, bytes: ByteString) {
                 super.onMessage(webSocket, bytes)
-                Log.d("tlqkf","소켓 onMessage다른거")
+                Log.d("tlqkf", "소켓 onMessage다른거")
             }
         })
     }
-
 
 
     private fun loadChatMessage() {
@@ -311,7 +343,7 @@ class ChattingFragment : Fragment(R.layout.fragment_chatting) {
             chatAdapter.submitList(chatItems) {
                 chatAdapter.notifyItemInserted(chatAdapter.currentList.lastIndex)
                 //binding.recyclerViewFragmentChatting.scrollToPosition(chatAdapter.currentList.lastIndex)
-                if (!isFirst){
+                if (!isFirst) {
                     setupWebSocketConnection()
                 }
                 isFirst = !isFirst
@@ -324,28 +356,30 @@ class ChattingFragment : Fragment(R.layout.fragment_chatting) {
         lifecycleScope.launch {
             viewModel.chatResponse.collect { chatResponse ->
                 if (chatResponse != null) {
-                    Log.d("tlqkf","리트라이브 옵저버 시작됨")
-                    val newItems = chatResponse.messages.filter { it.fitGroupId == fitGroupId }.map { message ->
-                        ChatItem(
-                            messageId = message.messageId,
-                            fitGroupId = message.fitGroupId,
-                            userId = message.userId,
-                            message = message.message,
-                            messageTime = LocalDateTime.parse(
-                                message.messageTime, DateTimeFormatterBuilder()
-                                    .appendPattern("yyyy-MM-dd'T'HH:mm:ss")
-                                    .appendPattern("[.SSSSSS][.SSSSS][.SSSS][.SSS][.SS][.S]")
-                                    .appendPattern("'Z'")
-                                    .toFormatter()
-                            ),
-                            messageType = message.messageType
-                        )
-                    }/*.reversed()*/
+                    Log.d("tlqkf", "리트라이브 옵저버 시작됨")
+                    val newItems =
+                        chatResponse.messages.filter { it.fitGroupId == fitGroupId }
+                            .map { message ->
+                                ChatItem(
+                                    messageId = message.messageId,
+                                    fitGroupId = message.fitGroupId,
+                                    userId = message.userId,
+                                    message = message.message,
+                                    messageTime = LocalDateTime.parse(
+                                        message.messageTime, DateTimeFormatterBuilder()
+                                            .appendPattern("yyyy-MM-dd'T'HH:mm:ss")
+                                            .appendPattern("[.SSSSSS][.SSSSS][.SSSS][.SSS][.SS][.S]")
+                                            .appendPattern("'Z'")
+                                            .toFormatter()
+                                    ),
+                                    messageType = message.messageType
+                                )
+                            }/*.reversed()*/
 
                     newItems.forEach { newItem -> dbChatUseCase.insert(newItem) }
                     loadChatMessage()
                 } else {
-                    Log.d("tlqkf","리트라이브 옵저버 시작 안된상태로 소벳 열기")
+                    Log.d("tlqkf", "리트라이브 옵저버 시작 안된상태로 소벳 열기")
                     setupWebSocketConnection()
                 }
             }
@@ -362,7 +396,7 @@ class ChattingFragment : Fragment(R.layout.fragment_chatting) {
         group.getMate.observe(viewLifecycleOwner) { fitMateList ->
             val leaderId = fitMateList.fitLeaderDetail.fitLeaderUserId
             val myID = userId.toString()
-            val filteredFitMates = fitMateList.fitMateDetails.map{
+            val filteredFitMates = fitMateList.fitMateDetails.map {
                 FitMate(it.fitMateId, it.fitMateUserId, it.fitMateUserNickname, it.createdAt)
             }
             (binding.recyclerViewFragmentChattingForFitMateList.adapter as FitMateListAdapter)
@@ -381,7 +415,7 @@ class ChattingFragment : Fragment(R.layout.fragment_chatting) {
 
     fun chatSend() {
         val message = binding.editTextChattingMySpeech.text
-        if (message.isNotEmpty()){
+        if (message.isNotEmpty()) {
             sendChatMessage(message.toString())
         }
     }
@@ -393,11 +427,18 @@ class ChattingFragment : Fragment(R.layout.fragment_chatting) {
 
         if (isMessageSent) {
             binding.editTextChattingMySpeech.setText("")
-            val newChatting = ChatItem(messageId = messageId, fitGroupId = fitGroupId, userId = userId, message = message, messageTime = timeNow, messageType = "CHATTING")
+            val newChatting = ChatItem(
+                messageId = messageId,
+                fitGroupId = fitGroupId,
+                userId = userId,
+                message = message,
+                messageTime = timeNow,
+                messageType = "CHATTING"
+            )
             lifecycleScope.launch { dbChatUseCase.insert(newChatting) }
             val chatItems = chatAdapter.currentList.toMutableList()
             chatItems.add(newChatting)
-            chatAdapter.submitList(chatItems){
+            chatAdapter.submitList(chatItems) {
                 chatAdapter.notifyItemInserted(chatAdapter.currentList.lastIndex)
                 binding.recyclerViewFragmentChatting.scrollToPosition(chatItems.lastIndex)
             }
@@ -422,6 +463,6 @@ class ChattingFragment : Fragment(R.layout.fragment_chatting) {
     override fun onPause() {
         super.onPause()
         webSocket?.close(1000, "Fragment Paused")
-        if(isFirst)  isFirst = false
+        if (isFirst) isFirst = false
     }
 }
