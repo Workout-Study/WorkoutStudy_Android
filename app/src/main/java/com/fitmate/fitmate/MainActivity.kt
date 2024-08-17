@@ -7,6 +7,7 @@ import android.content.Context
 import android.content.SharedPreferences
 import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 import androidx.activity.viewModels
@@ -155,7 +156,7 @@ class MainActivity : AppCompatActivity(), ControlActivityInterface {
             putString(KEY_REFRESH, refreshToken)
             putInt(KEY_USER_ID, userId)
             putString(KEY_PLATFORM, platform)
-            putString(KEY_CREATED_AT, createdAt)
+            putString(KEY_CREATED_AT, createdAt+":00")
             apply()
         }
     }
@@ -169,6 +170,7 @@ class MainActivity : AppCompatActivity(), ControlActivityInterface {
             val platform = sharedPreferences.getString(KEY_PLATFORM, "")
             val createdAt = sharedPreferences.getString(KEY_CREATED_AT, "")
 
+            Log.d("tlqkf","태헌님 데이터:$createdAt")
             userPreferences.run {
                 add(accessToken!!)
                 add(refreshToken!!)

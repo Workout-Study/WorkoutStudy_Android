@@ -10,6 +10,7 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.ui.setupWithNavController
 import com.fitmate.fitmate.MainActivity
+import com.fitmate.fitmate.R
 import com.fitmate.fitmate.data.model.dto.GetFitMateList
 import com.fitmate.fitmate.data.model.dto.UserResponse
 import com.fitmate.fitmate.databinding.FragmentViewFitOffBinding
@@ -47,7 +48,6 @@ class ViewFitOffFragment: Fragment() {
         binding = FragmentViewFitOffBinding.inflate(layoutInflater)
         controlActivityInterface = activity as MainActivity
         controlActivityInterface.goneNavigationBar()
-
         //피트오프 데이터 감시
         observeFitOffData()
 
@@ -57,7 +57,6 @@ class ViewFitOffFragment: Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding.materialToolbarMyFitOff.setupWithNavController(findNavController())
-
         binding.recyclerMyFitOff.adapter = adapter
 
         //피트오프 통신
@@ -81,11 +80,15 @@ class ViewFitOffFragment: Fragment() {
     private fun networkFitOffData() {
         when (fitOffOwnerNameInfo) {
             is GetFitMateList -> {
+                binding.materialToolbarMyFitOff.title = getString(R.string.group_fit_off_scr_toolbar)
                 viewModel.getFitOffByGroupId((fitOffOwnerNameInfo as GetFitMateList).fitGroupId)
+                Log.d("tlqkf", "그룹 피트오프 화면:${(fitOffOwnerNameInfo as GetFitMateList).fitMateDetails}")
             }
 
             is UserResponse -> {
+                binding.materialToolbarMyFitOff.title = getString(R.string.my_fit_off_scr_toolbar)
                 viewModel.getFitOffByUserId((fitOffOwnerNameInfo as UserResponse).userId)
+                Log.d("tlqkf", "개인 피트오프 화면")
             }
 
             else -> {

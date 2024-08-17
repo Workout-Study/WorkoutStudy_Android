@@ -180,7 +180,7 @@
     <string name="certificate_scr_dialog_positive_button">권한 허용하러가기</string>
     <string name="certificate_scr_dialog_negative_button">알림 없이 진행하기</string>
 
-    <!--피트오프화면-->
+    <!--피트오프생성화면-->
     <string name="my_fit_off_scr_toolbar">나의 피트오프 열람</string>
     <string name="my_fit_off_scr_empty_text">피트 오프 데이터가 존재하지 않습니다</string>
     <string name="make_fit_off_scr_toolbar">피트오프 신청</string>
