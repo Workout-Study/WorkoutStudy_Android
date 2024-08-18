@@ -156,7 +156,7 @@ class MainActivity : AppCompatActivity(), ControlActivityInterface {
             putString(KEY_REFRESH, refreshToken)
             putInt(KEY_USER_ID, userId)
             putString(KEY_PLATFORM, platform)
-            putString(KEY_CREATED_AT, createdAt+":00")
+            putString(KEY_CREATED_AT, createdAt)
             apply()
         }
     }
