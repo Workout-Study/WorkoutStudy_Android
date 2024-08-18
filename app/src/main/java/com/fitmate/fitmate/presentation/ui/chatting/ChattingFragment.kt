@@ -265,6 +265,7 @@ class ChattingFragment : Fragment(R.layout.fragment_chatting) {
             }
 
             override fun onMessage(webSocket: WebSocket, text: String) {
+
                 val messageObject = JSONObject(text)
                 val receivedFitGroupId = messageObject.getInt("fitGroupId")
                 if (receivedFitGroupId == this@ChattingFragment.fitGroupId) {
@@ -273,8 +274,8 @@ class ChattingFragment : Fragment(R.layout.fragment_chatting) {
                     val message = messageObject.getString("message")
                     val messageTime = messageObject.getString("messageTime")
                     val messageType = messageObject.getString("messageType")
-
-                    val parsedMessageTime = DateParseUtils.stringToInstant(messageTime)
+                    val resultTime =  messageTime.replace("T"," ")
+                    val parsedMessageTime = DateParseUtils.stringToInstant(resultTime)
 
                     val chatItem = ChatItem(
                         messageId,
@@ -302,6 +303,10 @@ class ChattingFragment : Fragment(R.layout.fragment_chatting) {
                 }
             }
 
+            override fun onMessage(webSocket: WebSocket, bytes: ByteString) {
+                super.onMessage(webSocket, bytes)
+            }
+
             override fun onClosed(webSocket: WebSocket, code: Int, reason: String) {
                 super.onClosed(webSocket, code, reason)
                 isFirst = !isFirst
@@ -311,7 +316,7 @@ class ChattingFragment : Fragment(R.layout.fragment_chatting) {
             override fun onFailure(webSocket: WebSocket, t: Throwable, response: Response?) {
                 super.onFailure(webSocket, t, response)
                 isFirst = !isFirst
-                Log.d("tlqkf", "소켓 onFailure")
+                Log.d("tlqkf", "onFailure 오류 원인:$t")
             }
         })
     }
@@ -433,6 +438,7 @@ class ChattingFragment : Fragment(R.layout.fragment_chatting) {
     }
 
     private fun sendMessage(messageId: String, message: String, timeNow: String): Boolean {
+        Log.d("tlqkf",timeNow)
         val jsonObject = JSONObject().apply {
             put("messageId", messageId)
             put("fitGroupId", fitGroupId)
