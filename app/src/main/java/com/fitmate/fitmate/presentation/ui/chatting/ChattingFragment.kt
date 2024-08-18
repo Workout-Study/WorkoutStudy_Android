@@ -27,6 +27,7 @@ import com.fitmate.fitmate.presentation.ui.chatting.list.adapter.FitMateListAdap
 import com.fitmate.fitmate.presentation.viewmodel.ChattingViewModel
 import com.fitmate.fitmate.presentation.viewmodel.GroupViewModel
 import com.fitmate.fitmate.presentation.viewmodel.LoginViewModel
+import com.fitmate.fitmate.util.DateParseUtils
 import com.fitmate.fitmate.util.HeightProvider
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Dispatchers
@@ -91,8 +92,7 @@ class ChattingFragment : Fragment(R.layout.fragment_chatting) {
         initFragment(view)                          // 화면 바인딩
         initHeightProvider()                        // 메뉴 높이 조절
         setUpRecyclerView()                         // 채팅 아이템 리스트 설정
-        loadChatMessage()                           // 채팅 아이템 실시간 load
-        observeChatResponse()                       // 새로 들어온 채팅 내역 load & save
+        observeChatResponse()                       // 새로 들어온 채팅 내역 동기화 후 채팅 보여주기
         //scrollBottom()                              // 들어 왔을 때 최하단 으로 이동
     }
 
@@ -274,14 +274,7 @@ class ChattingFragment : Fragment(R.layout.fragment_chatting) {
                     val messageTime = messageObject.getString("messageTime")
                     val messageType = messageObject.getString("messageType")
 
-                    val parsedMessageTime = LocalDateTime.parse(
-                        messageTime, DateTimeFormatterBuilder()
-                            .appendPattern("yyyy-MM-dd'T'HH:mm:ss")
-                            .appendPattern("[.SSSSSS][.SSSSS][.SSSS][.SSS][.SS][.S]")
-                            .appendPattern("'Z'")
-                            .toFormatter()
-                            .withZone(ZoneId.systemDefault())
-                    )
+                    val parsedMessageTime = DateParseUtils.stringToInstant(messageTime)
 
                     val chatItem = ChatItem(
                         messageId,
@@ -311,17 +304,14 @@ class ChattingFragment : Fragment(R.layout.fragment_chatting) {
 
             override fun onClosed(webSocket: WebSocket, code: Int, reason: String) {
                 super.onClosed(webSocket, code, reason)
+                isFirst = !isFirst
                 Log.d("tlqkf", "소켓 onClosed")
             }
 
             override fun onFailure(webSocket: WebSocket, t: Throwable, response: Response?) {
                 super.onFailure(webSocket, t, response)
+                isFirst = !isFirst
                 Log.d("tlqkf", "소켓 onFailure")
-            }
-
-            override fun onMessage(webSocket: WebSocket, bytes: ByteString) {
-                super.onMessage(webSocket, bytes)
-                Log.d("tlqkf", "소켓 onMessage다른거")
             }
         })
     }
@@ -341,9 +331,10 @@ class ChattingFragment : Fragment(R.layout.fragment_chatting) {
             }
 
             chatAdapter.submitList(chatItems) {
+                //TODO 여기 한번 확인 필요
                 chatAdapter.notifyItemInserted(chatAdapter.currentList.lastIndex)
                 //binding.recyclerViewFragmentChatting.scrollToPosition(chatAdapter.currentList.lastIndex)
-                if (!isFirst) {
+                if (isFirst) {
                     setupWebSocketConnection()
                 }
                 isFirst = !isFirst
@@ -365,13 +356,7 @@ class ChattingFragment : Fragment(R.layout.fragment_chatting) {
                                     fitGroupId = message.fitGroupId,
                                     userId = message.userId,
                                     message = message.message,
-                                    messageTime = LocalDateTime.parse(
-                                        message.messageTime, DateTimeFormatterBuilder()
-                                            .appendPattern("yyyy-MM-dd'T'HH:mm:ss")
-                                            .appendPattern("[.SSSSSS][.SSSSS][.SSSS][.SSS][.SS][.S]")
-                                            .appendPattern("'Z'")
-                                            .toFormatter()
-                                    ),
+                                    messageTime = DateParseUtils.stringToInstant(message.messageTime),
                                     messageType = message.messageType
                                 )
                             }/*.reversed()*/
@@ -380,7 +365,7 @@ class ChattingFragment : Fragment(R.layout.fragment_chatting) {
                     loadChatMessage()
                 } else {
                     Log.d("tlqkf", "리트라이브 옵저버 시작 안된상태로 소벳 열기")
-                    setupWebSocketConnection()
+                    loadChatMessage()
                 }
             }
         }
@@ -422,8 +407,8 @@ class ChattingFragment : Fragment(R.layout.fragment_chatting) {
 
     private fun sendChatMessage(message: String) {
         val messageId = UUID.randomUUID().toString()
-        val timeNow = Instant.now().atZone(ZoneId.systemDefault()).toLocalDateTime()
-        val isMessageSent = sendMessage(messageId, message, timeNow)
+        val timeNow = Instant.now()
+        val isMessageSent = sendMessage(messageId, message, DateParseUtils.instantToString(timeNow))
 
         if (isMessageSent) {
             binding.editTextChattingMySpeech.setText("")
@@ -447,7 +432,7 @@ class ChattingFragment : Fragment(R.layout.fragment_chatting) {
         }
     }
 
-    private fun sendMessage(messageId: String, message: String, timeNow: LocalDateTime): Boolean {
+    private fun sendMessage(messageId: String, message: String, timeNow: String): Boolean {
         val jsonObject = JSONObject().apply {
             put("messageId", messageId)
             put("fitGroupId", fitGroupId)
