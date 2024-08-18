@@ -115,8 +115,8 @@ class CertificationRepositoryImpl @Inject constructor(
         }
 
     private suspend fun uploadImage(uri: Uri, fileName: String): String {
-        val file = getPathFromURI(uri)
         try {
+            val file = getPathFromURI(uri)
             val compressorFile = Compressor.compress(context, File(file)) {
                 quality(0)
             }
