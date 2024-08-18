@@ -4,6 +4,7 @@ import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import java.io.Serializable
+import java.time.Instant
 import java.time.LocalDateTime
 
 @Entity("Chat")
@@ -17,7 +18,7 @@ data class ChatEntity (
     @ColumnInfo
     var message: String,
     @ColumnInfo
-    var messageTime: LocalDateTime,
+    var messageTime: Instant,
     @ColumnInfo
     var messageType: String
 ): Serializable
