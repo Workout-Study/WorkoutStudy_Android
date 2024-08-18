@@ -12,6 +12,7 @@ import com.fitmate.fitmate.data.model.dto.FitGroup
 import com.fitmate.fitmate.data.model.dto.RetrieveFitGroup
 import com.fitmate.fitmate.data.model.entity.ChatEntity
 import com.fitmate.fitmate.domain.usecase.DBChatUseCase
+import com.fitmate.fitmate.util.DateParseUtils
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
@@ -43,7 +44,7 @@ class ChattingViewModel @Inject constructor(private val dbChatUseCase: DBChatUse
                 val messageId = lastItem.messageId
                 val fitGroupId = lastItem.fitGroupId
                 val fitMateId = lastItem.userId
-                val messageTime = lastItem.messageTime.toString()//formatCustomDateTime(lastItem.messageTime.toString())
+                val messageTime = DateParseUtils.instantToString(lastItem.messageTime)
                 val messageType = lastItem.messageType
 
                 Log.d(TAG, "Requesting message with ID: $messageId, Group ID: $fitGroupId, Mate ID: $fitMateId, Time: $messageTime, Type: $messageType")
