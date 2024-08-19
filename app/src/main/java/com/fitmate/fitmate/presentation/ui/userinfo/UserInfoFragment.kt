@@ -16,8 +16,12 @@ import com.fitmate.fitmate.databinding.FragmentUserInfoBinding
 import com.fitmate.fitmate.domain.model.PointType
 import com.fitmate.fitmate.presentation.viewmodel.LoginViewModel
 import com.fitmate.fitmate.util.ControlActivityInterface
+import com.fitmate.fitmate.util.DateParseUtils
 import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
+import java.time.LocalDateTime
+import java.time.ZoneId
+import java.time.format.DateTimeFormatter
 
 @AndroidEntryPoint
 class UserInfoFragment : Fragment(R.layout.fragment_user_info) {
@@ -32,11 +36,14 @@ class UserInfoFragment : Fragment(R.layout.fragment_user_info) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding = FragmentUserInfoBinding.bind(view)
+        binding.viewModel = viewModel
+        binding.fragment = this
 
         (activity as ControlActivityInterface).viewNavigationBar()
         loadUserPreference()
         setClickListener()
         viewModel.getUserInfo(userId)
+        viewModel.getPointInfo(userId, "USER")
         observeViewModel()
     }
 
@@ -44,8 +51,8 @@ class UserInfoFragment : Fragment(R.layout.fragment_user_info) {
         viewModel.userInfo.observe(viewLifecycleOwner) { user ->
             user?.let {
                 binding.textViewUserInfoName.text = it.nickname
-                binding.textViewUserInfoDate.text = it.createdAt
-                if(it.imageUrl != null) {
+                binding.textViewUserInfoDate.text = formatDateRange(it.createdAt)
+                if (it.imageUrl != null) {
                     Glide.with(binding.imageViewUserInfoIcon.context)
                         .load(it.imageUrl)
                         .transform(CenterCrop(), RoundedCorners(16))
@@ -56,7 +63,51 @@ class UserInfoFragment : Fragment(R.layout.fragment_user_info) {
                 }
             }
         }
+
+        viewModel.pointInfo.observe(viewLifecycleOwner) {
+            binding.textViewUserPoint.text =
+                getString(R.string.user_info_point, splitAndJoinFromEnd(it.balance.toString()))
+        }
     }
+
+    //포인트 ,추가하는 메서드
+    private fun splitAndJoinFromEnd(input: String): String {
+        val sb = StringBuilder()
+        val step = 3
+        var i = input.length
+
+        while (i > 0) {
+            if (i - step > 0) {
+                sb.insert(0, "," + input.substring(i - step, i))
+            } else {
+                sb.insert(0, input.substring(0, i))
+            }
+            i -= step
+        }
+
+        return sb.toString().trimStart(',')
+    }
+
+    fun formatDateRange(createDate: String): String {
+        // 한국 시간대
+        val koreaZone = ZoneId.of("Asia/Seoul")
+
+        // 문자열을 Instant로 변환
+        val instant = DateParseUtils.stringToInstant(createDate)
+
+        // Instant를 한국 시간대로 변환
+        val dateToInstant = instant.atZone(koreaZone).toLocalDateTime()
+
+        // 날짜 및 시간 형식 설정
+        val dateFormatter = DateTimeFormatter.ofPattern("yyyy/MM/dd a h:mm")
+
+        // 형식에 맞게 변환
+        val dateFormatted = dateToInstant.format(dateFormatter)
+
+        // 결과 문자열 반환
+        return dateFormatted
+    }
+
 
     private fun loadUserPreference() {
         val userPreference = (activity as MainActivity).loadUserPreference()
@@ -95,7 +146,9 @@ class UserInfoFragment : Fragment(R.layout.fragment_user_info) {
         }
     }
 
-    private fun navigateTo(actionId: Int) { findNavController().navigate(actionId) }
+    private fun navigateTo(actionId: Int) {
+        findNavController().navigate(actionId)
+    }
 
     private fun navigateProfile() {
         navigateTo(R.id.action_userInfoFragment_to_profileFragment)
@@ -106,15 +159,19 @@ class UserInfoFragment : Fragment(R.layout.fragment_user_info) {
     }
 
     private fun logout() {
-        Log.d("tlqkf","로그아웃 시도:$platform")
+        Log.d("tlqkf", "로그아웃 시도:$platform")
 
         viewModel.logoutComplete.observe(viewLifecycleOwner) { isComplete ->
             if (isComplete) {
                 navigateTo(R.id.action_userInfoFragment_to_loginFragment)
-                Snackbar.make(requireView(), "로그아웃을 성공했습니다. [USERID ${userId}]", Snackbar.LENGTH_SHORT).show()
+                Snackbar.make(
+                    requireView(),
+                    "로그아웃을 성공했습니다. [USERID ${userId}]",
+                    Snackbar.LENGTH_SHORT
+                ).show()
             }
         }
-        when(platform) {
+        when (platform) {
             "kakao" -> viewModel.logout(accessToken, "kakao")
             "naver" -> viewModel.logout(accessToken, "naver")
         }
@@ -122,7 +179,8 @@ class UserInfoFragment : Fragment(R.layout.fragment_user_info) {
 
     private fun withdraw() {
         viewModel.deleteUser(userId)
-        Snackbar.make(binding.root, "회원틸퇴를 성공했습니다. [USERID ${userId}]", Snackbar.LENGTH_SHORT).show()
+        Snackbar.make(binding.root, "회원틸퇴를 성공했습니다. [USERID ${userId}]", Snackbar.LENGTH_SHORT)
+            .show()
     }
 
     private fun navigateLicense() {
@@ -131,8 +189,8 @@ class UserInfoFragment : Fragment(R.layout.fragment_user_info) {
 
     private fun navigateFitOff() {
         val bundle = Bundle().apply {
-            viewModel.userInfo.value?.let {userInfoData ->
-                Log.d("tlqkf",userInfoData.toString())
+            viewModel.userInfo.value?.let { userInfoData ->
+                Log.d("tlqkf", userInfoData.toString())
                 putSerializable("fitOffOwnerNameInfo", userInfoData)
             }
         }
@@ -143,7 +201,7 @@ class UserInfoFragment : Fragment(R.layout.fragment_user_info) {
         val bundle = Bundle().apply {
             putSerializable("pointOwnerType", PointType.USER)
         }
-        findNavController().navigate(R.id.pointFragment,bundle)
+        findNavController().navigate(R.id.pointFragment, bundle)
 
     }
 

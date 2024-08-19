@@ -27,7 +27,7 @@ data class GroupVoteCertificationDetail(
     val agreeCount: Int,
     val disagreeCount: Int,
     val maxAgreeCount: Int,
-    val multiMediaEndPoints: List<String>?,
+    val multiMediaEndPoints: List<String>,
     val fitRecordStartDate: String,
     val fitRecordEndDate: String,
     val voteEndDate: String

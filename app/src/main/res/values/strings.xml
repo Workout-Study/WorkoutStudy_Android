@@ -240,5 +240,8 @@
     <string name="point_text_field_deal">전체</string>
     <string name="point_amount">%dP</string>
 
+    <!--마이페이지-->
+    <string name="user_info_title">My page</string>
+    <string name="user_info_point">%sP</string>
 
 </resources>

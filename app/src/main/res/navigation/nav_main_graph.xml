@@ -145,7 +145,7 @@
     <fragment
         android:id="@+id/userInfoFragment"
         android:name="com.fitmate.fitmate.presentation.ui.userinfo.UserInfoFragment"
-        android:label="UserInfoFragment">
+        android:label="@string/user_info_title">
         <action
             android:id="@+id/action_userInfoFragment_to_licenseFragment"
             app:destination="@id/licenseFragment" />
