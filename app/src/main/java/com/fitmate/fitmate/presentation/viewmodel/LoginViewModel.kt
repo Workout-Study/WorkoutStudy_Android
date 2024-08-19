@@ -5,19 +5,25 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.fitmate.fitmate.data.model.PointMapper.toPoint
 import com.fitmate.fitmate.data.model.dto.LoginResponse
 import com.fitmate.fitmate.data.model.dto.LoginSuccessResponse
 import com.fitmate.fitmate.data.model.dto.UserResponse
+import com.fitmate.fitmate.domain.model.Point
 import com.fitmate.fitmate.domain.usecase.LoginUseCase
+import com.fitmate.fitmate.domain.usecase.PointUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 @HiltViewModel
 class LoginViewModel @Inject constructor(
-    private val loginUseCase: LoginUseCase
+    private val loginUseCase: LoginUseCase,
+    private val pointUseCase: PointUseCase,
 ) : ViewModel() {
 
     private val TAG = "LoginViewModel"
@@ -30,6 +36,10 @@ class LoginViewModel @Inject constructor(
 
     private val _userInfo = MutableLiveData<UserResponse?>()
     val userInfo: LiveData<UserResponse?> = _userInfo
+
+    private val _pointInfo = MutableLiveData<Point>()
+    val pointInfo: LiveData<Point>
+        get() = _pointInfo
 
     private val _nickname = MutableLiveData<UserResponse>()
     val nickname: LiveData<UserResponse> = _nickname
@@ -110,6 +120,18 @@ class LoginViewModel @Inject constructor(
                 Log.d(TAG, "getUserInfo Error... $e")
                 _isLoading.value = false
             }
+        }
+    }
+
+    fun getPointInfo(pointOwnerId: Int, pointOwnerType: String) {
+        viewModelScope.launch(Dispatchers.IO) {
+            val response = pointUseCase.getPointInfo(pointOwnerId, pointOwnerType)
+            withContext(Dispatchers.Main) {
+                if (response.isSuccessful) {
+                    _pointInfo.value = response.body()?.toPoint()
+                }
+            }
+
         }
     }
 
