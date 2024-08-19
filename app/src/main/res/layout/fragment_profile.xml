@@ -3,123 +3,159 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
+        <variable
+            name="myInfoData"
+            type="com.fitmate.fitmate.data.model.dto.UserResponse" />
 
+        <variable
+            name="fragment"
+            type="com.fitmate.fitmate.presentation.ui.userinfo.ProfileFragment" />
+
+        <variable
+            name="viewModel"
+            type="com.fitmate.fitmate.presentation.viewmodel.UserUpdateViewModel" />
     </data>
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@color/white">
+        android:layout_height="match_parent">
 
-        <LinearLayout
-            android:id="@+id/linearLayout"
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
+            android:layout_height="match_parent"
+            android:background="@color/white">
 
-            <com.google.android.material.appbar.MaterialToolbar
-                android:id="@+id/toolbarProfile"
-                style="@style/Theme.Fitmate.Toolbar"
+            <LinearLayout
+                android:id="@+id/linearLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:minHeight="?attr/actionBarSize"
-                app:titleCentered="true"
-                android:theme="?attr/actionBarTheme"
-                app:title="유저 프로필 변경" />
+                android:orientation="vertical"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
 
-        </LinearLayout>
+                <com.google.android.material.appbar.MaterialToolbar
+                    android:id="@+id/toolbarProfile"
+                    style="@style/Theme.Fitmate.Toolbar"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:titleCentered="true"
+                    app:title="@string/user_info_edit_title" />
 
-        <TextView
-            android:id="@+id/textViewProflieTitle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="16dp"
-            android:fontFamily="@font/pretendard_bold"
-            android:text="프로필 사진을 변경해주세요."
-            android:textSize="18sp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/linearLayout" />
-
-        <ImageView
-            android:id="@+id/imageViewProfliePhoto"
-            android:layout_width="96dp"
-            android:layout_height="96dp"
-            android:layout_marginTop="24dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textViewProflieTitle"
-            app:srcCompat="@drawable/bg_profile" />
-
-        <ImageView
-            android:id="@+id/imageViewPhoto"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="52dp"
-            android:layout_marginTop="56dp"
-            app:layout_constraintStart_toStartOf="@+id/imageViewProfliePhoto"
-            app:layout_constraintTop_toTopOf="@+id/imageViewProfliePhoto"
-            app:srcCompat="@drawable/ic_baseline_camera_new" />
-
-        <TextView
-            android:id="@+id/textViewProflieName"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="160dp"
-            android:fontFamily="@font/pretendard_bold"
-            android:text="프로필 이름"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textViewProflieTitle" />
-
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/textInputLayoutSetProflieName"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginHorizontal="15dp"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="12dp"
-            android:layout_marginEnd="16dp"
-            app:hintEnabled="false"
-            app:hintTextAppearance="@style/Font.medium12"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textViewProflieName">
-
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/editTextSetProfileName"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="이름을 입력하세요."
-                android:inputType="text"
-                android:maxLines="1"
-                android:textAppearance="@style/Font.regular16" />
-
-        </com.google.android.material.textfield.TextInputLayout>
-
-        <LinearLayout
-            android:id="@+id/buttonProfileConfirm"
-            android:layout_width="match_parent"
-            android:layout_height="56dp"
-            android:background="@drawable/linear_button_gradient"
-            android:clickable="true"
-            android:gravity="center"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent">
+            </LinearLayout>
 
             <TextView
+                android:id="@+id/textViewProflieTitle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="프로필 변경"
-                android:textAppearance="@style/Font.bold20"
-                android:textColor="@color/white"
-                android:textSize="16sp" />
-        </LinearLayout>
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="16dp"
+                android:fontFamily="@font/pretendard_bold"
+                android:text="프로필 사진을 변경해주세요."
+                android:textSize="18sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/linearLayout" />
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/imageViewProfliePhoto"
+                android:layout_width="96dp"
+                android:layout_height="96dp"
+                android:layout_marginTop="24dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textViewProflieTitle"
+                app:url="@{viewModel.updateUserImage}" />
+
+            <ImageView
+                android:id="@+id/imageViewPhoto"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="52dp"
+                android:clickable="true"
+                android:onClick="@{() -> fragment.clickChangeMyImageImage()}"
+                android:layout_marginTop="56dp"
+                app:layout_constraintStart_toStartOf="@+id/imageViewProfliePhoto"
+                app:layout_constraintTop_toTopOf="@+id/imageViewProfliePhoto"
+                app:srcCompat="@drawable/ic_baseline_camera_new" />
+
+            <TextView
+                android:id="@+id/textViewProflieName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="160dp"
+                android:fontFamily="@font/pretendard_bold"
+                android:text="프로필 이름"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textViewProflieTitle" />
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/textInputLayoutSetProflieName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="15dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="12dp"
+                android:layout_marginEnd="16dp"
+                app:hintEnabled="false"
+                app:hintTextAppearance="@style/Font.medium12"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textViewProflieName">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/editTextSetProfileName"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@{myInfoData.nickname}"
+                    android:text="@={viewModel.updateUserNickName}"
+                    android:inputType="text"
+                    android:maxLines="1"
+                    android:textAppearance="@style/Font.regular16" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <LinearLayout
+                android:id="@+id/buttonProfileConfirm"
+                android:layout_width="match_parent"
+                android:layout_height="56dp"
+                android:onClick="@{() -> fragment.clickUpdateMyInfo()}"
+                android:background="@drawable/linear_button_gradient"
+                android:clickable="true"
+                android:gravity="center"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="프로필 변경"
+                    android:textAppearance="@style/Font.bold20"
+                    android:textColor="@color/white"
+                    android:textSize="16sp" />
+            </LinearLayout>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <com.airbnb.lottie.LottieAnimationView
+            android:id="@+id/progressBarSubmitLoading"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            app:lottie_rawRes="@raw/loading_progress"
+            android:layout_gravity="center"
+            app:lottie_autoPlay="true"
+            app:lottie_loop="true"/>
+
+        <View
+            android:id="@+id/loadingLayoutView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="gone"
+            android:background="@color/white"/>
+
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
+
 
 </layout>

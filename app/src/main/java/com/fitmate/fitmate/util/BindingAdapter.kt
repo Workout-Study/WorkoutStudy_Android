@@ -8,6 +8,8 @@ import android.widget.Button
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
+import androidx.appcompat.content.res.AppCompatResources
+import androidx.appcompat.widget.AppCompatImageView
 import androidx.cardview.widget.CardView
 import androidx.core.net.toUri
 import androidx.databinding.BindingAdapter
@@ -33,10 +35,15 @@ fun ImageView.setImageByUri(image: String) {
 
 //url로 사진 설정하는 메서드(동그라미)
 @BindingAdapter("url")
-fun ImageView.setImageByUrl(imageUrl: String) {
-    Glide.with(this)
-        .load(imageUrl)
-        .into(this)
+fun ImageView.setImageByUrl(imageUrl: String?) {
+    if (imageUrl != null) {
+        Glide.with(this)
+            .load(imageUrl)
+            .into(this)
+    } else {
+        val placeholder = AppCompatResources.getDrawable(this.context, R.drawable.bg_profile)
+        this.setImageDrawable(placeholder)
+    }
 }
 //마이피트 운동 기록 시작 사진 설정하는 메서드
 @BindingAdapter("fit_history_start_image")

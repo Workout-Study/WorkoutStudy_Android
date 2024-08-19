@@ -115,15 +115,22 @@ class UserInfoFragment : Fragment(R.layout.fragment_user_info) {
         Log.d(TAG, accessToken)
     }
 
-
+    //프로필 변경 화면으로 이동하는 메서드
     fun navigateProfile() {
-        findNavController().navigate(R.id.action_userInfoFragment_to_profileFragment)
+        val bundle = Bundle().apply {
+            viewModel.userInfo.value?.let { userInfoData ->
+                putSerializable("userInfoData", userInfoData)
+            }
+        }
+        findNavController().navigate(R.id.profileFragment, bundle)
     }
 
+    //알림 화면으로 이동하는 메서드
     fun notice() {
         Toast.makeText(context, "지정된 공지사항이 존재하지 않습니다.", Toast.LENGTH_SHORT).show()
     }
 
+    //로그아웃 시도  메서드
     fun logout() {
         Log.d("tlqkf", "로그아웃 시도:$platform")
 
@@ -143,16 +150,19 @@ class UserInfoFragment : Fragment(R.layout.fragment_user_info) {
         }
     }
 
+    //회원 탈퇴 메서드
     fun withdraw() {
         viewModel.deleteUser(userId)
         Snackbar.make(binding.root, "회원틸퇴를 성공했습니다. [USERID ${userId}]", Snackbar.LENGTH_SHORT)
             .show()
     }
 
+    //라이선스 화면 이동 메서드
     fun navigateLicense() {
         findNavController().navigate(R.id.action_userInfoFragment_to_licenseFragment)
     }
 
+    //피틀오프 화면으로 이동하는 메서드
     fun navigateFitOff() {
         val bundle = Bundle().apply {
             viewModel.userInfo.value?.let { userInfoData ->
@@ -163,12 +173,12 @@ class UserInfoFragment : Fragment(R.layout.fragment_user_info) {
         findNavController().navigate(R.id.viewFitOffFragment, bundle)
     }
 
+    //포인트 화면으로 이동하는 메서드
     fun navigatePoint() {
         val bundle = Bundle().apply {
             putSerializable("pointOwnerType", PointType.USER)
         }
         findNavController().navigate(R.id.pointFragment, bundle)
-
     }
 
 }
