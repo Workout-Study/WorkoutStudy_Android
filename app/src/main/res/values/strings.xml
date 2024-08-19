@@ -243,5 +243,6 @@
     <!--마이페이지-->
     <string name="user_info_title">My page</string>
     <string name="user_info_point">%sP</string>
+    <string name="user_info_createdAt">가입일: %s</string>
 
 </resources>

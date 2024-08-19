@@ -41,7 +41,6 @@ class UserInfoFragment : Fragment(R.layout.fragment_user_info) {
 
         (activity as ControlActivityInterface).viewNavigationBar()
         loadUserPreference()
-        setClickListener()
         viewModel.getUserInfo(userId)
         viewModel.getPointInfo(userId, "USER")
         observeViewModel()
@@ -51,15 +50,13 @@ class UserInfoFragment : Fragment(R.layout.fragment_user_info) {
         viewModel.userInfo.observe(viewLifecycleOwner) { user ->
             user?.let {
                 binding.textViewUserInfoName.text = it.nickname
-                binding.textViewUserInfoDate.text = formatDateRange(it.createdAt)
+                binding.textViewUserInfoDate.text = getString(R.string.user_info_createdAt,formatDateRange(it.createdAt))
                 if (it.imageUrl != null) {
                     Glide.with(binding.imageViewUserInfoIcon.context)
                         .load(it.imageUrl)
                         .transform(CenterCrop(), RoundedCorners(16))
                         .error(R.drawable.ic_launcher_logo)
                         .into(binding.imageViewUserInfoIcon)
-                } else {
-                    Log.d("woojugoing", "image is null")
                 }
             }
         }
@@ -118,52 +115,21 @@ class UserInfoFragment : Fragment(R.layout.fragment_user_info) {
         Log.d(TAG, accessToken)
     }
 
-    private fun setClickListener() {
-        listOf(
-            binding.textViewUserInfoProfile,
-            binding.textViewUserInfoFitOff,
-            binding.textViewUserInfoPoint,
-            binding.textViewUserInfoNotice,
-            binding.textViewUserInfoFAQ,
-            binding.textViewUserInfoOSS,
-            binding.textViewUserInfoLogout,
-            binding.textViewUserInfoWithDraw
-        ).forEach { textView ->
-            textView.setOnClickListener { handleOnClick(textView.id) }
-        }
+
+    fun navigateProfile() {
+        findNavController().navigate(R.id.action_userInfoFragment_to_profileFragment)
     }
 
-    private fun handleOnClick(viewId: Int) {
-        when (viewId) {
-            R.id.textViewUserInfoProfile -> navigateProfile() // TODO 권한 체크로 변경하고 권한 체크하는 곳에서 이동하도록 변경
-            R.id.textViewUserInfoFitOff -> navigateFitOff()
-            R.id.textViewUserInfoPoint -> navigatePoint()
-            R.id.textViewUserInfoNotice -> notice()
-            R.id.textViewUserInfoFAQ -> null
-            R.id.textViewUserInfoOSS -> navigateLicense()
-            R.id.textViewUserInfoLogout -> logout()
-            R.id.textViewUserInfoWithDraw -> withdraw()
-        }
-    }
-
-    private fun navigateTo(actionId: Int) {
-        findNavController().navigate(actionId)
-    }
-
-    private fun navigateProfile() {
-        navigateTo(R.id.action_userInfoFragment_to_profileFragment)
-    }
-
-    private fun notice() {
+    fun notice() {
         Toast.makeText(context, "지정된 공지사항이 존재하지 않습니다.", Toast.LENGTH_SHORT).show()
     }
 
-    private fun logout() {
+    fun logout() {
         Log.d("tlqkf", "로그아웃 시도:$platform")
 
         viewModel.logoutComplete.observe(viewLifecycleOwner) { isComplete ->
             if (isComplete) {
-                navigateTo(R.id.action_userInfoFragment_to_loginFragment)
+                findNavController().navigate(R.id.action_userInfoFragment_to_loginFragment)
                 Snackbar.make(
                     requireView(),
                     "로그아웃을 성공했습니다. [USERID ${userId}]",
@@ -177,17 +143,17 @@ class UserInfoFragment : Fragment(R.layout.fragment_user_info) {
         }
     }
 
-    private fun withdraw() {
+    fun withdraw() {
         viewModel.deleteUser(userId)
         Snackbar.make(binding.root, "회원틸퇴를 성공했습니다. [USERID ${userId}]", Snackbar.LENGTH_SHORT)
             .show()
     }
 
-    private fun navigateLicense() {
-        navigateTo(R.id.action_userInfoFragment_to_licenseFragment)
+    fun navigateLicense() {
+        findNavController().navigate(R.id.action_userInfoFragment_to_licenseFragment)
     }
 
-    private fun navigateFitOff() {
+    fun navigateFitOff() {
         val bundle = Bundle().apply {
             viewModel.userInfo.value?.let { userInfoData ->
                 Log.d("tlqkf", userInfoData.toString())
@@ -197,7 +163,7 @@ class UserInfoFragment : Fragment(R.layout.fragment_user_info) {
         findNavController().navigate(R.id.viewFitOffFragment, bundle)
     }
 
-    private fun navigatePoint() {
+    fun navigatePoint() {
         val bundle = Bundle().apply {
             putSerializable("pointOwnerType", PointType.USER)
         }
