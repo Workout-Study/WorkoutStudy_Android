@@ -245,4 +245,7 @@
     <string name="user_info_point">%sP</string>
     <string name="user_info_createdAt">가입일: %s</string>
 
+    <!--유저 프로필 변경 화면-->
+    <string name="user_info_edit_title">유저 프로필 변경</string>
+
 </resources>

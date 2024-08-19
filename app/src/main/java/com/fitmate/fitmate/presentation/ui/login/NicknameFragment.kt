@@ -42,7 +42,7 @@ class NicknameFragment: Fragment(R.layout.fragment_nickname) {
             val nickname = binding.editTextNickname.text.toString()
             val authorizationCode = arguments?.getString("authorizationCode")
             authorizationCode?.let{
-                viewModel.updateNickname(it, nickname, defaultProfile)
+                viewModel.updateUserInfo(it, nickname, defaultProfile)
             }
             findNavController().navigate(R.id.homeFragment)
             Toast.makeText(context, "${nickname}님 환영합니다!", Toast.LENGTH_SHORT).show()

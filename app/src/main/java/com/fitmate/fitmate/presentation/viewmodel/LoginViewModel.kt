@@ -1,5 +1,6 @@
 package com.fitmate.fitmate.presentation.viewmodel
 
+import android.net.Uri
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -12,6 +13,8 @@ import com.fitmate.fitmate.data.model.dto.UserResponse
 import com.fitmate.fitmate.domain.model.Point
 import com.fitmate.fitmate.domain.usecase.LoginUseCase
 import com.fitmate.fitmate.domain.usecase.PointUseCase
+import com.google.firebase.Firebase
+import com.google.firebase.storage.storage
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -54,6 +57,9 @@ class LoginViewModel @Inject constructor(
     val logoutComplete: LiveData<Boolean> = _logoutComplete
 
     var platform: String? = null
+
+    val updateUserImage = MutableLiveData<String?>(null)
+    val updateUserNickName = MutableLiveData<String?>(null)
 
     fun tokenValid(accessToken: String) {
         viewModelScope.launch {
@@ -135,7 +141,7 @@ class LoginViewModel @Inject constructor(
         }
     }
 
-    fun updateNickname(userToken: String, nickname: String, imageUrl: String) {
+    fun updateUserInfo(userToken: String, nickname: String, imageUrl: String) {
         // TODO 이거 userID 말고 access토큰이어야함.
         viewModelScope.launch {
             _isLoading.value = true
@@ -149,6 +155,7 @@ class LoginViewModel @Inject constructor(
             }
         }
     }
+
 
     fun deleteUser(userId: Int) {
         viewModelScope.launch {
