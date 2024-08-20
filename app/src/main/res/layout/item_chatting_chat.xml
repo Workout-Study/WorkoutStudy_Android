@@ -14,18 +14,32 @@
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
+        <TextView
+            android:id="@+id/textViewChangeDateGuide"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:backgroundTint="@color/gray"
+            android:layout_marginVertical="15dp"
+            android:paddingVertical="10dp"
+            android:paddingHorizontal="20dp"
+            android:visibility="gone"
+            toos:text="2022년 08월 08일"
+            toos:visibility="visible"
+            android:textAppearance="@style/Font.regular12"
+            android:layout_gravity="center_horizontal"
+            android:background="@drawable/chatting_round_container"/>
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/containerItemChattingChatLeft"
             android:layout_width="match_parent"
+            android:layout_marginVertical="10dp"
             android:layout_height="match_parent">
 
-            <ImageView
+            <de.hdodenhof.circleimageview.CircleImageView
                 android:id="@+id/imageViewItemChattingFitMateImageLeft"
                 android:layout_width="45dp"
                 android:layout_height="45dp"
-                android:src="@drawable/ic_launcher_logo"
-                app:layout_constraintBottom_toBottomOf="parent"
+                toos:src="@drawable/ic_launcher_logo"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
@@ -33,9 +47,9 @@
                 android:id="@+id/textViewItemChattingFitMateNameLeft"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="5dp"
+                android:layout_marginStart="6dp"
                 android:textAppearance="@style/Font.bold16"
-                app:layout_constraintBottom_toTopOf="@+id/imageViewItemChattingFitMateImageLeft"
+                app:layout_constraintTop_toTopOf="@+id/imageViewItemChattingFitMateImageLeft"
                 app:layout_constraintStart_toEndOf="@+id/imageViewItemChattingFitMateImageLeft"
                 toos:text="강현구" />
 
@@ -44,16 +58,26 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:background="@drawable/left_speech_svg"
+                android:maxWidth="240dp"
                 android:paddingLeft="20dp"
                 android:paddingTop="10dp"
                 android:paddingRight="20dp"
                 android:paddingBottom="10dp"
                 android:textAppearance="@style/Font.regular16"
                 android:textColor="@color/black"
-                app:layout_constraintStart_toEndOf="@+id/imageViewItemChattingFitMateImageLeft"
                 app:layout_constraintStart_toStartOf="@+id/textViewItemChattingFitMateNameLeft"
                 app:layout_constraintTop_toBottomOf="@+id/textViewItemChattingFitMateNameLeft"
-                toos:text="오늘 정말 힘드네요;;;" />
+                toos:text="오늘 정말 힘드네요;;;zzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz" />
+
+            <TextView
+                android:id="@+id/textViewItemChattingFitMateSpeechDateLeft"
+                app:layout_constraintStart_toEndOf="@+id/textViewItemChattingFitMateSpeechContentLeft"
+                app:layout_constraintBottom_toBottomOf="@+id/textViewItemChattingFitMateSpeechContentLeft"
+                android:layout_width="wrap_content"
+                android:textAppearance="@style/Font.regular12"
+                android:layout_marginStart="6dp"
+                toos:text="오전 9:00"
+                android:layout_height="wrap_content"/>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -62,14 +86,15 @@
             android:id="@+id/containerItemChattingChatRight"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginVertical="10dp"
             android:layout_gravity="end">
 
             <TextView
                 android:id="@+id/textViewItemChattingMySpeechContentRight"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
                 android:layout_marginBottom="10dp"
+                android:maxWidth="240dp"
                 android:background="@drawable/right_speech"
                 android:paddingLeft="20dp"
                 android:paddingTop="10dp"
@@ -80,7 +105,17 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                toos:text="오늘 정말 힘드네요;;;" />
+                toos:text="오늘 정말 힘드네요;;zzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz;" />
+
+            <TextView
+                android:id="@+id/textViewItemChattingFitMateSpeechDateRight"
+                app:layout_constraintEnd_toStartOf="@+id/textViewItemChattingMySpeechContentRight"
+                app:layout_constraintBottom_toBottomOf="@+id/textViewItemChattingMySpeechContentRight"
+                android:layout_width="wrap_content"
+                android:textAppearance="@style/Font.regular12"
+                android:layout_marginEnd="6dp"
+                toos:text="오전 9:00"
+                android:layout_height="wrap_content"/>
 
 
         </androidx.constraintlayout.widget.ConstraintLayout>

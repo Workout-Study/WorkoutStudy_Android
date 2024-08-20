@@ -285,7 +285,7 @@ class MyFitFragment : Fragment() {
         val dot = bindView.CircleImageViewFitDayDot
 
         lateinit var day: CalendarDay
-        
+
         init {
             view.setOnClickListener {
                 // 해당 월에 유효한 day라면

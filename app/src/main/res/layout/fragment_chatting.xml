@@ -13,8 +13,8 @@
     <androidx.drawerlayout.widget.DrawerLayout
         android:id="@+id/drawerLayoutForFragmentChatting"
         android:layout_width="match_parent"
+        tools:openDrawer="right"
         android:layout_height="match_parent">
-
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
@@ -226,7 +226,6 @@
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_gravity="right"
-            android:background="@color/white"
             android:transitionGroup="true">
 
             <LinearLayout
@@ -271,15 +270,14 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         app:srcCompat="@drawable/baseline_logout_24"
-                        app:tint="@color/dark_gray" />
+                        />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="10dp"
                         android:text="그룹 탈퇴하기"
-                        android:textAppearance="@style/Font.bold20"
-                        android:textColor="@color/dark_gray" />
+                        android:textAppearance="@style/Font.semibold10" />
                 </LinearLayout>
 
             </LinearLayout>
