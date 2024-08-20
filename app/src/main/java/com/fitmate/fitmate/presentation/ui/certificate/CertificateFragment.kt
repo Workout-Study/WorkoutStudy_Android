@@ -585,7 +585,8 @@ class CertificateFragment : Fragment() {
 
         dataList.forEachIndexed { index, s ->
             val checkBox: CheckBox = CheckBox(requireContext())
-            checkBox.setText(s)
+            checkBox.text = s
+            checkBox.setTextAppearance(R.style.Font_regular16)
             checkBox.isChecked = multiChoiceList[index]
             checkBox.setOnCheckedChangeListener { compoundButton, b -> multiChoiceList[index] = b }
             dialogBinding.checkboxContainer.addView(checkBox)
