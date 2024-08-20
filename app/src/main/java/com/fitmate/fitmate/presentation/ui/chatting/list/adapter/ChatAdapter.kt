@@ -39,7 +39,7 @@ class ChatAdapter: ListAdapter<ChatItem, ChatAdapter.ViewHolder>(ChatDiffCallbac
                             textViewChangeDateGuide.visibility = View.VISIBLE
                             textViewChangeDateGuide.text = formatDateTime(DateParseUtils.instantToString(item.messageTime),true)
                         }
-                        else if (formatDateTime(DateParseUtils.instantToString(currentList[currentList.lastIndex].messageTime),true) != formatDateTime(DateParseUtils.instantToString(currentList[currentList.lastIndex -1].messageTime),true)){
+                        else if (formatDateTime(DateParseUtils.instantToString(currentList[bindingAdapterPosition - 1].messageTime),true) != formatDateTime(DateParseUtils.instantToString(item.messageTime),true)){
                             textViewChangeDateGuide.visibility = View.VISIBLE
                             textViewChangeDateGuide.text = formatDateTime(DateParseUtils.instantToString(item.messageTime),true)
                         }
@@ -72,7 +72,6 @@ class ChatAdapter: ListAdapter<ChatItem, ChatAdapter.ViewHolder>(ChatDiffCallbac
             // 한국 시간대
             val koreaZone = ZoneId.of("Asia/Seoul")
 
-            Log.d("tlqkf",createDate)
             // 문자열을 Instant로 변환
             val instant = DateParseUtils.stringToInstant(createDate)
 
