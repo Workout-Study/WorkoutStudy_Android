@@ -87,11 +87,10 @@ class ProfileFragment : Fragment() {
             Log.d("tlqkf","업로드된 url:$it")
             if (it != null){
                 if(viewModel.updateUserNickName.value == null || viewModel.updateUserNickName.value == binding.editTextSetProfileName.hint || viewModel.updateUserNickName.value == ""){
-                    viewModel.updateUserInfo(userToken = accessToken, binding.editTextSetProfileName.hint.toString(), it.toString())
+                    viewModel.updateUserInfo(userToken = accessToken, binding.editTextSetProfileName.hint.toString(), it)
                 }else{
-                    viewModel.updateUserInfo(userToken = accessToken, viewModel.updateUserNickName.value!!, it.toString())
+                    viewModel.updateUserInfo(userToken = accessToken, viewModel.updateUserNickName.value!!, it)
                 }
-                viewModel.updateUserInfo(userToken = accessToken, viewModel.updateUserNickName.value!!, it.toString())
             }else{
                 Toast.makeText(requireContext(),"알 수 없는 오류로 사진 업로드에 실패했습니다!",Toast.LENGTH_SHORT).show()
                 loadingViewGone()
