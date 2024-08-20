@@ -39,7 +39,6 @@ class UserUpdateViewModel @Inject constructor(
         userRef.putFile(uri).addOnSuccessListener {
             userRef.downloadUrl.addOnSuccessListener { uri ->
                 _isImageUpload.value = uri.toString()
-                Log.d("tlqkf",isImageUpload.value.toString())
             }.addOnFailureListener {
                 _isImageUpload.value = null
             }
