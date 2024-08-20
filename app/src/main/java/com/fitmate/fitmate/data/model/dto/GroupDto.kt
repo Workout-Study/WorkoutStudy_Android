@@ -40,6 +40,7 @@ data class FitMateDetail(
     @SerializedName("fitMateId") val fitMateId: Int,
     @SerializedName("fitMateUserId") val fitMateUserId: String,
     @SerializedName("fitMateUserNickname") val fitMateUserNickname: String,
+    @SerializedName("fitMateUserProfileImageUrl") val fitMateUserProfileImageUrl: String?,
     @SerializedName("createdAt") val createdAt: String
 )
 

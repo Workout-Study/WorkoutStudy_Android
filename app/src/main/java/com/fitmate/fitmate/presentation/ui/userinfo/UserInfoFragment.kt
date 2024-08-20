@@ -85,7 +85,7 @@ class UserInfoFragment : Fragment(R.layout.fragment_user_info) {
         return sb.toString().trimStart(',')
     }
 
-    fun formatDateRange(createDate: String): String {
+    private fun formatDateRange(createDate: String): String {
         // 한국 시간대
         val koreaZone = ZoneId.of("Asia/Seoul")
 

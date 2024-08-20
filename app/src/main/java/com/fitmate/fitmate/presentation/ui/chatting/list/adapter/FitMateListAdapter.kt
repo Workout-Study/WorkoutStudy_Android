@@ -54,5 +54,6 @@ data class FitMate(
     val fitMateId: Int,
     val fitMateUserId: String,
     val fitMateUserNickname: String,
+    val fitMateUserProfileImageUrl: String?,
     val createdAt: String
 )

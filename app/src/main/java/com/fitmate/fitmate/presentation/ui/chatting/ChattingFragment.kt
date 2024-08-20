@@ -17,6 +17,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.fitmate.fitmate.BuildConfig
 import com.fitmate.fitmate.MainActivity
 import com.fitmate.fitmate.R
+import com.fitmate.fitmate.data.model.dto.GetFitMateList
 import com.fitmate.fitmate.databinding.FragmentChattingBinding
 import com.fitmate.fitmate.domain.model.ChatItem
 import com.fitmate.fitmate.domain.model.PointType
@@ -69,7 +70,6 @@ class ChattingFragment : Fragment(R.layout.fragment_chatting) {
     private val login: LoginViewModel by viewModels()
     private val group: GroupViewModel by viewModels()
     private var webSocket: WebSocket? = null
-    private var penaltyAccountNumber: String? = null
     private var fitGroupId: Int = -1
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -88,18 +88,12 @@ class ChattingFragment : Fragment(R.layout.fragment_chatting) {
         super.onViewCreated(view, savedInstanceState)
 
         observeGroupDetail()                        //가져온 그룹 정보 감시하기(포인트 화면을 위한 작업)
-        observeFitMateList()                        // FitMate 리스트 가져오기
+        observeFitMateList()                        // FitMate 리스트 가져오기 -> 해당 통신 후 채팅 서버 연결 시작
         initFragment(view)                          // 화면 바인딩
         initHeightProvider()                        // 메뉴 높이 조절
-        setUpRecyclerView()                         // 채팅 아이템 리스트 설정
-        observeChatResponse()                       // 새로 들어온 채팅 내역 동기화 후 채팅 보여주기
         //scrollBottom()                              // 들어 왔을 때 최하단 으로 이동
     }
 
-    override fun onResume() {
-        super.onResume()
-        group.getFitMateList(fitGroupId)
-    }
 
     private fun loadUserPreference() {
         val userPreference = (activity as MainActivity).loadUserPreference()
@@ -121,22 +115,6 @@ class ChattingFragment : Fragment(R.layout.fragment_chatting) {
 
     //드로워 레이아웃 여는 메서드
     fun toggleDrawer() {
-        val fitMateListAdapter = FitMateListAdapter(emptyList(), "", "", login)
-        binding.recyclerViewFragmentChattingForFitMateList.adapter = fitMateListAdapter
-        binding.recyclerViewFragmentChattingForFitMateList.layoutManager =
-            LinearLayoutManager(context)
-
-        group.getMate.value?.let { fitMateList ->
-            val leaderID = fitMateList.fitLeaderDetail.fitLeaderUserId
-            val myID = userId.toString()
-            binding.textViewFragmentChattingFitGroupSize.text =
-                "대화 상대 " + fitMateList.fitMateDetails.size.toString()
-            val filteredFitMates = fitMateList.fitMateDetails.map {
-                FitMate(it.fitMateId, it.fitMateUserId, it.fitMateUserNickname, it.createdAt)
-            }
-            fitMateListAdapter.updateData(filteredFitMates, leaderID, myID)
-        }
-
         binding.drawerLayoutForFragmentChatting.apply {
             if (isDrawerOpen(GravityCompat.END)) closeDrawer(GravityCompat.END) else openDrawer(
                 GravityCompat.END
@@ -230,13 +208,16 @@ class ChattingFragment : Fragment(R.layout.fragment_chatting) {
         }
     }
 
-    private fun setUpRecyclerView() {
+    private fun setUpRecyclerView(fitMateData: GetFitMateList) {
         chatAdapter = ChatAdapter()
         val manager = LinearLayoutManager(requireContext())
         //manager.stackFromEnd = true
         //manager.reverseLayout = true
         with(binding.recyclerViewFragmentChatting) {
-            chatAdapter.apply { setCurrentUserFitMateId(userId) }
+            chatAdapter.apply {
+                setCurrentUserFitMateId(userId)
+                setFitMateInfo(fitMateData)
+            }
             adapter = chatAdapter
             layoutManager = manager
             itemAnimator = null
@@ -273,7 +254,7 @@ class ChattingFragment : Fragment(R.layout.fragment_chatting) {
                     val message = messageObject.getString("message")
                     val messageTime = messageObject.getString("messageTime")
                     val messageType = messageObject.getString("messageType")
-                    val resultTime =  messageTime.replace("T"," ")
+                    val resultTime = messageTime.replace("T", " ")
                     val parsedMessageTime = DateParseUtils.stringToInstant(resultTime)
 
                     val chatItem = ChatItem(
@@ -380,13 +361,29 @@ class ChattingFragment : Fragment(R.layout.fragment_chatting) {
     private fun observeFitMateList() {
         group.getFitMateList(fitGroupId)
         group.getMate.observe(viewLifecycleOwner) { fitMateList ->
-            val leaderId = fitMateList.fitLeaderDetail.fitLeaderUserId
+            setUpRecyclerView(fitMateList) // 채팅 아이템 리스트 설정
+            observeChatResponse() // 새로 들어온 채팅 내역 동기화 후 채팅 보여주기
+
+            val fitMateListAdapter = FitMateListAdapter(emptyList(), "", "", login)
+            binding.recyclerViewFragmentChattingForFitMateList.adapter = fitMateListAdapter
+            binding.recyclerViewFragmentChattingForFitMateList.layoutManager = LinearLayoutManager(context)
+
+            //드로어 내부 리사이클러뷰 설정
+            val leaderID = fitMateList.fitLeaderDetail.fitLeaderUserId
             val myID = userId.toString()
+            binding.textViewFragmentChattingFitGroupSize.text =
+                "대화 상대 " + fitMateList.fitMateDetails.size.toString()
             val filteredFitMates = fitMateList.fitMateDetails.map {
-                FitMate(it.fitMateId, it.fitMateUserId, it.fitMateUserNickname, it.createdAt)
+                FitMate(
+                    it.fitMateId,
+                    it.fitMateUserId,
+                    it.fitMateUserNickname,
+                    it.fitMateUserProfileImageUrl,
+                    it.createdAt
+                )
             }
-            (binding.recyclerViewFragmentChattingForFitMateList.adapter as FitMateListAdapter)
-                .updateData(filteredFitMates, leaderId, myID)
+            fitMateListAdapter.updateData(filteredFitMates, leaderID, myID)
+
         }
     }
 
