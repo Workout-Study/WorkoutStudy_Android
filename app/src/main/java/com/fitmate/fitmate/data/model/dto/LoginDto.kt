@@ -21,13 +21,13 @@ data class LoginResponse(
 
 data class NicknameRequest(
     val nickname: String,
-    val imageUrl: String
+    val imageUrl: String?
 )
 
 data class UserResponse(
     @SerializedName("userId") val userId: Int,
     @SerializedName("nickname") val nickname: String,
-    @SerializedName("imageUrl") val imageUrl: String,
+    @SerializedName("imageUrl") val imageUrl: String? = null,
     @SerializedName("state") val state: Boolean,
     @SerializedName("createdAt") val createdAt: String,
     @SerializedName("createdBy") val createdBy: String,
