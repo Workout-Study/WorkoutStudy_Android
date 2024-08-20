@@ -7,16 +7,19 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.fitmate.fitmate.R
 import com.fitmate.fitmate.presentation.viewmodel.LoginViewModel
+import com.fitmate.fitmate.util.setImageByUrl
+import org.w3c.dom.Text
 
 class FitMateListAdapter(private var fitMates: List<FitMate>, private var leaderID: String, private var myID: String, private var login: LoginViewModel) : RecyclerView.Adapter<FitMateListAdapter.ViewHolder>() {
 
-    class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
+    inner class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         val nameTextView: TextView = view.findViewById(R.id.textViewItemChattingFitMateName)
-        val exportButton: Button = view.findViewById(R.id.buttonItemFitMateExport)
+        val exportButton: TextView = view.findViewById(R.id.buttonItemFitMateExport)
         val userProfile: ImageView = view.findViewById(R.id.imageViewItemChattingFitMateImage)
         val position: TextView = view.findViewById(R.id.textViewItemChattingFitmatePosition)
     }
@@ -32,12 +35,20 @@ class FitMateListAdapter(private var fitMates: List<FitMate>, private var leader
         holder.nameTextView.text = fitMate.fitMateUserNickname
         holder.exportButton.visibility = if (myID == leaderID) View.VISIBLE else View.INVISIBLE
         when(fitMate.fitMateUserId) {
-            leaderID -> holder.position.text = "방장"
-            myID -> holder.position.text = "나"
-            else -> holder.position.text = ""
+            leaderID -> {
+                holder.position.text = "방장"
+                holder.position.background = ContextCompat.getDrawable(holder.itemView.context,R.drawable.button_linear_radius8)
+                holder.position.setTextColor(ContextCompat.getColor(holder.itemView.context, R.color.white))
+                holder.exportButton.visibility = View.GONE
+            }
+            myID -> {
+                holder.position.text = "나"
+                holder.position.background = ContextCompat.getDrawable(holder.itemView.context,R.drawable.button_linear_radius8_gray)
+                holder.position.setTextColor(ContextCompat.getColor(holder.itemView.context, R.color.black))
+            }
+            else -> holder.position.visibility = View.GONE
         }
-//        Log.d("woojugoing_url", login.userInfo.value?.imageUrl!!)
-//        Glide.with(holder.userProfile.context).load(if(login.userInfo.value?.imageUrl==null) "" else login.userInfo.value?.imageUrl).into(holder.userProfile)
+        holder.userProfile.setImageByUrl(fitMate.fitMateUserProfileImageUrl)
     }
 
     override fun getItemCount() = fitMates.size
