@@ -132,8 +132,6 @@ class UserInfoFragment : Fragment(R.layout.fragment_user_info) {
 
     //로그아웃 시도  메서드
     fun logout() {
-        Log.d("tlqkf", "로그아웃 시도:$platform")
-
         viewModel.logoutComplete.observe(viewLifecycleOwner) { isComplete ->
             if (isComplete) {
                 findNavController().navigate(R.id.action_userInfoFragment_to_loginFragment)
@@ -166,7 +164,6 @@ class UserInfoFragment : Fragment(R.layout.fragment_user_info) {
     fun navigateFitOff() {
         val bundle = Bundle().apply {
             viewModel.userInfo.value?.let { userInfoData ->
-                Log.d("tlqkf", userInfoData.toString())
                 putSerializable("fitOffOwnerNameInfo", userInfoData)
             }
         }

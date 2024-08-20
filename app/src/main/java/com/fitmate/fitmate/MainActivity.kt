@@ -170,7 +170,6 @@ class MainActivity : AppCompatActivity(), ControlActivityInterface {
             val platform = sharedPreferences.getString(KEY_PLATFORM, "")
             val createdAt = sharedPreferences.getString(KEY_CREATED_AT, "")
 
-            Log.d("tlqkf","태헌님 데이터:$createdAt")
             userPreferences.run {
                 add(accessToken!!)
                 add(refreshToken!!)

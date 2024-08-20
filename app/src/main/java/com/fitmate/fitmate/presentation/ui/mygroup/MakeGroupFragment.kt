@@ -139,7 +139,6 @@ class MakeGroupFragment : Fragment() {
 
     private fun settingCategorySelectListener() {
         binding.editTextCategorySelect.doAfterTextChanged {
-            Log.d("testt", "카테고리는 : ${it.toString()}")
             viewModel.setCategorySelect(it.toString())
         }
     }

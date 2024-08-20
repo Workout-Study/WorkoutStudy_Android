@@ -92,9 +92,7 @@ class VoteViewModel @Inject constructor(
                 val response = voteUseCase.eachFitGroupVotes(fitGroupId, userId, 1)
                 if(response.isSuccessful) {
                     response.body()?.let { dtoBody ->
-                        Log.d("tlqkf","통신 결과: "+dtoBody.toString())
                         val mappingData = mapEachVoteCertificationResponseDto(dtoBody)
-                        Log.d("tlqkf","매핑 결과: "+mappingData.toString())
                         _fitGroupVotes.value = mappingData
                     }
                 }

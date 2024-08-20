@@ -45,7 +45,6 @@ class MyFitMainFragment: Fragment() {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        Log.d("tlqkf","onViewCreated, 통신 시작")
         //내 그룹 통신 시작 및 데이터 감시
         networkFitProgressAndObserve()
 
@@ -78,7 +77,6 @@ class MyFitMainFragment: Fragment() {
         viewModel.fitProgressItem.value?.let { myFitGroupList ->
             binding.recyclerviewMyFitFragmentMyFitProgress.registerOnPageChangeCallback(object :ViewPager2.OnPageChangeCallback(){
                 override fun onPageSelected(position: Int) {
-                    Log.d("testt","$position")
                     super.onPageSelected(position)
                     if (myFitGroupList.size <= 1){
                         binding.buttonCardViewScrollLeft.visibility = View.GONE

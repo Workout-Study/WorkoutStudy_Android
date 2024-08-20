@@ -75,12 +75,10 @@ class OnboardingContainerFragment : Fragment() {
                 positionOffsetPixels: Int
             ) {
                 super.onPageScrolled(position, positionOffset, positionOffsetPixels)
-                Log.d("testt","onPageScrolled: $position")
             }
 
             override fun onPageScrollStateChanged(state: Int) {
                 super.onPageScrollStateChanged(state)
-                Log.d("testt","onPageScrollStateChanged:${state}")
             }
         })
     }

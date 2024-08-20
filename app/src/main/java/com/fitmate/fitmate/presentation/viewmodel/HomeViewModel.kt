@@ -69,7 +69,6 @@ class HomeViewModel@Inject constructor(
                         _pagingData.value = myGroupNewsList
                     }
             } catch (e: Exception) {
-                Log.d("tlqkf","그룹 소식 오류:$e")
             }
         }
     }
