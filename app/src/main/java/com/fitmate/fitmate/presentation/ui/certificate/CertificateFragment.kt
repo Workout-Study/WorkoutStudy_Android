@@ -397,7 +397,6 @@ class CertificateFragment : Fragment() {
 
     private fun observeReadCertificationRoomData() {
         viewModel.certificationData.observe(viewLifecycleOwner) {
-            Log.d("testt",it.toString())
             if (it != null) {
                 if (it.recordEndDate == null && networkState == NetworkState.STATE_NON) {
                     viewModel.setStateCertificateProceed()

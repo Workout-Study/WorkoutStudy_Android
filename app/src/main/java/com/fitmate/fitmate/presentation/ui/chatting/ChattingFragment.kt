@@ -80,14 +80,14 @@ class ChattingFragment : Fragment(R.layout.fragment_chatting) {
             fitGroupId = groupId
         }
         loadUserPreference() //유저 정보 가져오기
-        group.getFitGroupDetail(fitGroupId) //서버로부터 그룹 정보 가저오기
-        group.getFitMateList(fitGroupId)
+
+
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        //가져온 그룹 정보 감시하기
-        observeGroupDetail()
+
+        observeGroupDetail()                        //가져온 그룹 정보 감시하기(포인트 화면을 위한 작업)
         observeFitMateList()                        // FitMate 리스트 가져오기
         initFragment(view)                          // 화면 바인딩
         initHeightProvider()                        // 메뉴 높이 조절
@@ -261,7 +261,6 @@ class ChattingFragment : Fragment(R.layout.fragment_chatting) {
         webSocket = client.newWebSocket(request, object : WebSocketListener() {
             override fun onOpen(webSocket: WebSocket, response: Response) {
                 super.onOpen(webSocket, response)
-                Log.d("tlqkf", "소켓 연결 Success")
             }
 
             override fun onMessage(webSocket: WebSocket, text: String) {
@@ -285,7 +284,6 @@ class ChattingFragment : Fragment(R.layout.fragment_chatting) {
                         parsedMessageTime,
                         messageType
                     )
-                    Log.d("tlqkf", "소켓에서 날아온 데이터 : " + chatItem.toString())
 
                     (activity as MainActivity).runOnUiThread {
                         lifecycleScope.launch {
@@ -310,13 +308,11 @@ class ChattingFragment : Fragment(R.layout.fragment_chatting) {
             override fun onClosed(webSocket: WebSocket, code: Int, reason: String) {
                 super.onClosed(webSocket, code, reason)
                 isFirst = !isFirst
-                Log.d("tlqkf", "소켓 onClosed")
             }
 
             override fun onFailure(webSocket: WebSocket, t: Throwable, response: Response?) {
                 super.onFailure(webSocket, t, response)
                 isFirst = !isFirst
-                Log.d("tlqkf", "onFailure 오류 원인:$t")
             }
         })
     }
@@ -352,7 +348,6 @@ class ChattingFragment : Fragment(R.layout.fragment_chatting) {
         lifecycleScope.launch {
             viewModel.chatResponse.collect { chatResponse ->
                 if (chatResponse != null) {
-                    Log.d("tlqkf", "리트라이브 옵저버 시작됨")
                     val newItems =
                         chatResponse.messages.filter { it.fitGroupId == fitGroupId }
                             .map { message ->
@@ -369,7 +364,6 @@ class ChattingFragment : Fragment(R.layout.fragment_chatting) {
                     newItems.forEach { newItem -> dbChatUseCase.insert(newItem) }
                     loadChatMessage()
                 } else {
-                    Log.d("tlqkf", "리트라이브 옵저버 시작 안된상태로 소벳 열기")
                     loadChatMessage()
                 }
             }
@@ -377,12 +371,14 @@ class ChattingFragment : Fragment(R.layout.fragment_chatting) {
     }
 
     private fun observeGroupDetail() {
+        group.getFitGroupDetail(fitGroupId) //서버로부터 그룹 정보 가저오기
         group.groupDetail.observe(viewLifecycleOwner) {
             groupCreatedAt = it.createdAt
         }
     }
 
     private fun observeFitMateList() {
+        group.getFitMateList(fitGroupId)
         group.getMate.observe(viewLifecycleOwner) { fitMateList ->
             val leaderId = fitMateList.fitLeaderDetail.fitLeaderUserId
             val myID = userId.toString()
@@ -438,7 +434,6 @@ class ChattingFragment : Fragment(R.layout.fragment_chatting) {
     }
 
     private fun sendMessage(messageId: String, message: String, timeNow: String): Boolean {
-        Log.d("tlqkf",timeNow)
         val jsonObject = JSONObject().apply {
             put("messageId", messageId)
             put("fitGroupId", fitGroupId)
@@ -447,7 +442,6 @@ class ChattingFragment : Fragment(R.layout.fragment_chatting) {
             put("messageTime", timeNow)
             put("messageType", "CHATTING")
         }
-        Log.d("tlqkf", "전송된 채팅 데이터 : $jsonObject")
         return webSocket?.send(jsonObject.toString()) ?: false
     }
 

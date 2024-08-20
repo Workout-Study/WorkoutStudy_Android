@@ -84,7 +84,6 @@ class ProfileFragment : Fragment() {
         binding.toolbarProfile.setupWithNavController(findNavController())
 
         viewModel.isImageUpload.observe(viewLifecycleOwner) {
-            Log.d("tlqkf","업로드된 url:$it")
             if (it != null){
                 if(viewModel.updateUserNickName.value == null || viewModel.updateUserNickName.value == binding.editTextSetProfileName.hint || viewModel.updateUserNickName.value == ""){
                     viewModel.updateUserInfo(userToken = accessToken, binding.editTextSetProfileName.hint.toString(), it)

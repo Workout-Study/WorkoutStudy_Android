@@ -259,11 +259,11 @@ class MyFitFragment : Fragment() {
         }
     }
 
-    fun extractNumbers(input: String): Int {
+    private fun extractNumbers(input: String): Int {
         return input.replace(Regex("[^0-9]"), "").toInt()
     }
 
-    fun getStartAndEndInstantsForYearMonth(year: Int, month: Int): Pair<String, String> {
+    private fun getStartAndEndInstantsForYearMonth(year: Int, month: Int): Pair<String, String> {
         // 입력된 년도와 월로 LocalDate 객체 생성
         val firstDayOfMonth = LocalDate.of(year, month, 1)
         val lastDayOfMonth = firstDayOfMonth.plusMonths(1).minusDays(1)
@@ -274,8 +274,6 @@ class MyFitFragment : Fragment() {
         val endInstant =
             lastDayOfMonth.atStartOfDay(ZoneId.systemDefault()).plusDays(1).minusSeconds(1)
                 .toInstant()
-        Log.d("tlqkf",DateParseUtils.instantToString(startInstant))
-        Log.d("tlqkf",DateParseUtils.instantToString(endInstant))
         return Pair(DateParseUtils.instantToString(startInstant), DateParseUtils.instantToString(endInstant))
     }
 
@@ -287,7 +285,7 @@ class MyFitFragment : Fragment() {
         val dot = bindView.CircleImageViewFitDayDot
 
         lateinit var day: CalendarDay
-
+        
         init {
             view.setOnClickListener {
                 // 해당 월에 유효한 day라면

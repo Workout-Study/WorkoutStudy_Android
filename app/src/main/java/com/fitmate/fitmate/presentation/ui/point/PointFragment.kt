@@ -112,7 +112,6 @@ class PointFragment : Fragment(R.layout.fragment_point) {
                 onItemClickListener =
                     AdapterView.OnItemClickListener { adapterView: AdapterView<*>, view2: View, i: Int, l: Long ->
                         if (selectedDateText != dateTextFieldList[i]) {
-                            Log.d("tlqkf","날짜 변경")
                             val tradeType: String? = when(selectedDealTypeText){
                                 "전체" -> {null}
                                 "입금" -> {"DEPOSIT"}
@@ -139,7 +138,6 @@ class PointFragment : Fragment(R.layout.fragment_point) {
                 onItemClickListener =
                     AdapterView.OnItemClickListener { adapterView: AdapterView<*>, view2: View, i: Int, l: Long ->
                         if (selectedDealTypeText != dealTextFieldList[i]) {
-                            Log.d("tlqkf","입출금 변경")
                             val (startDate, endDate) = getMonthStartAndEnd(selectedDateText)
                             val tradeType: String? = when(dealTextFieldList[i]){
                                 "전체" -> {null}

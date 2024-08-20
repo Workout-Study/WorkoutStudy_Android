@@ -82,17 +82,14 @@ class ViewFitOffFragment: Fragment() {
             is GetFitMateList -> {
                 binding.materialToolbarMyFitOff.title = getString(R.string.group_fit_off_scr_toolbar)
                 viewModel.getFitOffByGroupId((fitOffOwnerNameInfo as GetFitMateList).fitGroupId)
-                Log.d("tlqkf", "그룹 피트오프 화면:${(fitOffOwnerNameInfo as GetFitMateList).fitMateDetails}")
             }
 
             is UserResponse -> {
                 binding.materialToolbarMyFitOff.title = getString(R.string.my_fit_off_scr_toolbar)
                 viewModel.getFitOffByUserId((fitOffOwnerNameInfo as UserResponse).userId)
-                Log.d("tlqkf", "개인 피트오프 화면")
             }
 
             else -> {
-                Log.d("tlqkf", "어떠한 데이터도 아님")
             }
         }
     }

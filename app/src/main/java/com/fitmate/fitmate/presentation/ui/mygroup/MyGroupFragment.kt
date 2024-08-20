@@ -61,7 +61,6 @@ class MyGroupFragment: Fragment(R.layout.fragment_my_group) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        Log.d("tlqkf","onViewCreated, 통신 시작")
         binding.floatingButtonMakeFitGroup.setOnClickListener { findNavController().navigate(R.id.makeGroupFragment) }
         viewModel.retrieveFitGroup(userId.toString())
         observeFitGroupData()

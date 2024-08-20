@@ -52,7 +52,6 @@ class VoteDialog(
     ): View {
         //배경 색 변경
         dialog?.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
-        Log.d("tlqkf",itemData.multiMediaEndPoints.toString())
         when(binding){
             is DialogGroupVoteBinding -> {
                 (binding as DialogGroupVoteBinding).apply {

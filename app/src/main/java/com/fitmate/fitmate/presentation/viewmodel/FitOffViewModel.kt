@@ -50,7 +50,6 @@ class FitOffViewModel @Inject constructor(
                     }
                 }
             }catch (e:Exception){
-                Log.d("tlqkf","피트오프 통신 실패")
             }
         }
     }
@@ -68,7 +67,6 @@ class FitOffViewModel @Inject constructor(
                     }
                 }
             }catch (e:Exception){
-                Log.d("tlqkf","피트오프 통신 실패")
             }
         }
     }
@@ -87,7 +85,6 @@ class FitOffViewModel @Inject constructor(
                     }
                 }
             }catch (e:Exception){
-                Log.d("tlqkf","피트오프 통신 실패")
             }
         }
     }
