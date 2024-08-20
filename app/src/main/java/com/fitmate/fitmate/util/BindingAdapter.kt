@@ -36,12 +36,12 @@ fun ImageView.setImageByUri(image: String) {
 //url로 사진 설정하는 메서드(동그라미)
 @BindingAdapter("url")
 fun ImageView.setImageByUrl(imageUrl: String?) {
-    if (imageUrl != null) {
+    if (!imageUrl.isNullOrEmpty()) {
         Glide.with(this)
             .load(imageUrl)
             .into(this)
     } else {
-        val placeholder = AppCompatResources.getDrawable(this.context, R.drawable.bg_profile)
+        val placeholder = AppCompatResources.getDrawable(this.context, R.drawable.ic_launcher_logo)
         this.setImageDrawable(placeholder)
     }
 }

@@ -9,12 +9,12 @@
     android:layout_marginStart="10dp"
     android:layout_marginEnd="10dp">
 
-    <ImageView
+    <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/imageViewItemChattingFitMateImage"
         android:layout_width="40dp"
         android:layout_height="40dp"
         android:layout_marginStart="10dp"
-        android:background="@drawable/ic_circle"
+        tools:src="@drawable/bg_profile"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -24,25 +24,25 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="10dp"
-        android:textAppearance="@style/Font.regular16"
-        android:textColor="@color/blueGem"
+        tools:text="강현구"
+        android:textAppearance="@style/Font.bold16"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toEndOf="@+id/imageViewItemChattingFitMateImage"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <Button
+    <TextView
         android:id="@+id/buttonItemFitMateExport"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:backgroundTint="@color/violet"
-        android:text="@string/item_chatting_scr_export"
-        android:textAppearance="@style/Font.bold16"
-        android:textColor="@color/red"
-        android:visibility="invisible"
+        android:paddingHorizontal="10dp"
+        android:paddingVertical="8dp"
+        android:text="추방"
+        android:textAppearance="@style/Font.regular12"
+        android:visibility="visible"
+        android:background="@drawable/button_linear_radius8_gray_stroke"
+        android:layout_marginEnd="6dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.9"
-        app:layout_constraintStart_toEndOf="@+id/textViewItemChattingFitMateName"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
@@ -51,6 +51,11 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="10dp"
         android:textColor="@color/black"
+        android:paddingHorizontal="10dp"
+        android:paddingVertical="5dp"
+        android:textAppearance="@style/Font.semibold12"
+        tools:text="방장 또는 나"
+        android:background="@drawable/button_linear_radius8"
         app:layout_constraintBottom_toBottomOf="@+id/textViewItemChattingFitMateName"
         app:layout_constraintStart_toEndOf="@+id/textViewItemChattingFitMateName"
         app:layout_constraintTop_toTopOf="@+id/textViewItemChattingFitMateName" />
