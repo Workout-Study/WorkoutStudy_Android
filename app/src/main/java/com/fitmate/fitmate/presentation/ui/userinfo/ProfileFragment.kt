@@ -85,7 +85,12 @@ class ProfileFragment : Fragment() {
 
         viewModel.isImageUpload.observe(viewLifecycleOwner) {
             Log.d("tlqkf","업로드된 url:$it")
-            if (it != null && viewModel.updateUserNickName.value != null){
+            if (it != null){
+                if(viewModel.updateUserNickName.value == null || viewModel.updateUserNickName.value == binding.editTextSetProfileName.hint || viewModel.updateUserNickName.value == ""){
+                    viewModel.updateUserInfo(userToken = accessToken, binding.editTextSetProfileName.hint.toString(), it.toString())
+                }else{
+                    viewModel.updateUserInfo(userToken = accessToken, viewModel.updateUserNickName.value!!, it.toString())
+                }
                 viewModel.updateUserInfo(userToken = accessToken, viewModel.updateUserNickName.value!!, it.toString())
             }else{
                 Toast.makeText(requireContext(),"알 수 없는 오류로 사진 업로드에 실패했습니다!",Toast.LENGTH_SHORT).show()
@@ -117,24 +122,20 @@ class ProfileFragment : Fragment() {
         }else{
             if(viewModel.updateUserImage.value == ownerNameInfo.imageUrl && (viewModel.updateUserNickName.value != null || viewModel.updateUserNickName.value != binding.editTextSetProfileName.hint || viewModel.updateUserNickName.value != "")) {
                 //사진은 변경안됐고 닉네임의 변경사항이 있을 경우
-                //TODO 사진 업로드 없이 닉네임만 수정해서 업데이트 수행(기존 사진은 그대로 던지기)
-                //loadingViewVisible()
+                loadingViewVisible()
+                viewModel.updateUserInfo(userToken = accessToken, viewModel.updateUserNickName.value!!, ownerNameInfo.imageUrl)
                 
             }else if (viewModel.updateUserImage.value != ownerNameInfo.imageUrl &&(viewModel.updateUserNickName.value == null || viewModel.updateUserNickName.value == binding.editTextSetProfileName.hint || viewModel.updateUserNickName.value == "")){
                 //사진은 변경됐고 닉네임의 변경사항은 없을 경우
-                //TODO 사진 업로드 수행하고 닉네임은 hint로 보내기
                 viewModel.updateUserImage.value?.let {
-                    //TODO 로딩 화면 시작시키기
-                    //loadingViewVisible()
-                    //viewModel.imageUpload(userId = userId, it.toUri())
+                    loadingViewVisible()
+                    viewModel.imageUpload(userId = userId, it.toUri())
                 }
             }else{
                 //사진과 닉네임 전부 변경했을 경우
-                //TODO 둘다 변경해서 보내기
                 viewModel.updateUserImage.value?.let {
-                    //TODO 로딩 화면 시작시키기
-                    //loadingViewVisible()
-                    //viewModel.imageUpload(userId = userId, it.toUri())
+                    loadingViewVisible()
+                    viewModel.imageUpload(userId = userId, it.toUri())
                 }
             }
 

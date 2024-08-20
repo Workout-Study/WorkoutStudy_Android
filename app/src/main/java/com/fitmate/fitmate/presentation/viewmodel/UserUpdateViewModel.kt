@@ -48,7 +48,7 @@ class UserUpdateViewModel @Inject constructor(
         }
     }
 
-    fun updateUserInfo(userToken: String, nickname: String, imageUrl: String) {
+    fun updateUserInfo(userToken: String, nickname: String, imageUrl: String?) {
         // TODO 이거 userID 말고 access토큰이어야함.
         viewModelScope.launch {
             try {
