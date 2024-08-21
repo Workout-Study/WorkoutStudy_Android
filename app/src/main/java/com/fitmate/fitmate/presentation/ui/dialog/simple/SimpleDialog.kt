@@ -9,7 +9,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.DialogFragment
 import com.fitmate.fitmate.databinding.DialogSimpleBinding
 
-class SimpleDialog<T : SimpleDialogInterface, U : Any>(
+class SimpleDialog<T : Any, U : Any>(
     private val simpleDialogInterface: T,
     private val titleText: String,
     private val data: U,
@@ -36,7 +36,7 @@ class SimpleDialog<T : SimpleDialogInterface, U : Any>(
             }
 
             binding.positiveButton.setOnClickListener {
-                simpleDialogInterface.onDialogPositiveButtonClick(data)
+                (simpleDialogInterface as SimpleDialogInterface).onDialogPositiveButtonClick(data)
                 dismiss()
             }
 
