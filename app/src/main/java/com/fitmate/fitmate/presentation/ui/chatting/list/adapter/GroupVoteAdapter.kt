@@ -9,8 +9,7 @@ import com.fitmate.fitmate.databinding.ItemAgreeVoteBinding
 import com.fitmate.fitmate.databinding.ItemOppositeVoteBinding
 import com.fitmate.fitmate.databinding.ItemVoteBinding
 import com.fitmate.fitmate.domain.model.GroupVoteCertificationDetail
-import com.fitmate.fitmate.domain.model.VoteItem
-import com.fitmate.fitmate.presentation.ui.chatting.dialog.VoteFragmentInterface
+import com.fitmate.fitmate.presentation.ui.dialog.vote.VoteFragmentInterface
 import com.fitmate.fitmate.presentation.ui.chatting.list.GroupAgreeVoteViewHolder
 import com.fitmate.fitmate.presentation.ui.chatting.list.GroupOppositeVoteViewHolder
 import com.fitmate.fitmate.presentation.ui.chatting.list.GroupProcessingVoteViewHolder
@@ -19,7 +18,7 @@ import com.fitmate.fitmate.presentation.viewmodel.VoteViewModel
 
 class GroupVoteAdapter(
     private val fragment: Fragment,
-    private val voteFragmentInterface:VoteFragmentInterface,
+    private val voteFragmentInterface: VoteFragmentInterface,
     private val viewModel: VoteViewModel,
 ) : ListAdapter<GroupVoteCertificationDetail, VoteBindingViewHolder<*>>(VoteItemDiffCallback) {
 

@@ -1,31 +1,24 @@
-package com.fitmate.fitmate.presentation.ui.chatting.dialog
+package com.fitmate.fitmate.presentation.ui.dialog.vote
 
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.ViewDataBinding
 import androidx.fragment.app.DialogFragment
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.viewpager2.widget.ViewPager2
-import com.fitmate.fitmate.R
 import com.fitmate.fitmate.databinding.DialogGroupVoteBinding
 import com.fitmate.fitmate.databinding.DialogGroupVoteChangeToAgreeBinding
 import com.fitmate.fitmate.databinding.DialogGroupVoteChangeToOppositeBinding
 import com.fitmate.fitmate.domain.model.GroupVoteCertificationDetail
 import com.fitmate.fitmate.domain.model.VoteRequest
 import com.fitmate.fitmate.presentation.ui.chatting.list.adapter.VoteImageViewPagerAdapter
-import com.fitmate.fitmate.presentation.viewmodel.VoteViewModel
 import com.fitmate.fitmate.util.DateParseUtils
 import java.time.LocalDateTime
-import java.time.OffsetDateTime
 import java.time.ZoneId
 import java.time.format.DateTimeFormatter
-import java.time.format.DateTimeFormatterBuilder
-import java.time.temporal.ChronoField
 
 class VoteDialog(
     voteFragmentInterface: VoteFragmentInterface,

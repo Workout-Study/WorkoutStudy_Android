@@ -1,18 +1,14 @@
 package com.fitmate.fitmate.presentation.ui.chatting.list
 
-import android.util.Log
 import android.view.LayoutInflater
 import androidx.fragment.app.Fragment
 import com.fitmate.fitmate.R
 import com.fitmate.fitmate.databinding.DialogGroupVoteChangeToOppositeBinding
 import com.fitmate.fitmate.databinding.ItemAgreeVoteBinding
 import com.fitmate.fitmate.domain.model.GroupVoteCertificationDetail
-import com.fitmate.fitmate.presentation.ui.chatting.dialog.VoteDialog
-import com.fitmate.fitmate.presentation.ui.chatting.dialog.VoteFragmentInterface
+import com.fitmate.fitmate.presentation.ui.dialog.vote.VoteDialog
+import com.fitmate.fitmate.presentation.ui.dialog.vote.VoteFragmentInterface
 import com.fitmate.fitmate.presentation.viewmodel.VoteViewModel
-import java.time.Duration
-import java.time.OffsetDateTime
-import java.time.format.DateTimeFormatter
 
 class GroupAgreeVoteViewHolder(
     private val binding: ItemAgreeVoteBinding,

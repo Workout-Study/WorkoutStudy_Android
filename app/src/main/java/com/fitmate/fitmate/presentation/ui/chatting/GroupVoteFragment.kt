@@ -12,7 +12,7 @@ import com.fitmate.fitmate.MainActivity
 import com.fitmate.fitmate.R
 import com.fitmate.fitmate.databinding.FragmentGroupVoteBinding
 import com.fitmate.fitmate.domain.model.VoteRequest
-import com.fitmate.fitmate.presentation.ui.chatting.dialog.VoteFragmentInterface
+import com.fitmate.fitmate.presentation.ui.dialog.vote.VoteFragmentInterface
 import com.fitmate.fitmate.presentation.ui.chatting.list.adapter.GroupVoteAdapter
 import com.fitmate.fitmate.presentation.viewmodel.VoteViewModel
 import com.google.android.material.tabs.TabLayout

@@ -9,7 +9,7 @@
             type="com.fitmate.fitmate.domain.model.GroupVoteCertificationDetail" />
         <variable
             name="dialog"
-            type="com.fitmate.fitmate.presentation.ui.chatting.dialog.VoteDialog" />
+            type="com.fitmate.fitmate.presentation.ui.dialog.vote.VoteDialog" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout

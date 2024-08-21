@@ -6,8 +6,8 @@ import com.fitmate.fitmate.R
 import com.fitmate.fitmate.databinding.DialogGroupVoteBinding
 import com.fitmate.fitmate.databinding.ItemVoteBinding
 import com.fitmate.fitmate.domain.model.GroupVoteCertificationDetail
-import com.fitmate.fitmate.presentation.ui.chatting.dialog.VoteDialog
-import com.fitmate.fitmate.presentation.ui.chatting.dialog.VoteFragmentInterface
+import com.fitmate.fitmate.presentation.ui.dialog.vote.VoteDialog
+import com.fitmate.fitmate.presentation.ui.dialog.vote.VoteFragmentInterface
 import com.fitmate.fitmate.presentation.viewmodel.VoteViewModel
 
 class GroupProcessingVoteViewHolder(
