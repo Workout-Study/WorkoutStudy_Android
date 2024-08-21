@@ -11,11 +11,15 @@ import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.fitmate.fitmate.R
+import com.fitmate.fitmate.domain.model.CategoryItem
+import com.fitmate.fitmate.presentation.ui.chatting.ChattingFragment
+import com.fitmate.fitmate.presentation.ui.dialog.simple.SimpleDialog
+import com.fitmate.fitmate.presentation.ui.dialog.simple.SimpleDialogInterface
 import com.fitmate.fitmate.presentation.viewmodel.LoginViewModel
 import com.fitmate.fitmate.util.setImageByUrl
 import org.w3c.dom.Text
 
-class FitMateListAdapter(private var fitMates: List<FitMate>, private var leaderID: String, private var myID: String, private var login: LoginViewModel) : RecyclerView.Adapter<FitMateListAdapter.ViewHolder>() {
+class FitMateListAdapter(private var fitMates: List<FitMate>, private var leaderID: String, private var myID: String, private val fragment: SimpleDialogInterface, private val fragmentMain:ChattingFragment) : RecyclerView.Adapter<FitMateListAdapter.ViewHolder>() {
 
     inner class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         val nameTextView: TextView = view.findViewById(R.id.textViewItemChattingFitMateName)
@@ -49,6 +53,12 @@ class FitMateListAdapter(private var fitMates: List<FitMate>, private var leader
             else -> holder.position.visibility = View.GONE
         }
         holder.userProfile.setImageByUrl(fitMate.fitMateUserProfileImageUrl)
+
+        holder.exportButton.setOnClickListener {
+            val dialog = SimpleDialog<SimpleDialogInterface,FitMate>(fragment, holder.itemView.context.getString(R.string.item_chatting_scr_export),fitMates[position])
+            val fragmentManager = fragmentMain.activity?.supportFragmentManager
+            dialog.show(fragmentManager!!,"SimpleDialog")
+        }
     }
 
     override fun getItemCount() = fitMates.size

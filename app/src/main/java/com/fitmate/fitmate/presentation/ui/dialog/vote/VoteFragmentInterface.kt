@@ -1,4 +1,4 @@
-package com.fitmate.fitmate.presentation.ui.chatting.dialog
+package com.fitmate.fitmate.presentation.ui.dialog.vote
 
 import com.fitmate.fitmate.domain.model.VoteRequest
 

@@ -5,7 +5,6 @@ import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.view.inputmethod.InputMethodManager
-import android.widget.TextView
 import android.widget.Toast
 import androidx.core.view.GravityCompat
 import androidx.fragment.app.Fragment
@@ -25,6 +24,8 @@ import com.fitmate.fitmate.domain.usecase.DBChatUseCase
 import com.fitmate.fitmate.presentation.ui.chatting.list.adapter.ChatAdapter
 import com.fitmate.fitmate.presentation.ui.chatting.list.adapter.FitMate
 import com.fitmate.fitmate.presentation.ui.chatting.list.adapter.FitMateListAdapter
+import com.fitmate.fitmate.presentation.ui.dialog.simple.SimpleDialog
+import com.fitmate.fitmate.presentation.ui.dialog.simple.SimpleDialogInterface
 import com.fitmate.fitmate.presentation.viewmodel.ChattingViewModel
 import com.fitmate.fitmate.presentation.viewmodel.GroupViewModel
 import com.fitmate.fitmate.presentation.viewmodel.LoginViewModel
@@ -43,15 +44,11 @@ import okhttp3.logging.HttpLoggingInterceptor
 import okio.ByteString
 import org.json.JSONObject
 import java.time.Instant
-import java.time.LocalDateTime
-import java.time.ZoneId
-import java.time.format.DateTimeFormatter
-import java.time.format.DateTimeFormatterBuilder
 import java.util.UUID
 import javax.inject.Inject
 
 @AndroidEntryPoint
-class ChattingFragment : Fragment(R.layout.fragment_chatting) {
+class ChattingFragment : Fragment(R.layout.fragment_chatting),SimpleDialogInterface {
 
     companion object {
         const val chatServerAddress = BuildConfig.SERVER_ADDRESS
@@ -364,7 +361,7 @@ class ChattingFragment : Fragment(R.layout.fragment_chatting) {
             setUpRecyclerView(fitMateList) // 채팅 아이템 리스트 설정
             observeChatResponse() // 새로 들어온 채팅 내역 동기화 후 채팅 보여주기
 
-            val fitMateListAdapter = FitMateListAdapter(emptyList(), "", "", login)
+            val fitMateListAdapter = FitMateListAdapter(emptyList(), "", "", this, this)
             binding.recyclerViewFragmentChattingForFitMateList.adapter = fitMateListAdapter
             binding.recyclerViewFragmentChattingForFitMateList.layoutManager = LinearLayoutManager(context)
 
@@ -446,5 +443,11 @@ class ChattingFragment : Fragment(R.layout.fragment_chatting) {
         super.onPause()
         webSocket?.close(1000, "Fragment Paused")
         if (isFirst) isFirst = false
+    }
+
+    override fun onDialogPositiveButtonClick(item: Any) {
+        if (item is FitMate){
+            Log.d("tlqkf","kick진행되며 피트메이트 닉네임은${item.fitMateUserNickname}")
+        }
     }
 }
