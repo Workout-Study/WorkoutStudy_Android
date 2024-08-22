@@ -27,7 +27,7 @@
             android:layout_width="60dp"
             android:layout_height="60dp"
             android:layout_marginStart="16dp"
-            android:src="@drawable/ic_launcher_logo"
+            tools:src="@drawable/ic_launcher_logo"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -36,24 +36,36 @@
             android:id="@+id/textViewItemPointHistoryOwnerNickName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="12dp"
             android:layout_marginTop="5dp"
-            android:text="@{data.depositUserNickname}"
-            android:textAppearance="@style/Font.medium20"
+            android:textAppearance="@style/Font.bold16"
+            app:layout_constraintStart_toStartOf="@+id/textViewItemPointHistoryMessage"
+            app:layout_constraintBottom_toTopOf="@+id/textViewItemPointHistoryMessage"
+            tools:text="피트메이트 관리자" />
+
+        <TextView
+            android:id="@+id/textViewItemPointHistoryMessage"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="2dp"
+            android:text="@{data.message}"
+            android:textAppearance="@style/Font.medium12"
+            android:layout_marginStart="12dp"
+            android:textColor="@color/dark_gray"
             app:layout_constraintStart_toEndOf="@+id/imageViewItemPointHistoryOwnerThumbnail"
             app:layout_constraintTop_toTopOf="@+id/imageViewItemPointHistoryOwnerThumbnail"
-            tools:text="강현구" />
+            app:layout_constraintBottom_toBottomOf="@+id/imageViewItemPointHistoryOwnerThumbnail"
+            tools:text="피트메이트" />
 
         <TextView
             android:id="@+id/textViewItemPointHistoryValue"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@{@string/point_amount(data.amount)}"
-            android:textAppearance="@style/Font.medium16"
+            android:layout_marginTop="2dp"
+            android:textAppearance="@style/Font.medium12"
             android:textColor="@color/dark_gray"
-            app:layout_constraintStart_toStartOf="@+id/textViewItemPointHistoryOwnerNickName"
-            app:layout_constraintTop_toBottomOf="@+id/textViewItemPointHistoryOwnerNickName"
-            tools:text="5,000P" />
+            app:layout_constraintStart_toStartOf="@+id/textViewItemPointHistoryMessage"
+            app:layout_constraintTop_toBottomOf="@+id/textViewItemPointHistoryMessage"
+            tools:text="입금 +5,000P" />
 
         <TextView
             android:id="@+id/textViewPointHistoryDate"
@@ -61,7 +73,7 @@
             android:layout_height="wrap_content"
             android:layout_marginEnd="20dp"
             android:text="@{viewHolder.formatDateTime(data.createdAt)}"
-            android:textAppearance="@style/Font.regular16"
+            android:textAppearance="@style/Font.regular12"
             android:textColor="@color/dark_gray"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="@+id/textViewItemPointHistoryOwnerNickName"

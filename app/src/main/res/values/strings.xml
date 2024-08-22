@@ -239,6 +239,9 @@
     <string name="point_text_field_date">전체</string>
     <string name="point_text_field_deal">전체</string>
     <string name="point_amount">%dP</string>
+    <string name="point_amount_deposit">입금 +%dP</string>
+    <string name="point_amount_withdraw">출금 -%dP</string>
+
 
     <!--마이페이지-->
     <string name="user_info_title">My page</string>

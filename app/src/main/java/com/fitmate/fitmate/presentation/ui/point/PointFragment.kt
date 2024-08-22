@@ -12,6 +12,8 @@ import androidx.navigation.fragment.findNavController
 import androidx.navigation.ui.setupWithNavController
 import com.fitmate.fitmate.MainActivity
 import com.fitmate.fitmate.R
+import com.fitmate.fitmate.data.model.dto.GetFitMateList
+import com.fitmate.fitmate.data.model.dto.UserResponse
 import com.fitmate.fitmate.databinding.FragmentPointBinding
 import com.fitmate.fitmate.domain.model.PointType
 import com.fitmate.fitmate.presentation.ui.point.list.adapter.PointHistoryAdapter
@@ -41,6 +43,8 @@ class PointFragment : Fragment(R.layout.fragment_point) {
     private var pointOwnerId: Int = -1
     private lateinit var createdAt: String
     private lateinit var dateTextFieldList: Array<String>
+    private var fitMateData: GetFitMateList? = null
+    private var userImage: UserResponse? = null
     private val dealTextFieldList: Array<String> by lazy {
         arrayOf("전체", "입금", "출금")
     }
@@ -50,6 +54,7 @@ class PointFragment : Fragment(R.layout.fragment_point) {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+        (activity as MainActivity).goneNavigationBar()
         //번들 값에 따라 pointOwnerId, pointOwnerType, createAt값 설정하는 메서드
         getArgumentAndSettingCreateAt()
     }
@@ -85,13 +90,13 @@ class PointFragment : Fragment(R.layout.fragment_point) {
     }
 
     private fun adapterInit() {
-        adapter = PointHistoryAdapter()
+        adapter = PointHistoryAdapter(fitMateData,userImage)
         binding.recyclerViewPointHistory.adapter = adapter
 
         //리사이클러뷰 어뎁터 업데이트 후 데이터가 있는지 확인하고 없으면 비어있다는 안내 메시지 띄우는작업
         adapter.addOnPagesUpdatedListener {
-            val test = adapter.itemCount
-            if (test == 0) {
+            val itemCount = adapter.itemCount
+            if (itemCount == 0) {
                 binding.recyclerViewPointHistory.visibility = View.GONE
                 binding.textViewGuidePointHistoryEmpty.visibility = View.VISIBLE
             }else{
@@ -161,6 +166,9 @@ class PointFragment : Fragment(R.layout.fragment_point) {
             }
             when (pointOwnerType) {
                 PointType.GROUP -> {
+                    it.customGetSerializable<GetFitMateList>("fitMateData")?.let { fitMate->
+                        fitMateData = fitMate
+                    }
                     it.getString("createdAt")?.let { createString ->
                         createdAt = createString
                     }
@@ -172,6 +180,9 @@ class PointFragment : Fragment(R.layout.fragment_point) {
                 }
 
                 PointType.USER -> {
+                    it.customGetSerializable<UserResponse>("myImage")?.let { myData->
+                        userImage = myData
+                    }
                     val userPreference = (activity as MainActivity).loadUserPreference()
                     pointOwnerId = userPreference.getOrNull(2)?.toString()?.toInt() ?: -1
                     createdAt = userPreference[4].toString()
@@ -236,7 +247,7 @@ class PointFragment : Fragment(R.layout.fragment_point) {
 
         // 해당 월의 첫째 날과 마지막 날의 LocalDateTime을 생성
         val startOfMonth = yearMonth.atDay(1).atStartOfDay(ZoneOffset.UTC)
-        val endOfMonth = yearMonth.atEndOfMonth().atTime(23, 59, 59, 999_999_999).atOffset(ZoneOffset.UTC).toInstant()
+        val endOfMonth = yearMonth.atEndOfMonth().minusDays(1).atTime(23, 59, 59, 999_999_999).atOffset(ZoneOffset.UTC).toInstant()
 
         // Instant로 변환
         val startInstant = startOfMonth.toInstant()
