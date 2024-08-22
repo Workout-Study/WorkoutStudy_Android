@@ -10,6 +10,8 @@ data class MyFitProgressDto(
     @SerializedName("fitGroupId") val fitGroupId: Int,
     @SerializedName("fitGroupName") val fitGroupName: String,
     @SerializedName("thumbnailEndPoint") val thumbnailEndPoint: String,
+    @SerializedName("maxFitMate") val maxFitMate: String,
+    @SerializedName("presentFitMateCount") val presentFitMateCount: String,
     @SerializedName("cycle") val cycle: Int,
     @SerializedName("frequency") val frequency: Int,
     @SerializedName("certificationCount") val certificationCount: Int,
