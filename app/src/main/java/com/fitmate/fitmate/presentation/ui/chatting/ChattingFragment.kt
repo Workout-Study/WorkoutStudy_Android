@@ -154,9 +154,10 @@ class ChattingFragment : Fragment(R.layout.fragment_chatting),SimpleDialogInterf
 
     //포인트 화면으로 이동하는 메서드
     fun navigateToPointFragment() {
-        if (::groupCreatedAt.isInitialized) {
+        if (::groupCreatedAt.isInitialized && group.getMate.value != null) {
             val bundle = Bundle().apply {
                 putSerializable("pointOwnerType", PointType.GROUP)
+                putSerializable("fitMateData", group.getMate.value)
                 putString("createdAt", groupCreatedAt)
                 putInt("groupId", fitGroupId)
             }
@@ -358,29 +359,33 @@ class ChattingFragment : Fragment(R.layout.fragment_chatting),SimpleDialogInterf
     private fun observeFitMateList() {
         group.getFitMateList(fitGroupId)
         group.getMate.observe(viewLifecycleOwner) { fitMateList ->
-            setUpRecyclerView(fitMateList) // 채팅 아이템 리스트 설정
-            observeChatResponse() // 새로 들어온 채팅 내역 동기화 후 채팅 보여주기
+            if (fitMateList != null){
+                setUpRecyclerView(fitMateList) // 채팅 아이템 리스트 설정
+                observeChatResponse() // 새로 들어온 채팅 내역 동기화 후 채팅 보여주기
 
-            val fitMateListAdapter = FitMateListAdapter(emptyList(), "", "", this, this)
-            binding.recyclerViewFragmentChattingForFitMateList.adapter = fitMateListAdapter
-            binding.recyclerViewFragmentChattingForFitMateList.layoutManager = LinearLayoutManager(context)
+                val fitMateListAdapter = FitMateListAdapter(emptyList(), "", "", this, this)
+                binding.recyclerViewFragmentChattingForFitMateList.adapter = fitMateListAdapter
+                binding.recyclerViewFragmentChattingForFitMateList.layoutManager = LinearLayoutManager(context)
 
-            //드로어 내부 리사이클러뷰 설정
-            val leaderID = fitMateList.fitLeaderDetail.fitLeaderUserId
-            val myID = userId.toString()
-            binding.textViewFragmentChattingFitGroupSize.text =
-                "대화 상대 " + fitMateList.fitMateDetails.size.toString()
-            val filteredFitMates = fitMateList.fitMateDetails.map {
-                FitMate(
-                    it.fitMateId,
-                    it.fitMateUserId,
-                    it.fitMateUserNickname,
-                    it.fitMateUserProfileImageUrl,
-                    it.createdAt
-                )
+                //드로어 내부 리사이클러뷰 설정
+                val leaderID = fitMateList.fitLeaderDetail.fitLeaderUserId
+                val myID = userId.toString()
+                binding.textViewFragmentChattingFitGroupSize.text =
+                    "대화 상대 " + fitMateList.fitMateDetails.size.toString()
+                val filteredFitMates = fitMateList.fitMateDetails.map {
+                    FitMate(
+                        it.fitMateId,
+                        it.fitMateUserId,
+                        it.fitMateUserNickname,
+                        it.fitMateUserProfileImageUrl,
+                        it.createdAt
+                    )
+                }
+                fitMateListAdapter.updateData(filteredFitMates, leaderID, myID)
+            }else{
+                Toast.makeText(requireContext(),"통신 오류로 채팅방을 종료합니다",Toast.LENGTH_SHORT).show()
+                findNavController().popBackStack()
             }
-            fitMateListAdapter.updateData(filteredFitMates, leaderID, myID)
-
         }
     }
 

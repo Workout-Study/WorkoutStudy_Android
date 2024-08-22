@@ -50,7 +50,8 @@ class UserInfoFragment : Fragment(R.layout.fragment_user_info) {
         viewModel.userInfo.observe(viewLifecycleOwner) { user ->
             user?.let {
                 binding.textViewUserInfoName.text = it.nickname
-                binding.textViewUserInfoDate.text = getString(R.string.user_info_createdAt,formatDateRange(it.createdAt))
+                binding.textViewUserInfoDate.text =
+                    getString(R.string.user_info_createdAt, formatDateRange(it.createdAt))
                 if (it.imageUrl != null) {
                     Glide.with(binding.imageViewUserInfoIcon.context)
                         .load(it.imageUrl)
@@ -117,12 +118,12 @@ class UserInfoFragment : Fragment(R.layout.fragment_user_info) {
 
     //프로필 변경 화면으로 이동하는 메서드
     fun navigateProfile() {
-        val bundle = Bundle().apply {
-            viewModel.userInfo.value?.let { userInfoData ->
+        viewModel.userInfo.value?.let { userInfoData ->
+            val bundle = Bundle().apply {
                 putSerializable("userInfoData", userInfoData)
             }
+            findNavController().navigate(R.id.profileFragment, bundle)
         }
-        findNavController().navigate(R.id.profileFragment, bundle)
     }
 
     //알림 화면으로 이동하는 메서드
@@ -172,10 +173,12 @@ class UserInfoFragment : Fragment(R.layout.fragment_user_info) {
 
     //포인트 화면으로 이동하는 메서드
     fun navigatePoint() {
-        val bundle = Bundle().apply {
-            putSerializable("pointOwnerType", PointType.USER)
+        viewModel.userInfo.value?.let { userInfoData ->
+            val bundle = Bundle().apply {
+                putSerializable("myImage", userInfoData)
+                putSerializable("pointOwnerType", PointType.USER)
+            }
+            findNavController().navigate(R.id.pointFragment, bundle)
         }
-        findNavController().navigate(R.id.pointFragment, bundle)
     }
-
 }
