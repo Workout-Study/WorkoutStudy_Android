@@ -38,7 +38,7 @@ class GroupViewModel @Inject constructor(
     private val _groupDetail = MutableLiveData<GetFitGroupDetail>()
     val groupDetail: LiveData<GetFitGroupDetail> = _groupDetail
 
-    private val _getMate = MutableLiveData<GetFitMateList?>(null)
+    private val _getMate = MutableLiveData<GetFitMateList?>()
     val getMate: LiveData<GetFitMateList?> = _getMate
 
     private val _fitGroup = MutableStateFlow<List<FitGroup>>(emptyList())

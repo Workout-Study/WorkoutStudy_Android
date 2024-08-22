@@ -83,7 +83,6 @@ class ChattingFragment : Fragment(R.layout.fragment_chatting),SimpleDialogInterf
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
         observeGroupDetail()                        //가져온 그룹 정보 감시하기(포인트 화면을 위한 작업)
         observeFitMateList()                        // FitMate 리스트 가져오기 -> 해당 통신 후 채팅 서버 연결 시작
         initFragment(view)                          // 화면 바인딩
