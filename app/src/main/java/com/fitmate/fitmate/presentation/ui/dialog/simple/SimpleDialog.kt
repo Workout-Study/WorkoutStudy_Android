@@ -9,7 +9,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.DialogFragment
 import com.fitmate.fitmate.databinding.DialogSimpleBinding
 
-class SimpleDialog<T : Any, U : Any>(
+class SimpleDialog<T, U>(
     private val simpleDialogInterface: T,
     private val titleText: String,
     private val data: U,
