@@ -44,6 +44,8 @@ import okhttp3.logging.HttpLoggingInterceptor
 import okio.ByteString
 import org.json.JSONObject
 import java.time.Instant
+import java.time.ZonedDateTime
+import java.time.format.DateTimeFormatter
 import java.util.UUID
 import javax.inject.Inject
 
@@ -334,7 +336,7 @@ class ChattingFragment : Fragment(R.layout.fragment_chatting),SimpleDialogInterf
                                     fitGroupId = message.fitGroupId,
                                     userId = message.userId,
                                     message = message.message,
-                                    messageTime = DateParseUtils.stringToInstant(message.messageTime),
+                                    messageTime = DateParseUtils.stringToInstant(padMilliseconds(message.messageTime)),
                                     messageType = message.messageType
                                 )
                             }/*.reversed()*/
@@ -443,6 +445,24 @@ class ChattingFragment : Fragment(R.layout.fragment_chatting),SimpleDialogInterf
         return webSocket?.send(jsonObject.toString()) ?: false
     }
 
+    fun padMilliseconds(timestamp: String): String {
+        // 정규 표현식으로 밀리초 부분과 타임존 부분을 찾기
+        val pattern = Regex("""(\.\d{1,6})([+-]\d{2}:\d{2})""")
+        val matchResult = pattern.find(timestamp)
+
+        return if (matchResult != null) {
+            // 밀리초 부분 추출하고 6자리로 패딩
+            val milliseconds = matchResult.groupValues[1].substring(1) // '.' 제거
+            val paddedMilliseconds = milliseconds.padEnd(6, '0') // 오른쪽으로 0을 추가하여 6자리로 맞춤
+
+            // 새롭게 포맷된 타임스탬프 생성
+            timestamp.replace(matchResult.groupValues[1], ".$paddedMilliseconds")
+        } else {
+            // 패턴이 맞지 않으면 원래 문자열 반환
+            timestamp
+        }
+    }
+
     override fun onPause() {
         super.onPause()
         webSocket?.close(1000, "Fragment Paused")
@@ -451,7 +471,7 @@ class ChattingFragment : Fragment(R.layout.fragment_chatting),SimpleDialogInterf
 
     override fun <T> onDialogPositiveButtonClick(item: T) {
         if (item is FitMate){
-
+            Log.d("tlqkf",item.toString())
         }
     }
 }
