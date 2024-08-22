@@ -92,7 +92,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@{@string/fit_group_count_info(0,0)}"
+                    android:text="@{@string/fit_group_count_info(data.presentFitMateCount, data.maxFitMate)}"
                     android:textAppearance="@style/Font.regular16"
                     android:textColor="@color/white"
                     tools:text="12/20" />

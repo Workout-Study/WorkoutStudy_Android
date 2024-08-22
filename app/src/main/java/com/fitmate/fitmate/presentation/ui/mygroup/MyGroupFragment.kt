@@ -51,10 +51,6 @@ class MyGroupFragment: Fragment(R.layout.fragment_my_group) {
                 putInt("fitGroupId", fitGroup.fitGroupId)
             }
             findNavController().navigate(R.id.chattingFragment, bundle)
-            /*val intent = Intent(requireContext(), ChatActivity::class.java).apply {
-                putExtra("fitGroupId", fitGroup.fitGroupId)
-            }
-            startActivity(intent)*/
         }
         return binding.root
     }

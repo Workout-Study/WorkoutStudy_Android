@@ -15,6 +15,8 @@ object MyFitMapper {
                 itemId = it.fitGroupId,
                 itemName = it.fitGroupName,
                 thumbnailEndPoint = it.thumbnailEndPoint,
+                maxFitMate = it.maxFitMate,
+                presentFitMateCount = it.presentFitMateCount,
                 cycle = it.cycle,
                 frequency = it.frequency,
                 certificationCount = it.certificationCount
