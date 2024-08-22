@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.DialogFragment
+import com.fitmate.fitmate.R
 import com.fitmate.fitmate.databinding.DialogSimpleBinding
 
 class SimpleDialog<T, U>(
@@ -18,12 +19,17 @@ class SimpleDialog<T, U>(
     private var _binding: DialogSimpleBinding? = null
     private val binding get() = _binding!!
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setStyle(STYLE_NORMAL, R.style.Theme_Fitmate_Dialog)
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _binding = DialogSimpleBinding.inflate(inflater, container, false)
+        _binding = DialogSimpleBinding.inflate(layoutInflater)
 
         dialog?.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
         binding.apply {

@@ -32,7 +32,6 @@ class ChatAdapter: ListAdapter<ChatItem, ChatAdapter.ViewHolder>(ChatDiffCallbac
         fun bind(item: ChatItem) {
             val isCurrentUser = item.userId == currentUserFitMateId
             binding.apply {
-                //TODO 바로 상단의 메시지 타임의 일이 다르면 가이드 띄우기
                 if (currentList.size >= 1){
                     try {
                         if (this@ViewHolder.bindingAdapterPosition == 0){
@@ -60,10 +59,11 @@ class ChatAdapter: ListAdapter<ChatItem, ChatAdapter.ViewHolder>(ChatDiffCallbac
                 }
 
                 if (!isCurrentUser && ::fitMateData.isInitialized) {
-                    val userInfo = fitMateData.fitMateDetails.find { it.fitMateId == item.userId }
+                    val userInfo = fitMateData.fitMateDetails.find { it.fitMateUserId == item.userId.toString() }
                     imageViewItemChattingFitMateImageLeft.setImageByUrl(userInfo?.fitMateUserProfileImageUrl)
                     textViewItemChattingFitMateNameLeft.text = userInfo?.fitMateUserNickname
                     textViewItemChattingFitMateSpeechDateLeft.text = formatDateTime(DateParseUtils.instantToString(item.messageTime),false)
+                    Log.d("tlqkf","${item.message}의 닉네임은 ${userInfo?.fitMateUserNickname}이며 이미지는${userInfo?.fitMateUserProfileImageUrl}")
                 }
             }
         }
