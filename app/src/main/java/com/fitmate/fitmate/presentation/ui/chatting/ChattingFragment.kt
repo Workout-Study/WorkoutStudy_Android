@@ -445,9 +445,9 @@ class ChattingFragment : Fragment(R.layout.fragment_chatting),SimpleDialogInterf
         if (isFirst) isFirst = false
     }
 
-    override fun onDialogPositiveButtonClick(item: Any) {
+    override fun <T> onDialogPositiveButtonClick(item: T) {
         if (item is FitMate){
-            Log.d("tlqkf","kick진행되며 피트메이트 닉네임은${item.fitMateUserNickname}")
+
         }
     }
 }
