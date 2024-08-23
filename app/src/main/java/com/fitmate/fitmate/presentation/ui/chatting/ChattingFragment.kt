@@ -9,6 +9,7 @@ import android.widget.Toast
 import androidx.core.view.GravityCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.Observer
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.ui.setupWithNavController
@@ -19,6 +20,7 @@ import com.fitmate.fitmate.R
 import com.fitmate.fitmate.data.model.dto.GetFitMateList
 import com.fitmate.fitmate.databinding.FragmentChattingBinding
 import com.fitmate.fitmate.domain.model.ChatItem
+import com.fitmate.fitmate.domain.model.FitMateKickRequestUserId
 import com.fitmate.fitmate.domain.model.PointType
 import com.fitmate.fitmate.domain.usecase.DBChatUseCase
 import com.fitmate.fitmate.presentation.ui.chatting.list.adapter.ChatAdapter
@@ -471,7 +473,48 @@ class ChattingFragment : Fragment(R.layout.fragment_chatting),SimpleDialogInterf
 
     override fun <T> onDialogPositiveButtonClick(item: T) {
         if (item is FitMate){
-            Log.d("tlqkf",item.toString())
+            Log.d("tlqkf","추방 클릭:${item.fitMateUserNickname}")
+            group.kickResponse.observe(viewLifecycleOwner) {
+                if (it.isKickSuccess){//추방에 성공했을 경우
+                    group.getMate.removeObservers(viewLifecycleOwner)//기존 구독 해제
+                    Toast.makeText(requireContext(),"추방 완료",Toast.LENGTH_SHORT).show()
+
+                    group.getMate.observe(viewLifecycleOwner) { fitMateList ->
+                        if (fitMateList != null){
+                            setUpRecyclerView(fitMateList) // 채팅 아이템 리스트 설정
+
+                            val fitMateListAdapter = FitMateListAdapter(emptyList(), "", "", this, this)
+                            binding.recyclerViewFragmentChattingForFitMateList.adapter = fitMateListAdapter
+                            binding.recyclerViewFragmentChattingForFitMateList.layoutManager = LinearLayoutManager(context)
+
+                            //드로어 내부 리사이클러뷰 설정
+                            val leaderID = fitMateList.fitLeaderDetail.fitLeaderUserId
+                            val myID = userId.toString()
+                            binding.textViewFragmentChattingFitGroupSize.text =
+                                "대화 상대 " + fitMateList.fitMateDetails.size.toString()
+                            val filteredFitMates = fitMateList.fitMateDetails.map {
+                                FitMate(
+                                    it.fitMateId,
+                                    it.fitMateUserId,
+                                    it.fitMateUserNickname,
+                                    it.fitMateUserProfileImageUrl,
+                                    it.createdAt
+                                )
+                            }
+                            fitMateListAdapter.updateData(filteredFitMates, leaderID, myID)
+                        }else{
+                            Toast.makeText(requireContext(),"통신 오류로 채팅방을 종료합니다",Toast.LENGTH_SHORT).show()
+                            findNavController().popBackStack()
+                        }
+                    }
+
+                    group.getFitMateList(fitGroupId)
+                }else{
+                    Toast.makeText(requireContext(),"추방을 실패했습니다",Toast.LENGTH_SHORT).show()
+                }
+            }
+
+            group.kickFitMate(fitGroupId,userId, FitMateKickRequestUserId(item.fitMateUserId.toInt()))
         }
     }
 }

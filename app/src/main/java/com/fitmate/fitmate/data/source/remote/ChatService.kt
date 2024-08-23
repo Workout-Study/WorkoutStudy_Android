@@ -1,4 +1,4 @@
-package com.fitmate.fitmate.data.source.dao
+package com.fitmate.fitmate.data.source.remote
 
 import com.fitmate.fitmate.data.model.dto.ChatResponse
 import com.fitmate.fitmate.data.model.dto.FitGroup

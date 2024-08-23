@@ -92,6 +92,4 @@ class ChattingViewModel @Inject constructor(private val dbChatUseCase: DBChatUse
     fun clearErrorMessage() {
         _errorMessage.value = null
     }
-
-    private fun formatCustomDateTime(isoDateTime: String): String = isoDateTime.replace("T", " ")
 }

@@ -3,7 +3,7 @@ package com.fitmate.fitmate.di.chatModule
 import com.fitmate.fitmate.data.repository.ChatRepositoryImpl
 import com.fitmate.fitmate.data.source.ChatDatabase
 import com.fitmate.fitmate.data.source.dao.ChatDao
-import com.fitmate.fitmate.data.source.dao.ChatService
+import com.fitmate.fitmate.data.source.remote.ChatService
 import com.fitmate.fitmate.domain.repository.ChatRepository
 import dagger.Module
 import dagger.Provides

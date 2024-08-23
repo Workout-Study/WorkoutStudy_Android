@@ -8,18 +8,27 @@ import androidx.lifecycle.viewModelScope
 import androidx.paging.PagingData
 import androidx.paging.cachedIn
 import androidx.paging.map
+import com.fitmate.fitmate.data.model.ChatMapper.toDto
+import com.fitmate.fitmate.data.model.ChatMapper.toEntity
 import com.fitmate.fitmate.data.model.dto.FitGroup
 import com.fitmate.fitmate.data.model.dto.FitGroupFilter
+import com.fitmate.fitmate.data.model.dto.FitMateKickRequestUserIdDto
 import com.fitmate.fitmate.data.model.dto.GetFitGroupDetail
 import com.fitmate.fitmate.data.model.dto.GetFitMateList
 import com.fitmate.fitmate.data.model.dto.RegisterResponse
+import com.fitmate.fitmate.data.model.dto.ResponseFitMateKickDto
 import com.fitmate.fitmate.domain.model.CategoryItem
+import com.fitmate.fitmate.domain.model.FitMateKickRequestUserId
+import com.fitmate.fitmate.domain.model.ResponseFitMateKick
 import com.fitmate.fitmate.domain.usecase.GroupUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
+import retrofit2.Response
 import javax.inject.Inject
 
 @HiltViewModel
@@ -47,6 +56,12 @@ class GroupViewModel @Inject constructor(
     private val _register = MutableLiveData<RegisterResponse>()
     val register: LiveData<RegisterResponse> = _register
 
+    private val _pagingData = MutableStateFlow<PagingData<CategoryItem>?>(null)
+    val pagingData: StateFlow<PagingData<CategoryItem>?> = _pagingData
+
+    private val _kickResponse = MutableLiveData<ResponseFitMateKick>()
+    val kickResponse: LiveData<ResponseFitMateKick> get() = _kickResponse
+
     private val _isLoading = MutableStateFlow(false)
     val isLoading: StateFlow<Boolean> = _isLoading
 
@@ -56,8 +71,6 @@ class GroupViewModel @Inject constructor(
     private val _successMessage = MutableLiveData<String?>()
     val successMessage: LiveData<String?> = _successMessage
 
-    private val _pagingData = MutableStateFlow<PagingData<CategoryItem>?>(null)
-    val pagingData: StateFlow<PagingData<CategoryItem>?> = _pagingData
 
 
     fun getGroups(withMaxGroup: Boolean, category: Int, pageNumber: Int = 0, pageSize: Int = 8) {
@@ -133,6 +146,29 @@ class GroupViewModel @Inject constructor(
                 _errorMessage.value = "이미 해당 그룹에 가입되어 있습니다."
                 _successMessage.value = null // 성공 메시지를 명시적으로 null로 설정
                 _isLoading.value = false
+            }
+        }
+    }
+
+    fun kickFitMate(
+        fitGroupId: Int,
+        userId: Int,
+        requestUserId: FitMateKickRequestUserId,
+    ) {
+        viewModelScope.launch {
+            try {
+                val response = groupUseCase.kickFitMate(fitGroupId, userId, requestUserId.toDto())
+                if (response.isSuccessful){
+                    withContext(Dispatchers.Main){
+                        val result = response.body()?.toEntity()
+                        result?.let {
+                            _kickResponse.value = it
+                        }
+                    }
+                }
+            }catch (e:Exception){
+                //TODO 오류 핸들링
+                Log.d("tlqkf","오류:$e")
             }
         }
     }

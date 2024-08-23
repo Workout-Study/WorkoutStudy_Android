@@ -32,4 +32,5 @@ class DBChatUseCase @Inject constructor(
         messageType: String
     ): Response<ChatResponse> = chatRepository.retrieveMessage(messageId, fitGroupId, fitMateId, messageTime, messageType)
 
+
 }
