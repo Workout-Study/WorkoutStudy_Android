@@ -1,7 +1,7 @@
 package com.fitmate.fitmate.di.networkModule
 
 import com.fitmate.fitmate.BuildConfig
-import com.fitmate.fitmate.data.source.dao.ChatService
+import com.fitmate.fitmate.data.source.remote.ChatService
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

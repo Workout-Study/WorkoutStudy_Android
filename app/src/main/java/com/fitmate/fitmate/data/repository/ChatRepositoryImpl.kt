@@ -4,12 +4,11 @@ import android.util.Log
 import com.fitmate.fitmate.data.model.ChatMapper.toDBChat
 import com.fitmate.fitmate.data.model.ChatMapper.toEntity
 import com.fitmate.fitmate.data.model.dto.ChatResponse
-import com.fitmate.fitmate.data.model.dto.FitGroup
 import com.fitmate.fitmate.data.model.dto.RetrieveFitGroup
 import com.fitmate.fitmate.data.model.entity.ChatEntity
 import com.fitmate.fitmate.data.source.ChatDatabase
 import com.fitmate.fitmate.data.source.dao.ChatDao
-import com.fitmate.fitmate.data.source.dao.ChatService
+import com.fitmate.fitmate.data.source.remote.ChatService
 import com.fitmate.fitmate.domain.model.ChatItem
 import com.fitmate.fitmate.domain.repository.ChatRepository
 import kotlinx.coroutines.flow.Flow

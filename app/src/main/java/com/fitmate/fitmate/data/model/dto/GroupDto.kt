@@ -98,3 +98,11 @@ data class FitMateRequest(
 data class RegisterResponse(
     @SerializedName("isRegisterSuccess") val isRegisterSuccess: Boolean
 )
+
+data class FitMateKickRequestUserIdDto(
+    @SerializedName("requestUserId") val requestUserId: Int
+)
+
+data class ResponseFitMateKickDto(
+    @SerializedName("isKickSuccess") val isKickSuccess: Boolean
+)
