@@ -156,6 +156,7 @@
 
     <string name="chatting_scr_quit_group">그룹 탈퇴하기</string>
     <string name="item_chatting_scr_export">해당 회원을 추방하시겠습니까?</string>
+    <string name="item_chatting_scr_out">해당 그룹을 탈퇴하시겠습니까?</string>
 
     <!--운동 현황 화면-->
     <string name="my_fit_scr_group_progress_toolbar">Fitmate 운동 현황</string>

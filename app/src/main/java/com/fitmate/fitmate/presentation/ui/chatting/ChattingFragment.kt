@@ -73,6 +73,7 @@ class ChattingFragment : Fragment(R.layout.fragment_chatting),SimpleDialogInterf
     private val group: GroupViewModel by viewModels()
     private var webSocket: WebSocket? = null
     private var fitGroupId: Int = -1
+    private var fitLeaderId: Int = -1
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -357,6 +358,7 @@ class ChattingFragment : Fragment(R.layout.fragment_chatting),SimpleDialogInterf
         group.getFitGroupDetail(fitGroupId) //서버로부터 그룹 정보 가저오기
         group.groupDetail.observe(viewLifecycleOwner) {
             groupCreatedAt = it.createdAt
+            fitLeaderId = it.fitLeaderUserId.toInt()
         }
     }
 
@@ -448,6 +450,12 @@ class ChattingFragment : Fragment(R.layout.fragment_chatting),SimpleDialogInterf
         return webSocket?.send(jsonObject.toString()) ?: false
     }
 
+    fun outFitGroup(){
+        val dialog = SimpleDialog<SimpleDialogInterface,Int>(this, requireContext().getString(R.string.item_chatting_scr_out), userId)
+        val fragmentManager = activity?.supportFragmentManager
+        dialog.show(fragmentManager!!,"SimpleDialog")
+    }
+
     fun padMilliseconds(timestamp: String): String {
         // 정규 표현식으로 밀리초 부분과 타임존 부분을 찾기
         val pattern = Regex("""(\.\d{1,6})([+-]\d{2}:\d{2})""")
@@ -473,43 +481,62 @@ class ChattingFragment : Fragment(R.layout.fragment_chatting),SimpleDialogInterf
     }
 
     override fun <T> onDialogPositiveButtonClick(item: T) {
-        if (item is FitMate){
-            Log.d("tlqkf","추방 클릭:${item.fitMateUserNickname}")
-            group.kickResponse.observe(viewLifecycleOwner) {
-                if (it.isKickSuccess){//추방에 성공했을 경우
-                    group.getMate.removeObservers(viewLifecycleOwner)//기존 구독 해제
-                    Toast.makeText(requireContext(),"추방 완료",Toast.LENGTH_SHORT).show()
+        when (item){
+            is FitMate ->{
+                Log.d("tlqkf","추방 클릭:${item.fitMateUserNickname}")
+                group.kickResponse.observe(viewLifecycleOwner) {
+                    if (it.isKickSuccess){//추방에 성공했을 경우
+                        group.getMate.removeObservers(viewLifecycleOwner)//기존 구독 해제
+                        Toast.makeText(requireContext(),"추방 완료",Toast.LENGTH_SHORT).show()
 
-                    group.getMate.observe(viewLifecycleOwner) { fitMateList ->
-                        if (fitMateList != null){
+                        group.getMate.observe(viewLifecycleOwner) { fitMateList ->
+                            if (fitMateList != null){
 
-                            val leaderID = fitMateList.fitLeaderDetail.fitLeaderUserId
-                            val myID = userId.toString()
-                            binding.textViewFragmentChattingFitGroupSize.text =
-                                "대화 상대 " + fitMateList.fitMateDetails.size.toString()
-                            val filteredFitMates = fitMateList.fitMateDetails.map {
-                                FitMate(
-                                    it.fitMateId,
-                                    it.fitMateUserId,
-                                    it.fitMateUserNickname,
-                                    it.fitMateUserProfileImageUrl,
-                                    it.createdAt
-                                )
+                                val leaderID = fitMateList.fitLeaderDetail.fitLeaderUserId
+                                val myID = userId.toString()
+                                binding.textViewFragmentChattingFitGroupSize.text =
+                                    "대화 상대 " + fitMateList.fitMateDetails.size.toString()
+                                val filteredFitMates = fitMateList.fitMateDetails.map {
+                                    FitMate(
+                                        it.fitMateId,
+                                        it.fitMateUserId,
+                                        it.fitMateUserNickname,
+                                        it.fitMateUserProfileImageUrl,
+                                        it.createdAt
+                                    )
+                                }
+                                fitMateListAdapter.updateData(filteredFitMates, leaderID, myID)
+                            }else{
+                                Toast.makeText(requireContext(),"통신 오류로 채팅방을 종료합니다",Toast.LENGTH_SHORT).show()
+                                findNavController().popBackStack()
                             }
-                            fitMateListAdapter.updateData(filteredFitMates, leaderID, myID)
-                        }else{
-                            Toast.makeText(requireContext(),"통신 오류로 채팅방을 종료합니다",Toast.LENGTH_SHORT).show()
+                        }
+
+                        group.getFitMateList(fitGroupId)
+                    }else{
+                        Toast.makeText(requireContext(),"추방을 실패했습니다",Toast.LENGTH_SHORT).show()
+                    }
+                }
+
+                group.kickFitMate(fitGroupId, item.fitMateUserId.toInt(), FitMateKickRequestUserId(userId))
+            }
+
+            is Int ->{
+                if (item != fitLeaderId){
+                    group.kickResponse.observe(viewLifecycleOwner){
+                        if (it.isKickSuccess){
                             findNavController().popBackStack()
+                        }else{
+                            Toast.makeText(requireContext(),"그룹 탈퇴 실패!",Toast.LENGTH_SHORT).show()
                         }
                     }
-
-                    group.getFitMateList(fitGroupId)
+                    group.kickFitMate(fitGroupId, item, FitMateKickRequestUserId(fitLeaderId))
                 }else{
-                    Toast.makeText(requireContext(),"추방을 실패했습니다",Toast.LENGTH_SHORT).show()
+                    Toast.makeText(requireContext(),"그룹의 리더는 그룹을 나갈 수 없습니다!",Toast.LENGTH_SHORT).show()
                 }
             }
 
-            group.kickFitMate(fitGroupId, item.fitMateUserId.toInt(), FitMateKickRequestUserId(userId))
+
         }
     }
 }
