@@ -523,6 +523,7 @@ class ChattingFragment : Fragment(R.layout.fragment_chatting),SimpleDialogInterf
 
             is Int ->{
                 if (item != fitLeaderId){
+                    group.kickResponse.removeObservers(viewLifecycleOwner)//기존 구독 해제
                     group.kickResponse.observe(viewLifecycleOwner){
                         if (it.isKickSuccess){
                             findNavController().popBackStack()
@@ -535,8 +536,6 @@ class ChattingFragment : Fragment(R.layout.fragment_chatting),SimpleDialogInterf
                     Toast.makeText(requireContext(),"그룹의 리더는 그룹을 나갈 수 없습니다!",Toast.LENGTH_SHORT).show()
                 }
             }
-
-
         }
     }
 }
