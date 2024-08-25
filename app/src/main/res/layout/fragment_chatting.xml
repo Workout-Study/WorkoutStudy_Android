@@ -261,7 +261,8 @@
                 <LinearLayout
                     android:id="@+id/buttonFragmentChattingExit"
                     android:layout_width="match_parent"
-                    android:layout_height="50dp"
+                    android:layout_height="wrap_content"
+                    android:paddingVertical="15dp"
                     android:gravity="center"
                     android:orientation="horizontal">
 
@@ -273,7 +274,9 @@
                         />
 
                     <TextView
+                        android:id="@+id/textViewOutFitGroup"
                         android:layout_width="wrap_content"
+                        android:onClick="@{() -> fragment.outFitGroup()}"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="10dp"
                         android:text="그룹 탈퇴하기"
