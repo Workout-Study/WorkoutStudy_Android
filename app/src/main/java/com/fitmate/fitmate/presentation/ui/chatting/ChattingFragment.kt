@@ -64,6 +64,7 @@ class ChattingFragment : Fragment(R.layout.fragment_chatting),SimpleDialogInterf
     @Inject
     lateinit var dbChatUseCase: DBChatUseCase
     private lateinit var chatAdapter: ChatAdapter
+    private lateinit var fitMateListAdapter: FitMateListAdapter
     private var isFirst = true
     private var userId: Int = -1
     private lateinit var groupCreatedAt: String
@@ -366,7 +367,7 @@ class ChattingFragment : Fragment(R.layout.fragment_chatting),SimpleDialogInterf
                 setUpRecyclerView(fitMateList) // 채팅 아이템 리스트 설정
                 observeChatResponse() // 새로 들어온 채팅 내역 동기화 후 채팅 보여주기
 
-                val fitMateListAdapter = FitMateListAdapter(emptyList(), "", "", this, this)
+                fitMateListAdapter = FitMateListAdapter(emptyList(), "", "", this, this)
                 binding.recyclerViewFragmentChattingForFitMateList.adapter = fitMateListAdapter
                 binding.recyclerViewFragmentChattingForFitMateList.layoutManager = LinearLayoutManager(context)
 
@@ -481,13 +482,7 @@ class ChattingFragment : Fragment(R.layout.fragment_chatting),SimpleDialogInterf
 
                     group.getMate.observe(viewLifecycleOwner) { fitMateList ->
                         if (fitMateList != null){
-                            setUpRecyclerView(fitMateList) // 채팅 아이템 리스트 설정
 
-                            val fitMateListAdapter = FitMateListAdapter(emptyList(), "", "", this, this)
-                            binding.recyclerViewFragmentChattingForFitMateList.adapter = fitMateListAdapter
-                            binding.recyclerViewFragmentChattingForFitMateList.layoutManager = LinearLayoutManager(context)
-
-                            //드로어 내부 리사이클러뷰 설정
                             val leaderID = fitMateList.fitLeaderDetail.fitLeaderUserId
                             val myID = userId.toString()
                             binding.textViewFragmentChattingFitGroupSize.text =
@@ -514,7 +509,7 @@ class ChattingFragment : Fragment(R.layout.fragment_chatting),SimpleDialogInterf
                 }
             }
 
-            group.kickFitMate(fitGroupId,userId, FitMateKickRequestUserId(item.fitMateUserId.toInt()))
+            group.kickFitMate(fitGroupId, item.fitMateUserId.toInt(), FitMateKickRequestUserId(userId))
         }
     }
 }
