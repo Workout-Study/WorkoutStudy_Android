@@ -54,10 +54,10 @@ class FitHistoryDialog(
 
                     //그룹 리스트 addView
             itemData.registeredFitCertifications.forEach {
-                    val textView: TextView = TextView(requireContext())
-                    textView.setTextAppearance(R.style.Font_regular12)
-                    textView.text = it.fitGroupName
-                    layoutTargetFitGroup.addView(textView)
+                val textView: TextView = TextView(requireContext())
+                textView.setTextAppearance(R.style.Font_regular12)
+                textView.text = it.fitGroupName
+                layoutTargetFitGroup.addView(textView)
                 }
 
             buttonOk.setOnClickListener {

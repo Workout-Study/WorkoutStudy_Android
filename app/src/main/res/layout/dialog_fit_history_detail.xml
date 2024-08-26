@@ -17,12 +17,13 @@
         android:layout_height="wrap_content"
         android:background="@drawable/dialog_round_16"
         android:gravity="center_horizontal"
+        android:padding="16dp"
         android:orientation="vertical">
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="40dp"
+            android:layout_marginTop="24dp"
             android:text="운동기록"
             android:textAppearance="@style/Font.semibold20" />
 
@@ -33,7 +34,7 @@
             app:startTime="@{data.recordStartDate}"
             app:endTime="@{data.recordEndDate}"
             android:textAppearance="@style/Font.bold24"
-            android:textSize="40sp"
+            android:textSize="55sp"
             android:layout_marginTop="8dp"
             tools:text="09:00:00" />
 
@@ -44,7 +45,7 @@
             tools:text="9월 20일 오후 11:03 ~ 오후 15:22"
             android:text="@{dialog.formatDateRange(data.recordStartDate,data.recordEndDate)}"
             android:layout_marginTop="2dp"
-            android:textAppearance="@style/Font.regular12" />
+            android:textAppearance="@style/Font.regular16" />
 
         <LinearLayout
             android:id="@+id/layoutTargetFitGroup"
@@ -75,7 +76,7 @@
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recyclerViewFitHistoryImage"
             android:layout_gravity="start"
-            android:layout_marginTop="16dp"
+            android:layout_marginTop="4dp"
             android:layout_marginStart="16dp"
             android:orientation="horizontal"
             tools:listitem="@layout/fit_history_image_detail"

@@ -50,7 +50,7 @@ class CertificateFragment : Fragment() {
         private const val IMAGE_PICK_MAX = 5
 
         enum class NetworkState {
-            STATE_POST_BACK_END, STATE_UPLOAD_STORAGE, STATE_NON, STATE_TARGET_GROUP, CANCEL_CERTIFICATION
+            STATE_POST_BACK_END, STATE_UPLOAD_STORAGE, STATE_NON, STATE_TARGET_GROUP, CANCEL_CERTIFICATION, CANCEL_AND_GROUP_JOIN
         }
     }
 
@@ -370,6 +370,28 @@ class CertificateFragment : Fragment() {
                             bundle
                         )
 
+                    } else if (networkState == NetworkState.CANCEL_AND_GROUP_JOIN) {
+                        //인증 취소되었을 때 또는 업로드에 실패했을 경우.
+                        val intent = Intent(
+                            this@CertificateFragment.context,
+                            StopWatchService::class.java
+                        ).apply {
+                            action = STOP_WATCH_RESET
+                        }
+                        requireContext().startService(intent)
+                        LocalBroadcastManager.getInstance(requireContext())
+                            .unregisterReceiver(broadcastReceiver2)
+
+                        Log.d("tlqkf","이동한다잉")
+                        findNavController().navigate(R.id.action_certificateFragment_to_categorySelectFragment)
+/*                        setRecyclerViewState(true)
+                        viewModel.resetStartImage()
+                        viewModel.resetEndImage()
+                        viewModel.resetCertificationLiveData()
+                        binding.textViewCertificateTimer.text =
+                            getString(R.string.certificate_scr_timer)
+                        networkState = NetworkState.STATE_NON
+                        viewModel.setStateCertificateNonProceeding()*/
                     } else {
                         //인증 취소되었을 때 또는 업로드에 실패했을 경우.
                         val intent = Intent(
@@ -623,76 +645,28 @@ class CertificateFragment : Fragment() {
                 Toast.makeText(requireContext(), "그룹을 하나 이상 선택하셔야합니다!", Toast.LENGTH_SHORT).show()
             }
         }
-
-/*        builder.setMultiChoiceItems(
-            dataList,
-            multiChoiceList
-        ) { dialogInterface: DialogInterface, i: Int, b: Boolean ->
-            multiChoiceList[i] = b
-        }
-
-        builder.setNegativeButton("취소", null)
-        builder.setPositiveButton("확인") { dialogInterface: DialogInterface, i: Int ->
-            for (idx in 0 until multiChoiceList.size) {
-                if (multiChoiceList[idx] == true) {
-                    resultGroupIdList.add(groupList[idx].fitGroupId)
-                }
-            }
-            if (resultGroupIdList.size > 0) {
-                //최종 통신까지 진행 시작
-                val intent = Intent(
-                    this@CertificateFragment.context,
-                    StopWatchService::class.java
-                ).apply {
-                    action = STOP_WATCH_RESET
-                }
-                requireContext().startService(intent)
-                viewModel.selectedTarget = resultGroupIdList
-                networkState = NetworkState.STATE_UPLOAD_STORAGE
-                loadingTaskSettingStart()
-                viewModel.updateCertificationInfo(
-                    viewModel.certificationData.value!!.copy(
-                        recordEndDate = Instant.now(),
-                        endImages = viewModel.endImageList.value?.map { it.imagesUri }
-                            ?.toMutableList(),
-                        certificateTime = totalElapsedTime)
-                )
-            } else {
-                Toast.makeText(requireContext(), "그룹을 하나 이상 선택하셔야합니다!", Toast.LENGTH_SHORT).show()
-            }
-        }*/
         builder.show()
     }
 
     private fun guideEmptyMyFitGroupState() {
         val dialogBinding = DialogEmptyTargetCertificationGroupBinding.inflate(layoutInflater)
 
-        val dialogBuilder = MaterialAlertDialogBuilder(requireContext(), R.style.Theme_Fitmate_Dialog)
-            .setView(dialogBinding.root)
+        val dialogBuilder =
+            MaterialAlertDialogBuilder(requireContext(), R.style.Theme_Fitmate_Dialog).create()
+        dialogBuilder.setView(dialogBinding.root)
 
         dialogBinding.buttonCancelAndStay.setOnClickListener {
             //인증 취소하기
             certificationReset()
-            dialogBuilder.create().dismiss()
+            dialogBuilder.dismiss()
         }
         dialogBinding.buttonNavigateToEnterGroup.setOnClickListener {
             //인증 취소하고 가입하러 보내기 TODO 네비게이트 시키기
-            //networkState = NetworkState.CANCEL_CERTIFICATION
+            networkState = NetworkState.CANCEL_AND_GROUP_JOIN
             certificationReset()
-            dialogBuilder.create().dismiss()
-            findNavController().navigate(R.id.categorySelectFragment)
+            dialogBuilder.dismiss()
+
         }
-/*            .setPositiveButton("그룹 가입하러 가기") { dialogInterface: DialogInterface, i: Int ->
-                //인증 취소하고 가입하러 보내기
-                networkState = NetworkState.CANCEL_CERTIFICATION
-                loadingTaskSettingEnd()
-                certificationReset()
-            }
-            .setNegativeButton("인증 취소하고 머무르기") { dialogInterface: DialogInterface, i: Int ->
-                //인증 취소하기
-                loadingTaskSettingEnd()
-                certificationReset()
-            }*/
         dialogBuilder.show()
     }
 

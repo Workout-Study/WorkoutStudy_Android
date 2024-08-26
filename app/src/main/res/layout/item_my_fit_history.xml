@@ -31,7 +31,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
-            android:text="@{@string/my_fit_history_target_group_guide(data.registeredFitCertifications[0].fitGroupName,data.registeredFitCertifications.size)}"
+            android:text="@{@string/my_fit_history_target_group_guide(data.registeredFitCertifications[0].fitGroupName,data.registeredFitCertifications.size - 1)}"
             android:textAppearance="@style/Font.regular16"
             android:textColor="@color/gray"
             tools:text="축구에 미치다 외 2그룹"
