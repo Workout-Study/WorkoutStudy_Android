@@ -96,6 +96,7 @@ class GroupJoinFragment: Fragment(R.layout.fragment_group_join) {
     private fun updateUI(groupDetail: GetFitGroupDetail) {
         binding.run {
             val adapter = HomeViewPageAdapter(requireContext(), groupDetail.multiMediaEndPoints)
+            imageViewItemDayCurrentDate.orientation = ViewPager2.ORIENTATION_HORIZONTAL
             imageViewItemDayCurrentDate.adapter = adapter
 
             toolbarGroupJoin.title = groupDetail.fitGroupName

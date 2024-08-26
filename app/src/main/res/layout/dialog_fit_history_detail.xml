@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+        <variable
+            name="data"
+            type="com.fitmate.fitmate.domain.model.MyFitRecordHistoryDetail" />
+        <variable
+            name="dialog"
+            type="com.fitmate.fitmate.presentation.ui.dialog.fit_history.FitHistoryDialog" />
+    </data>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/dialog_round_16"
+        android:gravity="center_horizontal"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="40dp"
+            android:text="운동기록"
+            android:textAppearance="@style/Font.semibold20" />
+
+        <TextView
+            android:id="@+id/textViewFitRecordValue"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:startTime="@{data.recordStartDate}"
+            app:endTime="@{data.recordEndDate}"
+            android:textAppearance="@style/Font.bold24"
+            android:textSize="40sp"
+            android:layout_marginTop="8dp"
+            tools:text="09:00:00" />
+
+        <TextView
+            android:id="@+id/textViewFitRecordSpan"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            tools:text="9월 20일 오후 11:03 ~ 오후 15:22"
+            android:text="@{dialog.formatDateRange(data.recordStartDate,data.recordEndDate)}"
+            android:layout_marginTop="2dp"
+            android:textAppearance="@style/Font.regular12" />
+
+        <LinearLayout
+            android:id="@+id/layoutTargetFitGroup"
+            android:layout_gravity="start"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginVertical="25dp"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="운동에 참여한 그룹"
+                android:layout_marginBottom="5dp"
+                android:textAppearance="@style/Font.semibold16" />
+
+        </LinearLayout>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="기록 사진"
+            android:layout_marginStart="16dp"
+            android:layout_gravity="start"
+            android:textAppearance="@style/Font.semibold16" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerViewFitHistoryImage"
+            android:layout_gravity="start"
+            android:layout_marginTop="16dp"
+            android:layout_marginStart="16dp"
+            android:orientation="horizontal"
+            tools:listitem="@layout/fit_history_image_detail"
+            tools:itemCount="1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <Button
+            android:id="@+id/buttonOk"
+            android:layout_width="match_parent"
+            android:layout_marginHorizontal="16dp"
+            android:layout_marginTop="25dp"
+            android:layout_height="wrap_content"
+            android:backgroundTint="@color/fitmate_blue"
+            android:textColor="@color/white"
+            android:textAppearance="@style/Font.bold20"
+            android:paddingVertical="15dp"
+            android:text="확인"
+            style="@style/Widget.MaterialComponents.Button" />
+
+
+    </LinearLayout>
+</layout>

@@ -219,9 +219,8 @@ class MyFitFragment : Fragment() {
     }
 
     private fun initMyFitHistoryRecyclerView() {
-        fitHistoryAdapter = MyFitHistoryAdapter(requireContext())
+        fitHistoryAdapter = MyFitHistoryAdapter(this)
         binding.recyclerViewMyFitFragmentFitHistory.apply {
-            fitHistoryAdapter = MyFitHistoryAdapter(requireContext())
             adapter = fitHistoryAdapter
         }
     }

@@ -7,15 +7,16 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import com.fitmate.fitmate.databinding.ItemMyFitHistoryBinding
 import com.fitmate.fitmate.domain.model.MyFitRecordHistoryDetail
+import com.fitmate.fitmate.presentation.ui.myfit.MyFitFragment
 import com.fitmate.fitmate.ui.myfit.list.MyFitHistoryViewHolder
 
-class MyFitHistoryAdapter(private val context:Context): ListAdapter<MyFitRecordHistoryDetail, MyFitHistoryViewHolder>(diffUtil) {
+class MyFitHistoryAdapter(private val fragment: MyFitFragment): ListAdapter<MyFitRecordHistoryDetail, MyFitHistoryViewHolder>(diffUtil) {
 
     override fun onCreateViewHolder(
         parent: ViewGroup,
         viewType: Int,
     ): MyFitHistoryViewHolder {
-        return MyFitHistoryViewHolder(ItemMyFitHistoryBinding.inflate(LayoutInflater.from(context), parent, false),context)
+        return MyFitHistoryViewHolder(ItemMyFitHistoryBinding.inflate(LayoutInflater.from(fragment.context), parent, false), fragment)
     }
 
     override fun onBindViewHolder(holder: MyFitHistoryViewHolder, position: Int) {

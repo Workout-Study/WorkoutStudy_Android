@@ -16,6 +16,31 @@
         android:background="@drawable/bg_rounded_rectangle"
         android:padding="20dp">
 
+        <ImageView
+            android:id="@+id/imageViewMyItemFitFirstCertification"
+            android:layout_width="72dp"
+            android:layout_height="72dp"
+            app:fit_history_start_image="@{data.multiMediaEndPoints}"
+            android:src="@drawable/ic_launcher_logo"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"/>
+
+        <TextView
+            android:id="@+id/textViewGroupName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:text="@{@string/my_fit_history_target_group_guide(data.registeredFitCertifications[0].fitGroupName,data.registeredFitCertifications.size)}"
+            android:textAppearance="@style/Font.regular16"
+            android:textColor="@color/gray"
+            tools:text="축구에 미치다 외 2그룹"
+            app:layout_constraintVertical_bias="0.2"
+            app:layout_constraintBottom_toBottomOf="@+id/imageViewMyItemFitFirstCertification"
+            app:layout_constraintStart_toEndOf="@+id/imageViewMyItemFitFirstCertification"
+            app:layout_constraintTop_toTopOf="@+id/imageViewMyItemFitFirstCertification" />
+
+
         <TextView
             android:id="@+id/textViewItemMyFitHistoryRecord"
             android:layout_width="wrap_content"
@@ -25,61 +50,13 @@
             tools:text="@string/my_fit_scr_fit_timer_text"
             android:textAppearance="@style/Font.bold16"
             android:textColor="@color/turquoise"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <TextView
-            android:id="@+id/textViewGroupName"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="5dp"
-            android:text="인증한 그룹 내역"
-            android:textAppearance="@style/Font.bold16"
-            android:textColor="@color/white"
-            app:layout_constraintStart_toStartOf="@+id/textViewItemMyFitHistoryRecord"
-            app:layout_constraintTop_toBottomOf="@+id/textViewItemMyFitHistoryRecord" />
-
-       <!-- <LinearLayout
-            android:id="@+id/listViewMyFitItemInnerForGroupName"
-            android:layout_width="0dp"
-            android:gravity="start"
-            android:layout_height="0dp"
-            android:layout_marginTop="5dp"
-            android:orientation="vertical"
-            app:layout_constraintEnd_toStartOf="@+id/imageViewMyItemFitFirstCertification"
+            app:layout_constraintVertical_bias="0.8"
             app:layout_constraintStart_toStartOf="@+id/textViewGroupName"
-            app:layout_constraintTop_toBottomOf="@+id/textViewGroupName"
-            app:layout_constraintBottom_toBottomOf="parent">
-        </LinearLayout>-->
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recyclerViewMyFitItemInnerForGroupName"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-            android:layout_marginTop="5dp"
-            app:layout_constraintEnd_toStartOf="@+id/imageViewMyItemFitFirstCertification"
-            app:layout_constraintStart_toStartOf="@+id/textViewGroupName"
-            app:layout_constraintTop_toBottomOf="@+id/textViewGroupName"
-            app:layout_constraintBottom_toBottomOf="parent"/>
+            app:layout_constraintTop_toTopOf="@+id/imageViewMyItemFitFirstCertification"
+            app:layout_constraintBottom_toBottomOf="@+id/imageViewMyItemFitFirstCertification"/>
 
-        <ImageView
-            android:id="@+id/imageViewMyFitItemSecondCertification"
-            android:layout_width="81dp"
-            android:layout_height="144dp"
-            app:fit_history_end_image="@{data.multiMediaEndPoints}"
-            android:src="@drawable/ic_launcher_logo"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/textViewItemMyFitHistoryRecord" />
 
-        <ImageView
-            android:id="@+id/imageViewMyItemFitFirstCertification"
-            android:layout_width="81dp"
-            android:layout_height="144dp"
-            android:layout_marginEnd="10dp"
-            app:fit_history_start_image="@{data.multiMediaEndPoints}"
-            android:src="@drawable/ic_launcher_logo"
-            app:layout_constraintEnd_toStartOf="@+id/imageViewMyFitItemSecondCertification"
-            app:layout_constraintTop_toTopOf="@+id/textViewItemMyFitHistoryRecord" />
+
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

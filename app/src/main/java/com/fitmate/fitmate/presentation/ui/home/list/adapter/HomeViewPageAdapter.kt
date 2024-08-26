@@ -19,7 +19,7 @@ class HomeViewPageAdapter(
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ImageViewHolder {
-        val view = LayoutInflater.from(parent.context).inflate(R.layout.item_image, parent, false)
+        val view = LayoutInflater.from(parent.context).inflate(R.layout.group_join_detial_image, parent, false)
         // 페이지 레이아웃을 match_parent로 설정
         val layoutParams = view.layoutParams
         layoutParams.width = ViewGroup.LayoutParams.MATCH_PARENT

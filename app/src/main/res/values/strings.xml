@@ -224,6 +224,7 @@
     <string name="my_fit_history_total_num">%d건</string>
     <string name="my_fit_history_date_guide_num">%d월 기록 총</string>
     <string name="my_fit_history_date_day_guide_num">%d월 %d일 기록 총</string>
+    <string name="my_fit_history_target_group_guide">%s 외 %d그룹</string>
 
 
     <!--투표화면-->
@@ -251,5 +252,6 @@
 
     <!--유저 프로필 변경 화면-->
     <string name="user_info_edit_title">유저 프로필 변경</string>
+
 
 </resources>

@@ -101,7 +101,7 @@
                 android:paddingRight="20dp"
                 android:paddingBottom="10dp"
                 android:textAppearance="@style/Font.regular16"
-                android:textColor="@color/black"
+                android:textColor="@color/white"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
