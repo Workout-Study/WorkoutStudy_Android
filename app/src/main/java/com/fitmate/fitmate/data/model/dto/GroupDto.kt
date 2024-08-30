@@ -12,8 +12,6 @@ data class GetFitGroupDetail(
     @SerializedName("fitLeaderUserId") val fitLeaderUserId: String,
     @SerializedName("fitGroupName") val fitGroupName: String,
     @SerializedName("penaltyAmount") val penaltyAmount: Int,
-    @SerializedName("penaltyAccountBankCode") val penaltyAccountBankCode: String,
-    @SerializedName("penaltyAccountNumber") val penaltyAccountNumber: String,
     @SerializedName("category") val category: Int,
     @SerializedName("introduction") val introduction: String,
     @SerializedName("cycle") val cycle: Int,
@@ -21,7 +19,7 @@ data class GetFitGroupDetail(
     @SerializedName("createdAt") val createdAt: String,
     @SerializedName("maxFitMate") val maxFitMate: Int,
     @SerializedName("state") val state: Boolean
-)
+):Serializable
 
 // Get Fit Mate List - FitGroupDetail, FitLeaderDetail, FitMateDetail
 data class GetFitMateList(

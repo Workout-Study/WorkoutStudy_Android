@@ -17,6 +17,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.fitmate.fitmate.BuildConfig
 import com.fitmate.fitmate.MainActivity
 import com.fitmate.fitmate.R
+import com.fitmate.fitmate.data.model.dto.GetFitGroupDetail
 import com.fitmate.fitmate.data.model.dto.GetFitMateList
 import com.fitmate.fitmate.databinding.FragmentChattingBinding
 import com.fitmate.fitmate.domain.model.ChatItem
@@ -68,6 +69,7 @@ class ChattingFragment : Fragment(R.layout.fragment_chatting),SimpleDialogInterf
     private var isFirst = true
     private var userId: Int = -1
     private lateinit var groupCreatedAt: String
+    private lateinit var groupDetailData: GetFitGroupDetail
     private val viewModel: ChattingViewModel by viewModels()
     private val login: LoginViewModel by viewModels()
     private val group: GroupViewModel by viewModels()
@@ -182,6 +184,22 @@ class ChattingFragment : Fragment(R.layout.fragment_chatting),SimpleDialogInterf
         } else {
             Toast.makeText(requireContext(), "알 수 없는 오류 발생! 잠시후 이용해주세요!", Toast.LENGTH_SHORT).show()
         }
+    }
+
+    fun navigateToCertificationFragment() {
+        findNavController().navigate(R.id.certificateFragment)
+    }
+
+    fun navigateToGroupInfoFragment() {
+        if (::groupDetailData.isInitialized){
+            val bundle = Bundle().apply {
+                putSerializable("groupDetailData", groupDetailData)
+            }
+            findNavController().navigate(R.id.groupInfoFragment, bundle)
+        }else{
+            Log.d("tlqkf","초기화 안됨")
+        }
+
     }
 
 
@@ -357,6 +375,7 @@ class ChattingFragment : Fragment(R.layout.fragment_chatting),SimpleDialogInterf
     private fun observeGroupDetail() {
         group.getFitGroupDetail(fitGroupId) //서버로부터 그룹 정보 가저오기
         group.groupDetail.observe(viewLifecycleOwner) {
+            groupDetailData = it
             groupCreatedAt = it.createdAt
             fitLeaderId = it.fitLeaderUserId.toInt()
         }

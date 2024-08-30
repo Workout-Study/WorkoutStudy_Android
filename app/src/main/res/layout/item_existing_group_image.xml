@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+        <variable
+            name="data"
+            type="com.fitmate.fitmate.domain.model.CertificationImage2" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="wrap_content"
+        android:layout_height="100dp"
+        android:layout_marginEnd="5dp">
+
+        <androidx.cardview.widget.CardView
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:id="@+id/cardViewItemCertificateStart"
+            android:layout_width="80dp"
+            android:elevation="0dp"
+            android:layout_height="80dp"
+            android:layout_gravity="center_vertical"
+            app:cardCornerRadius="10dp">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+                <ImageView
+                    android:id="@+id/imageViewFitStartSelectImage"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    app:url="@{data.imagesUri}"
+                    android:scaleType="centerInside" />
+
+                <de.hdodenhof.circleimageview.CircleImageView
+                    android:id="@+id/imageViewRemoveItemMakeGroupImage"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    app:civ_circle_background_color="#383B40"
+                    android:src="@drawable/close_white_icon_24"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+
+        </androidx.cardview.widget.CardView>
+
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>
