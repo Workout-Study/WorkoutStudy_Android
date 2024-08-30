@@ -75,7 +75,6 @@
     <string name="category_scr_9">클라이밍</string>
 
 
-
     <string name="login_scr_kakao">카카오로 시작하기</string>
     <string name="login_scr_naver">네이버로 시작하기</string>
     <string name="login_scr_button_tour">둘러보기 ></string>
@@ -153,6 +152,7 @@
     <string name="chatting_scr_fit_mate_fit_off">피트오프현황</string>
     <string name="chatting_scr_fit_mate_fit_off_apply">피트오프신청</string>
     <string name="chatting_scr_fit_mate_certification">기록하기</string>
+    <string name="chatting_scr_fit_group_info">기록하기</string>
 
     <string name="chatting_scr_quit_group">그룹 탈퇴하기</string>
     <string name="item_chatting_scr_export">해당 회원을 추방하시겠습니까?</string>
@@ -243,6 +243,9 @@
     <string name="point_amount">%dP</string>
     <string name="point_amount_deposit">입금 +%dP</string>
     <string name="point_amount_withdraw">출금 -%dP</string>
+
+    <!--그룹 정보 및 수정 화면-->
+    <string name="group_info_update_title">그룹 정보 및 수정 화면</string>
 
 
     <!--마이페이지-->

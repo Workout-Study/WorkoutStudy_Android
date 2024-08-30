@@ -240,5 +240,9 @@
         android:id="@+id/viewFitOffFragment"
         android:name="com.fitmate.fitmate.presentation.ui.fitoff.ViewFitOffFragment"
         android:label="ViewFitOffFragment" />
+    <fragment
+        android:id="@+id/groupInfoFragment"
+        android:name="com.fitmate.fitmate.presentation.ui.chatting.GroupInfoFragment"
+        android:label="@string/group_info_update_title" />
 
 </navigation>

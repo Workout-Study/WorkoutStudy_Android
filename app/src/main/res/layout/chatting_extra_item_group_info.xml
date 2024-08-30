@@ -27,8 +27,8 @@
         <Button
             android:id="@+id/chattingExtraFunctionButton"
             style="?attr/materialIconButtonFilledStyle"
-            app:icon="@drawable/ic_baseline_timer_24"
-            android:onClick="@{() -> fragment.navigateToCertificationFragment()}"
+            app:icon="@drawable/ic_baseline_category_24"
+            android:onClick="@{() -> fragment.navigateToGroupInfoFragment()}"
             android:backgroundTint="#8771FA"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
