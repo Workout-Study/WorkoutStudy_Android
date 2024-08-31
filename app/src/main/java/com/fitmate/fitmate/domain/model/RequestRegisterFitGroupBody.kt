@@ -17,6 +17,9 @@ data class RequestRegisterFitGroupBody(
 data class ResponseRegisterFitGroup(
     val isRegisterSuccess: Boolean,
     val fitGroupId: Int
+)
 
+data class UpdateFitGroupResponse(
+    val isUpdateSuccess: Boolean,
 )
 

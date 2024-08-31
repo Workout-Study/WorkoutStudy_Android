@@ -6,6 +6,7 @@ import android.provider.MediaStore
 import com.fitmate.fitmate.data.model.MakeFitGroupMapper.toRegisterFitGroupDto
 import com.fitmate.fitmate.data.model.dto.RegisterFitGroupResponseDto
 import com.fitmate.fitmate.data.model.dto.RequestRegisterFitGroupBodyDto
+import com.fitmate.fitmate.data.model.dto.UpdateFitGroupResponseDto
 import com.fitmate.fitmate.data.source.remote.RegisterFitGroupService
 import com.fitmate.fitmate.domain.model.RequestRegisterFitGroupBody
 import com.fitmate.fitmate.domain.repository.MakeFitGroupRepository
@@ -84,5 +85,12 @@ class MakeFitGroupRepositoryImpl @Inject constructor(
 
     override suspend fun postRegisterFitGroup(registerGroupItem: RequestRegisterFitGroupBodyDto): Response<RegisterFitGroupResponseDto> {
         return registerFitGroupService.registerFitGroup(registerGroupItem)
+    }
+
+    override suspend fun updateFitGroup(
+        groupId: Int,
+        registerGroupItem: RequestRegisterFitGroupBodyDto
+    ): Response<UpdateFitGroupResponseDto> {
+        return registerFitGroupService.updateFitGroup(groupId,registerGroupItem)
     }
 }

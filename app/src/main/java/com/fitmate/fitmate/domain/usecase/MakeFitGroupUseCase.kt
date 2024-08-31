@@ -4,6 +4,7 @@ import android.net.Uri
 import com.fitmate.fitmate.data.model.MakeFitGroupMapper.toRegisterFitGroupDto
 import com.fitmate.fitmate.data.model.dto.RegisterFitGroupResponseDto
 import com.fitmate.fitmate.data.model.dto.RequestRegisterFitGroupBodyDto
+import com.fitmate.fitmate.data.model.dto.UpdateFitGroupResponseDto
 import com.fitmate.fitmate.domain.model.RequestRegisterFitGroupBody
 import com.fitmate.fitmate.domain.repository.MakeFitGroupRepository
 import retrofit2.Response
@@ -15,4 +16,6 @@ class MakeFitGroupUseCase @Inject constructor(
     suspend fun uploadGroupImageAndGetUrl(userId:String, groupName:String, groupImageList:List<Uri>): List<String> = makeFitGroupRepository.uploadGroupImageToStorage(userId, groupName, groupImageList)
 
     suspend fun postRegisterFitGroup(fitGroupInfo: RequestRegisterFitGroupBodyDto): Response<RegisterFitGroupResponseDto> = makeFitGroupRepository.postRegisterFitGroup(fitGroupInfo)
+
+    suspend fun updateFitGroup(groupId:Int, fitGroupInfo: RequestRegisterFitGroupBodyDto): Response<UpdateFitGroupResponseDto> = makeFitGroupRepository.updateFitGroup(groupId,fitGroupInfo)
 }

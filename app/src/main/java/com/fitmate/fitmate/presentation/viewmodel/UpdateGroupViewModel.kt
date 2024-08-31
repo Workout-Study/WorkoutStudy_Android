@@ -7,10 +7,12 @@ import androidx.lifecycle.viewModelScope
 import com.fitmate.fitmate.R
 import com.fitmate.fitmate.data.model.MakeFitGroupMapper.toRegisterFitGroupDto
 import com.fitmate.fitmate.data.model.MakeFitGroupMapper.toResponseRegisterFitGroup
+import com.fitmate.fitmate.data.model.MakeFitGroupMapper.toResponseUpdateFitGroup
 import com.fitmate.fitmate.data.model.dto.GetFitGroupDetail
 import com.fitmate.fitmate.domain.model.CertificationImage
 import com.fitmate.fitmate.domain.model.RequestRegisterFitGroupBody
 import com.fitmate.fitmate.domain.model.ResponseRegisterFitGroup
+import com.fitmate.fitmate.domain.model.UpdateFitGroupResponse
 import com.fitmate.fitmate.domain.usecase.MakeFitGroupUseCase
 import com.fitmate.fitmate.util.GroupCategory
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -49,8 +51,8 @@ class UpdateGroupViewModel @Inject constructor(
         get() = _groupImageUrlList
 
     //최종 post 결과를 받는 라이브 데이터
-    private val _postResult = MutableLiveData<ResponseRegisterFitGroup>()
-    val postResult: LiveData<ResponseRegisterFitGroup>
+    private val _postResult = MutableLiveData<UpdateFitGroupResponse>()
+    val postResult: LiveData<UpdateFitGroupResponse>
         get() = _postResult
 
     //카테고리 설정 메서드
@@ -105,13 +107,13 @@ class UpdateGroupViewModel @Inject constructor(
     }
 
 
-    fun postRegisterFitGroup(item: RequestRegisterFitGroupBody) {
+    fun postUpdateFitGroup(groupid:Int, item: RequestRegisterFitGroupBody) {
         viewModelScope.launch {
-            val response = makeGroupUseCase.postRegisterFitGroup(item.toRegisterFitGroupDto())
+            val response = makeGroupUseCase.updateFitGroup(groupid, item.toRegisterFitGroupDto())
             if (response.isSuccessful) {
                 val result = response.body()
                 result?.let { resultData ->
-                    _postResult.value = resultData.toResponseRegisterFitGroup()
+                    _postResult.value = resultData.toResponseUpdateFitGroup()
                 }
             }
         }
