@@ -18,3 +18,7 @@ data class RegisterFitGroupResponseDto(
     @SerializedName("isRegisterSuccess") val isRegisterSuccess: Boolean,
     @SerializedName("fitGroupId") val fitGroupId: Int
 )
+
+data class UpdateFitGroupResponseDto(
+    @SerializedName("isUpdateSuccess") val isUpdateSuccess: Boolean,
+)

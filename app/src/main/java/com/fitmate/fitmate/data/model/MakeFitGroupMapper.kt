@@ -2,8 +2,10 @@ package com.fitmate.fitmate.data.model
 
 import com.fitmate.fitmate.data.model.dto.RegisterFitGroupResponseDto
 import com.fitmate.fitmate.data.model.dto.RequestRegisterFitGroupBodyDto
+import com.fitmate.fitmate.data.model.dto.UpdateFitGroupResponseDto
 import com.fitmate.fitmate.domain.model.RequestRegisterFitGroupBody
 import com.fitmate.fitmate.domain.model.ResponseRegisterFitGroup
+import com.fitmate.fitmate.domain.model.UpdateFitGroupResponse
 
 object MakeFitGroupMapper {
 
@@ -26,6 +28,12 @@ object MakeFitGroupMapper {
         return ResponseRegisterFitGroup(
             isRegisterSuccess = this.isRegisterSuccess,
             fitGroupId = this.fitGroupId
+        )
+    }
+
+    fun UpdateFitGroupResponseDto.toResponseUpdateFitGroup(): UpdateFitGroupResponse {
+        return UpdateFitGroupResponse(
+            isUpdateSuccess = this.isUpdateSuccess
         )
     }
 }

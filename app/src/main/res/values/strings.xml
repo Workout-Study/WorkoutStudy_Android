@@ -246,6 +246,11 @@
 
     <!--그룹 정보 및 수정 화면-->
     <string name="group_info_update_title">그룹 정보 및 수정 화면</string>
+    <string name="group_info_warning_group_name">그룹 이름을 작성해주세요</string>
+    <string name="group_info_warning_group_categoty">카테고리를 선택해주세요</string>
+    <string name="group_info_warning_group_fit_frequency">운동 주기를 설정해주세요</string>
+    <string name="group_info_warning_group_fit_mate_count">인원수는 그룹에 가입된 구성원보다 적게 설정하실 수 없습니다</string>
+    <string name="group_info_warning_group_content">그룹 코멘트를 작성해주세요</string>
 
 
     <!--마이페이지-->

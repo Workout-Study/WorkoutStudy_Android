@@ -8,6 +8,7 @@ import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.provider.Settings
+import android.util.Log
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
@@ -25,9 +26,11 @@ import com.fitmate.fitmate.R
 import com.fitmate.fitmate.data.model.dto.GetFitGroupDetail
 import com.fitmate.fitmate.databinding.FragmentGroupInfoBinding
 import com.fitmate.fitmate.domain.model.CertificationImage
+import com.fitmate.fitmate.domain.model.RequestRegisterFitGroupBody
 import com.fitmate.fitmate.presentation.ui.mygroup.MakeGroupFragment
 import com.fitmate.fitmate.presentation.ui.mygroup.list.adapter.MakeGroupImageAdapter
 import com.fitmate.fitmate.presentation.viewmodel.UpdateGroupViewModel
+import com.fitmate.fitmate.util.GroupCategory
 import com.fitmate.fitmate.util.customGetSerializable
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.slider.Slider
@@ -59,7 +62,55 @@ class GroupInfoFragment : Fragment(R.layout.fragment_group_info) {
         initView(view)//초기 설정
         setImageListRecyclerView() //사진 리사이클러뷰 설정
         loadUserPreferenceAndSetting()//내 아이디 가져오고 수정 버튼 visible 설정
-        observeImageChange()
+        observeImageChange() //이미지 변경 감시
+        observePostImageAndPutGroupData()//사진 업로드 결과 감시 후 put 진행
+        observeUpdateFitGroup()//그룹 업데이트 결과 감시
+    }
+
+    private fun observeUpdateFitGroup() {
+        viewModel.postResult.observe(viewLifecycleOwner) {
+            if (it.isUpdateSuccess){
+                loadingViewGone()
+                Toast.makeText(requireContext(), "그룹 수정이 완료되었습니다.", Toast.LENGTH_SHORT).show()
+                findNavController().popBackStack()
+            }else{
+                Toast.makeText(requireContext(), "그룹 수정을 실패했습니다.", Toast.LENGTH_SHORT).show()
+            }
+
+        }
+    }
+
+    private fun observePostImageAndPutGroupData() {
+        viewModel.groupImageUrlList.observe(viewLifecycleOwner) {
+            //TODO 업데이트 put진행
+
+            val updateData = RequestRegisterFitGroupBody(
+               requestUserId = userId,
+                fitGroupName = viewModel.groupName.value!!,
+                penaltyAmount = 5000,
+                category = getCategoryCode(),
+                introduction = viewModel.groupContent.value!!,
+                cycle = null,
+                frequency = viewModel.groupFitCycle.value!!,
+                maxFitMate = viewModel.groupFitMateLimit.value!!,
+                multiMediaEndPoints = it
+            )
+
+            viewModel.postUpdateFitGroup(groupInfoData!!.fitGroupId, updateData)
+        }
+    }
+
+    private fun getCategoryCode() = when (viewModel.groupCategory.value.toString()) {
+        requireContext().getString(R.string.category_scr_1) -> GroupCategory.CLIMBING.code
+        requireContext().getString(R.string.category_scr_2) -> GroupCategory.LIFE_SPORTS.code
+        requireContext().getString(R.string.category_scr_3) -> GroupCategory.WEIGHT_TRAINING.code
+        requireContext().getString(R.string.category_scr_4) -> GroupCategory.SWIMMING.code
+        requireContext().getString(R.string.category_scr_5) -> GroupCategory.SOCCER.code
+        requireContext().getString(R.string.category_scr_6) -> GroupCategory.BASKETBALL.code
+        requireContext().getString(R.string.category_scr_7) -> GroupCategory.BASEBALL.code
+        requireContext().getString(R.string.category_scr_8) -> GroupCategory.BIKING.code
+        requireContext().getString(R.string.category_scr_9) -> GroupCategory.CLIMBING.code
+        else -> throw IllegalArgumentException("Invalid category")
     }
 
     private fun initView(view: View) {
@@ -94,7 +145,13 @@ class GroupInfoFragment : Fragment(R.layout.fragment_group_info) {
             Slider.OnSliderTouchListener {
             override fun onStartTrackingTouch(slider: Slider) {}
             override fun onStopTrackingTouch(slider: Slider) {
-                viewModel.setGroupFitMateLimit(slider.value.toInt())
+                if(slider.value.toInt() < groupInfoData!!.presentFitMateCount){
+                    slider.value = groupInfoData!!.presentFitMateCount.toFloat()
+                    viewModel.setGroupFitMateLimit(groupInfoData!!.presentFitMateCount)
+                    Toast.makeText(requireContext(),"현재 그룹에 가입된 회원수보다 적게 설정하실 수 없습니다",Toast.LENGTH_SHORT).show()
+                }else{
+                    viewModel.setGroupFitMateLimit(slider.value.toInt())
+                }
             }
         })
 
@@ -151,6 +208,8 @@ class GroupInfoFragment : Fragment(R.layout.fragment_group_info) {
 
             editTextSetGroupComment.isEnabled = true //코멘트
 
+            textViewMakeGroupPhoto.visibility = View.VISIBLE
+
             cardViewItemCertificateStart.visibility = View.VISIBLE //카드뷰
 
             buttonMakeGroupConfirm.visibility = View.VISIBLE //수정 완료 버튼
@@ -170,9 +229,62 @@ class GroupInfoFragment : Fragment(R.layout.fragment_group_info) {
 
             editTextSetGroupComment.isEnabled = false //코멘트
 
+            textViewMakeGroupPhoto.visibility = View.GONE //그룹 사진 뷰
+
             cardViewItemCertificateStart.visibility = View.GONE //카드뷰
 
             buttonMakeGroupConfirm.visibility = View.GONE //수정 완료 버튼
+        }
+    }
+
+    fun confirmUpdateGroupData(){
+        val groupName = viewModel.groupName.value
+        val groupCategory = viewModel.groupCategory.value
+        val groupFrequency = viewModel.groupFitCycle.value
+        val groupMaxFitMate = viewModel.groupFitMateLimit.value
+        val groupDetail = viewModel.groupContent.value
+        when{
+            groupName.isNullOrBlank() ->{
+                Toast.makeText(requireContext(),getString(R.string.group_info_warning_group_name),Toast.LENGTH_SHORT).show()
+                return
+            }
+            groupCategory.isNullOrBlank() ->{
+                Toast.makeText(requireContext(),getString(R.string.group_info_warning_group_categoty),Toast.LENGTH_SHORT).show()
+                return
+            }
+            groupFrequency!!.toInt() <= 0 ->{
+                Toast.makeText(requireContext(),getString(R.string.group_info_warning_group_fit_frequency),Toast.LENGTH_SHORT).show()
+                return
+            }
+            groupMaxFitMate!!.toInt() < groupInfoData!!.presentFitMateCount ->{
+                Toast.makeText(requireContext(),getString(R.string.group_info_warning_group_fit_mate_count),Toast.LENGTH_SHORT).show()
+                return
+            }
+            groupDetail.isNullOrBlank() ->{
+                Toast.makeText(requireContext(),getString(R.string.group_info_warning_group_content),Toast.LENGTH_SHORT).show()
+                return
+            }
+        }
+        if(viewModel.groupImageList.value.isNullOrEmpty()){
+            //TODO 여기선 바로 사진 url로 업로드 진행
+            loadingViewVisible()
+
+            val updateData = RequestRegisterFitGroupBody(
+                requestUserId = userId,
+                fitGroupName = viewModel.groupName.value!!,
+                penaltyAmount = 5000,
+                category = getCategoryCode(),
+                introduction = viewModel.groupContent.value!!,
+                cycle = null,
+                frequency = viewModel.groupFitCycle.value!!,
+                maxFitMate = viewModel.groupFitMateLimit.value!!,
+                multiMediaEndPoints = groupInfoData!!.multiMediaEndPoints
+            )
+            viewModel.postUpdateFitGroup(groupInfoData!!.fitGroupId, updateData)
+        }else{
+            //TODO 여기서 사진 업로드 이후에 업데이트 진행
+            loadingViewVisible()
+            viewModel.uploadImageAndGetUrl(userId.toString())
         }
     }
 
@@ -308,6 +420,24 @@ class GroupInfoFragment : Fragment(R.layout.fragment_group_info) {
         startActivity(intent)
     }
 
+    private fun loadingViewVisible() {
+        binding.loadingLayoutView.apply {
+            visibility = View.VISIBLE
+            alpha = 0.5f
+            isClickable = true
+        }
 
+        binding.progressBarSubmitLoading.visibility = View.VISIBLE
+    }
+
+    private fun loadingViewGone() {
+        binding.loadingLayoutView.apply {
+            visibility = View.GONE
+            alpha = 1f
+            isClickable = false
+        }
+
+        binding.progressBarSubmitLoading.visibility = View.GONE
+    }
 
 }
