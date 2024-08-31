@@ -7,6 +7,9 @@
         <variable
             name="viewModel"
             type="com.fitmate.fitmate.presentation.viewmodel.UpdateGroupViewModel" />
+        <variable
+            name="fragment"
+            type="com.fitmate.fitmate.presentation.ui.chatting.GroupInfoFragment" />
     </data>
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout
@@ -239,16 +242,6 @@
                                 android:layout_height="match_parent"
                                 android:orientation="horizontal">
 
-                                <androidx.recyclerview.widget.RecyclerView
-                                    android:id="@+id/recyclerExistingGroupImage"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_gravity="center_vertical"
-                                    android:nestedScrollingEnabled="true"
-                                    android:orientation="horizontal"
-                                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                                    tools:itemCount="2"
-                                    tools:listitem="@layout/item_existing_group_image" />
 
                                 <androidx.recyclerview.widget.RecyclerView
                                     android:id="@+id/recyclerGroupImage"
@@ -267,6 +260,7 @@
                                     android:layout_height="80dp"
                                     android:layout_gravity="center_vertical"
                                     android:layout_marginStart="5dp"
+                                    android:onClick="@{()->fragment.onClickAddImageButton()}"
                                     android:elevation="0dp"
                                     app:cardCornerRadius="10dp">
 
