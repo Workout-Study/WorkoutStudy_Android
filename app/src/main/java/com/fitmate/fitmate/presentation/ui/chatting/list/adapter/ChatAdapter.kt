@@ -63,7 +63,6 @@ class ChatAdapter: ListAdapter<ChatItem, ChatAdapter.ViewHolder>(ChatDiffCallbac
                     imageViewItemChattingFitMateImageLeft.setImageByUrl(userInfo?.fitMateUserProfileImageUrl)
                     textViewItemChattingFitMateNameLeft.text = userInfo?.fitMateUserNickname
                     textViewItemChattingFitMateSpeechDateLeft.text = formatDateTime(DateParseUtils.instantToString(item.messageTime),false)
-                    Log.d("tlqkf","${item.message}의 닉네임은 ${userInfo?.fitMateUserNickname}이며 이미지는${userInfo?.fitMateUserProfileImageUrl}")
                 }
             }
         }

@@ -131,6 +131,7 @@
                 android:elevation="10dp"
                 app:cardCornerRadius="8dp"
                 android:clickable="true"
+                android:onClick="@{() -> my_fit_main_fragment.clickEnterRegisterFitOffFragment()}"
                 android:foreground="?attr/selectableItemBackground"
                 android:layout_weight="1">
 
@@ -150,7 +151,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="10dp"
-                        android:text="내 피트오프"
+                        android:text="피트오프 신청"
                         android:textAppearance="@style/Font.regular16" />
                 </LinearLayout>
 

@@ -71,7 +71,6 @@ class ChattingFragment : Fragment(R.layout.fragment_chatting),SimpleDialogInterf
     private lateinit var groupCreatedAt: String
     private lateinit var groupDetailData: GetFitGroupDetail
     private val viewModel: ChattingViewModel by viewModels()
-    private val login: LoginViewModel by viewModels()
     private val group: GroupViewModel by viewModels()
     private var webSocket: WebSocket? = null
     private var fitGroupId: Int = -1
@@ -85,8 +84,6 @@ class ChattingFragment : Fragment(R.layout.fragment_chatting),SimpleDialogInterf
             fitGroupId = groupId
         }
         loadUserPreference() //유저 정보 가져오기
-
-
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -196,10 +193,7 @@ class ChattingFragment : Fragment(R.layout.fragment_chatting),SimpleDialogInterf
                 putSerializable("groupDetailData", groupDetailData)
             }
             findNavController().navigate(R.id.groupInfoFragment, bundle)
-        }else{
-            Log.d("tlqkf","초기화 안됨")
         }
-
     }
 
 
@@ -502,7 +496,6 @@ class ChattingFragment : Fragment(R.layout.fragment_chatting),SimpleDialogInterf
     override fun <T> onDialogPositiveButtonClick(item: T) {
         when (item){
             is FitMate ->{
-                Log.d("tlqkf","추방 클릭:${item.fitMateUserNickname}")
                 group.kickResponse.observe(viewLifecycleOwner) {
                     if (it.isKickSuccess){//추방에 성공했을 경우
                         group.getMate.removeObservers(viewLifecycleOwner)//기존 구독 해제

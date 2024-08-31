@@ -7,6 +7,7 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
+import androidx.navigation.ui.setupWithNavController
 import com.fitmate.fitmate.MainActivity
 import com.fitmate.fitmate.R
 import com.fitmate.fitmate.databinding.FragmentMakeFitOffBinding
@@ -27,12 +28,17 @@ class MakeFitOffFragment : Fragment(R.layout.fragment_make_fit_off) {
     private lateinit var binding: FragmentMakeFitOffBinding
     private val viewModel: FitOffViewModel by viewModels()
     private var userId: Int = -1
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        (activity as MainActivity).goneNavigationBar()
+    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding = FragmentMakeFitOffBinding.bind(view)
         binding.fragment = this
         binding.viewModel = viewModel
+        binding.materialToolbar2.setupWithNavController(findNavController())
 
         val userPreference = (activity as MainActivity).loadUserPreference()
         userId = userPreference.getOrNull(2)?.toString()?.toInt() ?: -1

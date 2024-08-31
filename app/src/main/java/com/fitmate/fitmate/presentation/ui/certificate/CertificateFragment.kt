@@ -382,7 +382,6 @@ class CertificateFragment : Fragment() {
                         LocalBroadcastManager.getInstance(requireContext())
                             .unregisterReceiver(broadcastReceiver2)
 
-                        Log.d("tlqkf","이동한다잉")
                         findNavController().navigate(R.id.action_certificateFragment_to_categorySelectFragment)
 /*                        setRecyclerViewState(true)
                         viewModel.resetStartImage()

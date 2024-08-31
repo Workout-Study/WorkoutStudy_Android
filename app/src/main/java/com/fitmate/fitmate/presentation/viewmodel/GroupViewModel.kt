@@ -168,7 +168,6 @@ class GroupViewModel @Inject constructor(
                 }
             }catch (e:Exception){
                 //TODO 오류 핸들링
-                Log.d("tlqkf","오류:$e")
             }
         }
     }

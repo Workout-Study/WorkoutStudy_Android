@@ -152,7 +152,8 @@
     <string name="chatting_scr_fit_mate_fit_off">피트오프현황</string>
     <string name="chatting_scr_fit_mate_fit_off_apply">피트오프신청</string>
     <string name="chatting_scr_fit_mate_certification">기록하기</string>
-    <string name="chatting_scr_fit_group_info">기록하기</string>
+    <string name="chatting_scr_fit_group_info">그룹 정보 및 수정</string>
+
 
     <string name="chatting_scr_quit_group">그룹 탈퇴하기</string>
     <string name="item_chatting_scr_export">해당 회원을 추방하시겠습니까?</string>

@@ -1,7 +1,6 @@
 package com.fitmate.fitmate.presentation.ui.myfit
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -122,6 +121,10 @@ class MyFitMainFragment: Fragment() {
         }
     }
 
+    fun clickEnterRegisterFitOffFragment(){
+        findNavController().navigate(R.id.makeFitOffFragment)
+    }
+
     //내 운동 기록 화면(캘린더 화면)으로 화면 이돟
     fun clickEnterMyFitHistoryFragment() {
         findNavController().navigate(R.id.action_myFitMainFragment_to_myFitFragment)
@@ -130,5 +133,6 @@ class MyFitMainFragment: Fragment() {
     fun clickEnterCertificationFragment() {
         findNavController().navigate(R.id.action_myFitMainFragment_to_certificateFragment)
     }
+
 
 }
