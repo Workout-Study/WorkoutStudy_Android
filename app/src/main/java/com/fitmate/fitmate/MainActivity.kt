@@ -61,7 +61,10 @@ class MainActivity : AppCompatActivity(), ControlActivityInterface {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         val splashScreen = installSplashScreen()
-        splash(splashScreen)
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+            splash(splashScreen)
+        }
+
         //바인딩 및 네비게이션 컨트롤러 초기화 작업
         initSetting()
         setContentView(binding.root)
@@ -83,13 +86,19 @@ class MainActivity : AppCompatActivity(), ControlActivityInterface {
         viewModel.onboardingInquiryStatus.observe(this) { isTrue ->
             if (isTrue) {
                 val userPreference = loadUserPreference()
-                val platform = userPreference[3]
-                var state = UUID.randomUUID().toString()
-                val redirectUrl = "https://fitmate.com/oauth"
-                if(platform == "naver") {
-                    showWebViewFragment("https://nid.naver.com/oauth2.0/authorize?response_type=code&client_id=${LoginFragment.naverClientId}&redirect_uri=$packageName&state=$state",pendingToken)
+                if (userPreference != null && userPreference.size > 3) {
+                    val platform = userPreference[3]
+                    var state = UUID.randomUUID().toString()
+                    val redirectUrl = "https://fitmate.com/oauth"
+                    if(platform == "naver") {
+                        showWebViewFragment("https://nid.naver.com/oauth2.0/authorize?response_type=code&client_id=${LoginFragment.naverClientId}&redirect_uri=$packageName&state=$state", pendingToken)
+                    } else if(platform == "kakao") {
+                        showWebViewFragment("https://kauth.kakao.com/oauth/authorize?client_id=${LoginFragment.kakaoRestAPIKey}&redirect_uri=${redirectUrl}&response_type=code&state=$state", pendingToken)
+                    } else {
+                        navController.navigate(R.id.action_homeFragment_to_onboardingContainerFragment)
+                    }
                 } else {
-                    showWebViewFragment("https://kauth.kakao.com/oauth/authorize?client_id=${LoginFragment.kakaoRestAPIKey}&redirect_uri=${redirectUrl}&response_type=code&state=$state",pendingToken)
+                    navController.navigate(R.id.action_homeFragment_to_onboardingContainerFragment)
                 }
             } else {
                 navController.navigate(R.id.action_homeFragment_to_onboardingContainerFragment)
