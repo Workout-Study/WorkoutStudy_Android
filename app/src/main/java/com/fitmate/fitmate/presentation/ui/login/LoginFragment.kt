@@ -2,6 +2,7 @@ package com.fitmate.fitmate.presentation.ui.login
 
 import android.os.Bundle
 import android.view.View
+import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.fitmate.fitmate.BuildConfig
@@ -29,8 +30,8 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
         binding = FragmentLoginBinding.bind(view)
         (activity as? ControlActivityInterface)?.goneNavigationBar()
         setupLoginButtonListeners()
+        setFinishWhenBackPressed()
     }
-
 
     private fun setupLoginButtonListeners() {
         naverLogin()
@@ -54,5 +55,16 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
             putString("loginUrl", loginUrl)
         }
         findNavController().navigate(R.id.loginWebViewFragment, bundle)
+    }
+
+    private fun setFinishWhenBackPressed() {
+        requireActivity().onBackPressedDispatcher.addCallback(
+            viewLifecycleOwner,
+            object: OnBackPressedCallback(true
+            ) {
+            override fun handleOnBackPressed() {
+                requireActivity().finish()
+            }
+        })
     }
 }

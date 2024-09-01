@@ -60,8 +60,8 @@
 
         <ImageView
             android:id="@+id/imageView6"
-            android:layout_width="250dp"
-            android:layout_height="500dp"
+            android:layout_width="240dp"
+            android:layout_height="480dp"
             android:layout_marginTop="192dp"
             app:layout_constraintBottom_toTopOf="@+id/buttonNextFragment"
             app:layout_constraintEnd_toEndOf="parent"

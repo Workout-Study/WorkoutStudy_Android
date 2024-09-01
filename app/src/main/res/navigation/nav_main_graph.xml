@@ -158,7 +158,7 @@
         <action
             android:id="@+id/action_userInfoFragment_to_loginFragment"
             app:destination="@id/loginFragment"
-            app:popUpTo="@id/homeFragment"
+            app:popUpTo="@id/userInfoFragment"
             app:popUpToInclusive="true" />
         <action
             android:id="@+id/action_userInfoFragment_to_profileFragment"

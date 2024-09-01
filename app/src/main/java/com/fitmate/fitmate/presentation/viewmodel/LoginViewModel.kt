@@ -56,6 +56,9 @@ class LoginViewModel @Inject constructor(
     private val _logoutComplete = MutableLiveData<Boolean>()
     val logoutComplete: LiveData<Boolean> = _logoutComplete
 
+    private var _deleteComplete = MutableLiveData<Boolean>()
+    val deleteComplete: LiveData<Boolean> = _deleteComplete
+
     var platform: String? = null
 
     val updateUserImage = MutableLiveData<String?>(null)
@@ -164,9 +167,11 @@ class LoginViewModel @Inject constructor(
                 val response = loginUseCase.deleteUser(userToken)
                 _success.value = response
                 _isLoading.value = false
+                _deleteComplete.value = true
             } catch (e: Exception) {
                 Log.d(TAG, "delete User Error... $e")
                 _isLoading.value = false
+                _deleteComplete.value = false
             }
         }
     }
