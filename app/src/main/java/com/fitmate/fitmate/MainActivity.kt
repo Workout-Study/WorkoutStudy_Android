@@ -86,16 +86,13 @@ class MainActivity : AppCompatActivity(), ControlActivityInterface {
         viewModel.onboardingInquiryStatus.observe(this) { isTrue ->
             if (isTrue) {
                 val userPreference = loadUserPreference()
-                if (userPreference != null && userPreference.size > 3) {
+                if (userPreference.size > 3) {
                     val platform = userPreference[3]
-                    var state = UUID.randomUUID().toString()
-                    val redirectUrl = "https://fitmate.com/oauth"
-                    if(platform == "naver") {
-                        showWebViewFragment("https://nid.naver.com/oauth2.0/authorize?response_type=code&client_id=${LoginFragment.naverClientId}&redirect_uri=$packageName&state=$state", pendingToken)
-                    } else if(platform == "kakao") {
-                        showWebViewFragment("https://kauth.kakao.com/oauth/authorize?client_id=${LoginFragment.kakaoRestAPIKey}&redirect_uri=${redirectUrl}&response_type=code&state=$state", pendingToken)
-                    } else {
-                        navController.navigate(R.id.action_homeFragment_to_onboardingContainerFragment)
+                    val isLogout = userPreference[5] as Boolean
+                    when(platform) {
+                        "naver" -> if(!isLogout) showWebViewFragment("naver", pendingToken) else navController.navigate(R.id.action_homeFragment_to_loginFragment)
+                        "kakao" -> if(!isLogout) showWebViewFragment("kakao", pendingToken) else navController.navigate(R.id.action_homeFragment_to_loginFragment)
+                        else -> navController.navigate(R.id.action_homeFragment_to_onboardingContainerFragment)
                     }
                 } else {
                     navController.navigate(R.id.action_homeFragment_to_onboardingContainerFragment)
@@ -106,7 +103,20 @@ class MainActivity : AppCompatActivity(), ControlActivityInterface {
         }
     }
 
-    private fun showWebViewFragment(loginUrl: String, pendingToken:PendingTokenValue?) {
+//    private fun showWebViewFragment(loginUrl: String, pendingToken:PendingTokenValue?) {
+//        val bundle = Bundle().apply {
+//            putString("loginUrl", loginUrl)
+//            putSerializable("pendingToken", pendingToken)
+//        }
+//        navController.navigate(R.id.loginWebViewFragment, bundle)
+//    }
+
+    private fun showWebViewFragment(platform: String, pendingToken:PendingTokenValue?) {
+        val state = UUID.randomUUID().toString()
+        val redirectUrl = "https://fitmate.com/oauth"
+        val naverLoginUrl = "https://nid.naver.com/oauth2.0/authorize?response_type=code&client_id=${LoginFragment.naverClientId}&redirect_uri=$packageName&state=$state"
+        val kakaoLoginUrl = "https://kauth.kakao.com/oauth/authorize?client_id=${LoginFragment.kakaoRestAPIKey}&redirect_uri=${redirectUrl}&response_type=code&state=$state"
+        var loginUrl = if(platform.equals("naver")) naverLoginUrl else kakaoLoginUrl
         val bundle = Bundle().apply {
             putString("loginUrl", loginUrl)
             putSerializable("pendingToken", pendingToken)
@@ -158,7 +168,7 @@ class MainActivity : AppCompatActivity(), ControlActivityInterface {
         imm?.showSoftInput(view, 0)
     }
 
-    override fun saveUserPreference(accessToken: String, refreshToken: String, userId: Int, platform: String, createdAt: String) {
+    override fun saveUserPreference(accessToken: String, refreshToken: String, userId: Int, platform: String, createdAt: String, isLogout: Boolean) {
         val editor = sharedPreferences.edit()
         editor.run {
             putString(KEY_ACCESS, accessToken)
@@ -166,6 +176,7 @@ class MainActivity : AppCompatActivity(), ControlActivityInterface {
             putInt(KEY_USER_ID, userId)
             putString(KEY_PLATFORM, platform)
             putString(KEY_CREATED_AT, createdAt)
+            putBoolean(KEY_IS_LOGOUT, isLogout)
             apply()
         }
     }
@@ -178,6 +189,7 @@ class MainActivity : AppCompatActivity(), ControlActivityInterface {
             val userId = sharedPreferences.getInt(KEY_USER_ID, -1)
             val platform = sharedPreferences.getString(KEY_PLATFORM, "")
             val createdAt = sharedPreferences.getString(KEY_CREATED_AT, "")
+            val isLogout = sharedPreferences.getBoolean(KEY_IS_LOGOUT, false)
 
             userPreferences.run {
                 add(accessToken!!)
@@ -185,6 +197,7 @@ class MainActivity : AppCompatActivity(), ControlActivityInterface {
                 add(userId)
                 add(platform!!)
                 add(createdAt!!)
+                add(isLogout!!)
             }
         }
 
@@ -204,5 +217,6 @@ class MainActivity : AppCompatActivity(), ControlActivityInterface {
         private const val KEY_USER_ID = "user_id"
         private const val KEY_PLATFORM = "platform"
         private const val KEY_CREATED_AT = "createdAt"
+        private const val KEY_IS_LOGOUT = "isLogout"
     }
 }

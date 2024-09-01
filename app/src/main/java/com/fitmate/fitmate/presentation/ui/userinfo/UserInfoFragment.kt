@@ -6,6 +6,7 @@ import android.view.View
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.navigation.NavOptions
 import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.CenterCrop
@@ -31,6 +32,9 @@ class UserInfoFragment : Fragment(R.layout.fragment_user_info) {
     private val TAG = "UserInfoFragment"
     private var userId: Int = -1
     private var accessToken: String = ""
+    private var refreshToken: String = ""
+    private var isLogout: Boolean = false
+    private var createdAt: String = ""
     private var platform: String = ""
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -109,9 +113,12 @@ class UserInfoFragment : Fragment(R.layout.fragment_user_info) {
 
     private fun loadUserPreference() {
         val userPreference = (activity as MainActivity).loadUserPreference()
-        userId = userPreference.getOrNull(2)?.toString()?.toInt() ?: -1
         accessToken = userPreference.getOrNull(0)?.toString() ?: ""
+        refreshToken = userPreference.getOrNull(1)?.toString() ?: ""
+        userId = userPreference.getOrNull(2)?.toString()?.toInt() ?: -1
         platform = userPreference.getOrNull(3)?.toString() ?: ""
+        createdAt = userPreference.getOrNull(4)?.toString() ?: ""
+        isLogout = userPreference.getOrNull(5) as? Boolean ?: false // 수정된 부분
         Log.d(TAG, "$userId, $platform")
         Log.d(TAG, accessToken)
     }
@@ -135,6 +142,7 @@ class UserInfoFragment : Fragment(R.layout.fragment_user_info) {
     fun logout() {
         viewModel.logoutComplete.observe(viewLifecycleOwner) { isComplete ->
             if (isComplete) {
+                (activity as MainActivity).saveUserPreference(accessToken, refreshToken, userId, platform, createdAt, true)
                 findNavController().navigate(R.id.action_userInfoFragment_to_loginFragment)
                 Snackbar.make(
                     requireView(),
@@ -152,9 +160,13 @@ class UserInfoFragment : Fragment(R.layout.fragment_user_info) {
     //회원 탈퇴 메서드
     fun withdraw() {
         viewModel.deleteUser(accessToken)
-        (activity as MainActivity).killUserPreference()
-        Snackbar.make(binding.root, "회원탈퇴를 성공했습니다. [USERID ${userId}]", Snackbar.LENGTH_SHORT).show()
-        findNavController().navigate(R.id.action_userInfoFragment_to_loginFragment)
+        viewModel.deleteComplete.observe(viewLifecycleOwner) { isComplete ->
+            if(isComplete) {
+                (activity as MainActivity).killUserPreference()
+                Snackbar.make(binding.root, "회원탈퇴를 성공했습니다. [USERID ${userId}]", Snackbar.LENGTH_SHORT).show()
+                findNavController().navigate(R.id.action_userInfoFragment_to_loginFragment)
+            }
+        }
     }
 
     //라이선스 화면 이동 메서드

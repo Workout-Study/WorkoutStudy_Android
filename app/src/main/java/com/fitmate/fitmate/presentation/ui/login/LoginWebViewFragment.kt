@@ -100,7 +100,7 @@ class LoginWebViewFragment : Fragment(R.layout.fragment_login_webview) {
                 val createdAt = loginResponse.createdAt
                 val platform = viewModel.platform   // ViewModel에 저장된 플랫폼 정보 가져오기
                 Log.d(TAG, "[access]$accessToken \n[refresh]$refreshToken \n[userId]$userId \n[createdAt]$createdAt \n[platform]$platform\n[newUser]$newUser")
-                (activity as MainActivity).saveUserPreference(accessToken, refreshToken, userId, platform!!, createdAt)
+                (activity as MainActivity).saveUserPreference(accessToken, refreshToken, userId, platform!!, createdAt, false)
 
                 if(newUser == 0) {
                     val bundle = Bundle().apply {
