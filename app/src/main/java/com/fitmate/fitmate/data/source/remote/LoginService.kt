@@ -35,5 +35,5 @@ interface LoginService {
     suspend fun updateNickname(@Body nicknameRequest: NicknameRequest, @Header("Authorization") authorization: String): LoginSuccessResponse
 
     @DELETE("user/delete")
-    suspend fun deleteUser(@Query("userId") userId: Int): LoginSuccessResponse
+    suspend fun deleteUser(@Header("Authorization") authorization: String): LoginSuccessResponse
 }

@@ -191,6 +191,12 @@ class MainActivity : AppCompatActivity(), ControlActivityInterface {
         return userPreferences
     }
 
+    override fun killUserPreference() {
+        val editor = sharedPreferences.edit()
+        editor.clear()
+        editor.apply()
+    }
+
     companion object {
         private const val FILE_NAME= "user_preference"
         private const val KEY_ACCESS = "access_token"

@@ -157,11 +157,11 @@ class LoginViewModel @Inject constructor(
     }
 
 
-    fun deleteUser(userId: Int) {
+    fun deleteUser(userToken: String) {
         viewModelScope.launch {
             _isLoading.value = true
             try {
-                val response = loginUseCase.deleteUser(userId)
+                val response = loginUseCase.deleteUser(userToken)
                 _success.value = response
                 _isLoading.value = false
             } catch (e: Exception) {
