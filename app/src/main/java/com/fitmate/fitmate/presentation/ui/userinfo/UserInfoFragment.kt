@@ -151,9 +151,10 @@ class UserInfoFragment : Fragment(R.layout.fragment_user_info) {
 
     //회원 탈퇴 메서드
     fun withdraw() {
-        viewModel.deleteUser(userId)
-        Snackbar.make(binding.root, "회원틸퇴를 성공했습니다. [USERID ${userId}]", Snackbar.LENGTH_SHORT)
-            .show()
+        viewModel.deleteUser(accessToken)
+        (activity as MainActivity).killUserPreference()
+        Snackbar.make(binding.root, "회원탈퇴를 성공했습니다. [USERID ${userId}]", Snackbar.LENGTH_SHORT).show()
+        findNavController().navigate(R.id.action_userInfoFragment_to_loginFragment)
     }
 
     //라이선스 화면 이동 메서드

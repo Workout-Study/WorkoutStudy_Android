@@ -19,5 +19,5 @@ interface LoginRepository {
 
     suspend fun updateNickname(userId: String, nickname: String, imageUrl: String?): LoginSuccessResponse
 
-    suspend fun deleteUser(userId: Int): LoginSuccessResponse
+    suspend fun deleteUser(userToken: String): LoginSuccessResponse
 }
