@@ -4,17 +4,22 @@ import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
 import androidx.paging.PagingData
 import androidx.paging.cachedIn
 import androidx.paging.map
 import com.fitmate.fitmate.data.model.CertificationMapper.toCertificationTargetFitGroupResponse
 import com.fitmate.fitmate.data.model.MyGroupNewsMapper.toMyGroupNews
+import com.fitmate.fitmate.data.model.dto.FitGroupFilter
+import com.fitmate.fitmate.data.model.dto.MyGroupNewsDto
 import com.fitmate.fitmate.domain.model.FitGroupItem
 import com.fitmate.fitmate.domain.model.MyGroupNews
+import com.fitmate.fitmate.domain.usecase.GroupUseCase
 import com.fitmate.fitmate.domain.usecase.MyGroupNewsUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.collectLatest
@@ -24,14 +29,20 @@ import javax.inject.Inject
 
 @HiltViewModel
 class HomeViewModel@Inject constructor(
-    private val myGroupNewsUseCase: MyGroupNewsUseCase
+    private val myGroupNewsUseCase: MyGroupNewsUseCase,
+    private val groupUseCase: GroupUseCase
 ): ViewModel() {
     private val _myFitGroupList = MutableLiveData<List<FitGroupItem>>()
     val myFitGroupList: LiveData<List<FitGroupItem>>
         get() = _myFitGroupList
 
+
     private val _pagingData = MutableStateFlow<PagingData<MyGroupNews>?>(null)
     val pagingData: StateFlow<PagingData<MyGroupNews>?> = _pagingData
+
+    suspend fun getHotFitGroup(withMaxGroup: Boolean, pageNumber: Int, pageSize: Int):Flow<FitGroupFilter>{
+        return groupUseCase.fitGroupTopTen(withMaxGroup, pageNumber, pageSize)
+    }
 
     //내가 가입한 fit그룹 통신해서 가져오기
     fun getMyFitGroupList(userId: Int) {

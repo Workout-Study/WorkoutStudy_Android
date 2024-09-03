@@ -44,13 +44,11 @@
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/recyclerViewHomeCarousel"
                     android:layout_width="match_parent"
-                    android:layout_height="200dp"
+                    android:layout_height="wrap_content"
                     android:layout_margin="10dp"
                     android:layout_marginTop="20dp"
                     android:nestedScrollingEnabled="false"
-                    android:overScrollMode="never"
-                    tools:listitem="@layout/item_main_carousel"/>
-
+                    android:overScrollMode="never" />
 
 
                     <TextView

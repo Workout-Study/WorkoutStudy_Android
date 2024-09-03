@@ -20,7 +20,7 @@ class GroupUseCase @Inject constructor(private val groupRepository: GroupReposit
     suspend fun fitGroupFilter(withMaxGroup: Boolean, category: Int, pageNumber: Int, pageSize: Int)
     : Flow<PagingData<FitGroupDetail>> = groupRepository.fitGroupFilter(withMaxGroup, category, pageNumber, pageSize)
 
-    suspend fun fitGroupAll(withMaxGroup: Boolean, pageNumber: Int, pageSize: Int): Flow<PagingData<FitGroupDetail>> = groupRepository.fitGroupAll(withMaxGroup, pageNumber, pageSize)
+    suspend fun fitGroupTopTen(withMaxGroup: Boolean, pageNumber: Int, pageSize: Int): Flow<FitGroupFilter> = groupRepository.fitGroupAll(withMaxGroup, pageNumber, pageSize)
 
     suspend fun getFitGroupDetail(fitGroupId: Int): GetFitGroupDetail = groupRepository.getFitGroupDetail(fitGroupId)
 

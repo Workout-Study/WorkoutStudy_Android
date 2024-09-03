@@ -16,7 +16,7 @@ import retrofit2.http.Path
 interface GroupRepository {
     suspend fun fitGroupFilter(withMaxGroup: Boolean, category: Int, pageNumber: Int, pageSize: Int): Flow<PagingData<FitGroupDetail>>
 
-    suspend fun fitGroupAll(withMaxGroup: Boolean, pageNumber: Int ,pageSize: Int): Flow<PagingData<FitGroupDetail>>
+    suspend fun fitGroupAll(withMaxGroup: Boolean, pageNumber: Int ,pageSize: Int): Flow<FitGroupFilter>
 
     suspend fun getFitGroupDetail(fitGroupId: Int): GetFitGroupDetail
 

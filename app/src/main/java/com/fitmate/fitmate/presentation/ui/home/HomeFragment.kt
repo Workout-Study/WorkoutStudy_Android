@@ -5,6 +5,10 @@ import android.util.Log
 import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.flowWithLifecycle
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
@@ -19,6 +23,7 @@ import com.fitmate.fitmate.util.customGetSerializable
 import com.google.android.material.carousel.CarouselLayoutManager
 import com.google.android.material.carousel.MultiBrowseCarouselStrategy
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
@@ -70,12 +75,21 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
         //네트워킹 감시
         observeViewModel()
 
+        //hotGroup네트워킹 감시
+        lifecycleScope.launch{
+            viewModel.getHotFitGroup(false,0,10).flowWithLifecycle(lifecycle,Lifecycle.State.STARTED).collect { data->
+                Log.d("tlqkf",data.content.toString())
+            }
+        }
+
+
         //내가 가입한 그룹 네트워킹
         viewModel.getMyFitGroupList(userId)
 
 
         startShimmer()
     }
+
 
 
     private fun initRecyclerView() {
