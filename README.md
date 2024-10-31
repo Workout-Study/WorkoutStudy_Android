@@ -16,7 +16,7 @@
   </div>
 
 
-![initial](https://firebasestorage.googleapis.com/v0/b/fitmate-e2b03.appspot.com/o/fitmate_images%2Ffitmate_mainphoto.png?alt=media&token=fd41b4b0-303c-4047-8c43-8ce09acf75ee)
+![initial](https://github.com/user-attachments/assets/7cf2735a-8144-4693-a908-ea4980afc0f9)
 
 
 
@@ -78,15 +78,6 @@ FITMATE 애플리케이션의 아키텍처 구조 입니다.
 | UI Enhancement         | **Shimmer(Skeleton), horizontalnestedscrollview** |
 | Jetpack                | **LiveData, ViewModel, DataBinding, Navigation**  |
 | Dependency Injection   | **Hilt**                                          |
-
-
-
-## Demo Video
-
-해당 이미지를 클릭 시 영상으로 이동합니다.
-
-[![FITMATE Demo Video](https://firebasestorage.googleapis.com/v0/b/fitmate-e2b03.appspot.com/o/fitmate_images%2Fyoutube_screenshot.png?alt=media&token=e047ec98-4205-431b-9ec9-8d1b666586ed)](https://www.youtube.com/watch?v=hU05MZoTvVI)
-
 
 
 ## Screenshots
